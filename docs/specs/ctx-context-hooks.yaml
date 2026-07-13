@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
-  record: docs/specs/challenges/ctx-context-hooks-2026-07-13-r2.md
+  record: docs/specs/challenges/ctx-context-hooks-2026-07-13-r3.md
   summary: >-
     First run failed with two high findings (CTX-2 rule contradicted its own
     implementation; approved status without a challenge record) plus one
@@ -17,13 +17,18 @@ challenge:
     (index-row cascade, router overclaim, CTX-5 rationale wording, lint-hook
     stderr noise) were applied in the same change. Attacks that held:
     deny-once loop safety, ledger consistency across hooks, fail-open paths,
-    CTX-3 cap/overflow, all acceptance criteria executed live.
+    CTX-3 cap/overflow, all acceptance criteria executed live. Round 3
+    (delta, CTX-6 ambient intake reminder added for the SDLC-governance
+    increment) passed clean — no findings survived: rule-vs-implementation
+    exactness, sentinel/ID non-collision, substantive-heuristic bounds,
+    fail-open paths, and non-interference with the resolve-ids hook all
+    verified live.
 implements: []
 governed-by: [P-6]
 depends-on: [DCX]
 design-scope: local
 constrained-by: []
-modules: [scripts/hooks/docs-lint-hook.mjs, scripts/hooks/resolve-ids-hook.mjs, scripts/hooks/read-ledger-hook.mjs, scripts/hooks/write-guard-hook.mjs, scripts/lib/session-ledger.mjs, .claude/settings.json]
+modules: [scripts/hooks/docs-lint-hook.mjs, scripts/hooks/resolve-ids-hook.mjs, scripts/hooks/read-ledger-hook.mjs, scripts/hooks/write-guard-hook.mjs, scripts/hooks/intake-hook.mjs, scripts/lib/session-ledger.mjs, .claude/skills/change-request/SKILL.md, .claude/settings.json]
 
 purpose: >-
   Claude Code hooks that make the documentation graph ambient for agents
@@ -102,6 +107,24 @@ items:
       docs/; dangling IDs in code are a Stage 2 concern). Guards only files
       under docs/, src/, and scripts/; an agent that already read the
       governing register is never blocked.
+
+  CTX-6:
+    v: 1
+    title: Ambient intake reminder
+    rule: >-
+      A UserPromptSubmit hook makes the SDLC intake protocol (docs/CLAUDE.md
+      Phase A) ambient: on the first substantive prompt of a session it
+      injects a compact reminder of the intake steps (classify → evaluate
+      against goals/principles/scope → push back on contradiction → fill gaps
+      → surface flexibility-limiting decisions → proceed) and points at the
+      /change-request skill. Bounded like CTX-2/CTX-3: shown at most once per
+      session (a sentinel in the session ledger dedupes), and only for a
+      substantive prompt (length or request-verb heuristic) so a trivial
+      opener does not consume the one shot. Best-effort by nature — it cannot
+      force the reasoning, only guarantee the protocol is in front of the
+      agent at request time; it fails open. This is the ambient half of
+      enforcement; the /change-request skill is the runnable procedure and
+      DCX-16 is the deterministic tooth.
 
 design: >-
   Four thin hook entrypoints (one per harness event) over two shared libs

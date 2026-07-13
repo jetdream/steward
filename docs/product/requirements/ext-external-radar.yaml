@@ -13,6 +13,7 @@ intent: >-
 items:
   EXT-1:
     v: 1
+    origin: baseline
     priority: P0
     source: A-3 (Gemini + Google Search grounding; upgrade path fixed there)
     title: Radar v0
@@ -24,6 +25,7 @@ items:
 
   EXT-2:
     v: 1
+    origin: baseline
     priority: P0
     depends: [EXT-1]
     title: External drafts
@@ -35,6 +37,7 @@ items:
 
   EXT-3:
     v: 1
+    origin: baseline
     priority: P0
     flexibility: hard
     title: Autonomy cap
@@ -44,6 +47,7 @@ items:
 
   EXT-4:
     v: 1
+    origin: baseline
     priority: P1
     title: Source depth
     statement: >-

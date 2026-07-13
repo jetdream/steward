@@ -12,6 +12,7 @@ intent: >-
 items:
   GEN-1:
     v: 1
+    origin: baseline
     priority: P0
     depends: [MEM-1, STR-1, EXT-1]
     title: Rolling 4-week calendar
@@ -30,6 +31,7 @@ items:
 
   GEN-2:
     v: 1
+    origin: baseline
     priority: P0
     depends: [PUB-2, STR-1]
     title: Per-channel adaptation
@@ -41,6 +43,7 @@ items:
 
   GEN-3:
     v: 1
+    origin: baseline
     priority: P0
     flexibility: hard
     title: Every post carries a picture
@@ -51,6 +54,7 @@ items:
 
   GEN-4:
     v: 1
+    origin: baseline
     priority: P0
     depends: [GEN-3, PRO-1]
     title: Awaiting-picture state
@@ -62,6 +66,7 @@ items:
 
   GEN-5:
     v: 1
+    origin: baseline
     priority: P0
     depends: [STR-3, PUB-2]
     title: Channel-fit gate
@@ -73,6 +78,7 @@ items:
 
   GEN-6:
     v: 1
+    origin: baseline
     priority: P1
     title: Performance feedback
     statement: Per-post metrics (read-only insights) feed the Planner.

@@ -29,6 +29,13 @@ const edit = (root, rel, fn) => writeFileSync(join(root, rel), fn(readFileSync(j
 const insertItem = (root, rel, itemBlock) => edit(root, rel, (s) => s.replace('items:\n', `items:\n${itemBlock}`));
 /** 1-based line number of the first line matching re (for location-bearing messages). */
 const lineOf = (root, rel, re) => readFileSync(join(root, rel), 'utf8').split('\n').findIndex((l) => re.test(l)) + 1;
+/** Force the CTX spec to approved so the design gate (DCX-11..13) applies —
+ *  decouples these cases from the spec's transient draft/approved status
+ *  (no-op when already approved). */
+const approveCtx = (root) => edit(root, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('status: draft', 'status: approved'));
+/** The CTX spec's current challenge-record path — derived, not hardcoded, so
+ *  these cases survive future re-challenges that repoint the record. */
+const ctxRecord = (root) => readFileSync(join(root, 'docs/specs/ctx-context-hooks.yaml'), 'utf8').match(/record:\s*(\S+)/)[1];
 
 /**
  * Case schema: mutate a fresh tree copy; assert exit code; `error` (string or
@@ -83,34 +90,35 @@ const CASES = [
     mutate: (r) => edit(r, 'docs/specs/dcx-docs-check.yaml', (s) => s.replace('prefix: DCX\n', '')) },
   { name: 'cross-cutting spec with empty constrained-by (DCX-11)', exit: 1,
     error: MSG.crossCuttingNeedsConstraints(), file: 'docs/specs/ctx-context-hooks.yaml',
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('design-scope: local', 'design-scope: cross-cutting')) },
+    mutate: (r) => { approveCtx(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('design-scope: local', 'design-scope: cross-cutting')); } },
   { name: 'constrained-by cites sketch architecture (DCX-11)', exit: 1,
     error: MSG.constraintArchitectureNotApproved('docs/architecture/data-model.yaml', 'sketch'),
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [docs/architecture/data-model.yaml]')) },
+    mutate: (r) => { approveCtx(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [docs/architecture/data-model.yaml]')); } },
   { name: 'constrained-by cites non-architecture path (DCX-11)', exit: 1,
     error: MSG.constraintNotArchitecture('docs/product/goals.yaml', 'goals'),
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [docs/product/goals.yaml]')) },
+    mutate: (r) => { approveCtx(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [docs/product/goals.yaml]')); } },
   { name: 'constrained-by cites undefined ADR (DCX-11)', exit: 1,
     error: MSG.constraintUndefinedAdr('ADR-0042'),
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [ADR-0042]')) },
+    mutate: (r) => { approveCtx(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [ADR-0042]')); } },
   { name: 'constrained-by cites non-accepted ADR (DCX-11)', exit: 1,
     error: MSG.constraintAdrNotAccepted('ADR-0097', 'proposed'),
     mutate: (r) => {
+      approveCtx(r);
       writeFileSync(join(r, 'docs/adr/0097-test.md'), '---\nkind: adr\ntitle: T\nstatus: proposed\n---\n# test\n');
       edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('constrained-by: []', 'constrained-by: [ADR-0097]'));
     } },
   { name: 'approved spec with empty design (DCX-12)', exit: 1,
     error: MSG.needsDesignSection(), file: 'docs/specs/ctx-context-hooks.yaml',
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace(/^design: >-\n(  .+\n|\n)+?(?=^data:)/m, 'design:\n')) },
+    mutate: (r) => { approveCtx(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace(/^design: >-\n(  .+\n|\n)+?(?=^data:)/m, 'design:\n')); } },
   { name: 'approved spec without challenge block (DCX-13)', exit: 1,
     error: MSG.needsChallengeBlock(), file: 'docs/specs/ctx-context-hooks.yaml',
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace(/^challenge:\n(  .+\n|\n)+?(?=^[a-z])/m, '')) },
+    mutate: (r) => { approveCtx(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace(/^challenge:\n(  .+\n|\n)+?(?=^[a-z])/m, '')); } },
   { name: 'challenge record missing on disk (DCX-13)', exit: 1,
     error: MSG.recordNotFound('docs/specs/challenges/nonexistent.md'),
-    mutate: (r) => edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace('challenges/ctx-context-hooks-2026-07-13-r2.md', 'challenges/nonexistent.md')) },
+    mutate: (r) => { approveCtx(r); const rec = ctxRecord(r); edit(r, 'docs/specs/ctx-context-hooks.yaml', (s) => s.replace(rec, 'docs/specs/challenges/nonexistent.md')); } },
   { name: 'challenge verdict mismatch with record (DCX-13)', exit: 1,
     error: MSG.recordVerdictMismatch('pass', 'fail'), file: 'docs/specs/ctx-context-hooks.yaml',
-    mutate: (r) => edit(r, 'docs/specs/challenges/ctx-context-hooks-2026-07-13-r2.md', (s) => s.replace('verdict: pass', 'verdict: fail')) },
+    mutate: (r) => { approveCtx(r); edit(r, ctxRecord(r), (s) => s.replace('verdict: pass', 'verdict: fail')); } },
   { name: 'pre-commit gate commented out (DCX-14)', exit: 1,
     error: MSG.missingPreCommitGate('.husky/pre-commit or .githooks/pre-commit'), file: '.husky/pre-commit',
     mutate: (r) => writeFileSync(join(r, '.husky/pre-commit'), '# docs-check.mjs disabled for now\n') },
@@ -141,6 +149,33 @@ const CASES = [
   { name: 'effective serves falls back to file level in --json (DCX-10)', exit: 0,
     check: (j) => JSON.stringify(j.items['MEM-1'].serves) === '["G-2","G-3"]',
     mutate: () => {} },
+  { name: 'governed item without provenance (DCX-16)', exit: 1,
+    error: MSG.needsProvenance('STR-3'), file: 'docs/product/requirements/str-posting-strategy.yaml',
+    mutate: (r) => edit(r, 'docs/product/requirements/str-posting-strategy.yaml', (s) => s.replace('  STR-3:\n    v: 1\n    origin: baseline\n', '  STR-3:\n    v: 1\n')) },
+  { name: 'origin: baseline at v>=2 (DCX-16)', exit: 1,
+    error: MSG.baselineNotAtV1('STR-3', 2), file: 'docs/product/requirements/str-posting-strategy.yaml',
+    mutate: (r) => edit(r, 'docs/product/requirements/str-posting-strategy.yaml', (s) => s.replace('  STR-3:\n    v: 1\n    origin: baseline\n', '  STR-3:\n    v: 2\n    origin: baseline\n')) },
+  { name: 'decided-by citing undefined decision (DCX-16)', exit: 1,
+    error: MSG.decidedByUndefined('STR-3', 'DEC-99'), file: 'docs/product/requirements/str-posting-strategy.yaml',
+    mutate: (r) => edit(r, 'docs/product/requirements/str-posting-strategy.yaml', (s) => s.replace('  STR-3:\n    v: 1\n    origin: baseline\n', '  STR-3:\n    v: 2\n    decided-by: DEC-99\n')) },
+  { name: 'decided-by citing a defined but wrong-kind id (DCX-16)', exit: 1,
+    error: MSG.decidedByWrongKind('STR-3', 'INC-1'), file: 'docs/product/requirements/str-posting-strategy.yaml',
+    mutate: (r) => edit(r, 'docs/product/requirements/str-posting-strategy.yaml', (s) => s.replace('  STR-3:\n    v: 1\n    origin: baseline\n', '  STR-3:\n    v: 2\n    decided-by: INC-1\n')) },
+  { name: 'non-baseline origin value (DCX-16/DCX-4)', exit: 1,
+    error: MSG.invalidOrigin('STR-3', 'bogus'), file: 'docs/product/requirements/str-posting-strategy.yaml',
+    mutate: (r) => edit(r, 'docs/product/requirements/str-posting-strategy.yaml', (s) => s.replace('  STR-3:\n    v: 1\n    origin: baseline\n', '  STR-3:\n    v: 1\n    origin: bogus\n')) },
+  { name: 'a valid post-baseline change with decided-by passes (DCX-16)', exit: 0,
+    check: (j) => j.items['OPS-1'].v === 2 && j.errors.length === 0,
+    mutate: (r) => edit(r, 'docs/product/requirements/ops-console.yaml', (s) => s.replace('  OPS-1:\n    v: 1\n    origin: baseline\n', '  OPS-1:\n    v: 2\n    decided-by: DEC-3\n')) },
+  { name: 'governed item declaring both origin and decided-by (DCX-16)', exit: 1,
+    error: MSG.provenanceNotBoth('STR-3'), file: 'docs/product/requirements/str-posting-strategy.yaml',
+    mutate: (r) => edit(r, 'docs/product/requirements/str-posting-strategy.yaml', (s) => s.replace('  STR-3:\n    v: 1\n    origin: baseline\n', '  STR-3:\n    v: 1\n    origin: baseline\n    decided-by: DEC-3\n')) },
+  { name: 'decisions item missing date/by (DCX-4)', exit: 1,
+    error: MSG.itemNeedsDecisionMeta('DEC-1'), file: 'docs/product/decisions.yaml',
+    mutate: (r) => edit(r, 'docs/product/decisions.yaml', (s) => s.replace('  DEC-1:\n    v: 1\n    date: 2026-07-12\n', '  DEC-1:\n    v: 1\n')) },
+  { name: 'constraints item with illegal category (DCX-4)', exit: 1,
+    error: MSG.itemNeedsCategory('CON-1'), file: 'docs/product/constraints.yaml',
+    mutate: (r) => edit(r, 'docs/product/constraints.yaml', (s) => s.replace('    category: compliance', '    category: bogus')) },
 ];
 
 let failures = 0;

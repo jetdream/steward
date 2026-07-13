@@ -12,6 +12,7 @@ intent: >-
 items:
   PUB-1:
     v: 1
+    origin: baseline
     priority: P0
     flexibility: hard
     title: Channels at launch
@@ -25,6 +26,7 @@ items:
 
   PUB-2:
     v: 1
+    origin: baseline
     priority: P0
     title: Per-channel technical profiles
     statement: >-
@@ -34,6 +36,7 @@ items:
 
   PUB-3:
     v: 1
+    origin: baseline
     priority: P0
     title: Publish log
     statement: >-
@@ -42,6 +45,7 @@ items:
 
   PUB-4:
     v: 1
+    origin: baseline
     priority: P2
     title: LinkedIn evaluation
     statement: Evaluate LinkedIn as a fifth channel.

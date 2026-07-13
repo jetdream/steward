@@ -13,5 +13,6 @@ Zero-dependency Node 24. All tooling obeys spec-first — specs in [docs/specs/]
 | `hooks/resolve-ids-hook.mjs` | UserPromptSubmit: resolves IDs mentioned in prompts into a labeled context block; bounded, ledger-deduplicated. | [ctx-context-hooks.yaml](../docs/specs/ctx-context-hooks.yaml) |
 | `hooks/read-ledger-hook.mjs` | PostToolUse (Read): marks IDs defined in the read file as seen in the session ledger. | [ctx-context-hooks.yaml](../docs/specs/ctx-context-hooks.yaml) |
 | `hooks/write-guard-hook.mjs` | PreToolUse (Edit\|Write): deny-once guard — blocks a change touching contracts the session never loaded, injecting their excerpts; the retried edit passes. | [ctx-context-hooks.yaml](../docs/specs/ctx-context-hooks.yaml) |
+| `hooks/intake-hook.mjs` | UserPromptSubmit: once-per-session ambient reminder of the SDLC intake protocol (Phase A); the `/change-request` skill is its runnable form. | [ctx-context-hooks.yaml](../docs/specs/ctx-context-hooks.yaml) |
 
 Hooks are wired in `.claude/settings.json` (project-scoped).

@@ -12,6 +12,7 @@ intent: >-
 items:
   PRO-1:
     v: 1
+    origin: baseline
     priority: P0
     depends: [MEM-1, GEN-4]
     title: Material requests with a reason
@@ -23,6 +24,7 @@ items:
 
   PRO-2:
     v: 1
+    origin: baseline
     priority: P0
     title: Campaign initiation
     statement: >-
@@ -31,6 +33,7 @@ items:
 
   PRO-3:
     v: 1
+    origin: baseline
     priority: P1
     title: Ask-hygiene
     statement: >-

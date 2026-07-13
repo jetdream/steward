@@ -1,0 +1,55 @@
+kind: decisions
+prefix: DEC
+title: Human-in-the-Loop Decision Log
+status: approved
+
+intent: >-
+  The record of decisions a human made when the SDLC protocol required it
+  (docs/CLAUDE.md HITL policy): contradiction overrides, requirement changes
+  and removals, flexibility-limiting choices, and genuine product/business
+  calls. Distinct from ADR (technical decisions with alternatives, in adr/),
+  INC (a detected contradiction), and Q (a still-open question): a DEC is a
+  *made* human decision at product/scope/requirement altitude, with
+  provenance. Product-altitude changes cite the authorizing DEC via
+  `decided-by:` (DCX-16). Each item carries the decision (statement), who
+  (by), when (date), and what it binds/authorizes/overrides (binds).
+
+items:
+  DEC-1:
+    v: 1
+    date: 2026-07-12
+    by: founder (shpin.p@diffco.us)
+    binds: [G-5, G-1, INC-1]
+    title: Resolve the vision-vs-PRD metric inconsistency
+    statement: >-
+      On INC-1 (vision listed activation and churn metrics the PRD goals
+      omitted): promote activation to G-5 and fold churn into G-1, rather
+      than dropping either. The layered goals become the single source; the
+      vision narrative points to them.
+
+  DEC-2:
+    v: 1
+    date: 2026-07-13
+    by: founder (shpin.p@diffco.us)
+    binds: [LRN-6, LRN-7]
+    title: Documentation representation and structure
+    statement: >-
+      Adopt the layered, prefix-named, graph-checkable documentation system
+      over the initial ordinal-file proposal; normative content is pure YAML,
+      narrative is markdown; requirements and specs are separate layers paired
+      by slug. Recorded because it is a founding structural decision the whole
+      project builds on; the abandoned alternatives are retained as LRN
+      dead-ends (LRN-6, LRN-7).
+
+  DEC-3:
+    v: 1
+    date: 2026-07-13
+    by: founder (shpin.p@diffco.us)
+    title: Enforce governance with teeth, not prose
+    statement: >-
+      Where a governance rule can be made deterministic, it must be: the
+      mandatory Architect Challenger at spec approval (DCX-13), the pre-commit
+      graph gate (DCX-14), the executable acceptance harness (DCX-15), and
+      lint-enforced HITL sign-off on product-altitude changes (DCX-16). Chosen
+      over lighter prose-only options at each fork. Authorizes the DCX-16
+      tooth and the SDLC protocol's enforcement posture.

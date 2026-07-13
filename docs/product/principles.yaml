@@ -18,6 +18,7 @@ intent: >-
 items:
   P-1:
     v: 1
+    origin: baseline
     title: We sell the process, never the leads
     statement: >-
       No promises of donation outcomes; the promise is professional, consistent
@@ -25,6 +26,7 @@ items:
 
   P-2:
     v: 1
+    origin: baseline
     title: Build on what already works
     statement: >-
       The org's existing channels teach the system the org's real voice; the
@@ -32,6 +34,7 @@ items:
 
   P-3:
     v: 1
+    origin: baseline
     title: Nothing hidden
     statement: >-
       The strategy is explicit and editable; autonomy is earned and always
@@ -39,6 +42,7 @@ items:
 
   P-4:
     v: 1
+    origin: baseline
     title: Real over synthetic
     statement: >-
       Org photos over generated images; the org's actual stories over generic
@@ -46,6 +50,7 @@ items:
 
   P-5:
     v: 1
+    origin: baseline
     title: A colleague, never software
     statement: >-
       Product-wide voice requirement: "I drafted next week's posts" — not
@@ -54,6 +59,7 @@ items:
 
   P-6:
     v: 1
+    origin: baseline
     title: The system moves first
     statement: >-
       It proposes; the founder disposes. No empty states that ask the founder
@@ -62,11 +68,13 @@ items:
 
   GR-1:
     v: 1
+    origin: baseline
     title: No outcome promises
     statement: Content never promises fundraising or program outcomes.
 
   GR-2:
     v: 1
+    origin: baseline
     title: No tax or legal advice
     statement: >-
       The product and its content never give legal or tax advice.
@@ -75,6 +83,7 @@ items:
 
   GR-3:
     v: 1
+    origin: baseline
     title: Sensitive-topic escalation
     statement: >-
       A sensitive-topic classifier forces human approval regardless of Trust
@@ -82,6 +91,7 @@ items:
 
   GR-4:
     v: 1
+    origin: baseline
     title: AI-visual policy
     statement: >-
       AI image generation ships disabled behind a feature flag (Q-3 governs
@@ -91,6 +101,7 @@ items:
 
   GR-5:
     v: 1
+    origin: baseline
     title: Mandatory citation of external content
     statement: >-
       Every external-content post carries a source citation and commentary
@@ -98,6 +109,7 @@ items:
 
   GR-6:
     v: 1
+    origin: baseline
     title: Official platform APIs and permitted automation only
     statement: >-
       Meta/X/Threads developer-policy compliance; no scraping-based or

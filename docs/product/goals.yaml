@@ -14,6 +14,7 @@ north-star: >-
 items:
   G-1:
     v: 1
+    origin: baseline
     title: Commercial proof
     statement: >-
       ≥1 nonprofit paying $199/mo within 90 days of dev start; 5 paying orgs
@@ -22,11 +23,13 @@ items:
 
   G-2:
     v: 1
+    origin: baseline
     title: Autonomy proof
     statement: ≥70% of drafts approved without edits by an org's week 8.
 
   G-3:
     v: 1
+    origin: baseline
     title: Effort proof
     statement: >-
       Median founder time in product <15 min/week after the first week (time
@@ -34,12 +37,14 @@ items:
 
   G-4:
     v: 1
+    origin: baseline
     title: Consistency proof
     statement: >-
       ≥80% of active orgs maintain an unbroken 4-week posting streak.
 
   G-5:
     v: 1
+    origin: baseline
     title: Activation
     statement: >-
       First approved post live within 48 hours of the org's first session.

@@ -12,6 +12,7 @@ intent: >-
 items:
   STR-1:
     v: 1
+    origin: baseline
     priority: P0
     title: The Strategy document
     statement: >-
@@ -23,6 +24,7 @@ items:
 
   STR-2:
     v: 1
+    origin: baseline
     priority: P0
     depends: [ONB-2, CHT-2]
     title: Auto-drafted, founder-owned
@@ -33,6 +35,7 @@ items:
 
   STR-3:
     v: 1
+    origin: baseline
     priority: P0
     flexibility: hard
     title: Enforcement
@@ -43,6 +46,7 @@ items:
 
   STR-4:
     v: 1
+    origin: baseline
     priority: P0
     flexibility: hard
     title: Two-layer guardrails

@@ -13,6 +13,7 @@ intent: >-
 items:
   APR-1:
     v: 1
+    origin: baseline
     priority: P0
     depends: [GEN-5]
     title: Inbox
@@ -24,6 +25,7 @@ items:
 
   APR-2:
     v: 1
+    origin: baseline
     priority: P0
     title: Founder-selected cadence
     statement: >-
@@ -33,6 +35,7 @@ items:
 
   APR-3:
     v: 1
+    origin: baseline
     priority: P0
     depends: [MEM-1]
     title: Learning loop
@@ -43,6 +46,7 @@ items:
 
   APR-4:
     v: 1
+    origin: baseline
     priority: P0
     title: Notifications
     statement: >-
@@ -51,6 +55,7 @@ items:
 
   APR-5:
     v: 1
+    origin: baseline
     priority: P0
     depends: [GEN-2, GEN-5, PUB-1]
     title: Manual composer
@@ -64,6 +69,7 @@ items:
 
   APR-6:
     v: 1
+    origin: baseline
     priority: P1
     title: Quiet accountability
     statement: >-

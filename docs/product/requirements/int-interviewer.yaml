@@ -12,6 +12,7 @@ intent: >-
 items:
   INT-1:
     v: 1
+    origin: baseline
     priority: P0
     title: The Interviewer skill
     statement: >-
@@ -23,6 +24,7 @@ items:
 
   INT-2:
     v: 1
+    origin: baseline
     priority: P0
     depends: [ONB-3, MEM-1, MEM-2]
     title: Interview mechanics
@@ -34,6 +36,7 @@ items:
 
   INT-3:
     v: 1
+    origin: baseline
     priority: P1
     title: Periodic curiosity
     statement: >-

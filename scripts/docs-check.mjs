@@ -2,9 +2,9 @@
 /**
  * docs-check — the documentation graph lint.
  *
- * Implements: DCX-1 v2, DCX-2 v5, DCX-3 v5, DCX-4 v5, DCX-5 v1, DCX-6 v1,
+ * Implements: DCX-1 v2, DCX-2 v5, DCX-3 v5, DCX-4 v6, DCX-5 v1, DCX-6 v1,
  * DCX-7 v2, DCX-8 v2, DCX-9 v1, DCX-10 v2, DCX-11 v2, DCX-12 v1, DCX-13 v3,
- * DCX-14 v2 (docs/specs/dcx-docs-check.yaml). DCX-15 lives in
+ * DCX-14 v2, DCX-16 v1 (docs/specs/dcx-docs-check.yaml). DCX-15 lives in
  * scripts/test-docs-check.mjs.
  * Parsing and graph construction live in scripts/lib/docs-graph.mjs (shared
  * with the Claude Code hooks).
@@ -68,7 +68,10 @@ for (const id of staleIds) {
 }
 
 // ---- DCX-4: schema validity by kind ---------------------------------------
-const REGISTER_KINDS = new Set(['requirements', 'goals', 'principles', 'assumptions', 'risks', 'open-questions', 'inconsistencies', 'learnings']);
+const REGISTER_KINDS = new Set(['requirements', 'goals', 'principles', 'assumptions', 'risks', 'open-questions', 'inconsistencies', 'learnings', 'decisions', 'constraints']);
+// Product-normative registers whose items require HITL provenance (DCX-16).
+const GOVERNED_KINDS = new Set(['requirements', 'goals', 'principles']);
+const CON_CATEGORIES = new Set(['compliance', 'deployment', 'usage', 'environment', 'integration', 'other']);
 const DOC_STATUS = new Set(['draft', 'approved', 'superseded']);
 const SPEC_STATUS = new Set(['draft', 'approved', 'implemented', 'superseded']);
 const PRIORITIES = new Set(['P0', 'P1', 'P2']);
@@ -178,9 +181,26 @@ for (const [id, d] of defs) {
     if (!['gotcha', 'dead-end', 'pattern'].includes(m.type)) at(MSG.itemNeedsLearningType(id));
     if (!Array.isArray(m.scope)) at(MSG.itemNeedsScope(id));
   }
+  if (d.kind === 'decisions' && (!m.date || !m.by)) at(MSG.itemNeedsDecisionMeta(id));
+  if (d.kind === 'constraints' && !CON_CATEGORIES.has(m.category)) at(MSG.itemNeedsCategory(id));
   if (m.flexibility && !['hard', 'preference'].includes(m.flexibility)) at(MSG.invalidFlexibility(id, m.flexibility));
-  for (const key of ['serves', 'depends']) {
+  if (m.origin && m.origin !== 'baseline') at(MSG.invalidOrigin(id, m.origin));
+  for (const key of ['serves', 'depends', 'binds', 'scope']) {
     if (m[key] && !Array.isArray(m[key])) at(MSG.itemFieldMustBeList(id, key));
+  }
+
+  // DCX-16: HITL sign-off provenance on product-normative items.
+  if (GOVERNED_KINDS.has(d.kind)) {
+    const hasBaseline = m.origin === 'baseline';
+    const hasDecision = typeof m['decided-by'] === 'string' && m['decided-by'];
+    if (!hasBaseline && !hasDecision) at(MSG.needsProvenance(id));
+    if (hasBaseline && hasDecision) at(MSG.provenanceNotBoth(id));
+    if (hasBaseline && Number(m.v) !== 1) at(MSG.baselineNotAtV1(id, m.v));
+    if (hasDecision) {
+      const dec = defs.get(m['decided-by']);
+      if (!dec) at(MSG.decidedByUndefined(id, m['decided-by']));
+      else if (dec.kind !== 'decisions') at(MSG.decidedByWrongKind(id, m['decided-by']));
+    }
   }
 }
 

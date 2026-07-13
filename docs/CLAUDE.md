@@ -37,6 +37,8 @@ graph TD
 | What ships when? | [product/roadmap.md](product/roadmap.md) | — |
 | What decisions are pending? | [product/open-questions.yaml](product/open-questions.yaml) | `Q-*` |
 | What contradictions were detected? | [product/inconsistencies.yaml](product/inconsistencies.yaml) | `INC-*` |
+| What did a human decide (HITL log)? | [product/decisions.yaml](product/decisions.yaml) | `DEC-*` |
+| What operational/compliance/deployment context binds us? | [product/constraints.yaml](product/constraints.yaml) | `CON-*` |
 | What has this project learned the hard way? | [learnings.yaml](learnings.yaml) | `LRN-*` |
 | What does each domain term mean? | [product/glossary.yaml](product/glossary.yaml) | — |
 | WHAT must each capability do? | [product/requirements/](product/requirements/) `*.yaml` | capability prefixes |
@@ -94,6 +96,8 @@ New prefixes are registered here **before** first use (`docs-check` rejects unre
 | `R` | Risks | product/risks.yaml |
 | `Q` | Open questions | product/open-questions.yaml |
 | `INC` | Inconsistencies | product/inconsistencies.yaml |
+| `DEC` | Human-in-the-loop decisions | product/decisions.yaml |
+| `CON` | Operational / compliance / deployment constraints | product/constraints.yaml |
 | `LRN` | Engineering learnings (gotchas, dead-ends, patterns) | learnings.yaml |
 | `ONB` | Lazy onboarding | product/requirements/onb-onboarding.yaml |
 | `MEM` | Org Memory | product/requirements/mem-org-memory.yaml |
@@ -118,9 +122,20 @@ New prefixes are registered here **before** first use (`docs-check` rejects unre
 
 [product/glossary.yaml](product/glossary.yaml) is the authoritative vocabulary. Never use one word for two concepts; when a term is overloaded, qualify it (`auth token`, not `token`). New domain concepts are added to the glossary in the same change that introduces them.
 
-## The change protocol
+## The SDLC protocol
 
-Each step is annotated with its enforcement mechanism: `[lint]` (docs-check errors), `[hook]` (Claude Code hooks), `[evidence]` (a lint-checked record must exist), or `[prose]` — **prose-only steps are acknowledged debt**: when one is violated in practice, the fix includes either a new check or an `LRN`/ADR record of why it stays prose.
+Governs how every request becomes a change. Three phases: **A — Intake** (evaluate the request against the docs *before* acting), **B — Execution** (make the change), **C — Escalation** (when something can't be built as specified, push back *up* the layers). Steps are annotated with their enforcement mechanism: `[lint]` (docs-check errors), `[hook]` (Claude Code hooks), `[evidence]` (a lint-checked record must exist), `[skill]` (the `/change-request` runnable procedure), or `[prose]` — **prose-only steps are acknowledged debt**: when one is violated in practice, the fix includes either a new check or an `LRN`/ADR record of why it stays prose.
+
+### Phase A — Intake (front door). Runs on every *substantive* request, before any edit. `[skill: /change-request | hook: intake reminder | prose]`
+
+- **A1 Classify** the request: *question* · *bug* · *new-requirement* · *change-to-existing* · *preference* · *technical-decision*. The class selects the path (a question is answered from docs; a bug enters triage B7; a preference is applied narrowly and, if a pattern emerges, proposed as a principle).
+- **A2 Evaluate against the docs first.** Load the governing layers — goals, principles/guardrails, scope, and the relevant requirements/specs by ID. **Form no proposal before this load.** (The CTX-2 hook resolves mentioned IDs; the intake hook reminds; the write-guard (CTX-5) blocks writing against unloaded contracts.)
+- **A3 Contradiction check → pushback.** Does the request conflict with a goal / principle / guardrail / scope boundary / existing requirement? If yes **and the user did not explicitly override it**, **STOP: surface the contradiction citing IDs and request an explicit decision (AskUserQuestion).** Precedence sets severity: a `GR` guardrail is near-immovable (needs a deliberate guardrail change); `P`/goal/scope/`flexibility: hard` requirement → mandatory HITL; a `flexibility: preference` item → the agent may propose a resolution. Record the contradiction as `INC-*` and its resolution as a `DEC-*`.
+- **A4 Gap check → ask, then store.** Is there enough information to design (compliance, deployment/environment, usage mode, integration facts, edge cases, NFRs)? Missing high-importance info → **ask the user, then store the answer** in its register: operational/compliance/deployment/usage facts → `CON-*`; external bets → `A-*`; product behavior → a requirement. Low-importance gaps → fill from a principle, note as an open `Q-*`, and flag the derivation `inferred`.
+- **A5 Flexibility check → proactive heads-up.** Does implementing require a one-way-door / flexibility-limiting technical decision (data-model shape, external lock-in, a public contract, the auth model), a brown-phase change (once there are production users/data), or something that forecloses a deferred/vision direction ([product/scope.md](product/scope.md))? → **proactively tell the user, propose an ADR, and get the decision** — do not wait to be asked, and do not quietly pick the convenient one-way door.
+- **A6 Proceed** to Phase B only once A2–A5 are clear.
+
+### Phase B — Execution. `[per-step annotations below]`
 
 1. `[lint: pins, cascades]` **Behavior change (new or modified):** edit the requirement/spec **first**. Semantic edit ⇒ `v` bump ⇒ spec status regresses to `draft` until re-approved. Spec + code + tests land in the same commit.
 2. `[lint + evidence]` **Design gate (spec approval prerequisites):** a spec may flip to `approved` only when **(a)** its `design-scope`/`constrained-by` satisfy DCX-11 — cross-cutting specs cite accepted ADRs and/or approved architecture docs; `design-scope: local` is an explicit, greppable claim, never an omission; **(b)** its `design` section is filled (DCX-12); and **(c)** the **Architect Challenger has been invoked**, its verbatim verdict stored as a challenge record, and the `challenge:` block points at it (DCX-13) — see the challenge policy in [specs/CLAUDE.md](specs/CLAUDE.md); a `fail` verdict keeps the spec in `draft` until findings are resolved and it is re-challenged.
@@ -135,9 +150,24 @@ Each step is annotated with its enforcement mechanism: `[lint]` (docs-check erro
 11. `[prose]` **Refactor with no behavior change:** no spec edit; update the affected module `CLAUDE.md` if structure moved.
 12. `[lint + hook: pre-commit]` **Every change ends with:** `node scripts/docs-check.mjs` green (plus typecheck and biome once code exists). The pre-commit hook enforces this (DCX-14) — a red graph cannot be committed; pre-push additionally runs the acceptance harness (DCX-15).
 
+### Phase C — Escalation (back door). When something cannot be built as specified, push back *up* the layers rather than diverging quietly. `[prose + lint: DCX-16 gates the top of the ladder]`
+
+- **The ladder:** code blocker → **spec** (spec gap / wrong spec — triage B7) → **design** (design gap → new or superseding ADR — B7) → **requirement** (the requirement itself is infeasible or contradicted by reality, e.g. an external API changed).
+- Record the blocker-vs-reality conflict as an `INC-*`; resolve it *downward* through Phase B (with cascade). Each rung is tried before climbing to the next — you escalate to the requirement level only when spec and design genuinely cannot absorb the blocker.
+- **A requirement-level change is never made autonomously** — it requires HITL confirmation recorded as a `DEC-*` (and DCX-16 enforces that the changed requirement item cites it). This closes the loop: reality can force a requirement to change, but only a human authorizes it.
+- Escalations that are **deferred or rejected** are retained so they are not silently re-raised: rejected → an `LRN` dead-end; deferred → an open `Q-*`.
+
+### HITL policy
+
+Who decides what. Right-sized for a two-founder product; the decisive artifact is the `DEC-*` log.
+
+- **Agent-autonomous (no ask):** reversible changes within already-approved scope / requirements / specs; filling low-importance gaps from a principle (flagged `inferred`); narrow preference-level redirects; anything a challenge or lint already gates.
+- **Must escalate to the user (AskUserQuestion mandatory), recorded as a `DEC-*`:** contradicting a guardrail / principle / goal / scope / `flexibility: hard` requirement (A3); any requirement **semantic change or removal** (Phase C); a flexibility-limiting / one-way-door decision (A5); a high-importance unspecified aspect (A4); any genuine business or product call.
+- A `DEC-*` records the decision (`statement`), `by` (who), `date` (when), and what it binds/overrides/authorizes (`binds:`, and links to the `INC` it resolves or the requirement/ADR it authorizes). `DCX-16` gives the citation teeth: a requirement/goal/principle bumped to v≥2, or added with no provenance marker, fails the lint unless it carries `decided-by: DEC-x`; the v1 founding baseline carries `origin: baseline` instead. Note the residual (LRN-13 class): `origin: baseline` is a conscious, greppable, diff-reviewable claim the lint can't verify against the true founding set — a *new* item dishonestly tagged baseline passes the lint and is caught only in review, exactly like a dishonest `design-scope: local`. Teeth on the common cases; judgment on that one.
+
 ## Enforcement stages
 
-- **Stage 0 (live):** this protocol + `docs-check` + the **pre-commit/pre-push git hooks** (DCX-14) + **Claude Code hooks** ([specs/ctx-context-hooks.yaml](specs/ctx-context-hooks.yaml)): every docs edit is linted at the moment it happens (CTX-1); IDs mentioned in prompts resolve into context automatically (CTX-2, bounded by CTX-3); no Edit/Write tool call touches a contract the session never loaded (CTX-4, CTX-5); and the **Architect Challenger is mandatory at every spec approval** (DCX-13).
+- **Stage 0 (live):** this protocol + `docs-check` + the **pre-commit/pre-push git hooks** (DCX-14) + **Claude Code hooks** ([specs/ctx-context-hooks.yaml](specs/ctx-context-hooks.yaml)): every docs edit is linted at the moment it happens (CTX-1); IDs mentioned in prompts resolve into context automatically (CTX-2, bounded by CTX-3); no Edit/Write tool call touches a contract the session never loaded (CTX-4, CTX-5); the **intake protocol is made ambient** each session (CTX-6) with the `/change-request` skill as its runnable form; **HITL sign-off is structural** — a product-altitude change without a `DEC-*` fails the lint (DCX-16); and the **Architect Challenger is mandatory at every spec approval** (DCX-13).
 - **Stage 1 (repo skeleton):** `docs-check` in CI; a spec may claim `implemented` only with ≥1 code citation and ≥1 test citation of its IDs.
 - **Stage 2:** stale-pin detection extends over `src/` code headers (`@implements STR-3 v1`) and test titles — drift cannot pass CI.
 - **Stage 3 (optional):** on spec diffs after approval, an adversarial re-review of the edited file against everything referencing its IDs.
@@ -148,5 +178,7 @@ Each step is annotated with its enforcement mechanism: `[lint]` (docs-check erro
 - [learnings.yaml](learnings.yaml) — engineering learnings: gotchas, dead-ends, patterns (`LRN-*`)
 - [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts; [specs/challenges/](specs/challenges/) holds challenge evidence
 - [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval, DCX-11)
+- [product/decisions.yaml](product/decisions.yaml) — HITL decision log (`DEC-*`); [product/constraints.yaml](product/constraints.yaml) — operational/compliance/deployment constraints (`CON-*`)
 - [adr/](adr/) — decision journal (markdown)
-- `../scripts/` — `docs-check.mjs` (lint), `lib/docs-graph.mjs` (shared parser), `hooks/` (Claude Code hooks)
+- `../scripts/` — `docs-check.mjs` (lint), `lib/docs-graph.mjs` (shared parser), `hooks/` (Claude Code hooks), `test-docs-check.mjs` (acceptance)
+- `../.claude/skills/change-request/` — the runnable intake procedure (Phase A)

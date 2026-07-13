@@ -13,6 +13,7 @@ intent: >-
 items:
   ONB-1:
     v: 1
+    origin: baseline
     priority: P0
     title: Zero-homework signup
     statement: >-
@@ -22,6 +23,7 @@ items:
 
   ONB-2:
     v: 1
+    origin: baseline
     priority: P0
     title: Source ingestion
     statement: >-
@@ -33,6 +35,7 @@ items:
 
   ONB-3:
     v: 1
+    origin: baseline
     priority: P0
     title: Gap-driven flow
     statement: >-
@@ -42,6 +45,7 @@ items:
 
   ONB-4:
     v: 1
+    origin: baseline
     priority: P0
     title: Channel connect
     statement: >-
@@ -50,6 +54,7 @@ items:
 
   ONB-5:
     v: 1
+    origin: baseline
     priority: P0
     title: The "here's what I know" review
     statement: >-
@@ -58,6 +63,7 @@ items:
 
   ONB-6:
     v: 1
+    origin: baseline
     priority: P0
     serves: [G-5]
     title: First proof, lazily

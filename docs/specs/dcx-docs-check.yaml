@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
-  record: docs/specs/challenges/dcx-docs-check-2026-07-13-r8.md
+  record: docs/specs/challenges/dcx-docs-check-2026-07-13-r9.md
   summary: >-
     Seven rounds total; full history in docs/specs/challenges/. Rounds 1-4
     failed on real highs, each fixed and mutation-verified before
@@ -28,7 +28,12 @@ challenge:
     passed: extraction verified byte-identical, subject pinning proven by
     wrong-subject mutation, drift immunity and behavior teeth demonstrated;
     two one-line lows (dead template, missing file anchor) applied in this
-    recording change.
+    recording change. Round 9 (delta, the SDLC-governance increment:
+    DCX-4 v6 new decisions/constraints kinds + DCX-16 HITL sign-off tooth)
+    passed: gate-bypass hunt confirmed DCX-16 closes the quietly-change and
+    quietly-add-with-no-marker paths, with the origin:baseline residual
+    (LRN-13 class) reframed honestly; two one-line mediums (overclaim text,
+    two missing acceptance cases) fixed in-change; harness 43/43.
 implements: []
 governed-by: []
 depends-on: []
@@ -95,28 +100,31 @@ items:
       schema (DCX-4) and the DCX-13 cross-check. No other exemption exists.
 
   DCX-4:
-    v: 5
+    v: 6
     title: Schema validity
     rule: >-
       YAML docs are validated by kind. Registers (kind requirements / goals /
       principles / assumptions / risks / open-questions / inconsistencies /
-      learnings) need prefix, title, legal status, and an items map;
-      requirements additionally need a serves list. Items need a numeric v
-      and a statement (or rule); requirement items need priority P0|P1|P2;
-      open-questions and inconsistencies items need status open|resolved;
-      learnings items need type gotcha|dead-end|pattern and a scope list;
-      flexibility, when present, is hard|preference; serves/depends, when
-      present, are lists. Specs (kind spec) need legal status (draft |
-      approved | implemented | superseded) and an implements list; depends-on
-      prefixes must be registered. Architecture docs need title and status in
-      sketch | approved | superseded. Glossary docs (kind glossary) need a
-      terms map. Markdown files of kind challenge-record need spec, round,
-      date, and verdict pass|fail in frontmatter. An approved: block, when
-      present on any doc, needs date and by. A YAML doc with an unknown kind
-      is an error. Other markdown frontmatter (ADRs, narrative docs) is
-      parsed for metadata but not schema-validated. YAML-subset parse errors
-      are errors — including duplicate keys at the same level, which plain
-      YAML would silently last-win.
+      learnings / decisions / constraints) need prefix, title, legal status,
+      and an items map; requirements additionally need a serves list. Items
+      need a numeric v and a statement (or rule); requirement items need
+      priority P0|P1|P2; open-questions and inconsistencies items need status
+      open|resolved; learnings items need type gotcha|dead-end|pattern and a
+      scope list; decisions items need date and by; constraints items need a
+      category (compliance|deployment|usage|environment|integration|other);
+      flexibility, when present, is hard|preference; origin, when present, is
+      baseline; serves/depends, when present, are lists. Specs (kind spec)
+      need legal status (draft | approved | implemented | superseded) and an
+      implements list; depends-on prefixes must be registered. Architecture
+      docs need title and status in sketch | approved | superseded. Glossary
+      docs (kind glossary) need a terms map. Markdown files of kind
+      challenge-record need spec, round, date, and verdict pass|fail in
+      frontmatter. An approved: block, when present on any doc, needs date and
+      by. A YAML doc with an unknown kind is an error. Other markdown
+      frontmatter (ADRs, narrative docs) is parsed for metadata but not
+      schema-validated. YAML-subset parse errors are errors — including
+      duplicate keys at the same level, which plain YAML would silently
+      last-win.
 
   DCX-5:
     v: 1
@@ -243,6 +251,31 @@ items:
       core.hooksPath, and --no-verify always bypasses locally); Stage 1 CI
       is the authoritative backstop.
 
+  DCX-16:
+    v: 1
+    title: HITL sign-off on product-altitude changes
+    rule: >-
+      Every item in a product-normative register (kind requirements, goals,
+      or principles) must declare its provenance: exactly one of
+      origin: baseline (the founding PRD-derived baseline — valid only at
+      v: 1; a changed item cannot claim to be untouched) or
+      decided-by: DEC-x (a defined decision authorized it; declaring both is
+      an error). An item at v>=2, or a v: 1 item without origin: baseline,
+      that has no valid decided-by is an error; a decided-by must reference a
+      defined DEC item (a wrong-kind target — INC/ADR/CON/etc. — is an error,
+      the LRN-4 provenance-kind guard); origin accepts only the value
+      baseline. This gives the HITL policy real teeth on the common cases: a
+      changed item (v>=2) and a no-marker addition both fail the lint, so the
+      ordinary "quietly weaken a requirement" and "quietly add one" paths are
+      closed. Residual, explicitly acknowledged (LRN-13 class): origin:
+      baseline is a self-declarable claim the lint cannot verify against the
+      true founding set without git history or a maintained manifest (LRN-6,
+      rejected) — so a brand-new item dishonestly tagged origin: baseline
+      still passes, exactly as a dishonest design-scope: local passes DCX-11.
+      The compensating control is the same conscious, greppable,
+      diff-reviewable claim (a new item claiming baseline is visibly wrong in
+      review), not an absolute structural guarantee.
+
 design: >-
   Two zero-dependency Node modules: scripts/lib/docs-graph.mjs (strict
   YAML-subset parser + graph builder, shared with the hooks so lint and
@@ -276,10 +309,15 @@ acceptance: >-
   entry citing a sketch architecture doc, a non-architecture path, a
   non-accepted ADR, or a phantom ADR not defined by filename (DCX-11), an
   approved spec missing its design section (DCX-12) or challenge block
-  (DCX-13), and a missing pre-commit hook (DCX-14). A spec with a non-empty
-  open-questions list appears in the registers report (DCX-8); an
-  unimplemented P0 appears in the coverage report (DCX-6); an item without
-  its own serves carries the file-level serves in --json (DCX-10).
+  (DCX-13), a missing pre-commit hook (DCX-14), a requirement/goal/principle
+  item lacking both origin: baseline and decided-by, an item declaring both,
+  an origin: baseline claim at v>=2, a non-baseline origin value, a
+  decided-by citing an undefined DEC, or a decided-by citing a defined but
+  wrong-kind id (DCX-16), a decisions item missing date/by or a constraints
+  item with an illegal category (DCX-4). A spec with a non-empty open-questions list appears in
+  the registers report (DCX-8); an unimplemented P0 appears in the coverage
+  report (DCX-6); an item without its own serves carries the file-level
+  serves in --json (DCX-10).
 
 defaults-and-assumptions: >-
   Stage 1+ enforcement (code citations in src/, test-title scanning) is out of

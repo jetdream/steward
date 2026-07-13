@@ -12,6 +12,7 @@ intent: >-
 items:
   STW-1:
     v: 1
+    origin: baseline
     priority: P0
     depends: [GEN-1]
     title: First-class overlay categories
@@ -21,6 +22,7 @@ items:
 
   STW-2:
     v: 1
+    origin: baseline
     priority: P1
     depends: [PRO-1]
     title: Milestone recaps

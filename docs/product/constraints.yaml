@@ -1,0 +1,46 @@
+kind: constraints
+prefix: CON
+title: Operational & Compliance Constraints
+status: approved
+
+intent: >-
+  Operational, compliance, deployment, usage-mode, and integration context
+  that bounds design but is neither a product requirement (WHAT the product
+  does) nor an assumption-bet (A-*, an external fact we depend on). Captured
+  from the user during intake (docs/CLAUDE.md A4) so it is never lost and
+  informs future features. Each item has a category
+  (compliance | deployment | usage | environment | integration | other) and,
+  where it tightens a guardrail or drives an NFR, links to it.
+
+items:
+  CON-1:
+    v: 1
+    category: compliance
+    title: US 501(c)(3) nonprofits only; no third-party PII
+    statement: >-
+      Customers are US-registered 501(c)(3) nonprofits exclusively (see
+      scope.md non-goals). No third-party PII is stored — the product reads
+      only public web/social presence with signup consent (A-5), and stores
+      no engagement-derived personal data this release. Tightens GR-2 (no
+      legal/tax advice) and the privacy posture in
+      architecture/security-privacy.yaml.
+
+  CON-2:
+    v: 1
+    category: integration
+    title: Official platform APIs only, per developer policy
+    statement: >-
+      Publishing uses only official Meta / X / Threads APIs under their
+      developer policies (GR-6); no scraping-based or policy-violating paths.
+      Meta app review + business verification gate cohort-1 activation (A-1).
+
+  CON-3:
+    v: 1
+    category: deployment
+    title: Deployment target not yet specified
+    statement: >-
+      Hosting / environment / region / data-residency requirements have not
+      been provided. Recorded as a known gap (open Q for the design pass); to
+      be filled during intake before architecture decisions that depend on it
+      (data residency, backup, uptime SLOs) are made. Placeholder so the gap
+      is explicit, not silently assumed.

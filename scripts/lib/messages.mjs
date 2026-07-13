@@ -58,7 +58,10 @@ export const MSG = {
   itemNeedsStatus: (id) => `DCX-4: ${id} needs status open|resolved`,
   itemNeedsLearningType: (id) => `DCX-4: ${id} needs type gotcha|dead-end|pattern`,
   itemNeedsScope: (id) => `DCX-4: ${id} needs a scope list`,
+  itemNeedsDecisionMeta: (id) => `DCX-4: ${id} needs date and by`,
+  itemNeedsCategory: (id) => `DCX-4: ${id} needs a category (compliance|deployment|usage|environment|integration|other)`,
   invalidFlexibility: (id, value) => `DCX-4: ${id} has invalid flexibility "${value}"`,
+  invalidOrigin: (id, value) => `DCX-4: ${id} has invalid origin "${value}" (only "baseline")`,
   itemFieldMustBeList: (id, field) => `DCX-4: ${id} field ${field} must be a list`,
   recordOutsideChallenges: () => 'DCX-4: challenge-record outside docs/specs/challenges/ — the reference exemption is bound to that directory',
   recordMissingField: (field) => `DCX-4: challenge-record missing ${field}`,
@@ -84,6 +87,13 @@ export const MSG = {
   recordWrongSpec: (record, named, actual) => `DCX-13: ${record} names spec "${named}", not ${actual}`,
   recordVerdictMismatch: (block, record) => `DCX-13: verdict mismatch — block says "${block}", record says "${record}"`,
   recordEvidenceDisagrees: (record, verdict) => `DCX-13: ${record} body has no "VERDICT: ${verdict}" line — evidence disagrees with the wrapper`,
+
+  // -- DCX-16: HITL sign-off on product-altitude changes ----------------------------
+  needsProvenance: (id) => `DCX-16: ${id} must declare provenance — origin: baseline (v1 only) or decided-by: DEC-x`,
+  provenanceNotBoth: (id) => `DCX-16: ${id} declares both origin: baseline and decided-by — exactly one is allowed`,
+  baselineNotAtV1: (id, v) => `DCX-16: ${id} claims origin: baseline at v${v} — a changed item cannot claim untouched baseline`,
+  decidedByUndefined: (id, dec) => `DCX-16: ${id} decided-by cites undefined decision ${dec}`,
+  decidedByWrongKind: (id, dec) => `DCX-16: ${id} decided-by ${dec} is not a decision record`,
 
   // -- DCX-7 / DCX-14: hygiene + repo gate ------------------------------------------
   missingFolderClaude: () => 'DCX-7: missing CLAUDE.md in this folder',
