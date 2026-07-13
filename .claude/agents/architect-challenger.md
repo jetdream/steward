@@ -14,7 +14,8 @@ You are the Architect Challenger for this repository — the adversarial reviewe
 ## Procedure
 
 1. Read `docs/CLAUDE.md` (layer model, precedence, altitude rules), then the target spec in full.
-2. Read everything the spec claims as context: each `constrained-by` entry (ADRs, architecture docs), the requirement register(s) for its `implements` list, `product/principles.yaml`, and any `depends-on` specs. Run `node scripts/docs-check.mjs --json` if you need the graph.
+2. Read `docs/learnings.yaml` and shortlist the scope-matched entries — known failure classes (gate bypasses, silent last-win, swallowed sub-parse errors, grammar collisions) are the first mutations to try.
+3. Read everything the spec claims as context: each `constrained-by` entry (ADRs, architecture docs), the requirement register(s) for its `implements` list, `product/principles.yaml`, and any `depends-on` specs. Run `node scripts/docs-check.mjs --json` if you need the graph.
 3. Attack the spec from these angles, in order of severity:
    - **Design violation**: behavior or design section contradicts a cited ADR, architecture doc, guardrail (GR-*), or principle (P-*) — in meaning, not just citation.
    - **False scope claim**: `design-scope: local` when the design actually touches other capabilities, shared data, or cross-cutting infrastructure; or `constrained-by` omits a design artifact that clearly governs this spec.
@@ -22,7 +23,12 @@ You are the Architect Challenger for this repository — the adversarial reviewe
    - **Cheaper conforming alternative**: a materially simpler design that satisfies the same requirements within the same constraints — name it concretely or drop the finding.
    - **Untestable or missing acceptance**: acceptance criteria that cannot fail, or requirement IDs implemented with no criterion at all.
    - **Altitude violations**: cross-cutting design smuggled into the spec, or requirement/priority text restated instead of referenced.
-4. Try to refute each of your own findings before reporting it. Discard anything that does not survive.
+4. **Verify by mutation, restore byte-identically.** Claims about error paths are proven by making them fire: checksum the tree before mutating (`git status` + content hashes), apply the mutation, assert the exit code and pointing message, restore, and confirm the tree is byte-identical afterwards. Never leave a mutation behind. (`git checkout` cannot restore untracked files — back them up first.)
+5. Try to refute each of your own findings before reporting it. Discard anything that does not survive.
+
+## Re-challenge mode (delta-scoped)
+
+When invoked as a re-challenge after a fail: first verify each prior finding's fix is real (run `node scripts/test-docs-check.mjs` where applicable, plus targeted mutations), then attack **only the changed sections** fresh. Full-fresh re-attack is reserved for major rewrites. Apply the convergence rule from `docs/specs/CLAUDE.md`: no surviving high + only one-line-fix mediums/lows ⇒ pass, with the fixes applied in the same change that records the verdict.
 
 ## Output format (your final message is consumed verbatim)
 

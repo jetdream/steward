@@ -1,0 +1,22 @@
+---
+kind: challenge-record
+spec: docs/specs/dcx-docs-check.yaml
+round: 2
+date: 2026-07-13
+verdict: fail
+by: architect-challenger (via general-purpose agent)
+---
+
+# Verbatim verdict
+
+VERDICT: fail
+SPEC: /home/coder/project/docs/specs/dcx-docs-check.yaml
+FINDINGS:
+- [severity: high] DCX-1 v2 ("Any ID defined more than once is an error") is not enforced for duplicates within the same file — verified empirically: adding a second `DCX-6:` block to the spec's own `items:` map produced 0 errors and exit 0, with the duplicate (v: 9) silently replacing the original definition. Root cause: `parseMap` in /home/coder/project/scripts/lib/docs-graph.mjs (`map[key] = ...`) last-wins on duplicate keys, so `buildGraph` never sees the first definition and the `defs.has` duplicate check (which prior fix #5 correctly routes ADR filenames through — cross-file and ADR duplicates do error, verified) can never fire. This survives scrutiny because same-file copy-paste is the most likely duplication mode, and silent key collapse is precisely the YAML failure mode the spec's edge-cases section claims the strict subset turns into "loud parse errors". Fix: make `parseMap` error on any duplicate key at the same level (or minimally on duplicate `items:` keys), so DCX-1 holds regardless of where the duplicate lives.
+- [severity: medium] Implementation over-applies DCX-3 v2's sole exception ("an item's own key line"): the `keyDef` regex in docs-graph.mjs excludes any bare `ID:` line from the reference graph, including `behavior:` map keys, which specs/CLAUDE.md and TEMPLATE.yaml define as references. Verified: a `behavior: MEM-1:` key does not appear in the `--json` references array (DCX-9 calls this "the canonical machine registry") and therefore would be missing from DCX-5 cascade site lists ("every file and line citing the bumped ID"). Not high because resolution is separately enforced (the dedicated behavior-key check caught a dangling `ZZZ-9:` key, verified) and the citing file still surfaces in cascades via its `implements` line — but the first capability spec written from TEMPLATE.yaml will produce incomplete cascades. Fix: exclude a bare key line only when it is that ID's actual definition site (compare against `defs`), or restrict the exclusion to `items:` map context.
+- [severity: medium] The extended acceptance section (prior fix #2) still leaves DCX-2, DCX-6, DCX-7, and DCX-10 with no acceptance criterion at all. All four are cheaply testable (I exercised DCX-2 and DCX-7 error paths successfully), and a silently regressed lint check is exactly the "wrong would be invisible in review" case the altitude rule says must carry a criterion. Non-blocking alone, but the fail gives a free ride: add one clause each (definition outside owning file / doubly-claimed prefix → exit 1; missing folder CLAUDE.md → exit 1; an unimplemented P0 appears in the coverage report; an item without its own serves carries the file-level serves in --json).
+- [severity: low] docs/specs/CLAUDE.md's index table lists both dcx-docs-check.yaml and ctx-context-hooks.yaml as "approved" while both files say `status: draft` — duplicated status now desynced, violating single-source-of-truth, and it falsely asserts this spec already passed its gate. Non-blocking (router hygiene, not spec design). Fix: drop the status column or sync it.
+- [severity: low] The coverage report's stderr label "P0/P1 without an approved spec" misstates DCX-6 semantics — both the rule and the code count any non-superseded spec (draft included) as coverage. Behavior matches spec; only the message misleads. Fix the string in docs-check.mjs.
+- [severity: low] docs-check.mjs validates `kind: glossary` (terms map required) and rejects unknown kinds; DCX-4 v3 specifies neither. Fail-loud direction, so low — but under the spec-first constitution an agent regenerating the tool from the spec would drop both. Fix: add glossary and unknown-kind rejection to DCX-4 and bump it.
+
+Re-challenge verification: all six prior fixes are real — DCX-8 aggregation works on stderr and as `openQuestions` in --json (verified by mutation), acceptance covers DCX-8/11–14, DCX-14 v2 is honestly scoped and its presence check fires on hook deletion (verified), docs/CLAUDE.md's folder map matches design-pass semantics, ADR duplicates route through the shared check (verified), and --json carries the `files` map. The fail rests solely on the DCX-1 same-file gap; DCX-2/3/4/5/7/9/11/12/13 error paths, cascade output, stale pins, and the approval gates were all attacked by mutation and held.

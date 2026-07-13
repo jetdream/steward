@@ -6,6 +6,7 @@ challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
+  record: docs/specs/challenges/ctx-context-hooks-2026-07-13-r2.md
   summary: >-
     First run failed with two high findings (CTX-2 rule contradicted its own
     implementation; approved status without a challenge record) plus one

@@ -19,7 +19,9 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, relative, basename } from 'node:path';
 
-export const ROOT = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
+// DOCS_CHECK_ROOT lets the acceptance harness (DCX-15) point the whole graph
+// at a mutated copy of the tree; unset in normal use.
+export const ROOT = process.env.DOCS_CHECK_ROOT ?? dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 export const DOCS = join(ROOT, 'docs');
 
 /** ID grammar per docs/CLAUDE.md. */
@@ -197,7 +199,14 @@ export function buildGraph() {
   // References: ID tokens anywhere in any file. Only an ID's actual
   // DEFINITION site is excluded — a bare `ID:` key elsewhere (e.g. a spec's
   // behavior map) is a genuine reference and must appear in cascades.
-  for (const [file, { lines }] of files) {
+  // Challenge records are exempt from reference resolution (DCX-3): they
+  // quote adversarial attack payloads verbatim, which by nature cite
+  // deliberately invalid IDs. The exemption is bound to their home directory
+  // — a self-declared challenge-record elsewhere gets linted normally (and
+  // errors on kind placement in docs-check), so it cannot become an
+  // unlinted channel.
+  for (const [file, { lines, fm, rel }] of files) {
+    if (fm?.kind === 'challenge-record' && rel.startsWith('docs/specs/challenges/')) continue;
     lines.forEach((text, i) => {
       const keyDef = text.match(/^\s*([A-Z]{1,4}-\d+):\s*$/);
       for (const m of text.matchAll(REF_RE)) {

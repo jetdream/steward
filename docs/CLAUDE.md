@@ -37,6 +37,7 @@ graph TD
 | What ships when? | [product/roadmap.md](product/roadmap.md) | — |
 | What decisions are pending? | [product/open-questions.yaml](product/open-questions.yaml) | `Q-*` |
 | What contradictions were detected? | [product/inconsistencies.yaml](product/inconsistencies.yaml) | `INC-*` |
+| What has this project learned the hard way? | [learnings.yaml](learnings.yaml) | `LRN-*` |
 | What does each domain term mean? | [product/glossary.yaml](product/glossary.yaml) | — |
 | WHAT must each capability do? | [product/requirements/](product/requirements/) `*.yaml` | capability prefixes |
 | EXACTLY how must it behave? | [specs/](specs/) `*.yaml` | `behavior:` keyed by requirement IDs |
@@ -93,6 +94,7 @@ New prefixes are registered here **before** first use (`docs-check` rejects unre
 | `R` | Risks | product/risks.yaml |
 | `Q` | Open questions | product/open-questions.yaml |
 | `INC` | Inconsistencies | product/inconsistencies.yaml |
+| `LRN` | Engineering learnings (gotchas, dead-ends, patterns) | learnings.yaml |
 | `ONB` | Lazy onboarding | product/requirements/onb-onboarding.yaml |
 | `MEM` | Org Memory | product/requirements/mem-org-memory.yaml |
 | `CHT` | Agentic chat | product/requirements/cht-agentic-chat.yaml |
@@ -118,17 +120,20 @@ New prefixes are registered here **before** first use (`docs-check` rejects unre
 
 ## The change protocol
 
-1. **Behavior change (new or modified):** edit the requirement/spec **first**. Semantic edit ⇒ `v` bump ⇒ spec status regresses to `draft` until re-approved. Spec + code + tests land in the same commit.
-2. **Design gate (spec approval prerequisites, lint-enforced):** a spec may flip to `approved` only when **(a)** its `design-scope`/`constrained-by` satisfy DCX-11 — cross-cutting specs cite accepted ADRs and/or approved architecture docs; `design-scope: local` is an explicit, greppable claim, never an omission; **(b)** its `design` section is filled (DCX-12); and **(c)** the **Architect Challenger has been invoked and its verdict recorded** (DCX-13) — run the `architect-challenger` agent ([.claude/agents/architect-challenger.md](../.claude/agents/architect-challenger.md)) on the spec and write the `challenge:` block; a `fail` verdict keeps the spec in `draft` until findings are resolved and it is re-challenged.
-3. **Design altitude rule:** a design choice affecting more than one capability is an **ADR + architecture doc** entry; a choice local to one capability lives in that spec's `design` section, derived from (and citing) the cross-cutting layer.
-4. **Cascade analysis:** after a version bump, `docs-check` lists every citing site; each must be revisited (updated or consciously re-pinned). Superseding an accepted ADR cascades the same way: every spec citing it goes red (DCX-11) until re-pointed.
-5. **Contradiction check:** before writing, load the target file's `depends-on` set, every file referencing the edited IDs (one grep), applicable principles, and open `INC-*` entries touching those IDs. A contradiction you cannot resolve in this change becomes a new `INC-*` entry — contradictions are never silently dropped.
-6. **New technical decision with alternatives:** write an ADR. Never overturn an `accepted` ADR silently — supersede it. A `rejected` ADR is a binding constraint; do not re-propose without new information.
-7. **Bug triage — fix at the layer that failed:** every bug is a *spec gap* (amend spec, then code), a *spec violation* (fix code, cite spec), a *wrong spec* (supersede via this protocol), or a **design gap** — implementation legitimately cannot conform to the cited design; route it upstream to a new or superseding ADR, never let the spec quietly diverge from architecture.
-8. **Unspecified case hit during implementation:** derive the answer from a principle (record the derivation in a code comment citing `P-x`), or raise a spec amendment. Never invent silently.
-9. **Altitude rule:** spec an item only if a reasonable implementation could plausibly get it wrong. If any reasonable implementation is acceptable, cite the governing principle instead of enumerating cases. If being wrong would be invisible in review, spec it with an acceptance criterion. Priorities live only on requirements.
-10. **Refactor with no behavior change:** no spec edit; update the affected module `CLAUDE.md` if structure moved.
-11. **Every change ends with:** `node scripts/docs-check.mjs` green (plus typecheck and biome once code exists). The pre-commit hook enforces this (DCX-14) — a red graph cannot be committed.
+Each step is annotated with its enforcement mechanism: `[lint]` (docs-check errors), `[hook]` (Claude Code hooks), `[evidence]` (a lint-checked record must exist), or `[prose]` — **prose-only steps are acknowledged debt**: when one is violated in practice, the fix includes either a new check or an `LRN`/ADR record of why it stays prose.
+
+1. `[lint: pins, cascades]` **Behavior change (new or modified):** edit the requirement/spec **first**. Semantic edit ⇒ `v` bump ⇒ spec status regresses to `draft` until re-approved. Spec + code + tests land in the same commit.
+2. `[lint + evidence]` **Design gate (spec approval prerequisites):** a spec may flip to `approved` only when **(a)** its `design-scope`/`constrained-by` satisfy DCX-11 — cross-cutting specs cite accepted ADRs and/or approved architecture docs; `design-scope: local` is an explicit, greppable claim, never an omission; **(b)** its `design` section is filled (DCX-12); and **(c)** the **Architect Challenger has been invoked**, its verbatim verdict stored as a challenge record, and the `challenge:` block points at it (DCX-13) — see the challenge policy in [specs/CLAUDE.md](specs/CLAUDE.md); a `fail` verdict keeps the spec in `draft` until findings are resolved and it is re-challenged.
+3. `[prose]` **Design altitude rule:** a design choice affecting more than one capability is an **ADR + architecture doc** entry; a choice local to one capability lives in that spec's `design` section, derived from (and citing) the cross-cutting layer.
+4. `[lint: stale pins, ADR statuses]` **Cascade analysis:** after a version bump, `docs-check` lists every citing site; each must be revisited (updated or consciously re-pinned). Superseding an accepted ADR cascades the same way: every spec citing it goes red (DCX-11) until re-pointed.
+5. `[hook: CTX-5 write-guard | prose beyond it]` **Contradiction check:** before writing, load the target file's `depends-on` set, every file referencing the edited IDs (one grep), applicable principles, and open `INC-*` entries touching those IDs. A contradiction you cannot resolve in this change becomes a new `INC-*` entry — contradictions are never silently dropped.
+6. `[lint: statuses | prose: judgment]` **New technical decision with alternatives:** write an ADR. Never overturn an `accepted` ADR silently — supersede it. A `rejected` ADR is a binding constraint; do not re-propose without new information.
+7. `[prose]` **Bug triage — fix at the layer that failed:** every bug is a *spec gap* (amend spec, then code), a *spec violation* (fix code, cite spec), a *wrong spec* (supersede via this protocol), or a **design gap** — implementation legitimately cannot conform to the cited design; route it upstream to a new or superseding ADR, never let the spec quietly diverge from architecture.
+8. `[prose]` **Unspecified case hit during implementation:** derive the answer from a principle (record the derivation in a code comment citing `P-x`), or raise a spec amendment. Never invent silently.
+9. `[prose]` **Altitude rule:** spec an item only if a reasonable implementation could plausibly get it wrong. If any reasonable implementation is acceptable, cite the governing principle instead of enumerating cases. If being wrong would be invisible in review, spec it with an acceptance criterion. Priorities live only on requirements.
+10. `[prose]` **Learning deposit:** any multi-round fix loop, reverted approach, or diagnosed tooling bug records its transferable lesson as an `LRN-*` entry in [learnings.yaml](learnings.yaml) **in the same commit** (type: gotcha / dead-end / pattern, scope-tagged, incident-sourced). Module-local traps go to the module `CLAUDE.md` Gotchas section instead. Dead-ends are binding like rejected ADRs: not re-proposed without new information.
+11. `[prose]` **Refactor with no behavior change:** no spec edit; update the affected module `CLAUDE.md` if structure moved.
+12. `[lint + hook: pre-commit]` **Every change ends with:** `node scripts/docs-check.mjs` green (plus typecheck and biome once code exists). The pre-commit hook enforces this (DCX-14) — a red graph cannot be committed; pre-push additionally runs the acceptance harness (DCX-15).
 
 ## Enforcement stages
 
@@ -140,7 +145,8 @@ New prefixes are registered here **before** first use (`docs-check` rejects unre
 ## Folder map
 
 - [product/](product/) — business truth: vision, goals, principles, scope, requirements
-- [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts
+- [learnings.yaml](learnings.yaml) — engineering learnings: gotchas, dead-ends, patterns (`LRN-*`)
+- [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts; [specs/challenges/](specs/challenges/) holds challenge evidence
 - [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval, DCX-11)
 - [adr/](adr/) — decision journal (markdown)
 - `../scripts/` — `docs-check.mjs` (lint), `lib/docs-graph.mjs` (shared parser), `hooks/` (Claude Code hooks)

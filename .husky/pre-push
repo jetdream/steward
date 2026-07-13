@@ -1,3 +1,4 @@
-# Full gate before publishing (DCX-14). Typecheck + biome join here with the
-# week-1 skeleton.
+# Full gate before publishing (DCX-14, DCX-15). Typecheck + biome join here
+# with the week-1 skeleton.
 node scripts/docs-check.mjs
+node scripts/test-docs-check.mjs

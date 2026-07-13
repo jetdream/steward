@@ -1,33 +1,35 @@
 kind: spec
 prefix: DCX
 title: docs-check — Documentation Graph Lint
-status: approved
+status: implemented
 challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
+  record: docs/specs/challenges/dcx-docs-check-2026-07-13-r7.md
   summary: >-
-    Passed on the fifth round after three consecutive real fails, each fixed
-    and mutation-verified before re-challenge — round 1: unimplemented DCX-8
-    aggregation clause (spec-vs-implementation drift inside the lint itself),
-    untested gate items, DCX-14 overclaim; round 2 (re-challenge): same-file
-    duplicate YAML keys silently last-won, defeating DCX-1; round 3:
-    markdown-frontmatter parse errors silently swallowed, letting corrupted
-    ADR status satisfy DCX-11; round 4: phantom ADRs via items entries and
-    non-architecture constrained-by paths bypassed the design gate. The
-    passing round's two non-blocking findings (registered-but-unclaimed
-    prefix loses the ownership invariant — DCX-2 bumped to v5; DCX-14
-    substring match satisfied by comments — non-comment-line match) were
-    applied in this same change. Attacks that held: all DCX-1..14 error
-    paths by mutation, phantom-ADR vectors beyond the fixed ones,
-    TEMPLATE naming channel, design-scope local claim, zero-dep alternative
-    analysis, exit codes and --json shape.
+    Seven rounds total; full history in docs/specs/challenges/. Rounds 1-4
+    failed on real highs, each fixed and mutation-verified before
+    re-challenge: unimplemented DCX-8 clause (spec-vs-implementation drift
+    inside the lint itself); same-file duplicate YAML keys silently
+    last-winning; swallowed frontmatter parse errors letting corrupted ADR
+    status satisfy DCX-11; phantom ADRs via items entries bypassing the
+    design gate. Round 5 passed (two non-blocking hardening fixes applied
+    in-change). Round 6 — the maturity-increment delta review — failed on
+    the harness missing six acceptance cases (the round-1 defect class
+    recurring in DCX-15) plus three evidence-integrity mediums
+    (location-unbound challenge-record exemption, unenforced record path,
+    forgeable verdict body); all fixed, harness 34/34, lessons deposited as
+    LRN-13. Round 7 (delta) passed: all round-6 fixes verified with teeth
+    (disabling the six behaviors fails exactly the six cases), fresh attacks
+    on the changed surfaces held, two one-line lows (path-traversal
+    normalization, check-runner try/catch) applied in this recording change.
 implements: []
 governed-by: []
 depends-on: []
 design-scope: local
 constrained-by: []
-modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs]
+modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs, scripts/test-docs-check.mjs]
 
 purpose: >-
   scripts/docs-check.mjs deterministically enforces the documentation
@@ -68,36 +70,48 @@ items:
       record must not be able to satisfy the design gate.
 
   DCX-3:
-    v: 3
+    v: 5
     title: Referential integrity
     rule: >-
       Every ID-shaped token (grammar in docs/CLAUDE.md) occurring anywhere in
       any docs/**/*.{yaml,md} file — except an ID's own definition site — is
       a reference and shall resolve to a defined ID. Tokens with prefixes
       absent from the docs/CLAUDE.md registry are errors, preventing
-      vocabulary drift. Sole exemption: the files named exactly
-      TEMPLATE.yaml and TEMPLATE.md are excluded from all checks (they hold
-      placeholder content by design); no other name pattern is exempt.
+      vocabulary drift. Two exemptions only: the files named exactly
+      TEMPLATE.yaml and TEMPLATE.md are excluded from all checks (placeholder
+      content by design), and files of kind challenge-record **located under
+      docs/specs/challenges/** are excluded from reference resolution only —
+      they quote adversarial attack payloads verbatim, which by nature cite
+      deliberately invalid IDs; resolving quotations would forbid honest
+      evidence. The exemption is bound to that directory: a self-declared
+      challenge-record anywhere else is linted normally and is a placement
+      error (DCX-4), so the exemption cannot become an unlinted channel.
+      Challenge records remain subject to parse validity and frontmatter
+      schema (DCX-4) and the DCX-13 cross-check. No other exemption exists.
 
   DCX-4:
-    v: 4
+    v: 5
     title: Schema validity
     rule: >-
       YAML docs are validated by kind. Registers (kind requirements / goals /
-      principles / assumptions / risks / open-questions / inconsistencies)
-      need prefix, title, legal status, and an items map; requirements
-      additionally need a serves list. Items need a numeric v and a statement
-      (or rule); requirement items need priority P0|P1|P2; open-questions and
-      inconsistencies items need status open|resolved; flexibility, when
-      present, is hard|preference; serves/depends, when present, are lists.
-      Specs (kind spec) need legal status (draft | approved | implemented |
-      superseded) and an implements list; depends-on prefixes must be
-      registered. Architecture docs need title and status in sketch |
-      approved | superseded. Glossary docs (kind glossary) need a terms map.
-      A YAML doc with an unknown kind is an error. Markdown frontmatter
-      (ADRs, narrative docs) is parsed for metadata but not schema-validated.
-      YAML-subset parse errors are errors — including duplicate keys at the
-      same level, which plain YAML would silently last-win.
+      principles / assumptions / risks / open-questions / inconsistencies /
+      learnings) need prefix, title, legal status, and an items map;
+      requirements additionally need a serves list. Items need a numeric v
+      and a statement (or rule); requirement items need priority P0|P1|P2;
+      open-questions and inconsistencies items need status open|resolved;
+      learnings items need type gotcha|dead-end|pattern and a scope list;
+      flexibility, when present, is hard|preference; serves/depends, when
+      present, are lists. Specs (kind spec) need legal status (draft |
+      approved | implemented | superseded) and an implements list; depends-on
+      prefixes must be registered. Architecture docs need title and status in
+      sketch | approved | superseded. Glossary docs (kind glossary) need a
+      terms map. Markdown files of kind challenge-record need spec, round,
+      date, and verdict pass|fail in frontmatter. An approved: block, when
+      present on any doc, needs date and by. A YAML doc with an unknown kind
+      is an error. Other markdown frontmatter (ADRs, narrative docs) is
+      parsed for metadata but not schema-validated. YAML-subset parse errors
+      are errors — including duplicate keys at the same level, which plain
+      YAML would silently last-win.
 
   DCX-5:
     v: 1
@@ -175,14 +189,33 @@ items:
       docs/CLAUDE.md governs what belongs here vs in ADRs/architecture).
 
   DCX-13:
-    v: 1
+    v: 3
     title: Architect Challenger record required for approval
     rule: >-
       A spec with status approved or implemented must carry a challenge block
-      with date, by, verdict pass, and a summary. The verdict may only be
-      recorded after actually invoking the Architect Challenger agent
+      with date, by, verdict pass, a summary, and a record path pointing at a
+      challenge-record file — the path must lie under docs/specs/challenges/
+      (enforced, not just conventional); the record must exist, be of kind
+      challenge-record, name this spec, its frontmatter verdict must match
+      the block's, and its verbatim body must contain a line "VERDICT:
+      <verdict>" agreeing with both — the laziest realistic forgery flips
+      wrapper metadata around pasted evidence, so wrapper and evidence are
+      cross-checked. A verdict without evidence is not a verdict. The record
+      may only be created from an actual Architect Challenger invocation
       (.claude/agents/architect-challenger.md) per the change protocol; a
       fail verdict means the spec stays draft until findings are resolved.
+
+  DCX-15:
+    v: 1
+    title: Executable acceptance
+    rule: >-
+      The acceptance mutations of this spec are executable, not prose-only:
+      scripts/test-docs-check.mjs materializes a copy of the documentation
+      tree (via the lint's root override), applies each acceptance mutation
+      programmatically, and asserts exit code and a pointing message —
+      plus a clean-copy run asserting exit 0. The pre-push hook runs the
+      harness; challenge re-rounds verify fixes by running it instead of
+      re-deriving mutations by hand.
 
   DCX-14:
     v: 2

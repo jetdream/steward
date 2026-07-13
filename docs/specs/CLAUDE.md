@@ -10,7 +10,14 @@ Internal tooling exception: specs like [dcx-docs-check.yaml](dcx-docs-check.yaml
 
 `draft` → `approved` (implementation may start) → `implemented` (≥1 code citation and ≥1 test citation exist for its IDs) → `superseded`. Any semantic change regresses status to `draft` and bumps affected item versions — see the change protocol in [../CLAUDE.md](../CLAUDE.md).
 
-**Approval prerequisites (the design gate, lint-enforced):** `design-scope` declared, `constrained-by` valid (accepted ADRs / approved architecture docs; DCX-11), `design` section filled (DCX-12), and a recorded pass verdict from the mandatory **Architect Challenger** run (DCX-13) — invoke the `architect-challenger` agent and write the `challenge:` block. A fail verdict keeps the spec in `draft`.
+**Approval prerequisites (the design gate, lint-enforced):** `design-scope` declared, `constrained-by` valid (accepted ADRs / approved architecture docs; DCX-11), `design` section filled (DCX-12), and a recorded pass verdict from the mandatory **Architect Challenger** run with its verbatim evidence record in [challenges/](challenges/) (DCX-13) — invoke the `architect-challenger` agent, store its full verdict as a challenge-record file, and write the `challenge:` block pointing at it. A fail verdict keeps the spec in `draft`.
+
+## Challenge policy
+
+- **First challenge** of a cross-cutting spec or a P0-capability spec runs a **panel of three parallel challengers with distinct lenses**: design-conformance (does behavior violate the constrained-by set in meaning), implementation-divergence (does named code contradict the spec — read it, mutate it), and cheaper-alternative + hidden-assumptions. Serial single-lens rounds converge slowly — the DCX spec took five rounds because each round surfaced a different high a panel would have found at once. Tooling specs and P1/P2 capability specs may use a single challenger.
+- **Re-challenges are delta-scoped:** verify each prior finding's fix (by running `scripts/test-docs-check.mjs` and targeted mutations), then attack only the changed sections fresh. Full-fresh re-attack is for major rewrites.
+- **Convergence rule:** a round with no high finding and only one-line-fix mediums/lows is a pass; the fixes are applied and the verdict recorded in the same change (the precedent set by both existing specs).
+- Challengers consult [../learnings.yaml](../learnings.yaml) (scope-matched) before attacking — known failure classes are the first mutations to try.
 
 ## The altitude rule
 

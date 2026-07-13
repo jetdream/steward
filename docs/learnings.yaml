@@ -1,0 +1,193 @@
+kind: learnings
+prefix: LRN
+title: Engineering Learnings
+status: approved
+
+intent: >-
+  The project's transferable memory: gotchas (traps that bit us), dead-ends
+  (approaches built or seriously considered, then abandoned — with the
+  reason, so they are not re-proposed without new information), and patterns
+  (moves that worked and should be repeated). Entries are scope-tagged for
+  retrieval and incident-sourced for provenance. Protocol: any multi-round
+  fix loop, reverted approach, or diagnosed tooling bug deposits its lesson
+  here in the same commit. Module-local traps stay in module CLAUDE.md
+  Gotchas sections; this register is for lessons that transfer.
+
+items:
+  LRN-1:
+    v: 1
+    type: gotcha
+    scope: [nodejs, tooling]
+    source: docs-check --json corruption, found by user pipe failure (commit 3ca4fef era)
+    title: process.exit() truncates piped stdout at 64KB
+    statement: >-
+      Node's stdout to a pipe is asynchronous; process.exit() drops buffered
+      output beyond ~64KB, silently corrupting large payloads. Set
+      process.exitCode and let the process drain instead. Symptom: valid
+      JSON that cuts off mid-string only when piped.
+
+  LRN-2:
+    v: 1
+    type: gotcha
+    scope: [yaml, parser]
+    source: challenge rounds 2 and 3 (dcx spec), both highs
+    title: YAML duplicate keys silently last-win
+    statement: >-
+      Plain YAML semantics let a duplicate key replace the earlier value with
+      no diagnostic — which silently defeats any uniqueness guarantee built
+      on keys. Any hand-rolled or configured parser in this repo must error
+      on duplicate keys at the same level. This bit twice: register items
+      maps, then markdown frontmatter.
+
+  LRN-3:
+    v: 1
+    type: gotcha
+    scope: [parser, tooling]
+    source: challenge round 3 (dcx spec), high
+    title: Swallowed sub-parser errors resurface as gate bypasses
+    statement: >-
+      Parsing a sub-document (frontmatter, embedded block) and discarding its
+      errors converts corruption into silently-wrong metadata downstream —
+      in our case, gate-relevant ADR status. Always propagate sub-parse
+      errors to the caller, remapping every embedded line number to file
+      coordinates (including secondary pointers like "first at line N").
+
+  LRN-4:
+    v: 1
+    type: pattern
+    scope: [lint, security, design]
+    source: challenge round 4 (dcx spec), high — phantom decision record satisfied the design gate
+    title: ID-gated checks must verify provenance kind, not just existence and status
+    statement: >-
+      A check of the form "cited ID must exist with status X" is bypassable
+      by defining a same-shaped ID through a different, cheaper channel. Gate
+      checks must pin the definition channel (e.g. filename-owned
+      namespaces) and the artifact kind, and the namespace itself must be
+      unclaimable elsewhere. Generalizes: every gate needs the question
+      "what else can produce a token that satisfies me?"
+
+  LRN-5:
+    v: 1
+    type: gotcha
+    scope: [id-grammar, hooks]
+    source: challenge round 1 (ctx spec), high — rule text contradicted its own implementation
+    title: Short uppercase-hyphen-number grammars collide with everyday tokens
+    statement: >-
+      Encoding names, hash names, standards numbers, and model names all
+      match compact ID grammars. Consequences: never auto-note unregistered
+      tokens (perpetual noise), make the registry check turn collisions in
+      normative docs into loud rename-or-register errors, and avoid writing
+      collision-shaped examples literally inside lintable docs.
+
+  LRN-6:
+    v: 1
+    type: dead-end
+    scope: [docs-format, process]
+    source: item-representation decision, 2026-07-13 discussion
+    title: One-file-per-item registers rejected
+    statement: >-
+      Full project-master-style item-per-file was rejected for this repo:
+      an agent working one capability pays N file reads instead of one, the
+      capability's intent narrative loses its home, and frontmatter edges
+      duplicate what prose already states (drift channel). Do not re-propose
+      without new information — the recorded trigger to revisit is item-level
+      knowledge moving into a database for retrieval at scale.
+
+  LRN-7:
+    v: 1
+    type: dead-end
+    scope: [docs-format, yaml]
+    source: item-representation iteration, 2026-07-13 — built fully, replaced same day
+    title: Markdown headings + per-item fenced YAML blocks rejected
+    statement: >-
+      The hybrid (markdown item headings, fenced YAML metadata block under
+      each) was implemented across all registers and scrapped within hours:
+      each item paid a blank line + two fence lines + block before content,
+      59 times — too sparse to read. Pure-YAML registers with block-scalar
+      prose replaced it. Lesson: when a file is ~80% structure, make the
+      whole file the structure; per-item ceremony inside prose satisfies
+      neither reader.
+
+  LRN-8:
+    v: 1
+    type: pattern
+    scope: [hooks, context, agents]
+    source: context-hooks design discussion (CTX spec purpose)
+    title: Inject context in proportion to relevance-certainty
+    statement: >-
+      Speculative injection (prompt-time, read-time) must be bounded and
+      deduplicated — injected content is permanent context residue while the
+      tool call it saves is cheap. Write-time is the highest-certainty point
+      (the pending edit declares its own contracts) and deserves enforcement,
+      not just injection: deny once, deliver the contract, let the conscious
+      retry pass.
+
+  LRN-9:
+    v: 1
+    type: pattern
+    scope: [process, review, agents]
+    source: challenge rounds 1-5 — each element emerged from a round, none was in the original agent definition
+    title: Adversarial review needs three explicit mandates to find real defects
+    statement: >-
+      (1) Implementation-vs-spec divergence as a named high-severity attack
+      category — the reviewer must read the code, not just the spec; (2)
+      mutation testing with checksummed byte-identical restoration — claims
+      about error paths are verified by making them fire; (3) severity
+      self-refutation — every finding must survive the reviewer's own
+      attempt to refute it before being reported. Also: successful prompt
+      refinements must flow back into the agent definition in the same
+      change, or the agent forgets what use taught it.
+
+  LRN-10:
+    v: 1
+    type: pattern
+    scope: [process, enforcement]
+    source: retrospective across both major iterations
+    title: Prose rules are hope; checked rules hold
+    statement: >-
+      Every protocol rule that received a deterministic check (lint, hook,
+      evidence record) caught real violations; every prose-only rule
+      depended on goodwill. Convert prose rules into checks where possible;
+      where not, mark them as acknowledged debt and record why. The
+      protocol-step enforcement annotations in docs/CLAUDE.md implement
+      this.
+
+  LRN-11:
+    v: 1
+    type: gotcha
+    scope: [git, testing]
+    source: negative-test cleanup failure during item-block conversion
+    title: git checkout cannot restore an untracked file
+    statement: >-
+      Destructive tests on files that have never been committed cannot be
+      undone via git. Back up to the scratchpad before mutating, or commit
+      first. Symptom: a "restore" step that silently does nothing and leaves
+      the tree broken while reporting success.
+
+  LRN-12:
+    v: 1
+    type: gotcha
+    scope: [claude-code, agents]
+    source: architect-challenger first invocation, 2026-07-13
+    title: Agent definitions load at session start
+    statement: >-
+      A .claude/agents/*.md definition created mid-session is not invocable
+      as its own agent type until the next session. Same-session invocations
+      must carry the definition by reference in the prompt ("read this file
+      first and follow it exactly") on a general-purpose agent. The same
+      applies to .claude/settings.json hooks: they activate on next session
+      start, after user approval.
+
+  LRN-13:
+    v: 1
+    type: pattern
+    scope: [lint, security, design]
+    source: challenge round 6 (docs/specs/challenges/dcx-docs-check-2026-07-13-r6.md), medium findings
+    title: Exemptions must be bound to provenance, never self-declared
+    statement: >-
+      Any check exemption keyed on a self-declarable property (a kind field,
+      a name pattern) becomes an unlinted channel — bind exemptions to
+      provenance the writer cannot cheaply fake: an exact location, a
+      filename-owned namespace, a cross-checked evidence body. Sibling of
+      LRN-4 (gate checks must verify provenance kind); together: whoever
+      grants an exception must also pin where and from whom it applies.

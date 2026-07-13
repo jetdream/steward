@@ -2,9 +2,10 @@
 /**
  * docs-check — the documentation graph lint.
  *
- * Implements: DCX-1 v2, DCX-2 v5, DCX-3 v3, DCX-4 v4, DCX-5 v1, DCX-6 v1,
- * DCX-7 v2, DCX-8 v2, DCX-9 v1, DCX-10 v2, DCX-11 v2, DCX-12 v1, DCX-13 v1,
- * DCX-14 v2 (docs/specs/dcx-docs-check.yaml).
+ * Implements: DCX-1 v2, DCX-2 v5, DCX-3 v5, DCX-4 v5, DCX-5 v1, DCX-6 v1,
+ * DCX-7 v2, DCX-8 v2, DCX-9 v1, DCX-10 v2, DCX-11 v2, DCX-12 v1, DCX-13 v3,
+ * DCX-14 v2 (docs/specs/dcx-docs-check.yaml). DCX-15 lives in
+ * scripts/test-docs-check.mjs.
  * Parsing and graph construction live in scripts/lib/docs-graph.mjs (shared
  * with the Claude Code hooks).
  *
@@ -66,7 +67,7 @@ for (const id of staleIds) {
 }
 
 // ---- DCX-4: schema validity by kind ---------------------------------------
-const REGISTER_KINDS = new Set(['requirements', 'goals', 'principles', 'assumptions', 'risks', 'open-questions', 'inconsistencies']);
+const REGISTER_KINDS = new Set(['requirements', 'goals', 'principles', 'assumptions', 'risks', 'open-questions', 'inconsistencies', 'learnings']);
 const DOC_STATUS = new Set(['draft', 'approved', 'superseded']);
 const SPEC_STATUS = new Set(['draft', 'approved', 'implemented', 'superseded']);
 const PRIORITIES = new Set(['P0', 'P1', 'P2']);
@@ -130,8 +131,24 @@ for (const [file, f] of files) {
     err(file, 1, 'DCX-12: approved spec needs a non-empty design section');
   }
   const ch = f.data.challenge;
-  if (typeof ch !== 'object' || ch.verdict !== 'pass' || !ch.date || !ch.by || !String(ch.summary ?? '').trim()) {
-    err(file, 1, 'DCX-13: approved spec needs an Architect Challenger record (challenge: date/by/verdict: pass/summary)');
+  if (typeof ch !== 'object' || ch.verdict !== 'pass' || !ch.date || !ch.by || !String(ch.summary ?? '').trim() || !ch.record) {
+    err(file, 1, 'DCX-13: approved spec needs an Architect Challenger record (challenge: date/by/verdict: pass/summary/record)');
+  } else {
+    // A verdict without evidence is not a verdict: the record must live in
+    // the append-only evidence directory, be a challenge-record, name this
+    // spec, and agree on the verdict — in frontmatter AND in the verbatim
+    // body's VERDICT line (the laziest forgery flips wrapper metadata).
+    const recFile = files.get(join(ROOT, ch.record));
+    // Compare the RESOLVED path so `..` traversal cannot dress an outside
+    // file in the right-looking prefix.
+    if (!relative(ROOT, join(ROOT, String(ch.record))).startsWith('docs/specs/challenges/')) err(file, 1, `DCX-13: challenge record must live under docs/specs/challenges/ (got ${ch.record})`);
+    else if (!recFile) err(file, 1, `DCX-13: challenge record not found: ${ch.record}`);
+    else if (recFile.fm?.kind !== 'challenge-record') err(file, 1, `DCX-13: ${ch.record} is not a challenge-record`);
+    else {
+      if (recFile.fm.spec !== f.rel) err(file, 1, `DCX-13: ${ch.record} names spec "${recFile.fm.spec}", not ${f.rel}`);
+      if (recFile.fm.verdict !== ch.verdict) err(file, 1, `DCX-13: verdict mismatch — block says "${ch.verdict}", record says "${recFile.fm.verdict}"`);
+      if (!recFile.lines.some((l) => l.trim() === `VERDICT: ${ch.verdict}`)) err(file, 1, `DCX-13: ${ch.record} body has no "VERDICT: ${ch.verdict}" line — evidence disagrees with the wrapper`);
+    }
   }
 }
 
@@ -156,9 +173,28 @@ for (const [id, d] of defs) {
   if (!m.statement && !m.rule) at(`DCX-4: ${id} needs a statement (or rule)`);
   if (d.kind === 'requirements' && !PRIORITIES.has(m.priority)) at(`DCX-4: ${id} needs priority P0|P1|P2`);
   if ((d.kind === 'open-questions' || d.kind === 'inconsistencies') && !ITEM_STATUS.has(m.status)) at(`DCX-4: ${id} needs status open|resolved`);
+  if (d.kind === 'learnings') {
+    if (!['gotcha', 'dead-end', 'pattern'].includes(m.type)) at(`DCX-4: ${id} needs type gotcha|dead-end|pattern`);
+    if (!Array.isArray(m.scope)) at(`DCX-4: ${id} needs a scope list`);
+  }
   if (m.flexibility && !['hard', 'preference'].includes(m.flexibility)) at(`DCX-4: ${id} has invalid flexibility "${m.flexibility}"`);
   for (const key of ['serves', 'depends']) {
     if (m[key] && !Array.isArray(m[key])) at(`DCX-4: ${id} field ${key} must be a list`);
+  }
+}
+
+// Challenge-record frontmatter and approval-provenance shapes (DCX-4).
+for (const [file, f] of files) {
+  if (f.fm?.kind === 'challenge-record') {
+    if (!f.rel.startsWith('docs/specs/challenges/')) err(file, 1, 'DCX-4: challenge-record outside docs/specs/challenges/ — the reference exemption is bound to that directory');
+    for (const field of ['spec', 'round', 'date']) {
+      if (!f.fm[field]) err(file, 1, `DCX-4: challenge-record missing ${field}`);
+    }
+    if (!['pass', 'fail'].includes(f.fm.verdict)) err(file, 1, 'DCX-4: challenge-record verdict must be pass|fail');
+  }
+  const approved = f.data?.approved ?? f.fm?.approved;
+  if (approved && (typeof approved !== 'object' || !approved.date || !approved.by)) {
+    err(file, 1, 'DCX-4: approved block needs date and by');
   }
 }
 
