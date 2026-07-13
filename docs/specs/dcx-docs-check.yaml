@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
-  record: docs/specs/challenges/dcx-docs-check-2026-07-13-r7.md
+  record: docs/specs/challenges/dcx-docs-check-2026-07-13-r8.md
   summary: >-
     Seven rounds total; full history in docs/specs/challenges/. Rounds 1-4
     failed on real highs, each fixed and mutation-verified before
@@ -23,13 +23,18 @@ challenge:
     LRN-13. Round 7 (delta) passed: all round-6 fixes verified with teeth
     (disabling the six behaviors fails exactly the six cases), fresh attacks
     on the changed surfaces held, two one-line lows (path-traversal
-    normalization, check-runner try/catch) applied in this recording change.
+    normalization, check-runner try/catch) applied in-change. Round 8
+    (delta, DCX-15 v2 shared-message refactor after a user DRY review)
+    passed: extraction verified byte-identical, subject pinning proven by
+    wrong-subject mutation, drift immunity and behavior teeth demonstrated;
+    two one-line lows (dead template, missing file anchor) applied in this
+    recording change.
 implements: []
 governed-by: []
 depends-on: []
 design-scope: local
 constrained-by: []
-modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs, scripts/test-docs-check.mjs]
+modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs, scripts/lib/messages.mjs, scripts/test-docs-check.mjs]
 
 purpose: >-
   scripts/docs-check.mjs deterministically enforces the documentation
@@ -206,16 +211,25 @@ items:
       fail verdict means the spec stays draft until findings are resolved.
 
   DCX-15:
-    v: 1
-    title: Executable acceptance
+    v: 2
+    title: Executable acceptance with a shared message contract
     rule: >-
       The acceptance mutations of this spec are executable, not prose-only:
       scripts/test-docs-check.mjs materializes a copy of the documentation
       tree (via the lint's root override), applies each acceptance mutation
-      programmatically, and asserts exit code and a pointing message —
-      plus a clean-copy run asserting exit 0. The pre-push hook runs the
-      harness; challenge re-rounds verify fixes by running it instead of
-      re-deriving mutations by hand.
+      programmatically, and asserts exit code plus the expected error — plus
+      a clean-copy run asserting exit 0. Error text lives once in
+      scripts/lib/messages.mjs, imported by both the lint and the harness
+      (single source: rewording cannot drift), and each error assertion is
+      an exact match against one entry of the parsed --json errors list
+      (optionally file-anchored) — never a substring scan of combined
+      output, so a neighboring error cannot satisfy the wrong case. Report
+      clauses (coverage, open questions) assert structured --json fields.
+      The pre-push hook runs the harness; challenge re-rounds verify fixes
+      by running it instead of re-deriving mutations by hand. Known
+      tradeoff, accepted deliberately: exact-matching shared constants
+      cannot detect an unhelpful message text itself — the contract is which
+      check fired on which subject, not prose quality (LRN-14).
 
   DCX-14:
     v: 2

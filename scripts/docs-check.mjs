@@ -16,6 +16,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { buildGraph, ROOT, DOCS } from './lib/docs-graph.mjs';
+import { MSG } from './lib/messages.mjs';
 
 const { files, defs, refs, registry, errors } = buildGraph();
 const rel = (f) => relative(ROOT, f);
@@ -30,34 +31,34 @@ for (const [file, f] of files) {
   const pfx = f.data?.prefix;
   if (!pfx) continue;
   for (const p of Array.isArray(pfx) ? pfx : [pfx]) {
-    if (FILENAME_OWNED.has(p)) err(file, 1, `DCX-2: prefix ${p} is filename-owned (adr/NNNN-slug.md) and cannot be claimed by a register`);
-    if (!registry.has(p)) err(file, 1, `DCX-2: prefix ${p} claimed but not registered in docs/CLAUDE.md`);
-    if (owners.has(p)) err(file, 1, `DCX-2: prefix ${p} already owned by ${rel(owners.get(p))}`);
+    if (FILENAME_OWNED.has(p)) err(file, 1, MSG.filenameOwnedClaim(p));
+    if (!registry.has(p)) err(file, 1, MSG.unregisteredClaim(p));
+    if (owners.has(p)) err(file, 1, MSG.prefixAlreadyOwned(p, rel(owners.get(p))));
     else owners.set(p, file);
   }
 }
 for (const [id, d] of defs) {
   if (d.kind === 'adr') continue;
   const prefix = id.split('-')[0];
-  if (FILENAME_OWNED.has(prefix)) err(d.file, d.line, `DCX-2: ${id} must be defined by an adr/NNNN-slug.md filename, not an items entry`);
-  if (!registry.has(prefix)) err(d.file, d.line, `DCX-2: ${id} defined under unregistered prefix ${prefix} — register it in docs/CLAUDE.md first`);
+  if (FILENAME_OWNED.has(prefix)) err(d.file, d.line, MSG.filenameOwnedDefinition(id));
+  if (!registry.has(prefix)) err(d.file, d.line, MSG.unregisteredDefinition(id, prefix));
   const owner = owners.get(prefix);
-  if (!owner) err(d.file, d.line, `DCX-2: ${id} defined but no file claims prefix ${prefix} — the ownership invariant must not silently vanish`);
-  else if (d.file !== owner) err(d.file, d.line, `DCX-2: ${id} defined outside owning file ${rel(owner)}`);
+  if (!owner) err(d.file, d.line, MSG.unclaimedPrefix(id, prefix));
+  else if (d.file !== owner) err(d.file, d.line, MSG.outsideOwningFile(id, rel(owner)));
 }
 
 // ---- DCX-3 + DCX-5: references resolve; pins are fresh --------------------
 const staleIds = new Set();
 for (const r of refs) {
   if (!registry.has(r.prefix)) {
-    err(r.file, r.line, `DCX-3: unregistered prefix in "${r.id}" — register it in docs/CLAUDE.md or rename`);
+    err(r.file, r.line, MSG.unregisteredPrefixRef(r.id));
     continue;
   }
   const d = defs.get(r.id);
   if (!d) {
-    err(r.file, r.line, `DCX-3: reference to undefined ID ${r.id}`);
+    err(r.file, r.line, MSG.undefinedRef(r.id));
   } else if (r.pin !== null && r.pin !== d.version) {
-    err(r.file, r.line, `DCX-5: stale pin ${r.id} v${r.pin} (current: v${d.version})`);
+    err(r.file, r.line, MSG.stalePin(r.id, r.pin, d.version));
     staleIds.add(r.id);
   }
 }
@@ -78,28 +79,28 @@ for (const [file, f] of files) {
   if (!data) continue; // markdown
 
   if (REGISTER_KINDS.has(data.kind)) {
-    if (!data.prefix) err(file, 1, 'DCX-4: register missing prefix');
-    if (!data.title) err(file, 1, 'DCX-4: register missing title');
-    if (!DOC_STATUS.has(data.status)) err(file, 1, `DCX-4: invalid status "${data.status}"`);
-    if (typeof data.items !== 'object') err(file, 1, 'DCX-4: register missing items map');
-    if (data.kind === 'requirements' && !Array.isArray(data.serves)) err(file, 1, 'DCX-4: requirements register missing serves list');
+    if (!data.prefix) err(file, 1, MSG.registerMissingPrefix());
+    if (!data.title) err(file, 1, MSG.registerMissingTitle());
+    if (!DOC_STATUS.has(data.status)) err(file, 1, MSG.invalidStatus(data.status));
+    if (typeof data.items !== 'object') err(file, 1, MSG.registerMissingItems());
+    if (data.kind === 'requirements' && !Array.isArray(data.serves)) err(file, 1, MSG.requirementsMissingServes());
   } else if (data.kind === 'spec') {
-    if (!SPEC_STATUS.has(data.status)) err(file, 1, `DCX-4: invalid spec status "${data.status}"`);
-    if (!Array.isArray(data.implements)) err(file, 1, 'DCX-4: spec missing implements list');
+    if (!SPEC_STATUS.has(data.status)) err(file, 1, MSG.invalidSpecStatus(data.status));
+    if (!Array.isArray(data.implements)) err(file, 1, MSG.specMissingImplements());
     for (const p of data['depends-on'] ?? []) {
-      if (!registry.has(p)) err(file, 1, `DCX-4: depends-on has unregistered prefix "${p}"`);
+      if (!registry.has(p)) err(file, 1, MSG.dependsOnUnregistered(p));
     }
     // `behavior:` keys are references to register-defined requirement IDs.
     for (const id of Object.keys(data.behavior ?? {})) {
-      if (!defs.has(id)) err(file, f.keyLines.get(`behavior.${id}`) ?? 1, `DCX-3: behavior key references undefined ID ${id}`);
+      if (!defs.has(id)) err(file, f.keyLines.get(`behavior.${id}`) ?? 1, MSG.undefinedBehaviorKey(id));
     }
   } else if (data.kind === 'glossary') {
-    if (typeof data.terms !== 'object') err(file, 1, 'DCX-4: glossary missing terms map');
+    if (typeof data.terms !== 'object') err(file, 1, MSG.glossaryMissingTerms());
   } else if (data.kind === 'architecture') {
-    if (!data.title) err(file, 1, 'DCX-4: architecture doc needs a title');
-    if (!['sketch', 'approved', 'superseded'].includes(data.status)) err(file, 1, `DCX-4: invalid architecture status "${data.status}"`);
+    if (!data.title) err(file, 1, MSG.architectureNeedsTitle());
+    if (!['sketch', 'approved', 'superseded'].includes(data.status)) err(file, 1, MSG.invalidArchitectureStatus(data.status));
   } else {
-    err(file, 1, `DCX-4: unknown kind "${data.kind}"`);
+    err(file, 1, MSG.unknownKind(data.kind));
   }
 }
 
@@ -109,30 +110,30 @@ for (const [file, f] of files) {
   const scope = f.data['design-scope'];
   const cb = f.data['constrained-by'];
   if (!['local', 'cross-cutting'].includes(scope)) {
-    err(file, 1, 'DCX-11: approved spec needs design-scope local|cross-cutting');
+    err(file, 1, MSG.needsDesignScope());
   }
   if (scope === 'cross-cutting' && (!Array.isArray(cb) || cb.length === 0)) {
-    err(file, 1, 'DCX-11: cross-cutting spec needs a non-empty constrained-by list');
+    err(file, 1, MSG.crossCuttingNeedsConstraints());
   }
   for (const entry of Array.isArray(cb) ? cb : []) {
     if (/^ADR-\d{4}$/.test(entry)) {
       const adr = defs.get(entry);
-      if (!adr) err(file, 1, `DCX-11: constrained-by cites undefined ${entry}`);
-      else if (adr.kind !== 'adr') err(file, 1, `DCX-11: ${entry} is not a filename-defined decision record — a phantom ADR cannot constrain a spec`);
-      else if (adr.meta?.status !== 'accepted') err(file, 1, `DCX-11: ${entry} has status "${adr.meta?.status}" — only accepted ADRs may constrain a spec (superseding cascades here)`);
+      if (!adr) err(file, 1, MSG.constraintUndefinedAdr(entry));
+      else if (adr.kind !== 'adr') err(file, 1, MSG.constraintPhantomAdr(entry));
+      else if (adr.meta?.status !== 'accepted') err(file, 1, MSG.constraintAdrNotAccepted(entry, adr.meta?.status));
     } else {
       const target = files.get(join(ROOT, entry));
-      if (!target) err(file, 1, `DCX-11: constrained-by path not found: ${entry}`);
-      else if (target.data?.kind !== 'architecture') err(file, 1, `DCX-11: ${entry} is kind "${target.data?.kind}" — only architecture docs may constrain a spec by path`);
-      else if (target.data?.status !== 'approved') err(file, 1, `DCX-11: ${entry} has status "${target.data?.status}" — architecture must be approved before specs build on it`);
+      if (!target) err(file, 1, MSG.constraintPathNotFound(entry));
+      else if (target.data?.kind !== 'architecture') err(file, 1, MSG.constraintNotArchitecture(entry, target.data?.kind));
+      else if (target.data?.status !== 'approved') err(file, 1, MSG.constraintArchitectureNotApproved(entry, target.data?.status));
     }
   }
   if (!String(f.data.design ?? '').trim()) {
-    err(file, 1, 'DCX-12: approved spec needs a non-empty design section');
+    err(file, 1, MSG.needsDesignSection());
   }
   const ch = f.data.challenge;
   if (typeof ch !== 'object' || ch.verdict !== 'pass' || !ch.date || !ch.by || !String(ch.summary ?? '').trim() || !ch.record) {
-    err(file, 1, 'DCX-13: approved spec needs an Architect Challenger record (challenge: date/by/verdict: pass/summary/record)');
+    err(file, 1, MSG.needsChallengeBlock());
   } else {
     // A verdict without evidence is not a verdict: the record must live in
     // the append-only evidence directory, be a challenge-record, name this
@@ -141,13 +142,13 @@ for (const [file, f] of files) {
     const recFile = files.get(join(ROOT, ch.record));
     // Compare the RESOLVED path so `..` traversal cannot dress an outside
     // file in the right-looking prefix.
-    if (!relative(ROOT, join(ROOT, String(ch.record))).startsWith('docs/specs/challenges/')) err(file, 1, `DCX-13: challenge record must live under docs/specs/challenges/ (got ${ch.record})`);
-    else if (!recFile) err(file, 1, `DCX-13: challenge record not found: ${ch.record}`);
-    else if (recFile.fm?.kind !== 'challenge-record') err(file, 1, `DCX-13: ${ch.record} is not a challenge-record`);
+    if (!relative(ROOT, join(ROOT, String(ch.record))).startsWith('docs/specs/challenges/')) err(file, 1, MSG.recordOutsideDir(ch.record));
+    else if (!recFile) err(file, 1, MSG.recordNotFound(ch.record));
+    else if (recFile.fm?.kind !== 'challenge-record') err(file, 1, MSG.recordWrongKind(ch.record));
     else {
-      if (recFile.fm.spec !== f.rel) err(file, 1, `DCX-13: ${ch.record} names spec "${recFile.fm.spec}", not ${f.rel}`);
-      if (recFile.fm.verdict !== ch.verdict) err(file, 1, `DCX-13: verdict mismatch — block says "${ch.verdict}", record says "${recFile.fm.verdict}"`);
-      if (!recFile.lines.some((l) => l.trim() === `VERDICT: ${ch.verdict}`)) err(file, 1, `DCX-13: ${ch.record} body has no "VERDICT: ${ch.verdict}" line — evidence disagrees with the wrapper`);
+      if (recFile.fm.spec !== f.rel) err(file, 1, MSG.recordWrongSpec(ch.record, recFile.fm.spec, f.rel));
+      if (recFile.fm.verdict !== ch.verdict) err(file, 1, MSG.recordVerdictMismatch(ch.verdict, recFile.fm.verdict));
+      if (!recFile.lines.some((l) => l.trim() === `VERDICT: ${ch.verdict}`)) err(file, 1, MSG.recordEvidenceDisagrees(ch.record, ch.verdict));
     }
   }
 }
@@ -162,49 +163,49 @@ const gate = gateCandidates.find((p) => {
       .some((l) => !l.trim().startsWith('#') && l.includes('docs-check.mjs'));
   } catch { return false; }
 });
-if (!gate) errors.push(`${gateCandidates[0]}:0 DCX-14: no pre-commit hook running docs-check found (${gateCandidates.join(' or ')})`);
+if (!gate) errors.push(`${gateCandidates[0]}:0 ${MSG.missingPreCommitGate(gateCandidates.join(' or '))}`);
 
 // Item-level validation for every defined item (DCX-4).
 for (const [id, d] of defs) {
   if (d.kind === 'adr') continue;
   const m = d.meta ?? {};
   const at = (msg) => err(d.file, d.line, msg);
-  if (!Number.isInteger(Number(m.v)) || m.v === '') at(`DCX-4: ${id} needs a numeric v (version)`);
-  if (!m.statement && !m.rule) at(`DCX-4: ${id} needs a statement (or rule)`);
-  if (d.kind === 'requirements' && !PRIORITIES.has(m.priority)) at(`DCX-4: ${id} needs priority P0|P1|P2`);
-  if ((d.kind === 'open-questions' || d.kind === 'inconsistencies') && !ITEM_STATUS.has(m.status)) at(`DCX-4: ${id} needs status open|resolved`);
+  if (!Number.isInteger(Number(m.v)) || m.v === '') at(MSG.itemNeedsVersion(id));
+  if (!m.statement && !m.rule) at(MSG.itemNeedsStatement(id));
+  if (d.kind === 'requirements' && !PRIORITIES.has(m.priority)) at(MSG.itemNeedsPriority(id));
+  if ((d.kind === 'open-questions' || d.kind === 'inconsistencies') && !ITEM_STATUS.has(m.status)) at(MSG.itemNeedsStatus(id));
   if (d.kind === 'learnings') {
-    if (!['gotcha', 'dead-end', 'pattern'].includes(m.type)) at(`DCX-4: ${id} needs type gotcha|dead-end|pattern`);
-    if (!Array.isArray(m.scope)) at(`DCX-4: ${id} needs a scope list`);
+    if (!['gotcha', 'dead-end', 'pattern'].includes(m.type)) at(MSG.itemNeedsLearningType(id));
+    if (!Array.isArray(m.scope)) at(MSG.itemNeedsScope(id));
   }
-  if (m.flexibility && !['hard', 'preference'].includes(m.flexibility)) at(`DCX-4: ${id} has invalid flexibility "${m.flexibility}"`);
+  if (m.flexibility && !['hard', 'preference'].includes(m.flexibility)) at(MSG.invalidFlexibility(id, m.flexibility));
   for (const key of ['serves', 'depends']) {
-    if (m[key] && !Array.isArray(m[key])) at(`DCX-4: ${id} field ${key} must be a list`);
+    if (m[key] && !Array.isArray(m[key])) at(MSG.itemFieldMustBeList(id, key));
   }
 }
 
 // Challenge-record frontmatter and approval-provenance shapes (DCX-4).
 for (const [file, f] of files) {
   if (f.fm?.kind === 'challenge-record') {
-    if (!f.rel.startsWith('docs/specs/challenges/')) err(file, 1, 'DCX-4: challenge-record outside docs/specs/challenges/ — the reference exemption is bound to that directory');
+    if (!f.rel.startsWith('docs/specs/challenges/')) err(file, 1, MSG.recordOutsideChallenges());
     for (const field of ['spec', 'round', 'date']) {
-      if (!f.fm[field]) err(file, 1, `DCX-4: challenge-record missing ${field}`);
+      if (!f.fm[field]) err(file, 1, MSG.recordMissingField(field));
     }
-    if (!['pass', 'fail'].includes(f.fm.verdict)) err(file, 1, 'DCX-4: challenge-record verdict must be pass|fail');
+    if (!['pass', 'fail'].includes(f.fm.verdict)) err(file, 1, MSG.recordInvalidVerdict());
   }
   const approved = f.data?.approved ?? f.fm?.approved;
   if (approved && (typeof approved !== 'object' || !approved.date || !approved.by)) {
-    err(file, 1, 'DCX-4: approved block needs date and by');
+    err(file, 1, MSG.approvedBlockShape());
   }
 }
 
 // ---- DCX-7: folder hygiene — CLAUDE.md present, no invisible extensions ----
 (function checkDirs(dir) {
   const entries = readdirSync(dir, { withFileTypes: true });
-  if (!entries.some((e) => e.name === 'CLAUDE.md')) err(join(dir, 'CLAUDE.md'), 0, 'DCX-7: missing CLAUDE.md in this folder');
+  if (!entries.some((e) => e.name === 'CLAUDE.md')) err(join(dir, 'CLAUDE.md'), 0, MSG.missingFolderClaude());
   for (const e of entries) {
     if (e.isDirectory()) checkDirs(join(dir, e.name));
-    else if (!/\.(md|yaml)$/.test(e.name)) err(join(dir, e.name), 0, `DCX-7: unexpected extension under docs/ — only .yaml and .md are lintable (rename or move)`);
+    else if (!/\.(md|yaml)$/.test(e.name)) err(join(dir, e.name), 0, MSG.unexpectedExtension());
   }
 })(DOCS);
 

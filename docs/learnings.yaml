@@ -191,3 +191,23 @@ items:
       filename-owned namespace, a cross-checked evidence body. Sibling of
       LRN-4 (gate checks must verify provenance kind); together: whoever
       grants an exception must also pin where and from whom it applies.
+
+  LRN-14:
+    v: 1
+    type: dead-end
+    scope: [testing, process, tooling]
+    source: DRY review of test-docs-check.mjs assertions, 2026-07-13 (user finding)
+    title: Test assertions share message constants with the implementation
+    statement: >-
+      Decision: lint messages live once in scripts/lib/messages.mjs, imported
+      by producer and harness; assertions match exactly against individual
+      parsed errors, never substring-scan combined output. Rationale: hand
+      duplicated regex fragments carried two risks — loud drift on reword and
+      silent missed matches (a neighboring error satisfying a loose pattern).
+      Accepted tradeoff: exact-matching shared constants cannot detect
+      unhelpful message prose (test tautology) — the tested contract is which
+      check fired on which subject, not wording quality. Dead-end recorded:
+      a structured error-code taxonomy (stable subcodes as the contract,
+      prose fully free, programmatic consumption by hooks) was considered
+      and deferred, not rejected — revisit when hooks or CI need per-error
+      dispatch, with new information.

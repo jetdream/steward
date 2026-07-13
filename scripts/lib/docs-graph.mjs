@@ -16,6 +16,7 @@
  */
 
 import { readdirSync, readFileSync } from 'node:fs';
+import { MSG } from './messages.mjs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, relative, basename } from 'node:path';
 
@@ -68,7 +69,7 @@ export function parseYamlSubset(text, file = '<text>') {
       const lineIndent = raw.length - raw.trimStart().length;
       if (lineIndent < indent) break;
       if (lineIndent > indent) {
-        errors.push(`${file}:${i + 1} unexpected indentation`);
+        errors.push(`${file}:${i + 1} ${MSG.unexpectedIndentation()}`);
         i++;
         continue;
       }
@@ -76,7 +77,7 @@ export function parseYamlSubset(text, file = '<text>') {
       // glossary terms); the value may itself contain colons.
       const m = raw.slice(indent).match(/^([^:]+):(?:\s(.*))?$/);
       if (!m) {
-        errors.push(`${file}:${i + 1} expected "key:" or "key: value"`);
+        errors.push(`${file}:${i + 1} ${MSG.expectedKey()}`);
         i++;
         continue;
       }
@@ -86,7 +87,7 @@ export function parseYamlSubset(text, file = '<text>') {
       // Duplicate keys at the same level would silently last-win in plain
       // YAML — the exact silent-corruption mode this subset exists to forbid
       // (and it would defeat DCX-1's uniqueness guarantee within a file).
-      if (Object.hasOwn(map, key)) errors.push(`${file}:${i + 1} duplicate key "${key}" (first at line ${keyLines.get(keyPath)})`);
+      if (Object.hasOwn(map, key)) errors.push(`${file}:${i + 1} ${MSG.duplicateKey(key, keyLines.get(keyPath))}`);
       else keyLines.set(keyPath, i + 1);
       const val = (rawVal ?? '').trim();
 
@@ -111,7 +112,7 @@ export function parseYamlSubset(text, file = '<text>') {
           i = j;
         }
       } else if (val.startsWith('[')) {
-        if (!val.endsWith(']')) errors.push(`${file}:${i + 1} unterminated inline array`);
+        if (!val.endsWith(']')) errors.push(`${file}:${i + 1} ${MSG.unterminatedArray()}`);
         map[key] = val.replace(/^\[|\]$/g, '').split(',').map((s) => s.trim()).filter(Boolean);
         i++;
       } else {
@@ -175,11 +176,11 @@ export function buildGraph() {
       // Definitions: keys of the `items:` map. `v` is the item's version.
       for (const [id, meta] of Object.entries(data.items ?? {})) {
         if (!ID_RE.test(id)) {
-          errors.push(`${rel}:${keyLines.get(`items.${id}`)} item key "${id}" is not a valid ID`);
+          errors.push(`${rel}:${keyLines.get(`items.${id}`)} ${MSG.invalidItemKey(id)}`);
           continue;
         }
         const line = keyLines.get(`items.${id}`);
-        if (defs.has(id)) errors.push(`${rel}:${line} duplicate definition of ${id} (first in ${relative(ROOT, defs.get(id).file)})`);
+        if (defs.has(id)) errors.push(`${rel}:${line} ${MSG.duplicateDefinition(id, relative(ROOT, defs.get(id).file))}`);
         else defs.set(id, { version: Number(meta?.v), file, line, meta, kind: data.kind });
       }
     }
@@ -189,7 +190,7 @@ export function buildGraph() {
     const adr = relative(DOCS, file).match(/^adr\/(\d{4})-.+\.md$/);
     if (adr) {
       const id = `ADR-${adr[1]}`;
-      if (defs.has(id)) errors.push(`${rel}:1 duplicate definition of ${id} (first in ${relative(ROOT, defs.get(id).file)})`);
+      if (defs.has(id)) errors.push(`${rel}:1 ${MSG.duplicateDefinition(id, relative(ROOT, defs.get(id).file))}`);
       else defs.set(id, { version: 1, file, line: 1, meta: fm, kind: 'adr' });
     }
 
