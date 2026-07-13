@@ -5,7 +5,7 @@ status: approved
 
 intent: >-
   The record of decisions a human made when the SDLC protocol required it
-  (docs/CLAUDE.md HITL policy): contradiction overrides, requirement changes
+  (.spec/CLAUDE.md HITL policy): contradiction overrides, requirement changes
   and removals, flexibility-limiting choices, and genuine product/business
   calls. Distinct from ADR (technical decisions with alternatives, in adr/),
   INC (a detected contradiction), and Q (a still-open question): a DEC is a
@@ -53,3 +53,15 @@ items:
       lint-enforced HITL sign-off on product-altitude changes (DCX-16). Chosen
       over lighter prose-only options at each fork. Authorizes the DCX-16
       tooth and the SDLC protocol's enforcement posture.
+
+  DEC-4:
+    v: 1
+    date: 2026-07-13
+    by: founder (shpin.p@diffco.us)
+    title: Rename the docs/ tree to .spec/
+    statement: >-
+      Rename the documentation tree from docs/ to .spec/ — a dot-prefixed
+      system folder signaling a strict, machine-governed, AI-managed spec tree
+      rather than informal docs. Mirrors the same change in the Cortex kit; the
+      lint engine root, the Claude Code hook scopes, and the pre-commit gate all
+      target .spec.

@@ -4,7 +4,7 @@
  *
  * Implements: DCX-1 v2, DCX-2 v5, DCX-3 v5, DCX-4 v6, DCX-5 v1, DCX-6 v1,
  * DCX-7 v2, DCX-8 v2, DCX-9 v1, DCX-10 v2, DCX-11 v2, DCX-12 v1, DCX-13 v3,
- * DCX-14 v2, DCX-16 v1 (docs/specs/dcx-docs-check.yaml). DCX-15 lives in
+ * DCX-14 v2, DCX-16 v1 (.spec/specs/dcx-docs-check.yaml). DCX-15 lives in
  * scripts/test-docs-check.mjs.
  * Parsing and graph construction live in scripts/lib/docs-graph.mjs (shared
  * with the Claude Code hooks).
@@ -145,7 +145,7 @@ for (const [file, f] of files) {
     const recFile = files.get(join(ROOT, ch.record));
     // Compare the RESOLVED path so `..` traversal cannot dress an outside
     // file in the right-looking prefix.
-    if (!relative(ROOT, join(ROOT, String(ch.record))).startsWith('docs/specs/challenges/')) err(file, 1, MSG.recordOutsideDir(ch.record));
+    if (!relative(ROOT, join(ROOT, String(ch.record))).startsWith('.spec/specs/challenges/')) err(file, 1, MSG.recordOutsideDir(ch.record));
     else if (!recFile) err(file, 1, MSG.recordNotFound(ch.record));
     else if (recFile.fm?.kind !== 'challenge-record') err(file, 1, MSG.recordWrongKind(ch.record));
     else {
@@ -207,7 +207,7 @@ for (const [id, d] of defs) {
 // Challenge-record frontmatter and approval-provenance shapes (DCX-4).
 for (const [file, f] of files) {
   if (f.fm?.kind === 'challenge-record') {
-    if (!f.rel.startsWith('docs/specs/challenges/')) err(file, 1, MSG.recordOutsideChallenges());
+    if (!f.rel.startsWith('.spec/specs/challenges/')) err(file, 1, MSG.recordOutsideChallenges());
     for (const field of ['spec', 'round', 'date']) {
       if (!f.fm[field]) err(file, 1, MSG.recordMissingField(field));
     }

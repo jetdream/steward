@@ -5,7 +5,7 @@ status: approved
 
 intent: >-
   Pending founder decisions. Each resolves into a requirement change, an ADR,
-  a principle, or a scope edit — via the change protocol (docs/CLAUDE.md).
+  a principle, or a scope edit — via the change protocol (.spec/CLAUDE.md).
   Resolved questions keep their entry with `status: resolved` and a pointer to
   where the decision landed.
 

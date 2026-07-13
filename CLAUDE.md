@@ -5,7 +5,7 @@ This project is fully written by AI agents.
 This is spec-driven, spec-first project, nothing can be implemented without being in sync with specification.
 Project design and structure is to be done to achieve the best Agentic Experience (AX) possible, all the decisions on how to document and comment the code must be with clear focus on future usage by AI coding agents.
 
-**Before acting on any request, follow the SDLC protocol in [docs/CLAUDE.md](docs/CLAUDE.md):** evaluate the request against the docs *first* (Phase A intake), push back on contradictions and surface flexibility-limiting decisions rather than proceeding silently, capture missing information as documentation, and escalate blockers up the layers (Phase C). Requirement/goal/principle changes require a recorded human decision (`DEC-*`, HITL policy). The `/change-request` skill is the runnable form of intake.
+**Before acting on any request, follow the SDLC protocol in [.spec/CLAUDE.md](.spec/CLAUDE.md):** evaluate the request against the docs *first* (Phase A intake), push back on contradictions and surface flexibility-limiting decisions rather than proceeding silently, capture missing information as documentation, and escalate blockers up the layers (Phase C). Requirement/goal/principle changes require a recorded human decision (`DEC-*`, HITL policy). The `/change-request` skill is the runnable form of intake.
 
 ## Tech Stack
 NodeJS 24

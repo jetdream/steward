@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
-  record: docs/specs/challenges/ctx-context-hooks-2026-07-13-r3.md
+  record: .spec/specs/challenges/ctx-context-hooks-2026-07-13-r3.md
   summary: >-
     First run failed with two high findings (CTX-2 rule contradicted its own
     implementation; approved status without a challenge record) plus one
@@ -49,7 +49,7 @@ items:
     title: Lint on every docs edit
     rule: >-
       A PostToolUse hook on Edit|Write runs docs-check when the touched file
-      is under docs/ or scripts/. On errors it exits 2 with the error listing
+      is under .spec/ or scripts/. On errors it exits 2 with the error listing
       on stderr, which the harness feeds back to the agent immediately —
       referential integrity violations never survive past the edit that
       introduced them.
@@ -104,15 +104,15 @@ items:
       the resolved item excerpts in the feedback, and marks them seen — the
       consciously re-issued edit passes. IDs defined nowhere carry no
       contract to inject and are exempt (the docs lint catches them under
-      docs/; dangling IDs in code are a Stage 2 concern). Guards only files
-      under docs/, src/, and scripts/; an agent that already read the
+      .spec/; dangling IDs in code are a Stage 2 concern). Guards only files
+      under .spec/, src/, and scripts/; an agent that already read the
       governing register is never blocked.
 
   CTX-6:
     v: 1
     title: Ambient intake reminder
     rule: >-
-      A UserPromptSubmit hook makes the SDLC intake protocol (docs/CLAUDE.md
+      A UserPromptSubmit hook makes the SDLC intake protocol (.spec/CLAUDE.md
       Phase A) ambient: on the first substantive prompt of a session it
       injects a compact reminder of the intake steps (classify → evaluate
       against goals/principles/scope → push back on contradiction → fill gaps

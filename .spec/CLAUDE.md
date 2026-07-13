@@ -51,7 +51,7 @@ graph TD
 
 ## ID grammar
 
-An ID matches `^[A-Z]{1,4}-\d+$` and is **defined exactly once** — as a key of an `items:` map in its prefix's owning YAML file (`v:` is the item's version), or by an ADR filename `adr/NNNN-slug.md`. Everything else that mentions an ID is a *reference*; `grep -rn "STR-3" docs src` returns the full trace: definition → spec behavior → implementation → tests.
+An ID matches `^[A-Z]{1,4}-\d+$` and is **defined exactly once** — as a key of an `items:` map in its prefix's owning YAML file (`v:` is the item's version), or by an ADR filename `adr/NNNN-slug.md`. Everything else that mentions an ID is a *reference*; `grep -rn "STR-3" .spec src` returns the full trace: definition → spec behavior → implementation → tests.
 
 Register shape (see any file under [product/requirements/](product/requirements/) as the example):
 

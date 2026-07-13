@@ -1,7 +1,7 @@
 ---
 name: change-request
 description: >-
-  Run the SDLC intake protocol (docs/CLAUDE.md Phase A) on a substantive user
+  Run the SDLC intake protocol (.spec/CLAUDE.md Phase A) on a substantive user
   request before making any change: classify it, evaluate it against the docs
   first, push back on contradictions, fill information gaps, surface
   flexibility-limiting decisions, and record the required INC/Q/DEC/CON
@@ -14,7 +14,7 @@ description: >-
 
 The runnable form of the intake protocol. Work the steps in order; do not
 form a build proposal before step 2 is done. Cite IDs throughout. The
-authoritative protocol is in [docs/CLAUDE.md](../../../docs/CLAUDE.md) — this
+authoritative protocol is in [.spec/CLAUDE.md](../../../.spec/CLAUDE.md) — this
 skill is its checklist.
 
 ## 1. Classify
@@ -30,9 +30,9 @@ Name the request's class (it selects the path):
 ## 2. Evaluate against the docs FIRST
 
 Load the governing layers before proposing anything:
-- `docs/product/goals.yaml` (does it serve a goal?), `docs/product/principles.yaml` (P-*/GR-*), `docs/product/scope.md` (in/out of scope?), and the relevant `docs/product/requirements/*.yaml` + `docs/specs/*.yaml` by ID.
-- Also load open `docs/product/inconsistencies.yaml` (INC-*), `docs/product/constraints.yaml` (CON-*), and `docs/product/decisions.yaml` (DEC-*) touching the area.
-- `rg -n "<ID>" docs src` to find everything that references the IDs in play.
+- `.spec/product/goals.yaml` (does it serve a goal?), `.spec/product/principles.yaml` (P-*/GR-*), `.spec/product/scope.md` (in/out of scope?), and the relevant `.spec/product/requirements/*.yaml` + `.spec/specs/*.yaml` by ID.
+- Also load open `.spec/product/inconsistencies.yaml` (INC-*), `.spec/product/constraints.yaml` (CON-*), and `.spec/product/decisions.yaml` (DEC-*) touching the area.
+- `rg -n "<ID>" .spec src` to find everything that references the IDs in play.
 
 ## 3. Contradiction check → push back
 
@@ -49,12 +49,12 @@ Is there enough information to design? Check for missing: compliance obligations
 
 ## 5. Flexibility check → proactive heads-up
 
-Would implementing this take a one-way door — data-model shape, external-service lock-in, a public/wire contract, the auth model — or a brown-phase change (once there are production users/data), or foreclose a deferred/vision direction (`docs/product/scope.md`)?
+Would implementing this take a one-way door — data-model shape, external-service lock-in, a public/wire contract, the auth model — or a brown-phase change (once there are production users/data), or foreclose a deferred/vision direction (`.spec/product/scope.md`)?
 - If so, **tell the user proactively, propose an ADR, and get the decision** — do not silently pick the convenient irreversible option. Record as a `DEC-*` and an ADR.
 
 ## 6. Produce the intake summary, then hand off
 
-Emit a short summary: `class · governing IDs loaded · contradictions (INC / resolved by DEC or blocked on user) · gaps (asked / stored as CON/Q) · flexibility flags (ADR/DEC)`. Only once contradictions and blocking gaps are resolved, proceed to **Phase B** (the change protocol in docs/CLAUDE.md) — spec-first, with the HITL sign-off (`decided-by: DEC-x`) on any requirement/goal/principle change.
+Emit a short summary: `class · governing IDs loaded · contradictions (INC / resolved by DEC or blocked on user) · gaps (asked / stored as CON/Q) · flexibility flags (ADR/DEC)`. Only once contradictions and blocking gaps are resolved, proceed to **Phase B** (the change protocol in .spec/CLAUDE.md) — spec-first, with the HITL sign-off (`decided-by: DEC-x`) on any requirement/goal/principle change.
 
 ## Backward escalation (if a blocker surfaces during Phase B)
 

@@ -2,7 +2,7 @@
  * docs-graph — shared parser and graph builder for the documentation system.
  *
  * Consumed by scripts/docs-check.mjs (lint) and scripts/hooks/* (Claude Code
- * hooks). Parses the YAML subset defined in docs/CLAUDE.md and builds the ID
+ * hooks). Parses the YAML subset defined in .spec/CLAUDE.md and builds the ID
  * graph: definitions (register `items:` maps + ADR filenames), references
  * (ID tokens anywhere in any docs file), and per-file metadata.
  *
@@ -23,9 +23,9 @@ import { join, dirname, relative, basename } from 'node:path';
 // DOCS_CHECK_ROOT lets the acceptance harness (DCX-15) point the whole graph
 // at a mutated copy of the tree; unset in normal use.
 export const ROOT = process.env.DOCS_CHECK_ROOT ?? dirname(dirname(dirname(fileURLToPath(import.meta.url))));
-export const DOCS = join(ROOT, 'docs');
+export const DOCS = join(ROOT, '.spec');
 
-/** ID grammar per docs/CLAUDE.md. */
+/** ID grammar per .spec/CLAUDE.md. */
 export const ID_RE = /^[A-Z]{1,4}-\d+$/;
 export const REF_RE = /\b([A-Z]{1,4})-(\d+)(?:\s+v(\d+))?\b/g;
 
@@ -140,7 +140,7 @@ export function buildGraph() {
   const defs = new Map();
   const refs = [];
 
-  // Prefix registry: the docs/CLAUDE.md table is the single source.
+  // Prefix registry: the .spec/CLAUDE.md table is the single source.
   const routerText = readFileSync(join(DOCS, 'CLAUDE.md'), 'utf8');
   const registry = new Set([...routerText.matchAll(/^\|\s*`([A-Z]{1,4})`\s*\|/gm)].map((m) => m[1]));
 
@@ -185,7 +185,7 @@ export function buildGraph() {
       }
     }
 
-    // ADR IDs are defined by filenames docs/adr/NNNN-slug.md; their
+    // ADR IDs are defined by filenames .spec/adr/NNNN-slug.md; their
     // frontmatter (status: proposed|accepted|rejected|superseded) is the meta.
     const adr = relative(DOCS, file).match(/^adr\/(\d{4})-.+\.md$/);
     if (adr) {
@@ -207,7 +207,7 @@ export function buildGraph() {
   // errors on kind placement in docs-check), so it cannot become an
   // unlinted channel.
   for (const [file, { lines, fm, rel }] of files) {
-    if (fm?.kind === 'challenge-record' && rel.startsWith('docs/specs/challenges/')) continue;
+    if (fm?.kind === 'challenge-record' && rel.startsWith('.spec/specs/challenges/')) continue;
     lines.forEach((text, i) => {
       const keyDef = text.match(/^\s*([A-Z]{1,4}-\d+):\s*$/);
       for (const m of text.matchAll(REF_RE)) {

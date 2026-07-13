@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: docs/specs/ctx-context-hooks.yaml
+spec: .spec/specs/ctx-context-hooks.yaml
 round: 3
 date: 2026-07-13
 verdict: pass
@@ -12,7 +12,7 @@ by: architect-challenger (via general-purpose agent, delta-scoped)
 All checks green. docs-check exits 0 with 0 errors (the "not yet specified" list is the informational coverage report, not a failure). Ledger temp files restored (none remain). Everything holds.
 
 VERDICT: pass
-SPEC: docs/specs/ctx-context-hooks.yaml
+SPEC: .spec/specs/ctx-context-hooks.yaml
 FINDINGS:
 - none survived scrutiny.
 
@@ -32,7 +32,7 @@ What I attacked on CTX-6 and why it held:
 
 - Dedup suppressing genuinely different needs: by design. The reminder is a generic protocol pointer, not need-specific; showing it once per session is exactly the LRN-8 anti-residue mandate the spec cites.
 
-- SKILL.md (.claude/skills/change-request/SKILL.md): the six steps mirror docs/CLAUDE.md Phase A (classify → evaluate-first → contradiction/pushback → gap → flexibility → summary+handoff) and it correctly points to the authoritative protocol rather than restating it (altitude-clean). The hook text points at it accurately.
+- SKILL.md (.claude/skills/change-request/SKILL.md): the six steps mirror .spec/CLAUDE.md Phase A (classify → evaluate-first → contradiction/pushback → gap → flexibility → summary+handoff) and it correctly points to the authoritative protocol rather than restating it (altitude-clean). The hook text points at it accurately.
 
 - docs-check green: `0 error(s)`, exit 0 — the new SKILL.md and intake-hook.mjs under governed dirs introduce no lint regression. All steward-ctx-*.json temp files I created were removed (none remain).
 

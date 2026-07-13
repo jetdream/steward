@@ -2,7 +2,7 @@
 /**
  * Claude Code PreToolUse hook (Edit|Write): write-time contract guard.
  *
- * Implements: CTX-5 v1 (docs/specs/ctx-context-hooks.yaml).
+ * Implements: CTX-5 v1 (.spec/specs/ctx-context-hooks.yaml).
  * Computes the pending change's contract IDs — IDs referenced in the new
  * content plus IDs cited by @implements headers of the target file — and
  * blocks the call ONCE (exit 2) when any contract was never loaded this
@@ -19,7 +19,7 @@ try {
   const payload = JSON.parse(readFileSync(0, 'utf8'));
   const ti = payload.tool_input ?? {};
   const path = ti.file_path ?? '';
-  if (!path.startsWith(`${ROOT}/`) || !/\/(docs|src|scripts)\//.test(path)) process.exit(0);
+  if (!path.startsWith(`${ROOT}/`) || !/\/(\.spec|src|scripts)\//.test(path)) process.exit(0);
 
   // Contract IDs: referenced in the pending content + governing @implements
   // headers already present in the target file.

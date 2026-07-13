@@ -2,7 +2,7 @@
 /**
  * Claude Code PostToolUse hook (Read): session read ledger.
  *
- * Implements: CTX-4 v1 (docs/specs/ctx-context-hooks.yaml).
+ * Implements: CTX-4 v1 (.spec/specs/ctx-context-hooks.yaml).
  * When the agent reads a file, every ID whose DEFINITION lives in that file
  * is marked seen in the session ledger — reading the contract counts; reading
  * a mere reference elsewhere does not. Fails open.

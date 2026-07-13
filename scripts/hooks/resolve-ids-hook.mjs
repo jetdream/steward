@@ -2,7 +2,7 @@
 /**
  * Claude Code UserPromptSubmit hook: prompt-time ID resolution.
  *
- * Implements: CTX-2 v2, CTX-3 v1 (docs/specs/ctx-context-hooks.yaml).
+ * Implements: CTX-2 v2, CTX-3 v1 (.spec/specs/ctx-context-hooks.yaml).
  * Scans the user's message for registered ID tokens, resolves them against
  * the live docs graph, and prints a compact labeled context block to stdout
  * (which the harness injects into the conversation). Bounded to 8 items per

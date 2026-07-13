@@ -24,15 +24,15 @@ export const MSG = {
 
   // -- DCX-2: prefix ownership ------------------------------------------------
   filenameOwnedClaim: (prefix) => `DCX-2: prefix ${prefix} is filename-owned (adr/NNNN-slug.md) and cannot be claimed by a register`,
-  unregisteredClaim: (prefix) => `DCX-2: prefix ${prefix} claimed but not registered in docs/CLAUDE.md`,
+  unregisteredClaim: (prefix) => `DCX-2: prefix ${prefix} claimed but not registered in .spec/CLAUDE.md`,
   prefixAlreadyOwned: (prefix, ownerRel) => `DCX-2: prefix ${prefix} already owned by ${ownerRel}`,
   filenameOwnedDefinition: (id) => `DCX-2: ${id} must be defined by an adr/NNNN-slug.md filename, not an items entry`,
-  unregisteredDefinition: (id, prefix) => `DCX-2: ${id} defined under unregistered prefix ${prefix} — register it in docs/CLAUDE.md first`,
+  unregisteredDefinition: (id, prefix) => `DCX-2: ${id} defined under unregistered prefix ${prefix} — register it in .spec/CLAUDE.md first`,
   unclaimedPrefix: (id, prefix) => `DCX-2: ${id} defined but no file claims prefix ${prefix} — the ownership invariant must not silently vanish`,
   outsideOwningFile: (id, ownerRel) => `DCX-2: ${id} defined outside owning file ${ownerRel}`,
 
   // -- DCX-3: referential integrity -------------------------------------------
-  unregisteredPrefixRef: (id) => `DCX-3: unregistered prefix in "${id}" — register it in docs/CLAUDE.md or rename`,
+  unregisteredPrefixRef: (id) => `DCX-3: unregistered prefix in "${id}" — register it in .spec/CLAUDE.md or rename`,
   undefinedRef: (id) => `DCX-3: reference to undefined ID ${id}`,
   undefinedBehaviorKey: (id) => `DCX-3: behavior key references undefined ID ${id}`,
 
@@ -63,7 +63,7 @@ export const MSG = {
   invalidFlexibility: (id, value) => `DCX-4: ${id} has invalid flexibility "${value}"`,
   invalidOrigin: (id, value) => `DCX-4: ${id} has invalid origin "${value}" (only "baseline")`,
   itemFieldMustBeList: (id, field) => `DCX-4: ${id} field ${field} must be a list`,
-  recordOutsideChallenges: () => 'DCX-4: challenge-record outside docs/specs/challenges/ — the reference exemption is bound to that directory',
+  recordOutsideChallenges: () => 'DCX-4: challenge-record outside .spec/specs/challenges/ — the reference exemption is bound to that directory',
   recordMissingField: (field) => `DCX-4: challenge-record missing ${field}`,
   recordInvalidVerdict: () => 'DCX-4: challenge-record verdict must be pass|fail',
   approvedBlockShape: () => 'DCX-4: approved block needs date and by',
@@ -81,7 +81,7 @@ export const MSG = {
   // -- DCX-12 / DCX-13: design section + challenge evidence -------------------------
   needsDesignSection: () => 'DCX-12: approved spec needs a non-empty design section',
   needsChallengeBlock: () => 'DCX-13: approved spec needs an Architect Challenger record (challenge: date/by/verdict: pass/summary/record)',
-  recordOutsideDir: (record) => `DCX-13: challenge record must live under docs/specs/challenges/ (got ${record})`,
+  recordOutsideDir: (record) => `DCX-13: challenge record must live under .spec/specs/challenges/ (got ${record})`,
   recordNotFound: (record) => `DCX-13: challenge record not found: ${record}`,
   recordWrongKind: (record) => `DCX-13: ${record} is not a challenge-record`,
   recordWrongSpec: (record, named, actual) => `DCX-13: ${record} names spec "${named}", not ${actual}`,
@@ -97,6 +97,6 @@ export const MSG = {
 
   // -- DCX-7 / DCX-14: hygiene + repo gate ------------------------------------------
   missingFolderClaude: () => 'DCX-7: missing CLAUDE.md in this folder',
-  unexpectedExtension: () => 'DCX-7: unexpected extension under docs/ — only .yaml and .md are lintable (rename or move)',
+  unexpectedExtension: () => 'DCX-7: unexpected extension under .spec/ — only .yaml and .md are lintable (rename or move)',
   missingPreCommitGate: (candidates) => `DCX-14: no pre-commit hook running docs-check found (${candidates})`,
 };

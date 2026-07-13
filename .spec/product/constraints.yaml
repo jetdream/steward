@@ -7,7 +7,7 @@ intent: >-
   Operational, compliance, deployment, usage-mode, and integration context
   that bounds design but is neither a product requirement (WHAT the product
   does) nor an assumption-bet (A-*, an external fact we depend on). Captured
-  from the user during intake (docs/CLAUDE.md A4) so it is never lost and
+  from the user during intake (.spec/CLAUDE.md A4) so it is never lost and
   informs future features. Each item has a category
   (compliance | deployment | usage | environment | integration | other) and,
   where it tightens a guardrail or drives an NFR, links to it.

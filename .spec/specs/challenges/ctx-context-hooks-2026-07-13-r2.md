@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: docs/specs/ctx-context-hooks.yaml
+spec: .spec/specs/ctx-context-hooks.yaml
 round: 2
 date: 2026-07-13
 verdict: pass
@@ -10,11 +10,11 @@ by: architect-challenger (via general-purpose agent)
 # Verbatim verdict
 
 VERDICT: pass
-SPEC: docs/specs/ctx-context-hooks.yaml
+SPEC: .spec/specs/ctx-context-hooks.yaml
 FINDINGS:
-- [medium] docs/specs/CLAUDE.md:24 index still lists ctx-context-hooks.yaml as `approved` while the spec is `draft` — the prior status-regression fix (#2) was applied to the spec file but its citing site was not cascaded, so the repo currently asserts the very design-gate state DCX-13 exists to guard, and no lint checks markdown tables (exactly the silent-drift class the single-source rule forbids) — fix: set the row to `draft` now, or to `approved` in the same commit that records this challenge block and flips status.
-- [medium] docs/CLAUDE.md:135 (Stage 0) still claims "no change touches a contract the session never loaded (CTX-4, CTX-5)" — the exact overclaim fix #3 narrowed in the spec's purpose survives verbatim in the highest-precedence router every agent reads first; shell/heredoc/git-apply writes bypass the guard (spec's own edge-cases say so) — fix: narrow to "no Edit/Write tool call touches a contract the session never loaded".
-- [low] CTX-5's rationale "IDs not defined anywhere (the lint catches those instead)" is false for two of the three trees CTX-5 guards: docs-check scans only docs/** (docFiles in scripts/lib/docs-graph.mjs) and CTX-1 never fires on src/ edits, so a dangling `@implements STR-999` in src/ is caught by nothing at Stage 0 (verified live: guard exits 0, lint silent) — the exemption behavior itself is still correct (an undefined ID has no contract to inject), so this is a justification inaccuracy, not a behavioral defect — fix: reword to "the docs lint catches those under docs/; dangling IDs in code are a Stage 2 concern".
+- [medium] .spec/specs/CLAUDE.md:24 index still lists ctx-context-hooks.yaml as `approved` while the spec is `draft` — the prior status-regression fix (#2) was applied to the spec file but its citing site was not cascaded, so the repo currently asserts the very design-gate state DCX-13 exists to guard, and no lint checks markdown tables (exactly the silent-drift class the single-source rule forbids) — fix: set the row to `draft` now, or to `approved` in the same commit that records this challenge block and flips status.
+- [medium] .spec/CLAUDE.md:135 (Stage 0) still claims "no change touches a contract the session never loaded (CTX-4, CTX-5)" — the exact overclaim fix #3 narrowed in the spec's purpose survives verbatim in the highest-precedence router every agent reads first; shell/heredoc/git-apply writes bypass the guard (spec's own edge-cases say so) — fix: narrow to "no Edit/Write tool call touches a contract the session never loaded".
+- [low] CTX-5's rationale "IDs not defined anywhere (the lint catches those instead)" is false for two of the three trees CTX-5 guards: docs-check scans only .spec/** (docFiles in scripts/lib/docs-graph.mjs) and CTX-1 never fires on src/ edits, so a dangling `@implements STR-999` in src/ is caught by nothing at Stage 0 (verified live: guard exits 0, lint silent) — the exemption behavior itself is still correct (an undefined ID has no contract to inject), so this is a justification inaccuracy, not a behavioral defect — fix: reword to "the docs lint catches those under .spec/; dangling IDs in code are a Stage 2 concern".
 - [low] CTX-1 says exit 2 delivers "the error listing", but scripts/hooks/docs-lint-hook.mjs feeds docs-check's entire stderr, which includes ~60 lines of informational coverage report per failure (verified live) — noisy feedback that cuts against the spec's own anti-pollution stance — fix: filter stderr to `ERROR` lines (plus cascade lists) before echoing.
 
 Why the mediums don't block: both are one-line cascade edits in neighboring markdown left over from otherwise-real prior fixes; the spec under review is internally consistent, honest about its limits, and its implementation matches it — nothing in the design needs to change.

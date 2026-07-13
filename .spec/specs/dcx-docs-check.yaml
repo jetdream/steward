@@ -6,9 +6,9 @@ challenge:
   date: 2026-07-13
   by: architect-challenger
   verdict: pass
-  record: docs/specs/challenges/dcx-docs-check-2026-07-13-r9.md
+  record: .spec/specs/challenges/dcx-docs-check-2026-07-13-r9.md
   summary: >-
-    Seven rounds total; full history in docs/specs/challenges/. Rounds 1-4
+    Seven rounds total; full history in .spec/specs/challenges/. Rounds 1-4
     failed on real highs, each fixed and mutation-verified before
     re-challenge: unimplemented DCX-8 clause (spec-vs-implementation drift
     inside the lint itself); same-file duplicate YAML keys silently
@@ -43,7 +43,7 @@ modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs, scripts/lib/messag
 
 purpose: >-
   scripts/docs-check.mjs deterministically enforces the documentation
-  conventions of docs/CLAUDE.md: ID uniqueness, prefix ownership, referential
+  conventions of .spec/CLAUDE.md: ID uniqueness, prefix ownership, referential
   integrity, stale version pins (cascade lists), register/spec schema
   validity, coverage and registers reports, folder hygiene. Internal tooling:
   this spec defines its own items (DCX) inline rather than having a separate
@@ -56,9 +56,9 @@ items:
     v: 2
     title: Definition uniqueness
     rule: >-
-      A key of an `items:` map in any docs/**/*.yaml file (excluding TEMPLATE
+      A key of an `items:` map in any .spec/**/*.yaml file (excluding TEMPLATE
       files) is the definition of that ID; the item's `v` field is its
-      version. ADR IDs are defined by filenames docs/adr/NNNN-slug.md. Any ID
+      version. ADR IDs are defined by filenames .spec/adr/NNNN-slug.md. Any ID
       defined more than once is an error. Markdown files define no IDs.
 
   DCX-2:
@@ -68,7 +68,7 @@ items:
       A file's top-level `prefix` key (scalar or list) claims ownership of
       those ID namespaces; an ID definition outside its prefix's owning file
       is an error, as is a prefix claimed by two files. Definitions and
-      ownership claims under prefixes absent from the docs/CLAUDE.md registry
+      ownership claims under prefixes absent from the .spec/CLAUDE.md registry
       are errors — a phantom namespace must not enter the graph even before
       anything references it. Every defined ID's prefix (except
       filename-owned ones) must be claimed by exactly one file: a definition
@@ -83,14 +83,14 @@ items:
     v: 5
     title: Referential integrity
     rule: >-
-      Every ID-shaped token (grammar in docs/CLAUDE.md) occurring anywhere in
-      any docs/**/*.{yaml,md} file — except an ID's own definition site — is
+      Every ID-shaped token (grammar in .spec/CLAUDE.md) occurring anywhere in
+      any .spec/**/*.{yaml,md} file — except an ID's own definition site — is
       a reference and shall resolve to a defined ID. Tokens with prefixes
-      absent from the docs/CLAUDE.md registry are errors, preventing
+      absent from the .spec/CLAUDE.md registry are errors, preventing
       vocabulary drift. Two exemptions only: the files named exactly
       TEMPLATE.yaml and TEMPLATE.md are excluded from all checks (placeholder
       content by design), and files of kind challenge-record **located under
-      docs/specs/challenges/** are excluded from reference resolution only —
+      .spec/specs/challenges/** are excluded from reference resolution only —
       they quote adversarial attack payloads verbatim, which by nature cite
       deliberately invalid IDs; resolving quotations would forbid honest
       evidence. The exemption is bound to that directory: a self-declared
@@ -148,8 +148,8 @@ items:
     v: 2
     title: Folder hygiene
     rule: >-
-      Every directory under docs/ shall contain a CLAUDE.md, and every file
-      under docs/ shall have a .yaml or .md extension — any other extension
+      Every directory under .spec/ shall contain a CLAUDE.md, and every file
+      under .spec/ shall have a .yaml or .md extension — any other extension
       would be invisible to all checks and is therefore an error. Violations
       are errors.
 
@@ -199,7 +199,7 @@ items:
       A spec with status approved or implemented must have a non-empty design
       section (capability-local design: module placement, data touched,
       jobs/flows, integration points — the design altitude rule in
-      docs/CLAUDE.md governs what belongs here vs in ADRs/architecture).
+      .spec/CLAUDE.md governs what belongs here vs in ADRs/architecture).
 
   DCX-13:
     v: 3
@@ -207,7 +207,7 @@ items:
     rule: >-
       A spec with status approved or implemented must carry a challenge block
       with date, by, verdict pass, a summary, and a record path pointing at a
-      challenge-record file — the path must lie under docs/specs/challenges/
+      challenge-record file — the path must lie under .spec/specs/challenges/
       (enforced, not just conventional); the record must exist, be of kind
       challenge-record, name this spec, its frontmatter verdict must match
       the block's, and its verbatim body must contain a line "VERDICT:
@@ -285,7 +285,7 @@ design: >-
   until the week-1 skeleton introduces a package.json, at which point a real
   YAML library may replace the subset parser via a superseding decision.
 
-data: None persisted. Reads docs/**/*.{yaml,md}; writes nothing (JSON to stdout).
+data: None persisted. Reads .spec/**/*.{yaml,md}; writes nothing (JSON to stdout).
 
 interfaces: "CLI: node scripts/docs-check.mjs [--json]. Zero dependencies; Node 24."
 
@@ -304,7 +304,7 @@ acceptance: >-
   namespace (DCX-2), a dangling reference or unregistered-prefix token
   (DCX-3) — with only the exact-name TEMPLATE files exempt, a stale pin with
   its cascade list (DCX-5), a missing priority or illegal status (DCX-4), a
-  missing folder CLAUDE.md or an unexpected file extension under docs/
+  missing folder CLAUDE.md or an unexpected file extension under .spec/
   (DCX-7), a cross-cutting spec with empty constrained-by, a constrained-by
   entry citing a sketch architecture doc, a non-architecture path, a
   non-accepted ADR, or a phantom ADR not defined by filename (DCX-11), an
@@ -322,7 +322,7 @@ acceptance: >-
 defaults-and-assumptions: >-
   Stage 1+ enforcement (code citations in src/, test-title scanning) is out of
   this version's scope; affected items bump when those land — per the
-  enforcement stages in docs/CLAUDE.md.
+  enforcement stages in .spec/CLAUDE.md.
 
 non-goals: Semantic contradiction detection (Stage 3 concern); style linting.
 

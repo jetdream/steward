@@ -1,6 +1,6 @@
 /**
  * session-ledger — per-session record of which contract IDs the agent has
- * actually loaded (CTX-4, docs/specs/ctx-context-hooks.yaml).
+ * actually loaded (CTX-4, .spec/specs/ctx-context-hooks.yaml).
  *
  * Backed by a small JSON file in the OS temp directory; shape {seen: [ids]}.
  * Safe to delete anytime — the worst case is one extra deny-once roundtrip.

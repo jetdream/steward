@@ -2,9 +2,9 @@
 /**
  * Claude Code UserPromptSubmit hook: ambient SDLC intake reminder.
  *
- * Implements: CTX-6 v1 (docs/specs/ctx-context-hooks.yaml).
+ * Implements: CTX-6 v1 (.spec/specs/ctx-context-hooks.yaml).
  * On the first substantive prompt of a session, injects a compact reminder of
- * the Phase A intake protocol (docs/CLAUDE.md) so it is in front of the agent
+ * the Phase A intake protocol (.spec/CLAUDE.md) so it is in front of the agent
  * at request time. Bounded: shown at most once per session (a sentinel in the
  * session ledger dedupes) and only for a substantive prompt, so a trivial
  * opener does not consume the one shot. Best-effort; fails open.
@@ -28,7 +28,7 @@ try {
 
   console.log(`<sdlc-intake source="scripts/hooks/intake-hook.mjs">
 Before acting on a substantive request, run the SDLC intake protocol
-(docs/CLAUDE.md Phase A) — the /change-request skill is its runnable form:
+(.spec/CLAUDE.md Phase A) — the /change-request skill is its runnable form:
   1. Classify: question · bug · new-requirement · change · preference · technical-decision.
   2. Evaluate against the docs FIRST — load goals, principles/guardrails (P-*/GR-*),
      scope, and the relevant requirements/specs by ID before proposing anything.

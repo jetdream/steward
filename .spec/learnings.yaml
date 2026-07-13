@@ -149,7 +149,7 @@ items:
       evidence record) caught real violations; every prose-only rule
       depended on goodwill. Convert prose rules into checks where possible;
       where not, mark them as acknowledged debt and record why. The
-      protocol-step enforcement annotations in docs/CLAUDE.md implement
+      protocol-step enforcement annotations in .spec/CLAUDE.md implement
       this.
 
   LRN-11:
@@ -185,9 +185,9 @@ items:
     source: SDLC-governance increment, 2026-07-13 (write-guard friction observed live)
     title: Example @implements headers in prose files trip the write-guard
     statement: >-
-      docs/CLAUDE.md carries "@implements STR-3 v1" as an example in its layer
+      .spec/CLAUDE.md carries "@implements STR-3 v1" as an example in its layer
       diagram; the CTX-5 write-guard reads @implements lines from the target
-      file, so every Edit to docs/CLAUDE.md deny-once-blocks on STR-3 until it
+      file, so every Edit to .spec/CLAUDE.md deny-once-blocks on STR-3 until it
       is loaded. Also: an ID authored via Edit/Write this session is not in
       the read-ledger (only Read marks IDs seen), so the write-guard fires on
       IDs you just wrote. Both are harmless (deny-once = one speed bump) and
@@ -198,7 +198,7 @@ items:
     v: 1
     type: pattern
     scope: [testing, process]
-    source: DCX round 9 (docs/specs/challenges/dcx-docs-check-2026-07-13-r9.md), plus the parallel CTX r3 coupling note
+    source: DCX round 9 (.spec/specs/challenges/dcx-docs-check-2026-07-13-r9.md), plus the parallel CTX r3 coupling note
     title: Acceptance cases must not hardcode a churning fixture
     statement: >-
       Two DCX-13 harness cases hardcoded the r2 challenge-record filename;
@@ -213,7 +213,7 @@ items:
     v: 1
     type: pattern
     scope: [lint, security, design]
-    source: challenge round 6 (docs/specs/challenges/dcx-docs-check-2026-07-13-r6.md), medium findings
+    source: challenge round 6 (.spec/specs/challenges/dcx-docs-check-2026-07-13-r6.md), medium findings
     title: Exemptions must be bound to provenance, never self-declared
     statement: >-
       Any check exemption keyed on a self-declarable property (a kind field,

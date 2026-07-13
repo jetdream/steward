@@ -10,7 +10,7 @@ depends-on: []           # capability prefixes whose specs constrain this one
 design-scope: cross-cutting  # cross-cutting (must cite designs) | local
 constrained-by: []       # ADR IDs (must be accepted) and/or architecture doc
                          # paths (must be approved), e.g.
-                         # [ADR-0001, docs/architecture/data-model.yaml]
+                         # [ADR-0001, .spec/architecture/data-model.yaml]
 modules: []              # src modules, filled as implementation lands
 # challenge:             # REQUIRED before status: approved — record of the
 #   date: YYYY-MM-DD     # mandatory Architect Challenger run
@@ -26,7 +26,7 @@ purpose: >-
 # One entry per implemented requirement ID. These are REFERENCES to the
 # register definitions (no `v` here — pin with "STR-3 v1" inside text when a
 # specific version matters). Spec only what a reasonable implementation could
-# get wrong (altitude rule, docs/specs/CLAUDE.md).
+# get wrong (altitude rule, .spec/specs/CLAUDE.md).
 behavior:
   XXX-1:
     rules: >-

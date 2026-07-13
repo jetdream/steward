@@ -2,8 +2,8 @@
 /**
  * Claude Code PostToolUse hook (Edit|Write): instant docs lint.
  *
- * Implements: CTX-1 v1 (docs/specs/ctx-context-hooks.yaml).
- * When the edited file belongs to docs/ or scripts/, runs docs-check; on lint
+ * Implements: CTX-1 v1 (.spec/specs/ctx-context-hooks.yaml).
+ * When the edited file belongs to .spec/ or scripts/, runs docs-check; on lint
  * errors exits 2 with the error listing on stderr so the harness feeds it
  * straight back to the agent. Fails open (exit 0) on any unexpected problem —
  * tooling bugs must never block work.
@@ -19,7 +19,7 @@ const ROOT = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 try {
   const payload = JSON.parse(readFileSync(0, 'utf8'));
   const path = payload.tool_input?.file_path ?? '';
-  if (!path.startsWith(`${ROOT}/`) || !/\/(docs|scripts)\//.test(path)) process.exit(0);
+  if (!path.startsWith(`${ROOT}/`) || !/\/(\.spec|scripts)\//.test(path)) process.exit(0);
 
   const run = spawnSync(process.execPath, [join(ROOT, 'scripts', 'docs-check.mjs')], { encoding: 'utf8' });
   if (run.status !== 0) {

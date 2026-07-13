@@ -9,7 +9,7 @@ intent: >-
   no requirement document will ever enumerate. When implementation hits an
   unspecified case, derive the answer from a principle and record the
   derivation (`// per P-4`), or raise a spec amendment (change protocol,
-  docs/CLAUDE.md). Precedence: GR (non-negotiable) > P > requirements > specs;
+  .spec/CLAUDE.md). Precedence: GR (non-negotiable) > P > requirements > specs;
   lower layers may only tighten upper ones. Module-scoped principles may exist
   in module CLAUDE.md files; they must not conflict with these. Guardrails are
   enforced on every draft before it enters any queue (STR-3, STR-4); org-level

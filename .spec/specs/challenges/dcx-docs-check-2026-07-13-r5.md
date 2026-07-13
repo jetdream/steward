@@ -1,0 +1,20 @@
+---
+kind: challenge-record
+spec: .spec/specs/dcx-docs-check.yaml
+round: 5
+date: 2026-07-13
+verdict: pass
+by: architect-challenger (via general-purpose agent)
+---
+
+# Verbatim verdict
+
+VERDICT: pass
+SPEC: .spec/specs/dcx-docs-check.yaml
+FINDINGS:
+- [medium] DCX-2's ownership invariant silently vanishes for a registered prefix no file claims — verified by mutation twice: (a) adding a `ZZZ` row to the .spec/CLAUDE.md registry let ZZZ-1 and ZZZ-2 be defined in goals.yaml and risks.yaml (namespace split across two foreign files, 0 errors); (b) deleting the single `prefix: DCX` line from this spec let DCX-99 be defined in goals.yaml with 0 errors — the "definition outside its prefix's owning file" error cannot fire when no owning file exists, and register-kind files are saved only incidentally by DCX-4's missing-prefix check (spec-kind files with inline items, like DCX and CTX themselves, are not). Survives scrutiny because the rule text promises the error unconditionally and the degraded state is reachable by one silent line loss. Doesn't block: no approval gate is bypassable through it (ADR stays filename-owned, DCX-11's path branch still demands kind architecture), every ID remains unique and resolvable, and exploiting it requires either editing the curated registry or losing a claim first. Fix: bump DCX-2 to require that every non-filename-owned defined ID's prefix be claimed by exactly one file, and error on any definition whose prefix is registered but unclaimed.
+- [low] DCX-14's implemented check is looser than its rule text: the rule says the hook "references docs-check.mjs" but the code matches the bare substring `docs-check` — a pre-commit containing only `# docs-check disabled for now` passes (verified by mutation, 0 errors). Doesn't block: the rule itself scopes DCX-14 to a presence check that "catches deletion, the commonest failure" and names Stage 1 CI as the authoritative backstop; any substring check is equally spoofable by a comment. Fix: match `docs-check.mjs` on a non-comment line, or leave as-is and soften the rule's "references docs-check.mjs" to "mentions docs-check".
+
+Round-4 fix verification (all mutations run, tree restored byte-identical — 76/76 checksums match): (1) phantom ADR via items entry — `ADR-0099` in goals.yaml errors "must be defined by an adr/NNNN-slug.md filename", and `prefix: [P, GR, ADR]` errors "filename-owned … cannot be claimed by a register"; (2) non-architecture path — approved spec with `constrained-by: [.spec/product/goals.yaml, .spec/specs/ctx-context-hooks.yaml]` errors on both with kind-naming messages; (3) acceptance section now enumerates frontmatter parse errors, phantom prefixes/ADRs, exact-name TEMPLATE exemption, stray extensions, and non-architecture paths — each clause maps to a check I exercised; (4) frontmatter duplicate-key remap — duplicate `status:` in ADR frontmatter reports `:3 … (first at line 2)`, both numbers correctly shifted to file coordinates.
+
+Attacks that held: phantom-ADR vectors beyond the fixed ones (nested adr/ subdirs don't match the filename grammar; 2-digit ADR entries fall to the path branch and error; an ADR file with no frontmatter fails closed with status "undefined" — verified live); TEMPLATE-prefix naming channel (exact-basename exemption only); DCX-11 entries that are register IDs or other specs (fail closed); false-scope claim on `design-scope: local` (the docs-graph sharing with CTX is explicitly declared and CTX carries `depends-on: [DCX]`; forcing cross-cutting would demand tooling ADRs with no conforming target — refuted); cheaper alternative via a real YAML library (explicitly deferred in `design` until package.json exists, with a named supersession path); untestable acceptance (every DCX-1..14 item has an executable clause; DCX-13's "actually invoked" clause is protocol-scoped, with the lintable block shape tested); duplicate-key first-win plus loud error prevents last-win frontmatter status spoofing; clean tree exits 0 and every mutation exited 1 with a pointing message.
