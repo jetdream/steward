@@ -1,2 +1,4 @@
+#!/usr/bin/env sh
 # Documentation graph must be valid before any commit (DCX-14).
-node scripts/docs-check.mjs
+# Engine is the pinned cortex dependency — no vendored copy (ADR-0001).
+npx cortex-docs-check

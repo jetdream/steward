@@ -1,0 +1,36 @@
+kind: registry
+title: Steward Prefix Registry
+intent: >-
+  Maps every ID prefix to the file that owns its definitions. Read as data by
+  the cortex engine — the single source of valid namespaces. Adopted from the
+  former prose table in .spec/CLAUDE.md during the Cortex extraction (DEC-4).
+filename-owned: [ADR]
+prefixes:
+  G: product/goals.yaml
+  P: product/principles.yaml
+  GR: product/principles.yaml
+  A: product/assumptions.yaml
+  R: product/risks.yaml
+  Q: product/open-questions.yaml
+  INC: product/inconsistencies.yaml
+  DEC: product/decisions.yaml
+  CON: product/constraints.yaml
+  LRN: learnings.yaml
+  ONB: product/requirements/onb-onboarding.yaml
+  MEM: product/requirements/mem-org-memory.yaml
+  CHT: product/requirements/cht-agentic-chat.yaml
+  INT: product/requirements/int-interviewer.yaml
+  STR: product/requirements/str-posting-strategy.yaml
+  GEN: product/requirements/gen-content-generation.yaml
+  EXT: product/requirements/ext-external-radar.yaml
+  APR: product/requirements/apr-approval-inbox.yaml
+  PUB: product/requirements/pub-publishing.yaml
+  PRO: product/requirements/pro-proactive-manager.yaml
+  STW: product/requirements/stw-stewardship.yaml
+  AUT: product/requirements/aut-autonomy.yaml
+  BIL: product/requirements/bil-billing.yaml
+  OPS: product/requirements/ops-console.yaml
+  UX: product/requirements/ux-app-shell.yaml
+  DCX: specs/dcx-docs-check.yaml
+  CTX: specs/ctx-context-hooks.yaml
+  ADR: adr/NNNN-slug.md

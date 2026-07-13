@@ -85,38 +85,7 @@ An item is immutable per version. Any **semantic** change bumps `v` (typo fixes 
 
 ## Prefix registry
 
-New prefixes are registered here **before** first use (`docs-check` rejects unregistered ones).
-
-| Prefix | Owns | Defined in |
-|---|---|---|
-| `G` | Goals | product/goals.yaml |
-| `P` | Product principles | product/principles.yaml |
-| `GR` | Platform guardrails | product/principles.yaml |
-| `A` | Assumptions | product/assumptions.yaml |
-| `R` | Risks | product/risks.yaml |
-| `Q` | Open questions | product/open-questions.yaml |
-| `INC` | Inconsistencies | product/inconsistencies.yaml |
-| `DEC` | Human-in-the-loop decisions | product/decisions.yaml |
-| `CON` | Operational / compliance / deployment constraints | product/constraints.yaml |
-| `LRN` | Engineering learnings (gotchas, dead-ends, patterns) | learnings.yaml |
-| `ONB` | Lazy onboarding | product/requirements/onb-onboarding.yaml |
-| `MEM` | Org Memory | product/requirements/mem-org-memory.yaml |
-| `CHT` | Agentic chat | product/requirements/cht-agentic-chat.yaml |
-| `INT` | Interviewer | product/requirements/int-interviewer.yaml |
-| `STR` | Posting Strategy | product/requirements/str-posting-strategy.yaml |
-| `GEN` | Content generation | product/requirements/gen-content-generation.yaml |
-| `EXT` | External radar | product/requirements/ext-external-radar.yaml |
-| `APR` | Approval inbox & composer | product/requirements/apr-approval-inbox.yaml |
-| `PUB` | Publishing | product/requirements/pub-publishing.yaml |
-| `PRO` | Proactive manager | product/requirements/pro-proactive-manager.yaml |
-| `STW` | Stewardship loop | product/requirements/stw-stewardship.yaml |
-| `AUT` | Autonomy system | product/requirements/aut-autonomy.yaml |
-| `BIL` | Billing & account | product/requirements/bil-billing.yaml |
-| `OPS` | Operations console | product/requirements/ops-console.yaml |
-| `UX` | App shell & navigation | product/requirements/ux-app-shell.yaml |
-| `DCX` | docs-check tool | specs/dcx-docs-check.yaml |
-| `CTX` | Context hooks | specs/ctx-context-hooks.yaml |
-| `ADR` | Decision records | adr/NNNN-slug.md (ID from filename) |
+Valid prefixes are **data** in [registry.yaml](registry.yaml) (kind `registry`), read by the cortex engine — no prose table to drift. Register a new prefix there before first use (`docs-check` rejects unregistered ones).
 
 ## Semantic clarity rule
 
@@ -180,5 +149,4 @@ Who decides what. Right-sized for a two-founder product; the decisive artifact i
 - [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval, DCX-11)
 - [product/decisions.yaml](product/decisions.yaml) — HITL decision log (`DEC-*`); [product/constraints.yaml](product/constraints.yaml) — operational/compliance/deployment constraints (`CON-*`)
 - [adr/](adr/) — decision journal (markdown)
-- `../scripts/` — `docs-check.mjs` (lint), `lib/docs-graph.mjs` (shared parser), `hooks/` (Claude Code hooks), `test-docs-check.mjs` (acceptance)
-- `../.claude/skills/change-request/` — the runnable intake procedure (Phase A)
+- the **cortex** plugin + pinned dependency — provides the docs-check lint engine, the Claude Code hooks, the Architect Challenger agent, and the `/cortex:change-request` skill (consumed via a version pin, never vendored)

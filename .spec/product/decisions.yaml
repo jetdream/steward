@@ -65,3 +65,17 @@ items:
       rather than informal docs. Mirrors the same change in the Cortex kit; the
       lint engine root, the Claude Code hook scopes, and the pre-commit gate all
       target .spec.
+
+  DEC-5:
+    v: 1
+    date: 2026-07-13
+    by: founder (shpin.p@diffco.us)
+    title: Source the docs-check engine from cortex, not a vendored copy
+    statement: >-
+      Stop vendoring the engine and methodology copies in scripts/ and
+      .claude/. Steward consumes cortex two ways: the Claude Code surface via
+      the installed plugin (enabledPlugins), and the toolchain (git hooks / CI
+      / CLI) via a version-pinned npm git dependency
+      (github:DiffCo/cortex, pinned by tag) run as npx cortex-docs-check. The
+      prefix registry moves to .spec/registry.yaml (data). This removes the
+      divergent engine copy and its version drift.
