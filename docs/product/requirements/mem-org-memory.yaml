@@ -1,0 +1,40 @@
+kind: requirements
+prefix: MEM
+title: Org Memory
+status: approved
+serves: [G-2, G-3]
+
+intent: >-
+  The core asset. A living, attributed profile of the organization that every
+  subsystem reads and every founder action enriches — this compounding is what
+  makes near-autonomy (G-2) possible. The system owns the context: it never
+  asks for what it can find, and never asks the same thing twice.
+
+items:
+  MEM-1:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Memory persistence
+    statement: >-
+      Every approval, edit, rejection, upload, interview answer, and chat
+      remark shall write to Memory (entry types: fact / story / styleRule /
+      taboo / person / program / event, each with source + timestamp).
+    acceptance: A stated correction is never violated in subsequent drafts.
+
+  MEM-2:
+    v: 1
+    priority: P0
+    title: Never-ask-twice
+    statement: >-
+      The system may interrupt the founder only for (a) field-only raw
+      material, (b) genuinely founder-owned decisions, (c) blocking unknowns.
+      All else defaults sensibly with a visible "assumed" note (P-3).
+
+  MEM-3:
+    v: 1
+    priority: P1
+    title: Memory browser
+    statement: >-
+      Inside the Organization page (UX-5): view, edit, delete what the system
+      knows.

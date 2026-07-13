@@ -1,0 +1,38 @@
+kind: requirements
+prefix: PRO
+title: Proactive Manager
+status: approved
+serves: [G-3, G-4]
+
+intent: >-
+  The system moves first (P-6). It requests scarce raw material (pictures
+  above all, given R-3), proposes campaigns pre-drafted, and keeps fundraising
+  asks honest — always with a reason (P-5).
+
+items:
+  PRO-1:
+    v: 1
+    priority: P0
+    depends: [MEM-1, GEN-4]
+    title: Material requests with a reason
+    statement: >-
+      Prioritizing pictures (the scarce resource with generation off, GR-4):
+      tied to real events from Memory ("The well drilling starts Monday — send
+      3 photos and one line; I'll turn it into the impact story your donors
+      were promised"). Request → simple upload flow → library + drafts.
+
+  PRO-2:
+    v: 1
+    priority: P0
+    title: Campaign initiation
+    statement: >-
+      Seasonal packages (GivingTuesday, year-end) proposed pre-drafted; the
+      founder approves once.
+
+  PRO-3:
+    v: 1
+    priority: P1
+    title: Ask-hygiene
+    statement: >-
+      Spaces fundraising asks; flags asking-without-reporting and proposes the
+      missing impact post (STW-1).

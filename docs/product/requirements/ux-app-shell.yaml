@@ -1,0 +1,67 @@
+kind: requirements
+prefix: UX
+title: App Shell & Navigation
+status: approved
+serves: [G-3]
+source: PRD v0.3 §8 (UX requirements were unnumbered there; IDs assigned at decomposition)
+
+intent: >-
+  Five navigation surfaces plus one action, on a responsive web app. The shell
+  embodies P-5 (colleague voice) and P-6 (no empty states — the system always
+  moves first).
+
+items:
+  UX-1:
+    v: 1
+    priority: P0
+    title: Responsive web
+    statement: Desktop + phone browser. No native mobile apps (scope.md).
+
+  UX-2:
+    v: 1
+    priority: P0
+    title: Chat surface
+    statement: >-
+      The conversational front door: interviewer sessions, questions,
+      ideation, redirects (CHT-1, CHT-2); (P1) commands (CHT-3).
+
+  UX-3:
+    v: 1
+    priority: P0
+    title: Inbox surface
+    statement: >-
+      Approval queue with per-channel variants, fit indicators,
+      awaiting-picture states (APR-1, GEN-4). Where 90% of non-chat time
+      lives.
+
+  UX-4:
+    v: 1
+    priority: P0
+    title: Calendar / Published surface
+    statement: >-
+      Planned and published posts across all channels; publish log (GEN-1,
+      PUB-3).
+
+  UX-5:
+    v: 1
+    priority: P0
+    title: Organization surface
+    statement: >-
+      Two tabs: Profile & Memory (what the system knows; MEM-3 browser at P1)
+      and Posting Strategy (STR-1 sections, versioned editor per STR-2).
+
+  UX-6:
+    v: 1
+    priority: P0
+    title: Settings / Billing surface
+    statement: >-
+      Cadence (APR-2), notifications (APR-4), autonomy levels per category
+      (AUT-1), per-channel pause and kill switch (AUT-3), plan (BIL-1).
+
+  UX-7:
+    v: 1
+    priority: P0
+    title: Compose action
+    statement: >-
+      A button in Inbox/Calendar (or via chat), not a nav item: master text →
+      picture → channels → adapted variants → confirm (APR-5).

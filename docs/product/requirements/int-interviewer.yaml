@@ -1,0 +1,42 @@
+kind: requirements
+prefix: INT
+title: Interviewer
+status: approved
+serves: [G-2, G-3, G-5]
+
+intent: >-
+  The chat skill that fills Memory gaps as a curious thinking partner — the way
+  a great hire would in their first week — never a form in disguise. Driven by
+  the gap model (ONB-3) and by content-value heuristics: stories > adjectives.
+
+items:
+  INT-1:
+    v: 1
+    priority: P0
+    title: The Interviewer skill
+    statement: >-
+      Conducts initial and ongoing info-gathering as a curious interviewer and
+      thinking partner. Friendly, inviting tone; open questions; deepening
+      follow-ups that pursue what will later fuel content and ideation ("You
+      mentioned the first family you helped — what happened next? That's the
+      kind of story donors remember").
+
+  INT-2:
+    v: 1
+    priority: P0
+    depends: [ONB-3, MEM-1, MEM-2]
+    title: Interview mechanics
+    statement: >-
+      Session-resumable; a few questions at a time, never an interrogation;
+      driven by ONB-3's gap model; every answer written to Memory (MEM-1);
+      never re-asks (MEM-2); explicitly connects answers to value ("I'll turn
+      this into a founder-story post — you'll see it in your next digest").
+
+  INT-3:
+    v: 1
+    priority: P1
+    title: Periodic curiosity
+    statement: >-
+      After launch weeks, the Interviewer occasionally (rate-limited) probes
+      for fresh material tied to the calendar ("your beach cleanup is Saturday
+      — want me to prep a before/after pair of posts?").

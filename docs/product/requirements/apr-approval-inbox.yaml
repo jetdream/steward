@@ -1,0 +1,70 @@
+kind: requirements
+prefix: APR
+title: Approval Inbox & Composer
+status: approved
+serves: [G-2, G-3]
+
+intent: >-
+  Where 90% of the founder's non-chat time lives — the one-tap digest that
+  keeps founder effort under 15 min/week (G-3), plus the manual composer for
+  founder-initiated posts. Every interaction here feeds the learning loop
+  (MEM-1).
+
+items:
+  APR-1:
+    v: 1
+    priority: P0
+    depends: [GEN-5]
+    title: Inbox
+    statement: >-
+      Drafts with per-channel variant preview and fit indicators (GEN-5);
+      one-tap Approve (all variants), per-channel toggle, inline Edit (per
+      variant or master), Skip, free-text redirect (CHT-2 semantics). Batch
+      approve supported.
+
+  APR-2:
+    v: 1
+    priority: P0
+    title: Founder-selected cadence
+    statement: >-
+      Daily / 2–3×week / weekly (default weekly); event-driven items
+      (campaigns, time-sensitive external items, picture-request follow-ups)
+      may arrive anytime.
+
+  APR-3:
+    v: 1
+    priority: P0
+    depends: [MEM-1]
+    title: Learning loop
+    statement: >-
+      Every edit is diffed; recurring edit patterns are proposed as
+      Strategy/Memory rules ("You've shortened 4 X posts in a row — set 'max
+      200 chars on X' as a rule?").
+
+  APR-4:
+    v: 1
+    priority: P0
+    title: Notifications
+    statement: >-
+      Email (web push P1) for digest-ready and time-sensitive items; deep
+      links.
+
+  APR-5:
+    v: 1
+    priority: P0
+    depends: [GEN-2, GEN-5, PUB-1]
+    title: Manual composer
+    statement: >-
+      The founder writes a post (master text), attaches a picture (upload or
+      library), picks target channels (or accepts the fit-gate's suggestion);
+      the system produces channel adaptations for confirmation; then normal
+      scheduling/publishing (PUB-1). Also reachable via chat ("post this photo
+      with a thank-you to Saturday's volunteers") — chat-initiated composition
+      is P0 for creation-with-confirmation, P1 for full command flow (CHT-3).
+
+  APR-6:
+    v: 1
+    priority: P1
+    title: Quiet accountability
+    statement: >-
+      One gentle nudge if a digest sits >72h; never guilt, never spam (P-5).

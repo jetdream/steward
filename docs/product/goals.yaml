@@ -1,0 +1,46 @@
+kind: goals
+prefix: G
+title: Goals and Success Metrics
+status: approved
+
+intent: >-
+  The goals every requirement must serve (register `serves:` fields). A
+  requirement serving no goal is a removal candidate.
+
+north-star: >-
+  Orgs with a live stewardship rhythm — an unbroken 4-week streak including at
+  least one impact or gratitude post.
+
+items:
+  G-1:
+    v: 1
+    title: Commercial proof
+    statement: >-
+      ≥1 nonprofit paying $199/mo within 90 days of dev start; 5 paying orgs
+      by month 5. Refund rate under the 30-day guarantee <20% in cohort 1.
+      Monthly churn <3% after cohort 1.
+
+  G-2:
+    v: 1
+    title: Autonomy proof
+    statement: ≥70% of drafts approved without edits by an org's week 8.
+
+  G-3:
+    v: 1
+    title: Effort proof
+    statement: >-
+      Median founder time in product <15 min/week after the first week (time
+      voluntarily spent chatting excluded).
+
+  G-4:
+    v: 1
+    title: Consistency proof
+    statement: >-
+      ≥80% of active orgs maintain an unbroken 4-week posting streak.
+
+  G-5:
+    v: 1
+    title: Activation
+    statement: >-
+      First approved post live within 48 hours of the org's first session.
+      (Absorbed from Vision v0.2 metrics; see INC-1.)

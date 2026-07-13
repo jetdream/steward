@@ -1,0 +1,34 @@
+kind: requirements
+prefix: BIL
+title: Billing & Account
+status: approved
+serves: [G-1]
+
+intent: >-
+  One plan, one promise — $199/month anchored against humans, not software
+  (vision.md). The 30-day money-back guarantee replaces a free trial; refund
+  rate is a G-1 metric.
+
+items:
+  BIL-1:
+    v: 1
+    priority: P0
+    title: Single plan
+    statement: >-
+      $199/month (Stripe Billing, A-5), card at signup, no trial, 30-day
+      money-back honored in one click + one-question exit survey. Refund rate
+      tracked (G-1). Guarantee marketing posture is Q-6.
+
+  BIL-2:
+    v: 1
+    priority: P0
+    title: Cancel anytime
+    statement: >-
+      Publishing stops; data export offered; deletion honored (see
+      architecture/security-privacy.yaml).
+
+  BIL-3:
+    v: 1
+    priority: P2
+    title: Annual plan
+    statement: $166/mo equivalent.

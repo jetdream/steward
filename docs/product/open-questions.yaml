@@ -1,0 +1,65 @@
+kind: open-questions
+prefix: Q
+title: Open Questions
+status: approved
+
+intent: >-
+  Pending founder decisions. Each resolves into a requirement change, an ADR,
+  a principle, or a scope edit — via the change protocol (docs/CLAUDE.md).
+  Resolved questions keep their entry with `status: resolved` and a pointer to
+  where the decision landed.
+
+items:
+  Q-1:
+    v: 1
+    status: open
+    title: Product name
+    statement: "Working name: Steward."
+
+  Q-2:
+    v: 1
+    status: open
+    title: Design partner zero
+    statement: >-
+      Use the co-founder's own nonprofit as design partner #0 (fastest
+      dogfooding path)?
+
+  Q-3:
+    v: 1
+    status: open
+    title: Image-generation flag-on criteria
+    statement: >-
+      Proposal: only after the picture-bottleneck metric (R-3) shows real
+      founder pain and branded-graphics templates pass cohort review; never
+      photorealistic (GR-4 stands regardless).
+
+  Q-4:
+    v: 1
+    status: open
+    title: Radar engine upgrade order
+    statement: >-
+      Perplexity vs Tavily/Exa first; which structured feeds (GDELT /
+      newsdata.io / arXiv) earn P1 slots per vertical (A-3, EXT-4).
+
+  Q-5:
+    v: 1
+    status: open
+    title: Conversion-loop re-introduction trigger
+    statement: >-
+      Proposal (unchanged): G-2 met and cohort retention through month 3.
+
+  Q-6:
+    v: 1
+    status: open
+    title: 30-day guarantee marketing posture
+    statement: >-
+      Loudly (conversion lever) or quietly (refund-risk lever) —
+      recommendation: loudly.
+
+  Q-7:
+    v: 1
+    status: open
+    title: Launch vertical
+    statement: >-
+      Vertical-agnostic launch; the flag-planting vertical ("built for
+      animal-welfare nonprofits") is chosen from cohort-1 data.

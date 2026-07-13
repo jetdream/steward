@@ -1,0 +1,25 @@
+kind: inconsistencies
+prefix: INC
+title: Inconsistency Register
+status: approved
+
+intent: >-
+  Detected contradictions between artifacts are first-class persistent entries
+  — never silently dropped. Lifecycle: open → resolved (an entry is never
+  deleted; resolution is recorded). Open entries are mandatory reading for any
+  change touching the IDs they reference; scripts/docs-check.mjs reports the
+  open count.
+
+items:
+  INC-1:
+    v: 1
+    status: resolved
+    title: Vision defined an activation metric absent from PRD goals
+    statement: >-
+      Detected during PRD v0.3 decomposition (2026-07-12). Vision v0.2 lists
+      activation ("first approved post live within the first session's 48
+      hours") and churn (<3%) as success metrics; PRD §2 goals (G1–G4) omitted
+      both, so the two normative documents disagreed on the goal set.
+    resolution: >-
+      Activation promoted to G-5; churn folded into G-1. Vision's metrics
+      section now points to goals.yaml.

@@ -1,0 +1,47 @@
+kind: requirements
+prefix: PUB
+title: Publishing
+status: approved
+serves: [G-1, G-4]
+
+intent: >-
+  Approved content reliably reaches the four launch channels through official
+  APIs (GR-6), at engagement-optimal times, with failures handled by operators
+  — the founder is bothered only when action is needed (MEM-2).
+
+items:
+  PUB-1:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Channels at launch
+    statement: >-
+      Facebook Pages, Instagram feed, Threads, X — official APIs only,
+      per-channel scheduling at engagement-optimal times.
+    acceptance: >-
+      An approved variant publishes at its scheduled time ±5 min; failures
+      retry and alert operators (OPS-1); the founder is alerted only if action
+      is needed.
+
+  PUB-2:
+    v: 1
+    priority: P0
+    title: Per-channel technical profiles
+    statement: >-
+      Maintained as configuration: length limits, media requirements, link
+      behavior, rate limits — consumed by GEN-2/GEN-5 so adaptation and gating
+      stay correct as platforms change.
+
+  PUB-3:
+    v: 1
+    priority: P0
+    title: Publish log
+    statement: >-
+      What went out, where, when, with links and the variant text; visible in
+      Calendar/Published (UX-4).
+
+  PUB-4:
+    v: 1
+    priority: P2
+    title: LinkedIn evaluation
+    statement: Evaluate LinkedIn as a fifth channel.

@@ -1,0 +1,52 @@
+kind: requirements
+prefix: STR
+title: Posting Strategy
+status: approved
+serves: [G-2]
+
+intent: >-
+  The system's editorial judgment written down where the founder can see and
+  change it (P-3) — an explicit contract, not a black box. Enforced on every
+  draft; the mechanism by which redirects (CHT-2) durably bind future content.
+
+items:
+  STR-1:
+    v: 1
+    priority: P0
+    title: The Strategy document
+    statement: >-
+      Every org has an explicit, versioned Posting Strategy with exactly these
+      sections: (a) what to post / what not to post; (b) tone of voice —
+      description and concrete examples; (c) restrictions / compliance /
+      guardrails; (d) specific standing instructions; (e) channel-specific
+      instructions (per FB / IG / Threads / X).
+
+  STR-2:
+    v: 1
+    priority: P0
+    depends: [ONB-2, CHT-2]
+    title: Auto-drafted, founder-owned
+    statement: >-
+      Auto-drafted from ingestion (ONB-2 style findings) + interview answers;
+      presented for founder review; editable in the Strategy page (UX-5) and
+      via chat (CHT-2). Edits bind immediately and are versioned with diffs.
+
+  STR-3:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Enforcement
+    statement: >-
+      Every draft shall be validated against the Strategy before entering any
+      queue; the channel-fit gate (GEN-5) and channel adaptations (GEN-2)
+      consume section (e).
+
+  STR-4:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Two-layer guardrails
+    statement: >-
+      Platform-level rules (non-negotiable: GR-1..GR-6) + org-level rules
+      (editable, section c). Org rules can only tighten, never loosen,
+      platform rules.

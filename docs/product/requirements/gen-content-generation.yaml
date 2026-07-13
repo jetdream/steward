@@ -1,0 +1,78 @@
+kind: requirements
+prefix: GEN
+title: Planning & Content Generation
+status: approved
+serves: [G-2, G-4]
+
+intent: >-
+  The engine that turns Memory + Strategy into a steady, on-mission publishing
+  rhythm (G-4) — planned on a rolling calendar, drawn from the content
+  taxonomy, adapted per channel, always with a real picture (P-4).
+
+items:
+  GEN-1:
+    v: 1
+    priority: P0
+    depends: [MEM-1, STR-1, EXT-1]
+    title: Rolling 4-week calendar
+    statement: |
+      Per-org calendar drawing from the content taxonomy:
+      - Internal: Mission (what value, how, why it matters) · Founder story ·
+        Case studies (people/orgs benefited) · Own events, virtual and
+        physical · People (employees & volunteers).
+      - External: Related events (local → worldwide) · Related news · Related
+        research/articles — supplied by the External Radar (EXT-1).
+      - Overlays woven through the mix: Impact/Gratitude (stewardship rhythm,
+        ≥1 per 4 weeks — north star, STW-1), Fundraising Asks (≤25% of mix,
+        include donation URL when provided — scope.md boundary case),
+        Seasonal/Campaign hooks (GivingTuesday, year-end, cause awareness
+        days).
+
+  GEN-2:
+    v: 1
+    priority: P0
+    depends: [PUB-2, STR-1]
+    title: Per-channel adaptation
+    statement: >-
+      One story → per-channel variants for every connected channel, adapted
+      for (i) technical requirements — character limits, image requirements,
+      link handling (PUB-2) — and (ii) the Strategy's channel-specific
+      instructions (STR-1 section e).
+
+  GEN-3:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Every post carries a picture
+    statement: >-
+      Sources at launch: founder upload (per-post or batch) and the media
+      library (harvested + uploaded, tagged by Memory). AI image generation
+      ships disabled behind a feature flag; enabling is Q-3, governed by GR-4.
+
+  GEN-4:
+    v: 1
+    priority: P0
+    depends: [GEN-3, PRO-1]
+    title: Awaiting-picture state
+    statement: >-
+      A draft without an assigned picture is fully written and visible but
+      cannot be scheduled; it triggers a picture request (PRO-1) with
+      suggestions from the library. One-tap attach from library in the Inbox
+      (APR-1).
+
+  GEN-5:
+    v: 1
+    priority: P0
+    depends: [STR-3, PUB-2]
+    title: Channel-fit gate
+    statement: >-
+      For each draft × channel, the system shall decide should this go here at
+      all (Strategy fit + content-type fit + technical fit). Unfit channels are
+      skipped with a visible reason ("skipped X: over policy 'no long stories
+      on X'"). Founder can override per post.
+
+  GEN-6:
+    v: 1
+    priority: P1
+    title: Performance feedback
+    statement: Per-post metrics (read-only insights) feed the Planner.

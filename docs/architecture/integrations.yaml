@@ -1,0 +1,32 @@
+kind: architecture
+title: External Integrations
+status: sketch
+
+summary: >-
+  From PRD §9 + assumptions. Each publishing integration is an isolated
+  adapter behind a shared channel-profile configuration (PUB-2) so one
+  platform's change never blocks the others (R-6).
+
+integrations: |
+  - Meta Graph API (FB Pages, Instagram, Threads) — publishing + account
+    harvest (ONB-2). Permissions per A-1: pages_manage_posts,
+    instagram_content_publish, pages_read_engagement, threads_basic,
+    threads_content_publish. Business verification required; dev mode with
+    tester roles until review clears (R-2).
+  - X API (paid tier) — publishing. Write access; budget line + volatility
+    accepted (A-2, R-6). Feature-flagged.
+  - Gemini API with Google Search grounding — External Radar v0 (EXT-1).
+    Upgrade path per A-3 / Q-4: Perplexity, Tavily/Exa engines; GDELT, Google
+    News RSS, newsdata.io, arXiv feeds (EXT-4).
+  - Stripe Billing — our subscription only (A-5). BIL-1, BIL-2. Not a
+    donations rail (product/scope.md).
+  - Transactional email (Postmark or Resend — ADR pending) — digest +
+    time-sensitive notifications (APR-4). Web push is P1.
+  - ProPublica Nonprofit Explorer / IRS EO BMF + Form 990 — 501(c)(3)
+    verification + registry data (ONB-1). Free (A-4).
+  - Website scraper — fact + style ingestion (ONB-2). Own implementation;
+    respects consent given at signup (A-5).
+
+failure-policy: >-
+  All adapters: retry with backoff, alert operators via failure queues
+  (OPS-1), founder alerted only when action is needed (PUB-1 acceptance).

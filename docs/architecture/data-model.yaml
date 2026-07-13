@@ -1,0 +1,55 @@
+kind: architecture
+title: Data Model
+status: sketch
+
+summary: >-
+  Entity semantics and relationships, seeded from PRD §9. Once @shared types
+  exist they are the machine truth for fields; this file keeps only diagrams
+  and meaning, linking to the type files. Postgres + pgvector (embeddings for
+  Memory retrieval).
+
+entities: |
+  - Org — the customer organization; includes optional donationUrl (a plain
+    Memory-adjacent fact, not a donations module — product/scope.md).
+  - MemoryEntry — fact / story / styleRule / taboo / person / program / event;
+    source + timestamps (MEM-1). Embedded for retrieval.
+  - StrategyDoc — sections (a)–(e) per STR-1, versioned with diffs (STR-2).
+  - MediaAsset — tags, provenance (upload vs harvested); the media library.
+  - ContentItem — master + ChannelVariant[]; per-variant fit verdicts (GEN-5);
+    edit-diff log (APR-3).
+  - ChatSession / ChatMessage — including interviewer transcripts (INT-2).
+  - ExternalItem — source, URL, relevance rationale, disposition (EXT-1).
+  - TrustLevel — per content category (AUT-1).
+  - PostMetric — P1 (GEN-6).
+  - Subscription — Stripe linkage (BIL-1).
+
+erd: |
+  erDiagram
+    ORG ||--o{ MEMORY_ENTRY : owns
+    ORG ||--|| STRATEGY_DOC : "has current"
+    ORG ||--o{ MEDIA_ASSET : owns
+    ORG ||--o{ CONTENT_ITEM : owns
+    ORG ||--o{ CHAT_SESSION : owns
+    ORG ||--o{ EXTERNAL_ITEM : owns
+    ORG ||--o{ TRUST_LEVEL : "per category"
+    ORG ||--|| SUBSCRIPTION : has
+    CONTENT_ITEM ||--o{ CHANNEL_VARIANT : "adapts to"
+    CONTENT_ITEM }o--o| MEDIA_ASSET : "carries picture"
+    CONTENT_ITEM }o--o| EXTERNAL_ITEM : "sourced from"
+    CHANNEL_VARIANT ||--o{ POST_METRIC : yields
+    CHAT_SESSION ||--o{ CHAT_MESSAGE : contains
+
+content-item-states: |
+  stateDiagram-v2
+    [*] --> draft : generated (GEN-1) or composed (APR-5)
+    draft --> awaiting_picture : no picture assigned (GEN-4)
+    awaiting_picture --> draft : picture attached
+    draft --> approved : founder approves / TL permits (AUT-1)
+    approved --> scheduled : slot assigned (PUB-1)
+    scheduled --> published : posted, logged (PUB-3)
+    draft --> skipped : founder skips
+    scheduled --> paused : kill switch / channel pause (AUT-3)
+
+invariants: >-
+  A draft cannot leave awaiting_picture toward approved without a picture
+  (GEN-3, GEN-4 — hard rule).

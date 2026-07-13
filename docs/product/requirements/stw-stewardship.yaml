@@ -1,0 +1,30 @@
+kind: requirements
+prefix: STW
+title: Stewardship Content Loop
+status: approved
+serves: [G-4]
+
+intent: >-
+  The donor-lifecycle logic that makes "for nonprofits" a moat — gratitude and
+  impact reporting as first-class content, feeding the north-star stewardship
+  rhythm (goals.md).
+
+items:
+  STW-1:
+    v: 1
+    priority: P0
+    depends: [GEN-1]
+    title: First-class overlay categories
+    statement: >-
+      Gratitude and impact posts are first-class overlay categories in every
+      org's mix from week 1.
+
+  STW-2:
+    v: 1
+    priority: P1
+    depends: [PRO-1]
+    title: Milestone recaps
+    statement: >-
+      At a campaign end date or a founder's one-tap "we hit a milestone,"
+      generate a thank-you + impact-recap package and request needed material
+      via PRO-1.

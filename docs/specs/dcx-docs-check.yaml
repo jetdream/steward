@@ -1,0 +1,133 @@
+kind: spec
+prefix: DCX
+title: docs-check — Documentation Graph Lint
+status: approved
+implements: []
+governed-by: []
+depends-on: []
+modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs]
+
+purpose: >-
+  scripts/docs-check.mjs deterministically enforces the documentation
+  conventions of docs/CLAUDE.md: ID uniqueness, prefix ownership, referential
+  integrity, stale version pins (cascade lists), register/spec schema
+  validity, coverage and registers reports, folder hygiene. Internal tooling:
+  this spec defines its own items (DCX) inline rather than having a separate
+  requirements register. The parser and graph builder live in
+  scripts/lib/docs-graph.mjs, shared with the Claude Code hooks (CTX-1,
+  CTX-2).
+
+items:
+  DCX-1:
+    v: 2
+    title: Definition uniqueness
+    rule: >-
+      A key of an `items:` map in any docs/**/*.yaml file (excluding TEMPLATE
+      files) is the definition of that ID; the item's `v` field is its
+      version. ADR IDs are defined by filenames docs/adr/NNNN-slug.md. Any ID
+      defined more than once is an error. Markdown files define no IDs.
+
+  DCX-2:
+    v: 2
+    title: Prefix ownership
+    rule: >-
+      A file's top-level `prefix` key (scalar or list) claims ownership of
+      those ID namespaces; an ID definition outside its prefix's owning file
+      is an error, as is a prefix claimed by two files.
+
+  DCX-3:
+    v: 2
+    title: Referential integrity
+    rule: >-
+      Every ID-shaped token (grammar in docs/CLAUDE.md) occurring anywhere in
+      any docs/**/*.{yaml,md} file — except an item's own key line — is a
+      reference and shall resolve to a defined ID. Tokens with prefixes absent
+      from the docs/CLAUDE.md registry are errors, preventing vocabulary
+      drift.
+
+  DCX-4:
+    v: 2
+    title: Schema validity
+    rule: >-
+      YAML docs are validated by kind. Registers (kind requirements / goals /
+      principles / assumptions / risks / open-questions / inconsistencies)
+      need prefix, title, legal status, and an items map; requirements
+      additionally need a serves list. Items need a numeric v and a statement
+      (or rule); requirement items need priority P0|P1|P2; open-questions and
+      inconsistencies items need status open|resolved; flexibility, when
+      present, is hard|preference; serves/depends, when present, are lists.
+      Specs (kind spec) need legal status (draft | approved | implemented |
+      superseded) and an implements list; depends-on prefixes must be
+      registered. YAML-subset parse errors are errors.
+
+  DCX-5:
+    v: 1
+    title: Stale version-pin detection
+    rule: >-
+      A pinned reference "<ID> v<N>" shall match the currently defined
+      version; a stale pin is an error and the tool shall print the full
+      cascade list (every file and line citing the bumped ID) to drive the
+      cascade-analysis protocol step.
+
+  DCX-6:
+    v: 1
+    title: Coverage report
+    rule: >-
+      For every requirement item with priority P0 or P1, report
+      (informational) whether some non-superseded spec lists it in
+      implements — the "not yet specified" list that drives just-in-time spec
+      writing.
+
+  DCX-7:
+    v: 1
+    title: Folder hygiene
+    rule: >-
+      Every directory under docs/ shall contain a CLAUDE.md; violations are
+      errors.
+
+  DCX-8:
+    v: 2
+    title: Registers report
+    rule: >-
+      Report (informational) the count and IDs of INC items whose status is
+      not resolved, and aggregate spec open-questions sections.
+
+  DCX-9:
+    v: 1
+    title: Exit code and output
+    rule: >-
+      Exit 0 when no errors (reports allowed); exit 1 with per-error
+      "file:line message" listing otherwise. --json emits the full graph
+      (items with effective metadata, references, file data) to stdout as the
+      canonical machine registry.
+
+  DCX-10:
+    v: 2
+    title: Effective item metadata
+    rule: >-
+      An item's effective serves is its own serves field, falling back to the
+      file-level serves; the --json registry carries effective values so
+      consumers (hooks, future retrieval) never re-implement the fallback.
+
+data: None persisted. Reads docs/**/*.{yaml,md}; writes nothing (JSON to stdout).
+
+interfaces: "CLI: node scripts/docs-check.mjs [--json]. Zero dependencies; Node 24."
+
+edge-cases: >-
+  Example IDs in prose (routers, this spec) still must resolve (DCX-3) — use
+  real IDs in examples. The strict YAML subset turns indentation accidents
+  into loud parse errors rather than silent structure changes.
+
+acceptance: >-
+  Clean tree exits 0 (DCX-9). A duplicate definition, a dangling reference, a
+  stale pin, a missing priority, and an illegal status each produce exit 1
+  with a pointing message (DCX-1, DCX-3, DCX-5, DCX-4).
+
+defaults-and-assumptions: >-
+  Stage 1+ enforcement (code citations in src/, test-title scanning) is out of
+  this version's scope; affected items bump when those land — per the
+  enforcement stages in docs/CLAUDE.md.
+
+non-goals: Semantic contradiction detection (Stage 3 concern); style linting.
+
+open-questions: []

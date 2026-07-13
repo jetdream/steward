@@ -1,0 +1,67 @@
+kind: requirements
+prefix: ONB
+title: Lazy Onboarding
+status: approved
+serves: [G-1, G-3, G-5]
+
+intent: >-
+  There is no long setup form and no required homework — whatever the founder
+  can provide is okay. The system gathers everything knowable on its own (P-2),
+  fills gaps conversationally over time via the Interviewer (INT-1), and
+  produces first proof of value inside the first session (G-5).
+
+items:
+  ONB-1:
+    v: 1
+    priority: P0
+    title: Zero-homework signup
+    statement: >-
+      Org name + email is enough to start. EIN is optional; when provided (or
+      confidently matched), the system verifies 501(c)(3) status and pulls
+      registry data (IRS/ProPublica, A-4). Nothing blocks on completeness.
+
+  ONB-2:
+    v: 1
+    priority: P0
+    title: Source ingestion
+    statement: >-
+      When an org connects or names sources, the system shall scrape the
+      website and harvest existing FB/IG/Threads/X accounts, extracting facts
+      (mission, programs, people, events) and style (tone of voice, vocabulary,
+      post patterns, imagery style) into Memory (MEM-1). Style findings seed
+      the Posting Strategy (STR-2).
+
+  ONB-3:
+    v: 1
+    priority: P0
+    title: Gap-driven flow
+    statement: >-
+      The system shall compute what it's missing; the Interviewer (INT-1) fills
+      gaps conversationally over time. No setup checklist is ever shown as
+      homework — the product simply gets better as sources and answers arrive.
+
+  ONB-4:
+    v: 1
+    priority: P0
+    title: Channel connect
+    statement: >-
+      OAuth flows for FB Page, Instagram, Threads, X — connectable in any
+      order, any time; publishing to a channel activates when connected.
+
+  ONB-5:
+    v: 1
+    priority: P0
+    title: The "here's what I know" review
+    statement: >-
+      The founder sees the assembled profile and corrects it; corrections
+      become permanent rules (MEM-1).
+
+  ONB-6:
+    v: 1
+    priority: P0
+    serves: [G-5]
+    title: First proof, lazily
+    statement: >-
+      First drafts are generated as soon as minimum viable context exists —
+      target inside the first session (from sources alone, or from the first
+      ten minutes of interview when sources are thin).

@@ -1,0 +1,53 @@
+kind: requirements
+prefix: EXT
+title: External Content Radar
+status: approved
+serves: [G-2, G-4]
+
+intent: >-
+  The second content well — things the org's audience genuinely cares about
+  (related events, news, research), discovered automatically and offered as
+  drafts in the org's voice. Highest reputation-risk surface (R-4): citations
+  are mandatory (GR-5) and autonomy is permanently capped.
+
+items:
+  EXT-1:
+    v: 1
+    priority: P0
+    source: A-3 (Gemini + Google Search grounding; upgrade path fixed there)
+    title: Radar v0
+    statement: >-
+      Recurring discovery runs per org, seeded by the org's cause profile from
+      Memory (topics, geography: local → county → state → national → global).
+      Output: candidate items (events, news, research) with source links and
+      relevance rationale.
+
+  EXT-2:
+    v: 1
+    priority: P0
+    depends: [EXT-1]
+    title: External drafts
+    statement: >-
+      Selected candidates become drafts in the org's voice with mandatory
+      source citation (GR-5) and clear commentary framing (the org's
+      perspective, not rehashed news). Always subject to the sensitive-topic
+      classifier (GR-3).
+
+  EXT-3:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Autonomy cap
+    statement: >-
+      External-content posts are permanently capped at TL1 — never full
+      autopilot (AUT-2).
+
+  EXT-4:
+    v: 1
+    priority: P1
+    title: Source depth
+    statement: >-
+      Add Google News RSS + newsdata.io (news), GDELT (event streams), arXiv
+      (research) as structured feeds; add Perplexity and/or Tavily/Exa as
+      discovery engines (order: Q-4). Per-org controls in Strategy section (a):
+      external topics welcomed/banned.

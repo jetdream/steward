@@ -1,0 +1,40 @@
+kind: requirements
+prefix: AUT
+title: Autonomy System
+status: approved
+serves: [G-2, G-3]
+
+intent: >-
+  Earned autonomy — everything starts founder-approved; consistent approvals
+  unlock auto-publish per content category. Always offered, never taken (P-3);
+  always instantly revocable.
+
+items:
+  AUT-1:
+    v: 1
+    priority: P0
+    title: Per-category Trust Levels
+    statement: >-
+      TL0 approve-everything (launch state) → TL1 auto-publish with 24h veto
+      window → TL2 full autopilot. Categories follow the content taxonomy
+      (each internal category, external, overlays) (GEN-1).
+
+  AUT-2:
+    v: 1
+    priority: P1
+    flexibility: hard
+    title: Promotion offered, never taken
+    statement: >-
+      ≥10 consecutive approvals with <10% edit rate over ≥3 weeks → propose
+      TL1; rejection/edit spikes auto-demote. Permanent caps at TL1:
+      Fundraising Asks and all External content (EXT-3) — the caps are the
+      hard part of this item.
+
+  AUT-3:
+    v: 1
+    priority: P0
+    flexibility: hard
+    title: Kill switch
+    statement: >-
+      A global kill switch pauses all publishing instantly; per-channel pause
+      too.

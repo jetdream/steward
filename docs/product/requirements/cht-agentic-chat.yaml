@@ -1,0 +1,49 @@
+kind: requirements
+prefix: CHT
+title: Agentic Chat
+status: approved
+serves: [G-2, G-3]
+
+intent: >-
+  The conversational front door that makes the "hired human" real — one chat
+  aware of everything, where talking is always an alternative to clicking.
+  Hosts the Interviewer (INT-1). Contractual thin slice for P1a (R-1):
+  interviewer + context Q&A + redirects; command actions are P1.
+
+items:
+  CHT-1:
+    v: 1
+    priority: P0
+    title: Full context awareness
+    statement: >-
+      One chat surface with awareness of Org Memory, the Posting Strategy, all
+      past and scheduled posts across all channels, and current requests.
+    acceptance: >-
+      "What's going out this week and where?" answered correctly; "what do you
+      know about our volunteer program?" answered from Memory with sources.
+
+  CHT-2:
+    v: 1
+    priority: P0
+    title: Redirects via chat
+    statement: >-
+      When the founder gives plain-language feedback ("less formal," "never
+      name donors," "on X be punchier"), the system shall confirm it back and
+      write it to Memory or Strategy, binding future drafts immediately.
+
+  CHT-3:
+    v: 1
+    priority: P1
+    title: Command actions via chat
+    statement: >-
+      Create a draft, edit a scheduled post, reschedule, pause a channel,
+      trigger a campaign — each executed through the same pipelines as the UI,
+      with confirmation for destructive actions.
+
+  CHT-4:
+    v: 1
+    priority: P0
+    title: Voice
+    statement: >-
+      Colleague, never software; every system-initiated message carries a
+      reason. Governed by P-5.

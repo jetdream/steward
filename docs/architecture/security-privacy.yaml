@@ -1,0 +1,33 @@
+kind: architecture
+title: Security, Privacy, Compliance
+status: sketch
+
+summary: >-
+  From PRD §10. The behavioral guardrails themselves live in
+  product/principles.yaml (GR-1..GR-6); this file covers the operational
+  posture.
+
+posture: |
+  - Platform policy compliance: Meta/X/Threads developer policies — app
+    review, permitted automation only (GR-6). Publishing-only permission set
+    requested (A-1).
+  - No legal/tax advice, no outcome promises: GR-1, GR-2;
+    charitable-solicitation registration remains the org's responsibility
+    (ToS).
+  - No third-party PII stored: no engagement features in scope
+    (product/scope.md); the system reads public presence with signup consent
+    (A-5).
+  - Org data confidentiality: interview/chat content is org-provided
+    confidential data — exported and deleted on request (BIL-2).
+  - External content safety: mandatory citations (GR-5); sensitive-topic
+    classifier forces human approval regardless of Trust Level (GR-3);
+    permanent TL1 cap for external content (EXT-3).
+  - Visual policy: GR-4 (generation disabled; branded-graphics-only if ever
+    enabled per Q-3).
+  - Auth: BetterAuth — Google Sign-in + dev login by email only
+    (constitution). Dev login must be disabled outside development
+    environments.
+
+pending: >-
+  Threat model, attack surface, and audit posture get their own pass (and
+  ADRs where choices exist) before cohort-1 production traffic.

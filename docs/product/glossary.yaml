@@ -1,0 +1,123 @@
+kind: glossary
+title: Domain Glossary
+status: approved
+
+intent: >-
+  The authoritative vocabulary. One term — one concept; when a term risks
+  overload, qualify it (e.g., "auth token" vs "LLM token"). New domain
+  concepts are added here in the same change that introduces them. Code
+  identifiers, DB entities, and UI copy use these names. Short forms map to
+  their full term.
+
+terms:
+  Org: >-
+    A customer organization — a small US 501(c)(3) nonprofit with a single
+    account.
+  Founder-Operator: The primary user persona; the person running the org (users.md).
+  Org Memory: >-
+    (short: Memory) The persistent knowledge store about an org: facts,
+    stories, style rules, taboos, people, programs, events — each entry
+    attributed with source and timestamp. Owned by MEM requirements.
+  Memory Entry: >-
+    One attributed record in Org Memory, typed as fact / story / styleRule /
+    taboo / person / program / event.
+  Posting Strategy: >-
+    (short: Strategy) The explicit, versioned, founder-editable editorial
+    contract with sections: (a) what to post / not post, (b) tone of voice,
+    (c) restrictions & guardrails, (d) standing instructions, (e)
+    channel-specific instructions. Owned by STR requirements.
+  Interviewer: >-
+    The chat skill that gathers information as a curious thinking partner —
+    never a form. Owned by INT requirements.
+  Agentic Chat: >-
+    (short: Chat) The single conversational surface with full context
+    awareness (Memory, Strategy, all posts, schedules). Owned by CHT
+    requirements.
+  Redirect: >-
+    Plain-language founder feedback via chat or inbox ("less formal") that is
+    confirmed back and written to Memory or Strategy, binding future drafts
+    immediately.
+  Content taxonomy: >-
+    The classification of content: Internal (mission, founder story, case
+    studies, own events, people), External (related events, news, research),
+    and Overlays (impact/gratitude, fundraising asks, seasonal/campaign
+    hooks).
+  External Radar: >-
+    (short: Radar) Recurring discovery of external candidate items (events,
+    news, research) relevant to the org's cause, with source links and
+    relevance rationale. Owned by EXT requirements.
+  Master post: >-
+    (short: Master) The channel-independent text of a content item, from which
+    channel variants are derived.
+  Channel Variant: >-
+    A per-channel adaptation of a master post, honoring technical limits and
+    Strategy section (e).
+  Fit Gate: >-
+    (also: channel-fit) The per-draft-per-channel decision "should this go
+    here at all" (Strategy fit + content-type fit + technical fit), with a
+    visible skip reason and founder override. Defined by GEN-5.
+  Awaiting-picture: >-
+    Content item state: fully written but not schedulable until a picture is
+    attached.
+  Media Library: >-
+    (short: Library) The org's tagged picture store: harvested at ingestion
+    plus founder uploads.
+  Approval Inbox: >-
+    (short: Inbox) The approval queue surface: drafts with per-channel
+    variants, fit indicators, one-tap approve/edit/skip. Owned by APR
+    requirements.
+  Digest: >-
+    A batch of ready-to-review drafts delivered at the founder's chosen
+    cadence.
+  Composer: >-
+    The manual post-creation flow: master text → picture → channels → adapted
+    variants → confirm. An action, not a nav surface (APR-5, UX-7).
+  Publisher: >-
+    The subsystem that schedules and publishes approved variants through
+    official channel APIs. Owned by PUB requirements.
+  Channel: >-
+    A connected social destination: Facebook Page, Instagram feed, Threads,
+    or X.
+  Channel profile: >-
+    Per-channel technical configuration: length limits, media requirements,
+    link behavior, rate limits (PUB-2).
+  Publish log: >-
+    The record of what went out, where, when, with links and variant text
+    (PUB-3).
+  Proactive Manager: >-
+    The subsystem that initiates: material requests with reasons, campaign
+    proposals, ask-hygiene. Owned by PRO requirements.
+  Material request: >-
+    A Proactive Manager ask for raw input (usually pictures), always tied to a
+    real event and a reason (PRO-1).
+  Trust Level: >-
+    (TL) Per-content-category autonomy: TL0 approve-everything → TL1
+    auto-publish with 24h veto window → TL2 full autopilot. Owned by AUT
+    requirements.
+  Veto window: >-
+    The 24h period at TL1 during which the founder can stop an auto-scheduled
+    post.
+  Kill switch: >-
+    Global instant pause of all publishing; per-channel pause also exists
+    (AUT-3).
+  Stewardship rhythm: >-
+    The north-star behavior: an unbroken 4-week posting streak including at
+    least one impact or gratitude post.
+  Ask: >-
+    (fundraising ask) A donation-request post; capped at 25% of the mix and
+    permanently at most TL1.
+  Lazy onboarding: >-
+    Zero-homework start: org name + email suffices; the product improves as
+    sources and interview answers arrive. Owned by ONB requirements.
+  Source ingestion: >-
+    Harvesting the org's website and existing social accounts for facts and
+    style at onboarding (ONB-2).
+  Design partner: >-
+    A cohort-1 org from warm contacts, paying full price under the 30-day
+    guarantee.
+  Operator: >-
+    Us — the team doing silent QA and failure handling through the ops
+    console. Owned by OPS requirements.
+  Ops console: >-
+    The internal operator dashboard: draft QA, failure queues, transcript
+    review, radar precision review (OPS-1).

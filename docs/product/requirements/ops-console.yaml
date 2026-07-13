@@ -1,0 +1,20 @@
+kind: requirements
+prefix: OPS
+title: Internal Operations Console
+status: approved
+serves: [G-1, G-2]
+
+intent: >-
+  Substitutes process for headcount (R-8). Operators silently guarantee
+  quality for cohort 1 (R-5) while the autonomy metrics (G-2) earn the right
+  to dial the oversight down.
+
+items:
+  OPS-1:
+    v: 1
+    priority: P0
+    title: Operator dashboard
+    statement: >-
+      Per-org draft QA (silent review before Inbox for cohort 1, with a dial),
+      generation/publish failure queues (PUB-1), interview transcript review,
+      external-radar precision review (R-4), account health.

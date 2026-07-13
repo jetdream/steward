@@ -1,0 +1,76 @@
+kind: risks
+prefix: R
+title: Risks and Mitigations
+status: approved
+
+items:
+  R-1:
+    v: 1
+    title: Scope growth vs 12 weeks (top risk)
+    statement: >-
+      Chat, interviewer, strategy artifact, two extra channels, and a radar
+      were added while the team stayed at two. Mitigations: thin slices are
+      contractual — Chat v0 = interviewer + context Q&A + redirects (no
+      command actions); Radar v0 = Gemini-grounded suggestions only (A-3);
+      Threads rides the Meta stack; composer is a single flow. Anything
+      trending over budget slips from P1b to P2 in this order: radar depth →
+      composer polish → X — never the chat/interviewer, it's the product's
+      soul.
+
+  R-2:
+    v: 1
+    depends: [A-1]
+    title: Meta app review delays (critical path)
+    statement: >-
+      Submit day 1; publishing-only permission set; cohort-1 pages in dev mode
+      via tester roles; manual-publish operator fallback so no partner misses
+      a scheduled post.
+
+  R-3:
+    v: 1
+    title: Picture bottleneck
+    statement: >-
+      With generation off (GR-4), every post needs a real picture; founders
+      are slow to upload. Mitigations: library seeding from site/socials at
+      ingestion; batch upload flows; PRO-1 requests with reasons and
+      deadlines; awaiting-picture drafts visible (guilt-free but present);
+      Inbox one-tap attach. Metric to watch: % drafts blocked >72h on
+      pictures.
+
+  R-4:
+    v: 1
+    title: External content accuracy / reputation risk
+    statement: >-
+      Mitigations: mandatory citations (GR-5), commentary framing,
+      sensitive-topic classifier (GR-3), permanent TL1 cap (EXT-3), per-org
+      topic allow/ban lists in Strategy section (a), operator precision review
+      in cohort 1 (OPS-1).
+
+  R-5:
+    v: 1
+    title: AI quality below the "hired human" bar early
+    statement: >-
+      OPS-1 silent QA; per-category autonomy gating (AUT-1); G-2 as the dial.
+
+  R-6:
+    v: 1
+    depends: [A-2]
+    title: X API cost/policy volatility
+    statement: >-
+      Accepted as a budget line; feature-flagged; adapter isolation so an X
+      policy change never blocks other channels.
+
+  R-7:
+    v: 1
+    title: Value-perception risk
+    statement: >-
+      Chat + four channels + radar strengthen the "$199 vs $500–1,000
+      freelancer" story; positioning stays "your content manager," not "your
+      fundraising platform," until the conversion loop returns (scope.md).
+
+  R-8:
+    v: 1
+    title: Two-person bandwidth
+    statement: >-
+      The P0 line is the scope; the ops console substitutes process for
+      headcount (OPS-1).

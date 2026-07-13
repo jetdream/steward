@@ -1,0 +1,47 @@
+# Spec template. Copy to <prefix>-<slug>.yaml (slug pairs with the
+# requirements register). Delete guidance comments after filling in.
+kind: spec
+prefix: XXX
+title: Capability Name
+status: draft            # draft | approved | implemented | superseded
+implements: []           # requirement IDs covered, e.g. [STR-1, STR-2]
+governed-by: []          # principles/guardrails cited instead of restated
+depends-on: []           # capability prefixes whose specs constrain this one
+modules: []              # src modules, filled as implementation lands
+
+purpose: >-
+  2–3 sentences; name the requirements register. Do not restate requirement
+  text — reference IDs.
+
+# One entry per implemented requirement ID. These are REFERENCES to the
+# register definitions (no `v` here — pin with "STR-3 v1" inside text when a
+# specific version matters). Spec only what a reasonable implementation could
+# get wrong (altitude rule, docs/specs/CLAUDE.md).
+behavior:
+  XXX-1:
+    rules: >-
+      Given/when/then, invariants, ordering, failure handling. Mermaid as raw
+      text where a diagram says it better.
+
+data: >-
+  Entities touched; link architecture/data-model.yaml. Field lists live in
+  @shared types once they exist — never duplicated here.
+
+interfaces: >-
+  Which tRPC procedures / WebSocket events exist and their behavioral
+  contracts. Signatures live in code.
+
+edge-cases: >-
+  ...
+
+acceptance: >-
+  Testable, tagged with the requirement IDs they verify.
+
+defaults-and-assumptions: >-
+  Choices made where requirements are silent, each citing the principle it
+  derives from.
+
+non-goals: >-
+  ...
+
+open-questions: []

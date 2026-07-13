@@ -1,6 +1,15 @@
+---
+kind: narrative
+title: Product Vision
+status: approved
+normative: false
+---
+
 # Product Vision v0.2: An AI Communications Manager for Small US Nonprofits
 
-**Working name:** *Steward*
+> **Non-normative narrative.** This document carries the WHY — problem, insight, positioning. Normative truth lives in the layered docs: [goals.yaml](goals.yaml), [principles.yaml](principles.yaml), [requirements/](requirements/), [scope.md](scope.md). Where this narrative and those files diverge, the layered files win (record the divergence in [inconsistencies.yaml](inconsistencies.yaml)).
+
+**Working name:** *Steward* (Q-1)
 **Version:** 0.2 · July 12, 2026 (supersedes v0.1)
 **Changelog:** Added the agentic chat as the primary interaction model, the curious-interviewer onboarding, the explicit Posting Strategy, the internal/external content taxonomy with an external radar, four launch channels with per-channel adaptation, manual composition, and the org-photos-first visual policy. Restructured functionality into "Now" (content core) and "Next" (conversion loop) to reflect current scope decisions.
 
@@ -76,6 +85,8 @@ A digest of ready-to-publish posts on the founder's chosen cadence: approve in o
 
 ## Functionality — Now (the content core)
 
+*Narrative summary — the normative list with priorities and acceptance criteria is [requirements/](requirements/).*
+
 1. **Lazy onboarding + Org Memory.** Start from anything; ingest website and existing socials (facts *and* style); the Interviewer fills gaps conversationally over time; first drafts appear as soon as minimum viable context exists — target: inside the first session.
 2. **Posting Strategy.** The explicit, founder-visible, founder-editable editorial contract described above; every generated post complies with it.
 3. **Content engine with a two-sided taxonomy.** *Internal content:* the mission (what value, how, why it matters), founder stories, case studies of people and organizations helped, the org's own events (virtual and physical), and the people — employees and volunteers. *External content:* things the org's audience genuinely cares about — related events (local to worldwide), related news, and relevant research — discovered by an external radar and offered as drafts in the org's voice, always with sources. Stewardship content (gratitude, impact reporting) and well-spaced fundraising asks are woven through the mix.
@@ -87,6 +98,8 @@ A digest of ready-to-publish posts on the founder's chosen cadence: approve in o
 
 ## Functionality — Next (the conversion loop)
 
+*Narrative summary — the normative deferral order and triggers live in [scope.md](scope.md).*
+
 Deliberately staged after the content core proves itself (autonomy score met, cohort retained): **engagement handling** (comments and DMs, drafted replies, auto-replies to simple ones) → **leads inbox** (warm donors surfaced with context and suggested responses) → **donations integration** (Stripe-powered giving links, donation-triggered stewardship). Then email — the highest-converting nonprofit channel. The vision's endpoint is unchanged: the full donor relationship cycle, from warming up to reporting back.
 
 ## Why $150–250/month is an easy yes
@@ -95,16 +108,12 @@ The price anchors against humans, not software: a freelancer at $500–1,000/mon
 
 ## Product principles
 
-1. **We sell the process, never the leads.** No promises of donation outcomes; the promise is professional, consistent execution of a process every nonprofit must run anyway.
-2. **Build on what already works.** The org's existing channels teach the system the org's real voice; the system amplifies before it invents.
-3. **Nothing hidden.** The strategy is explicit and editable; autonomy is earned and always revocable; everything auto-done is logged and visible.
-4. **Real over synthetic.** Org photos over generated images; the org's actual stories over generic content; cited sources on anything external.
-5. **It speaks like a colleague, never like software.** "I drafted next week's posts" — not "Generation complete."
+Moved to [principles.yaml](principles.yaml) (P-1 … P-6, plus the platform guardrails GR-1 … GR-6).
 
 ## Success metrics
 
-Activation: first approved post live within the first session's 48 hours. Autonomy score: share of drafts approved without edits (>70% by week 8). Founder time: <15 min/week median. Consistency: unbroken 4-week posting streaks for ≥80% of active orgs. North star: orgs with a live stewardship rhythm — a 4-week streak including at least one impact or gratitude post. Business: refund rate <20% in cohort 1, monthly churn <3% after.
+Moved to [goals.yaml](goals.yaml) (G-1 … G-5 and the north star).
 
 ## Open questions
 
-Launch vertical (chosen from cohort data). When AI image generation flips on, and under what quality bar. External-source expansion order (Perplexity, Tavily/Exa; GDELT, newsdata.io, arXiv depth). Re-introduction timing of the conversion loop. Product name.
+Moved to [open-questions.yaml](open-questions.yaml) (Q-1 … Q-7).

@@ -1,0 +1,60 @@
+kind: architecture
+title: System Overview
+status: sketch
+
+summary: >-
+  Technical module map for the core loop described in product/overview.md.
+  Constitution-fixed stack: NodeJS 24, TypeScript, Vite + React, Tailwind +
+  ShadCN, Postgres + pgvector, tRPC, WebSocket for realtime, BetterAuth,
+  Vercel AI SDK (/CLAUDE.md).
+
+layout: >-
+  Three source roots per the constitution — client (@client), backend
+  (@backend), shared (@shared) — with folder-modules per capability and a
+  dedicated shared folder for cross-module code. Every module folder carries a
+  CLAUDE.md (purpose, implemented spec IDs, structure, dependencies, optional
+  module-scoped principles and Gotchas). All client→backend calls go through
+  domain-specific API React hooks; realtime updates arrive over WebSocket with
+  light payloads. Channel adapters are isolated per platform so a policy
+  change on one channel never blocks the others (R-6).
+
+module-map: |
+  graph TD
+    subgraph client
+      SHELL[app-shell — UX-1..7]
+      CCHAT[chat UI]
+      CINBOX[inbox UI]
+      CCAL[calendar UI]
+      CORG[organization UI]
+    end
+    subgraph backend
+      AUTH[auth — BetterAuth]
+      MEMB[memory — MEM]
+      ONBB[onboarding/ingestion — ONB]
+      CHATB[chat + interviewer — CHT, INT]
+      STRB[strategy — STR]
+      GENB[content engine — GEN, STW]
+      EXTB[radar — EXT]
+      APRB[inbox/approvals — APR]
+      PUBB[publisher + channel adapters — PUB]
+      PROB[proactive — PRO]
+      AUTB[autonomy — AUT]
+      BILB[billing — BIL]
+      OPSB[ops console — OPS]
+    end
+    SHARED[shared — types, DTOs, channel profiles]
+    client -->|tRPC + WS| backend
+    backend --> SHARED
+    client --> SHARED
+    MEMB --> GENB
+    STRB --> GENB
+    EXTB --> GENB
+    GENB --> APRB
+    APRB --> PUBB
+    AUTB -.governs.-> PUBB
+
+pending-adrs: >-
+  Stack choices fixed by the constitution get a retroactive consolidating ADR
+  with the repo skeleton; genuinely open technical decisions (job scheduling,
+  queue strategy for publishing, media storage, transactional email vendor)
+  get ADRs as they are made.

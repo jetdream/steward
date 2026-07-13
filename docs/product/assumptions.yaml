@@ -1,0 +1,51 @@
+kind: assumptions
+prefix: A
+title: Assumptions and Dependencies
+status: approved
+
+intent: >-
+  External facts the plan depends on. Each is linked from the risks it
+  generates (risks.yaml). If an assumption breaks, re-evaluate its dependents
+  (grep its ID).
+
+items:
+  A-1:
+    v: 1
+    title: Meta app review is the critical path
+    statement: >-
+      Covers FB Pages, Instagram, and Threads (pages_manage_posts,
+      instagram_content_publish, pages_read_engagement, threads_basic,
+      threads_content_publish) plus business verification. Submission starts
+      week 1; cohort-1 accounts run in dev mode (admins as testers) until
+      approval. Threads rides the same Meta stack — low marginal cost.
+      Generates R-2.
+
+  A-2:
+    v: 1
+    title: X paid API tier is committed
+    statement: >-
+      Write access as a standing budget line item; a policy-volatility risk we
+      accept since X is in the launch channel set. Generates R-6.
+
+  A-3:
+    v: 1
+    title: External discovery starts on Gemini with Google Search grounding
+    statement: >-
+      Named upgrade path: Perplexity (AI+search), Tavily/Exa (search) in later
+      versions. Named data sources for later depth: GDELT (events), Google
+      News RSS + newsdata.io (news), arXiv (research). Upgrade order is Q-4.
+
+  A-4:
+    v: 1
+    title: Public nonprofit data is available and sufficient
+    statement: >-
+      IRS EO BMF + Form 990 via ProPublica Nonprofit Explorer API (free); the
+      org's website; existing social channels (facts and tone/style signal).
+
+  A-5:
+    v: 1
+    title: Consent and billing boundaries
+    statement: >-
+      Orgs consent at signup to our reading their public web/social presence
+      and connected accounts. Stripe is used for our subscription billing
+      only.
