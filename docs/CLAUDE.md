@@ -19,7 +19,8 @@ graph TD
   SC[scope.md / assumptions.yaml A-* / risks.yaml R-*] -.bounds.-> REQ
   REQ --> SPEC[specs/*.yaml — exact behavior]
   ADR[adr/ — ADR-*] -.justifies.-> ARCH[architecture/*.yaml]
-  ARCH -.constrains.-> SPEC
+  ADR -- constrained-by --> SPEC
+  ARCH -- constrained-by --> SPEC
   SPEC --> CODE["code: @implements STR-3 v1 headers + module CLAUDE.md"]
   SPEC --> TEST[tests: titles carry requirement IDs]
 ```
@@ -118,26 +119,28 @@ New prefixes are registered here **before** first use (`docs-check` rejects unre
 ## The change protocol
 
 1. **Behavior change (new or modified):** edit the requirement/spec **first**. Semantic edit ⇒ `v` bump ⇒ spec status regresses to `draft` until re-approved. Spec + code + tests land in the same commit.
-2. **Cascade analysis:** after a version bump, `docs-check` lists every citing site; each must be revisited (updated or consciously re-pinned).
-3. **Contradiction check:** before writing, load the target file's `depends-on` set, every file referencing the edited IDs (one grep), applicable principles, and open `INC-*` entries touching those IDs. A contradiction you cannot resolve in this change becomes a new `INC-*` entry — contradictions are never silently dropped.
-4. **New technical decision with alternatives:** write an ADR. Never overturn an `accepted` ADR silently — supersede it. A `rejected` ADR is a binding constraint; do not re-propose without new information.
-5. **Bug triage — fix at the layer that failed:** every bug is a *spec gap* (amend spec, then code), a *spec violation* (fix code, cite spec), or a *wrong spec* (supersede via this protocol). Never silently patch code around a wrong or missing spec.
-6. **Unspecified case hit during implementation:** derive the answer from a principle (record the derivation in a code comment citing `P-x`), or raise a spec amendment. Never invent silently.
-7. **Altitude rule:** spec an item only if a reasonable implementation could plausibly get it wrong. If any reasonable implementation is acceptable, cite the governing principle instead of enumerating cases. If being wrong would be invisible in review, spec it with an acceptance criterion. Priorities live only on requirements.
-8. **Refactor with no behavior change:** no spec edit; update the affected module `CLAUDE.md` if structure moved.
-9. **Every change ends with:** `node scripts/docs-check.mjs` green (plus typecheck and biome once code exists).
+2. **Design gate (spec approval prerequisites, lint-enforced):** a spec may flip to `approved` only when **(a)** its `design-scope`/`constrained-by` satisfy DCX-11 — cross-cutting specs cite accepted ADRs and/or approved architecture docs; `design-scope: local` is an explicit, greppable claim, never an omission; **(b)** its `design` section is filled (DCX-12); and **(c)** the **Architect Challenger has been invoked and its verdict recorded** (DCX-13) — run the `architect-challenger` agent ([.claude/agents/architect-challenger.md](../.claude/agents/architect-challenger.md)) on the spec and write the `challenge:` block; a `fail` verdict keeps the spec in `draft` until findings are resolved and it is re-challenged.
+3. **Design altitude rule:** a design choice affecting more than one capability is an **ADR + architecture doc** entry; a choice local to one capability lives in that spec's `design` section, derived from (and citing) the cross-cutting layer.
+4. **Cascade analysis:** after a version bump, `docs-check` lists every citing site; each must be revisited (updated or consciously re-pinned). Superseding an accepted ADR cascades the same way: every spec citing it goes red (DCX-11) until re-pointed.
+5. **Contradiction check:** before writing, load the target file's `depends-on` set, every file referencing the edited IDs (one grep), applicable principles, and open `INC-*` entries touching those IDs. A contradiction you cannot resolve in this change becomes a new `INC-*` entry — contradictions are never silently dropped.
+6. **New technical decision with alternatives:** write an ADR. Never overturn an `accepted` ADR silently — supersede it. A `rejected` ADR is a binding constraint; do not re-propose without new information.
+7. **Bug triage — fix at the layer that failed:** every bug is a *spec gap* (amend spec, then code), a *spec violation* (fix code, cite spec), a *wrong spec* (supersede via this protocol), or a **design gap** — implementation legitimately cannot conform to the cited design; route it upstream to a new or superseding ADR, never let the spec quietly diverge from architecture.
+8. **Unspecified case hit during implementation:** derive the answer from a principle (record the derivation in a code comment citing `P-x`), or raise a spec amendment. Never invent silently.
+9. **Altitude rule:** spec an item only if a reasonable implementation could plausibly get it wrong. If any reasonable implementation is acceptable, cite the governing principle instead of enumerating cases. If being wrong would be invisible in review, spec it with an acceptance criterion. Priorities live only on requirements.
+10. **Refactor with no behavior change:** no spec edit; update the affected module `CLAUDE.md` if structure moved.
+11. **Every change ends with:** `node scripts/docs-check.mjs` green (plus typecheck and biome once code exists). The pre-commit hook enforces this (DCX-14) — a red graph cannot be committed.
 
 ## Enforcement stages
 
-- **Stage 0 (live):** this protocol + `docs-check` + **Claude Code hooks** ([specs/ctx-context-hooks.yaml](specs/ctx-context-hooks.yaml)): every docs edit is linted at the moment it happens (CTX-1); IDs mentioned in prompts resolve into context automatically (CTX-2, bounded by CTX-3).
+- **Stage 0 (live):** this protocol + `docs-check` + the **pre-commit/pre-push git hooks** (DCX-14) + **Claude Code hooks** ([specs/ctx-context-hooks.yaml](specs/ctx-context-hooks.yaml)): every docs edit is linted at the moment it happens (CTX-1); IDs mentioned in prompts resolve into context automatically (CTX-2, bounded by CTX-3); no Edit/Write tool call touches a contract the session never loaded (CTX-4, CTX-5); and the **Architect Challenger is mandatory at every spec approval** (DCX-13).
 - **Stage 1 (repo skeleton):** `docs-check` in CI; a spec may claim `implemented` only with ≥1 code citation and ≥1 test citation of its IDs.
 - **Stage 2:** stale-pin detection extends over `src/` code headers (`@implements STR-3 v1`) and test titles — drift cannot pass CI.
-- **Stage 3 (optional):** on spec diffs, an adversarial agent review of the edited file against everything referencing its IDs.
+- **Stage 3 (optional):** on spec diffs after approval, an adversarial re-review of the edited file against everything referencing its IDs.
 
 ## Folder map
 
 - [product/](product/) — business truth: vision, goals, principles, scope, requirements
 - [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts
-- [architecture/](architecture/) — cross-cutting technical truth (sketch status until code lands)
+- [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval, DCX-11)
 - [adr/](adr/) — decision journal (markdown)
 - `../scripts/` — `docs-check.mjs` (lint), `lib/docs-graph.mjs` (shared parser), `hooks/` (Claude Code hooks)

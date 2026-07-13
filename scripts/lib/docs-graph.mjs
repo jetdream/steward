@@ -81,7 +81,11 @@ export function parseYamlSubset(text, file = '<text>') {
       const key = m[1].trim().replace(/^(["'])(.*)\1$/, '$2');
       const rawVal = m[2];
       const keyPath = path ? `${path}.${key}` : key;
-      keyLines.set(keyPath, i + 1);
+      // Duplicate keys at the same level would silently last-win in plain
+      // YAML — the exact silent-corruption mode this subset exists to forbid
+      // (and it would defeat DCX-1's uniqueness guarantee within a file).
+      if (Object.hasOwn(map, key)) errors.push(`${file}:${i + 1} duplicate key "${key}" (first at line ${keyLines.get(keyPath)})`);
+      else keyLines.set(keyPath, i + 1);
       const val = (rawVal ?? '').trim();
 
       if (val === '' || val === '|' || val === '|-' || val === '>' || val === '>-') {
@@ -138,13 +142,29 @@ export function buildGraph() {
   const registry = new Set([...routerText.matchAll(/^\|\s*`([A-Z]{1,4})`\s*\|/gm)].map((m) => m[1]));
 
   for (const file of docFiles()) {
-    if (basename(file).startsWith('TEMPLATE')) continue;
+    // Only the two exact template names are exempt from all checks (DCX-3) —
+    // a prefix match would create an unlinted-file naming channel.
+    if (['TEMPLATE.yaml', 'TEMPLATE.md'].includes(basename(file))) continue;
     const text = readFileSync(file, 'utf8');
     const lines = text.split('\n');
     const rel = relative(ROOT, file);
     let data = null;
+    let fm = null; // markdown frontmatter (ADR status, narrative markers)
     let keyLines = new Map();
 
+    if (file.endsWith('.md') && lines[0] === '---') {
+      const end = lines.indexOf('---', 1);
+      if (end > 0) {
+        const parsed = parseYamlSubset(lines.slice(1, end).join('\n'), rel);
+        fm = parsed.data;
+        // Frontmatter feeds gate-relevant metadata (ADR status → DCX-11), so
+        // its parse errors are graph errors too; +1 remaps every embedded
+        // line number (leading file:line and "first at line N") to file lines.
+        errors.push(...parsed.errors.map((e) => e
+          .replace(/^(.*?):(\d+)/, (_, f, n) => `${f}:${Number(n) + 1}`)
+          .replace(/first at line (\d+)/, (_, n) => `first at line ${Number(n) + 1}`)));
+      }
+    }
     if (file.endsWith('.yaml')) {
       const parsed = parseYamlSubset(text, rel);
       errors.push(...parsed.errors);
@@ -162,20 +182,30 @@ export function buildGraph() {
       }
     }
 
-    // ADR IDs are defined by filenames docs/adr/NNNN-slug.md.
+    // ADR IDs are defined by filenames docs/adr/NNNN-slug.md; their
+    // frontmatter (status: proposed|accepted|rejected|superseded) is the meta.
     const adr = relative(DOCS, file).match(/^adr\/(\d{4})-.+\.md$/);
-    if (adr) defs.set(`ADR-${adr[1]}`, { version: 1, file, line: 1, meta: null, kind: 'adr' });
+    if (adr) {
+      const id = `ADR-${adr[1]}`;
+      if (defs.has(id)) errors.push(`${rel}:1 duplicate definition of ${id} (first in ${relative(ROOT, defs.get(id).file)})`);
+      else defs.set(id, { version: 1, file, line: 1, meta: fm, kind: 'adr' });
+    }
 
-    files.set(file, { rel, kind: data?.kind ?? 'markdown', data, lines, keyLines });
+    files.set(file, { rel, kind: data?.kind ?? fm?.kind ?? 'markdown', data, fm, lines, keyLines });
   }
 
-  // References: ID tokens anywhere in any file, except an item's own key line.
+  // References: ID tokens anywhere in any file. Only an ID's actual
+  // DEFINITION site is excluded — a bare `ID:` key elsewhere (e.g. a spec's
+  // behavior map) is a genuine reference and must appear in cascades.
   for (const [file, { lines }] of files) {
     lines.forEach((text, i) => {
       const keyDef = text.match(/^\s*([A-Z]{1,4}-\d+):\s*$/);
       for (const m of text.matchAll(REF_RE)) {
         const id = `${m[1]}-${m[2]}`;
-        if (keyDef && keyDef[1] === id) continue;
+        if (keyDef && keyDef[1] === id) {
+          const d = defs.get(id);
+          if (d && d.file === file && d.line === i + 1) continue;
+        }
         refs.push({ id, prefix: m[1], pin: m[3] ? Number(m[3]) : null, file, line: i + 1 });
       }
     });

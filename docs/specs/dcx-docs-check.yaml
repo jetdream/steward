@@ -2,9 +2,31 @@ kind: spec
 prefix: DCX
 title: docs-check — Documentation Graph Lint
 status: approved
+challenge:
+  date: 2026-07-13
+  by: architect-challenger
+  verdict: pass
+  summary: >-
+    Passed on the fifth round after three consecutive real fails, each fixed
+    and mutation-verified before re-challenge — round 1: unimplemented DCX-8
+    aggregation clause (spec-vs-implementation drift inside the lint itself),
+    untested gate items, DCX-14 overclaim; round 2 (re-challenge): same-file
+    duplicate YAML keys silently last-won, defeating DCX-1; round 3:
+    markdown-frontmatter parse errors silently swallowed, letting corrupted
+    ADR status satisfy DCX-11; round 4: phantom ADRs via items entries and
+    non-architecture constrained-by paths bypassed the design gate. The
+    passing round's two non-blocking findings (registered-but-unclaimed
+    prefix loses the ownership invariant — DCX-2 bumped to v5; DCX-14
+    substring match satisfied by comments — non-comment-line match) were
+    applied in this same change. Attacks that held: all DCX-1..14 error
+    paths by mutation, phantom-ADR vectors beyond the fixed ones,
+    TEMPLATE naming channel, design-scope local claim, zero-dep alternative
+    analysis, exit codes and --json shape.
 implements: []
 governed-by: []
 depends-on: []
+design-scope: local
+constrained-by: []
 modules: [scripts/docs-check.mjs, scripts/lib/docs-graph.mjs]
 
 purpose: >-
@@ -14,8 +36,8 @@ purpose: >-
   validity, coverage and registers reports, folder hygiene. Internal tooling:
   this spec defines its own items (DCX) inline rather than having a separate
   requirements register. The parser and graph builder live in
-  scripts/lib/docs-graph.mjs, shared with the Claude Code hooks (CTX-1,
-  CTX-2).
+  scripts/lib/docs-graph.mjs, shared with the Claude Code hooks (CTX-2,
+  CTX-4, CTX-5).
 
 items:
   DCX-1:
@@ -28,25 +50,37 @@ items:
       defined more than once is an error. Markdown files define no IDs.
 
   DCX-2:
-    v: 2
-    title: Prefix ownership
+    v: 5
+    title: Prefix ownership and registration
     rule: >-
       A file's top-level `prefix` key (scalar or list) claims ownership of
       those ID namespaces; an ID definition outside its prefix's owning file
-      is an error, as is a prefix claimed by two files.
+      is an error, as is a prefix claimed by two files. Definitions and
+      ownership claims under prefixes absent from the docs/CLAUDE.md registry
+      are errors — a phantom namespace must not enter the graph even before
+      anything references it. Every defined ID's prefix (except
+      filename-owned ones) must be claimed by exactly one file: a definition
+      under a registered-but-unclaimed prefix is an error, so the ownership
+      invariant cannot silently vanish when a claim line is lost. The ADR
+      namespace is **filename-owned**: ADR IDs are defined only by
+      adr/NNNN-slug.md filenames; an items-map definition or a prefix claim
+      under a filename-owned namespace is an error — a phantom decision
+      record must not be able to satisfy the design gate.
 
   DCX-3:
-    v: 2
+    v: 3
     title: Referential integrity
     rule: >-
       Every ID-shaped token (grammar in docs/CLAUDE.md) occurring anywhere in
-      any docs/**/*.{yaml,md} file — except an item's own key line — is a
-      reference and shall resolve to a defined ID. Tokens with prefixes absent
-      from the docs/CLAUDE.md registry are errors, preventing vocabulary
-      drift.
+      any docs/**/*.{yaml,md} file — except an ID's own definition site — is
+      a reference and shall resolve to a defined ID. Tokens with prefixes
+      absent from the docs/CLAUDE.md registry are errors, preventing
+      vocabulary drift. Sole exemption: the files named exactly
+      TEMPLATE.yaml and TEMPLATE.md are excluded from all checks (they hold
+      placeholder content by design); no other name pattern is exempt.
 
   DCX-4:
-    v: 2
+    v: 4
     title: Schema validity
     rule: >-
       YAML docs are validated by kind. Registers (kind requirements / goals /
@@ -58,7 +92,12 @@ items:
       present, is hard|preference; serves/depends, when present, are lists.
       Specs (kind spec) need legal status (draft | approved | implemented |
       superseded) and an implements list; depends-on prefixes must be
-      registered. YAML-subset parse errors are errors.
+      registered. Architecture docs need title and status in sketch |
+      approved | superseded. Glossary docs (kind glossary) need a terms map.
+      A YAML doc with an unknown kind is an error. Markdown frontmatter
+      (ADRs, narrative docs) is parsed for metadata but not schema-validated.
+      YAML-subset parse errors are errors — including duplicate keys at the
+      same level, which plain YAML would silently last-win.
 
   DCX-5:
     v: 1
@@ -79,11 +118,13 @@ items:
       writing.
 
   DCX-7:
-    v: 1
+    v: 2
     title: Folder hygiene
     rule: >-
-      Every directory under docs/ shall contain a CLAUDE.md; violations are
-      errors.
+      Every directory under docs/ shall contain a CLAUDE.md, and every file
+      under docs/ shall have a .yaml or .md extension — any other extension
+      would be invisible to all checks and is therefore an error. Violations
+      are errors.
 
   DCX-8:
     v: 2
@@ -109,6 +150,61 @@ items:
       file-level serves; the --json registry carries effective values so
       consumers (hooks, future retrieval) never re-implement the fallback.
 
+  DCX-11:
+    v: 2
+    title: Design edge (constrained-by)
+    rule: >-
+      A spec with status approved or implemented must declare design-scope
+      local or cross-cutting. Cross-cutting specs must have a non-empty
+      constrained-by list; local specs may leave it empty (a conscious,
+      greppable claim). Each constrained-by entry is either an ADR ID — which
+      must resolve to a filename-defined decision record (DCX-2) with status
+      accepted (proposed, rejected, and superseded are errors; superseding an
+      ADR therefore cascades into every citing spec) — or a repo-relative
+      path to a doc of kind architecture with status approved (citing a
+      sketch, a register, another spec, or any non-architecture file is an
+      error: only the design layer may constrain a spec by path).
+
+  DCX-12:
+    v: 1
+    title: Design section required for approval
+    rule: >-
+      A spec with status approved or implemented must have a non-empty design
+      section (capability-local design: module placement, data touched,
+      jobs/flows, integration points — the design altitude rule in
+      docs/CLAUDE.md governs what belongs here vs in ADRs/architecture).
+
+  DCX-13:
+    v: 1
+    title: Architect Challenger record required for approval
+    rule: >-
+      A spec with status approved or implemented must carry a challenge block
+      with date, by, verdict pass, and a summary. The verdict may only be
+      recorded after actually invoking the Architect Challenger agent
+      (.claude/agents/architect-challenger.md) per the change protocol; a
+      fail verdict means the spec stays draft until findings are resolved.
+
+  DCX-14:
+    v: 2
+    title: Pre-commit repo gate (presence check)
+    rule: >-
+      The repo ships a pre-commit git hook that runs docs-check; the lint
+      verifies the hook file exists (.husky/pre-commit or
+      .githooks/pre-commit) and references docs-check.mjs — a presence
+      check that catches deletion, the commonest failure. It does not prove
+      git executes the hook (activation depends on husky's prepare script /
+      core.hooksPath, and --no-verify always bypasses locally); Stage 1 CI
+      is the authoritative backstop.
+
+design: >-
+  Two zero-dependency Node modules: scripts/lib/docs-graph.mjs (strict
+  YAML-subset parser + graph builder, shared with the hooks so lint and
+  runtime injection can never disagree about the graph) and
+  scripts/docs-check.mjs (checks + reports over the graph). No product
+  architecture touched — design-scope local; the zero-dep constraint holds
+  until the week-1 skeleton introduces a package.json, at which point a real
+  YAML library may replace the subset parser via a superseding decision.
+
 data: None persisted. Reads docs/**/*.{yaml,md}; writes nothing (JSON to stdout).
 
 interfaces: "CLI: node scripts/docs-check.mjs [--json]. Zero dependencies; Node 24."
@@ -119,9 +215,24 @@ edge-cases: >-
   into loud parse errors rather than silent structure changes.
 
 acceptance: >-
-  Clean tree exits 0 (DCX-9). A duplicate definition, a dangling reference, a
-  stale pin, a missing priority, and an illegal status each produce exit 1
-  with a pointing message (DCX-1, DCX-3, DCX-5, DCX-4).
+  Clean tree exits 0 (DCX-9). Each of the following produces exit 1 with a
+  pointing message: a duplicate definition — same file, cross-file, or via a
+  duplicate YAML key including in markdown frontmatter (DCX-1, DCX-4), a
+  definition outside its prefix's owning file, a prefix claimed by two
+  files, a definition or claim under an unregistered prefix, and an
+  items-map definition or prefix claim under the filename-owned ADR
+  namespace (DCX-2), a dangling reference or unregistered-prefix token
+  (DCX-3) — with only the exact-name TEMPLATE files exempt, a stale pin with
+  its cascade list (DCX-5), a missing priority or illegal status (DCX-4), a
+  missing folder CLAUDE.md or an unexpected file extension under docs/
+  (DCX-7), a cross-cutting spec with empty constrained-by, a constrained-by
+  entry citing a sketch architecture doc, a non-architecture path, a
+  non-accepted ADR, or a phantom ADR not defined by filename (DCX-11), an
+  approved spec missing its design section (DCX-12) or challenge block
+  (DCX-13), and a missing pre-commit hook (DCX-14). A spec with a non-empty
+  open-questions list appears in the registers report (DCX-8); an
+  unimplemented P0 appears in the coverage report (DCX-6); an item without
+  its own serves carries the file-level serves in --json (DCX-10).
 
 defaults-and-assumptions: >-
   Stage 1+ enforcement (code citations in src/, test-title scanning) is out of

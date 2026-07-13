@@ -2,19 +2,37 @@ kind: spec
 prefix: CTX
 title: Context Hooks — Instant Lint and ID Resolution for Agents
 status: approved
+challenge:
+  date: 2026-07-13
+  by: architect-challenger
+  verdict: pass
+  summary: >-
+    First run failed with two high findings (CTX-2 rule contradicted its own
+    implementation; approved status without a challenge record) plus one
+    medium (purpose overclaimed beyond the Edit/Write channel) and two lows
+    (unspecified default-ledger fallback; re-noting decision unrecorded) —
+    all fixed, CTX-2 bumped to v2. Re-challenge passed after verifying every
+    fix against code and live hook invocations; four non-blocking findings
+    (index-row cascade, router overclaim, CTX-5 rationale wording, lint-hook
+    stderr noise) were applied in the same change. Attacks that held:
+    deny-once loop safety, ledger consistency across hooks, fail-open paths,
+    CTX-3 cap/overflow, all acceptance criteria executed live.
 implements: []
 governed-by: [P-6]
 depends-on: [DCX]
+design-scope: local
+constrained-by: []
 modules: [scripts/hooks/docs-lint-hook.mjs, scripts/hooks/resolve-ids-hook.mjs, scripts/hooks/read-ledger-hook.mjs, scripts/hooks/write-guard-hook.mjs, scripts/lib/session-ledger.mjs, .claude/settings.json]
 
 purpose: >-
   Claude Code hooks that make the documentation graph ambient for agents
   working in this repo: violations surface at the moment of the edit (not at
   commit), IDs mentioned by the user resolve into context without tool calls,
-  and no change can be written against a contract the session never loaded.
-  This is the deterministic floor of a context-assembly layer — no LLM, no
-  retrieval heuristics; only exact ID resolution against the live tree.
-  Injection is proportional to certainty of relevance: speculative
+  and no Edit/Write tool call can modify a file against a contract the
+  session never loaded (other write channels are an accepted limit — see
+  edge-cases). This is the deterministic floor of a context-assembly layer —
+  no LLM, no retrieval heuristics; only exact ID resolution against the live
+  tree. Injection is proportional to certainty of relevance: speculative
   (prompt-time) injection is bounded (CTX-3); write-time injection is
   enforced (CTX-5) because the pending edit itself declares which contracts
   it touches.
@@ -31,15 +49,19 @@ items:
       introduced them.
 
   CTX-2:
-    v: 1
+    v: 2
     title: Prompt-time ID resolution
     rule: >-
       A UserPromptSubmit hook scans the user's message for ID tokens with
       registered prefixes, resolves them via the docs graph, and injects a
       compact context block (ID, version, key metadata, title, statement,
       file:line pointer) on stdout. Injected content is labeled as
-      auto-injected excerpts; the file remains the source of truth. Unresolved
-      or unregistered tokens are noted rather than silently skipped.
+      auto-injected excerpts; the file remains the source of truth.
+      Registered-prefix tokens that fail to resolve are noted rather than
+      silently skipped; tokens with unregistered prefixes are deliberately
+      ignored — the ID grammar collides with everyday hyphen-number tokens
+      (encoding names, hash names, standards numbers), and noting those every
+      prompt would defeat CTX-3's anti-pollution mandate.
 
   CTX-3:
     v: 1
@@ -74,14 +96,26 @@ items:
       defined anywhere (the lint catches those instead). Any contract ID
       missing from the session ledger blocks the call once (exit 2), delivers
       the resolved item excerpts in the feedback, and marks them seen — the
-      consciously re-issued edit passes. Guards only files under docs/, src/,
-      and scripts/; an agent that already read the governing register is never
-      blocked.
+      consciously re-issued edit passes. IDs defined nowhere carry no
+      contract to inject and are exempt (the docs lint catches them under
+      docs/; dangling IDs in code are a Stage 2 concern). Guards only files
+      under docs/, src/, and scripts/; an agent that already read the
+      governing register is never blocked.
+
+design: >-
+  Four thin hook entrypoints (one per harness event) over two shared libs
+  (docs-graph for resolution, session-ledger for state), wired in
+  .claude/settings.json. All logic lives in the libs so hooks stay
+  harness-shaped adapters; every hook fails open except the intentional
+  exit-2 paths. Design-scope local: this is agent-workflow tooling, not
+  product architecture.
 
 data: >-
   Per-session ledger in the OS temp directory
   (steward-ctx-<session_id>.json, shape {seen: [ids]}); safe to delete
-  anytime.
+  anytime. When the harness supplies no session_id, hooks fall back to a
+  shared steward-ctx-default.json — worst case is one lost deny-once
+  roundtrip; the harness supplies session_id in practice.
 
 interfaces: >-
   Configured in .claude/settings.json (project-scoped, shared with any agent
@@ -90,11 +124,14 @@ interfaces: >-
 edge-cases: >-
   Hooks must be fast (docs-check runs in milliseconds) and fail open: an
   unexpected hook crash exits 0 so agent work is never blocked by tooling
-  bugs — except the intentional exit-2 paths of CTX-1 and CTX-5. Known limits:
-  a partial Read (offset/limit) still marks the whole file's definitions as
-  seen; context compaction may drop content the ledger says was seen —
-  accepted for v1, the deny-once injection re-grounds the first write after
-  any gap.
+  bugs — except the intentional exit-2 paths of CTX-1 and CTX-5. Known,
+  accepted v1 limits: CTX-5 guards only the Edit|Write tool channel — file
+  writes via shell commands (sed, heredocs, git apply) or other
+  write-capable tools bypass the guard entirely (the pre-commit gate and
+  Stage 1 CI are the backstop); a partial Read (offset/limit) still marks
+  the whole file's definitions as seen; context compaction may drop content
+  the ledger says was seen — the deny-once injection re-grounds the first
+  write after any gap.
 
 acceptance: >-
   Editing a docs file to contain a dangling reference yields immediate exit-2
@@ -106,7 +143,11 @@ acceptance: >-
 
 defaults-and-assumptions: >-
   Injection is prompt-time only (CTX-3) — the narrow first version; expansion
-  is a spec change, not a tweak.
+  is a spec change, not a tweak. Registered-prefix tokens that fail to
+  resolve are re-noted on every prompt that mentions them (never marked
+  seen): the repetition is bounded to one line per prompt and serves as a
+  reminder that a cited contract does not exist — an intentional choice, not
+  a leak.
 
 non-goals: >-
   Semantic retrieval, embedding search, transitive dependency expansion —

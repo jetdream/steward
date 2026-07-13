@@ -54,3 +54,9 @@ A code must be commented where the meaning is not obvious from code itself, comm
 Do not duplicate the documentation on implementation details - maintain single source of truth principle to avoid discrepancies and getting out of sync, use references/indexing.
 
 Documentation and comments must use mermaid diagrams
+
+## Claude Code Harness
+
+### SEARCH TOOLS
+* ALWAYS use `rg` (ripgrep) for all pattern matching or content searching tasks.
+* Do NOT use standard `grep` or `find`.

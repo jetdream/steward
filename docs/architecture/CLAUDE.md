@@ -1,6 +1,8 @@
 # architecture/ — Cross-Cutting Technical Truth
 
-Technical design that spans capabilities, as pure-YAML docs (representation rule, [../CLAUDE.md](../CLAUDE.md)) with mermaid embedded as raw text. All files are at **sketch status** (seeded from PRD §9–§10) until the repo skeleton lands; they firm up alongside the first specs. Decisions with considered alternatives get ADRs ([../adr/](../adr/)); these files record the *current* design and link the ADRs that justify it.
+Technical design that spans capabilities, as pure-YAML docs (representation rule, [../CLAUDE.md](../CLAUDE.md)) with mermaid embedded as raw text. Decisions with considered alternatives get ADRs ([../adr/](../adr/)); these files record the *current* design and link the ADRs that justify it.
+
+**Status semantics (lint-enforced, DCX-11):** `sketch` → `approved` → `superseded`. A spec may list an architecture doc in its `constrained-by` only when that doc is `approved` — so the design pass (firming sketches into approved docs, backed by ADRs) is a hard predecessor of spec approval, and design → spec → code is gated at every arrow. All files are currently at **sketch status** (seeded from PRD §9–§10); approving them is the first task of the P1a design pass.
 
 | File | Owns |
 |---|---|

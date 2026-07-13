@@ -23,7 +23,10 @@ try {
 
   const run = spawnSync(process.execPath, [join(ROOT, 'scripts', 'docs-check.mjs')], { encoding: 'utf8' });
   if (run.status !== 0) {
-    console.error(`docs-check failed after editing ${path} — fix before continuing:\n${run.stderr.trim()}`);
+    // Feed back only errors and cascade lists — not the informational
+    // coverage report (CTX-1: "the error listing", anti-pollution).
+    const relevant = run.stderr.split('\n').filter((l) => l.startsWith('ERROR') || l.includes('cascade for') || l.startsWith('  ')).join('\n');
+    console.error(`docs-check failed after editing ${path} — fix before continuing:\n${relevant.trim()}`);
     process.exit(2); // blocking feedback to the agent
   }
 } catch {

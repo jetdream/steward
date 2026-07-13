@@ -10,14 +10,18 @@ Internal tooling exception: specs like [dcx-docs-check.yaml](dcx-docs-check.yaml
 
 `draft` → `approved` (implementation may start) → `implemented` (≥1 code citation and ≥1 test citation exist for its IDs) → `superseded`. Any semantic change regresses status to `draft` and bumps affected item versions — see the change protocol in [../CLAUDE.md](../CLAUDE.md).
 
+**Approval prerequisites (the design gate, lint-enforced):** `design-scope` declared, `constrained-by` valid (accepted ADRs / approved architecture docs; DCX-11), `design` section filled (DCX-12), and a recorded pass verdict from the mandatory **Architect Challenger** run (DCX-13) — invoke the `architect-challenger` agent and write the `challenge:` block. A fail verdict keeps the spec in `draft`.
+
 ## The altitude rule
 
 Spec an item only if a reasonable implementation could plausibly get it wrong. If any reasonable implementation is acceptable, cite the governing principle (`governed-by:`) instead of enumerating cases. If being wrong would be invisible in review, spec it with an acceptance criterion. Priorities live only on requirements. `defaults-and-assumptions` and `open-questions` make intentional under-specification explicit.
 
 ## Index
 
-| Spec | Covers | Status |
-|---|---|---|
-| [dcx-docs-check.yaml](dcx-docs-check.yaml) | `DCX-*` — documentation graph lint | approved |
-| [ctx-context-hooks.yaml](ctx-context-hooks.yaml) | `CTX-*` — instant lint + ID resolution hooks | approved |
-| *(capability specs arrive just-in-time per roadmap)* | | |
+Status lives in each file's `status:` field (single source — not duplicated here; `docs-check --json` reports it per file).
+
+| Spec | Covers |
+|---|---|
+| [dcx-docs-check.yaml](dcx-docs-check.yaml) | `DCX-*` — documentation graph lint |
+| [ctx-context-hooks.yaml](ctx-context-hooks.yaml) | `CTX-*` — instant lint + ID resolution + write-guard hooks |
+| *(capability specs arrive just-in-time per roadmap)* | |

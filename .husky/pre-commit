@@ -1,0 +1,2 @@
+# Documentation graph must be valid before any commit (DCX-14).
+node scripts/docs-check.mjs
