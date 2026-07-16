@@ -17,6 +17,7 @@ items:
   UI-1:
     v: 1
     kind: journey
+    serves: [ONB-1, INT-1, ONB-5, ONB-6]
     title: "Journey: first session → first drafts"
     body: |
       Signup (ONB-1, org name + email only) → ingestion narrates itself in
@@ -30,6 +31,7 @@ items:
   UI-2:
     v: 1
     kind: journey
+    serves: [APR-1, APR-4]
     title: "Journey: weekly digest"
     body: |
       Digest email deep link (APR-4) → Inbox stack (UI-7) → per item:
@@ -43,6 +45,7 @@ items:
   UI-3:
     v: 1
     kind: journey
+    serves: [CHT-2]
     title: "Journey: redirect via chat"
     body: |
       Founder gives plain-language feedback anywhere (docked chat companion,
