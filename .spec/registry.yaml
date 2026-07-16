@@ -34,7 +34,7 @@ prefixes:
   UX: product/requirements/ux-app-shell.yaml
   DS: product/requirements/ds-design-system.yaml
   ARC: architecture/overview.yaml
-  UI: architecture/ui.yaml
+  UI: experience/ui.yaml
   DM: architecture/data-model.yaml
   IG: architecture/integrations.yaml
   PIPE: architecture/llm-pipeline.yaml

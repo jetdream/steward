@@ -62,8 +62,8 @@ items:
       (2px ink, per the substrate's photography-safe treatment).
 
   DS-5:
-    v: 1
-    decided-by: DEC-6
+    v: 2
+    decided-by: DEC-8
     priority: P0
     title: Trust components
     statement: >-
@@ -71,9 +71,15 @@ items:
       inventory: ReasonLine (why the system did/asks this — VAL-5, every
       system-initiated item), FitBadge (per-channel fit or skip-with-reason —
       GEN-5), TrustLevel indicator (AUT-1), AssumedNote (visible "assumed"
-      marker — MEM-2, VAL-3), and the awaiting-picture state (GEN-4). They
-      carry the "colleague, nothing hidden" identity the way the substrate's
-      signature lockups carry Airbnb's.
+      marker — MEM-2, VAL-3), the awaiting-picture state (GEN-4),
+      ProvenanceLine (the Memory sources a draft grounded on, with
+      tap-through — DEC-8, VAL-3), OptionalReason (the one-tap
+      dismissible reason affordance shared by Skip and veto — DEC-8), and
+      the veto-window card class ("published — veto until <time>", TL1's
+      quiet visual register, never confusable with needs-approval — DEC-8).
+      They carry the "colleague, nothing hidden" identity the way the
+      substrate's signature lockups carry Airbnb's. (v2: DEC-8's three
+      trust elements folded into the owned inventory per GR-7.)
 
   DS-6:
     v: 1

@@ -11,4 +11,7 @@ Technical design that spans capabilities, as pure-YAML docs (representation rule
 | [llm-pipeline.yaml](llm-pipeline.yaml) | Generation grounding, guardrail chain, one-brain/several-skills, model-call logging, COGS |
 | [integrations.yaml](integrations.yaml) | External APIs: auth models, permissions, rate limits, failure modes |
 | [security-privacy.yaml](security-privacy.yaml) | Compliance, privacy, safety posture |
-| [ui.yaml](ui.yaml) | UX structure: journeys, flows, screens (design-elements per method/ui.md); artifacts live in `/design`, linked from element bodies |
+
+The UX structure moved to the parallel **experience spine** —
+[../experience/](../experience/CLAUDE.md) (`UI-*`, cortex v0.14 experience
+layer); this folder owns only the technical (built-HOW) design-elements.

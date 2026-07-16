@@ -1,0 +1,777 @@
+kind: experience
+prefix: UI
+title: Steward Experience Spine — Journeys, Flows, Screens, Touchpoints
+status: approved
+# Sign-off: DEC-8 (founding round); Product-Designer challenger pass recorded
+# at specs/challenges/experience-ui-2026-07-16-r1.md (findings applied in the
+# same change per the convergence rule).
+
+intent: >-
+  The experienced-HOW of Steward (method/ui.md, v0.14 experience layer):
+  every user-facing requirement traces to a journey that serves it; journeys
+  decompose into flows, flows into screens and touchpoints. The founder's
+  experience is a relationship over months — journeys are its chapters.
+  Foundations: DEC-6/DEC-7 (substrate, inbox-first shell, terracotta,
+  light-only), DS-1..7 + GR-7 (design system), DEC-8 (this spine, draft
+  provenance, skip-with-reason, TL1-aware inbox, thin ops journey). Design
+  artifacts live under design/ and are linked from element bodies; Claude
+  Design output homes as attachments, never as truth.
+
+items:
+  # ───────────────────────── Journeys (the chapters) ─────────────────────────
+
+  UI-1:
+    v: 2
+    kind: journey
+    title: "Day one — hired"
+    serves: [ONB-1, ONB-2, ONB-3, ONB-4, ONB-5, ONB-6, INT-1, INT-2, STR-2]
+    body: |
+      Chapter 1 of the relationship: from "org name + email" to the first
+      approved post, target inside the first session (G-5: live within 48h).
+      The founder must feel they HIRED someone, not installed software: the
+      system starts working immediately and narrates itself (DS-6), asks only
+      what it cannot find (MEM-2), shows what it learned (ONB-5), introduces
+      its editorial contract (STR-2), and delivers finished work (ONB-6).
+      Flows: sign-up (UI-21) → watch it learn (UI-22) → first interview
+      (UI-23, thin-source path) → here's what I know (UI-24) → meet your
+      strategy (UI-25) → connect channels (UI-26, any time, any order) →
+      first approval (UI-27). The order after sign-up is founder-paced, not
+      a wizard: every flow is skippable and resumable.
+
+  UI-2:
+    v: 2
+    kind: journey
+    title: "The weekly digest"
+    serves: [APR-1, APR-2, APR-3, APR-4, APR-6, GEN-2, GEN-4, GEN-5, EXT-2, PRO-3, STW-1, UX-1, UX-3]
+    body: |
+      The recurring heart of the product — chapters 2 and 3 of the
+      relationship (learning each other, then rhythm). Entry is almost always
+      the digest email (UI-54) on the founder's cadence (APR-2); the whole
+      journey fits inside G-3's 15-minute weekly budget, usually minutes.
+      Arc: arrival (UI-28) → review the finite stack (UI-29) → unblock
+      pictures (UI-30) → completion + streak (UI-31). The exception arc is
+      first-class: the missed week (UI-32) — one gentle nudge, never guilt
+      (APR-6, VAL-5). External-radar drafts (EXT-2) arrive as cards in the
+      same stack, citation-first (GR-5). Validated by two audited mockup
+      rounds: design/mockups/ui-7-inbox/.
+
+  UI-3:
+    v: 2
+    kind: journey
+    title: "Just talk to it"
+    serves: [CHT-1, CHT-2, CHT-3, CHT-4, INT-3, MEM-2, UX-2]
+    body: |
+      The cross-cutting conversational journey — talking is always an
+      alternative to clicking (CHT intent). One conversation, aware of
+      everything (CHT-1), reachable as the docked companion on every surface
+      (DEC-7) and as the full Chat surface (UI-9). Flows: ask anything
+      (UI-33), redirect + confirm-back (UI-34 — the trust checkpoint: the
+      founder must see what was understood and where it landed, VAL-3),
+      command actions (UI-35, P1, CHT-3). Colleague voice throughout (CHT-4,
+      VAL-5); AssumedNotes surface here for correction (MEM-2).
+
+  UI-14:
+    v: 1
+    kind: journey
+    title: "Send me three photos"
+    serves: [PRO-1, GEN-3]
+    body: |
+      The material-request journey — the system moves first (VAL-6) to feed
+      its scarcest resource (real photos, GEN-3/GR-4). A reason-carrying
+      request (VAL-5) arrives by email/notification (UI-55), the founder acts
+      from a phone in the field in under a minute (UI-5 → UI-51), and blocked
+      awaiting-picture drafts (GEN-4) unblock visibly. The payoff line closes
+      the loop: "these three photos just completed Thursday's impact post."
+
+  UI-15:
+    v: 1
+    kind: journey
+    title: "Approve once — campaigns and milestones"
+    serves: [PRO-2, STW-2]
+    body: |
+      Seasonal packages (GivingTuesday, year-end) arrive proposed and
+      pre-drafted; the founder approves ONCE and the system handles the rest
+      (PRO-2) — the deepest expression of "the system moves first". Flows:
+      campaign proposal (UI-36) and the P1 milestone recap (UI-37): a one-tap
+      "we hit a milestone" that turns into a thank-you + impact package.
+
+  UI-16:
+    v: 1
+    kind: journey
+    title: "Earned autonomy"
+    serves: [AUT-1, AUT-2, AUT-3, UX-6]
+    body: |
+      Chapter 4: the relationship's trust arc, made visible and always
+      revocable (VAL-3). Flows: the offer (UI-38 — promotion proposed after
+      earned consistency, never taken, AUT-2), the veto window (UI-39 — TL1
+      changes what the inbox MEANS: "I published this — you can veto until
+      Thu" cards, designed into UI-7 now per DEC-8), and the kill switch
+      (UI-40 — a panicked founder goes from fear to calm in one gesture,
+      AUT-3). Permanent caps (fundraising asks, external content) are always
+      stated where the trust level shows. TL2 (full autopilot) is
+      consciously deferred with AUT-2/P1: its digest meaning ("here's what
+      went out") and offer moment are designed when promotion mechanics
+      ship — TL1-awareness now (DEC-8) keeps that a card-class extension,
+      not a redesign.
+
+  UI-17:
+    v: 1
+    kind: journey
+    title: "The inspectable brain"
+    serves: [STR-1, STR-2, MEM-3, PUB-3, GEN-1, UX-4, UX-5]
+    body: |
+      Nothing hidden (VAL-3): the founder can always answer "what does it
+      think it knows, what rules is it following, what's planned, what went
+      out?" Flows: steer the strategy (UI-41 — the five STR-1 sections,
+      versioned with diffs), planned & published (UI-42 — the rolling
+      calendar GEN-1 + publish log PUB-3), browse the memory (UI-43, P1,
+      MEM-3). This journey is visited occasionally but carries
+      disproportionate trust weight — it is the product's glass wall.
+
+  UI-18:
+    v: 1
+    kind: journey
+    title: "Compose your own"
+    serves: [APR-5, UX-7]
+    body: |
+      The founder-initiated path: write a post, attach a picture, pick
+      channels (or accept the fit-gate's suggestion), confirm the adapted
+      variants (APR-5). Compose is an action available from Inbox/Calendar
+      and via chat — never a nav destination (UX-7). One flow (UI-4), one
+      surface (UI-13), progressive disclosure — not a wizard maze.
+
+  UI-19:
+    v: 1
+    kind: journey
+    title: "Fair account and exit"
+    serves: [BIL-1, BIL-2]
+    body: |
+      One plan, one promise ($199/mo, BIL-1) — and an exit with dignity:
+      cancel stops publishing, offers data export, honors the 30-day
+      guarantee in one click with a one-question survey (BIL-2). A guilt-free
+      exit is part of the brand promise to a guilt-prone persona; it also
+      protects the refund-rate metric (G-1) from dark-pattern backlash.
+      Flows: plan & billing (UI-44), cancel with dignity (UI-45).
+
+  UI-20:
+    v: 1
+    kind: journey
+    title: "Operator QA (internal)"
+    serves: [OPS-1]
+    body: |
+      Thin by decision (DEC-8): the internal persona (us) silently
+      guaranteeing quality for cohort 1 — per-org draft QA before the Inbox
+      (with a dial), failure queues, interview transcripts, radar precision
+      (R-4). One flow (UI-46), one low-fidelity screen (UI-53); design
+      investment deferred until the founder-facing spine is built.
+
+  # ───────────────────────── Flows: Day one (UI-1) ─────────────────────────
+
+  UI-21:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: sign up and consent"
+    body: |
+      Org name + email is enough (ONB-1); EIN optional with visible
+      501(c)(3) verification when given; consent to read public presence
+      (A-5) stated in plain language. States: EIN unmatched (proceed
+      anyway), verification pending (never blocks), already-registered org.
+
+  UI-22:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: watch it learn"
+    body: |
+      Ingestion narrates itself in colleague voice while it works — the
+      no-empty-state rule's hardest test (DS-6): "I'm reading your website
+      now — first drafts in about ten minutes." Live findings appear as they
+      land (facts, tone, photos harvested). States: no sources at all →
+      hand over to the interview (UI-23) as the primary path; slow source;
+      failed source (honest, non-blocking: "your site wouldn't load — I'll
+      retry; meanwhile, tell me…"). Screen: UI-48.
+
+  UI-23:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: the first interview"
+    body: |
+      The curious-colleague conversation (INT-1), a few questions at a time,
+      never an interrogation (INT-2); every answer visibly lands ("I'll turn
+      this into a founder-story post — you'll see it in your digest").
+      Runs in the chat surface (UI-9, homed under UI-33). Resumable forever;
+      never re-asks (MEM-2). States: founder has 2 minutes (graceful pause),
+      founder rambles (the interviewer follows the story — that's the point).
+
+  UI-24:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: here's what I know"
+    body: |
+      The assembled profile presented for correction (ONB-5): facts, tone
+      findings, programs, people — every inferred item marked with an
+      AssumedNote (MEM-2, DS-5); corrections become permanent rules (MEM-1).
+      States: thin profile (honest about gaps + what would fill them),
+      wrong-org ingestion (a "this isn't us" escape that purges cleanly).
+      Screen: UI-49.
+
+  UI-25:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: meet your strategy"
+    body: |
+      The founder meets the auto-drafted Posting Strategy (STR-2) — framed
+      as "here's how I plan to speak for you; change anything", five STR-1
+      sections, plain language. Surface: the strategy tab of UI-11 (homed
+      under UI-41). States: founder skips entirely (fine — strategy binds
+      anyway, revisitable via UI-17), founder edits inline (versioned).
+
+  UI-26:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: connect channels"
+    body: |
+      Four OAuth connects (FB Page, IG, Threads, X — ONB-4), any order, any
+      time; publishing activates per channel as connected. States: zero
+      connected (drafts still flow — publishing waits), partial (normal for
+      week 1), OAuth failure (plain-language retry), token expiry LATER
+      (re-connect prompt with reason — the founder must never discover a
+      dead channel silently; ties to PUB-1 alert-only-if-action-needed).
+      Screen: UI-50.
+
+  UI-27:
+    v: 1
+    kind: flow
+    parent: UI-1
+    title: "Flow: the first approval"
+    body: |
+      First drafts appear in the Inbox (ONB-6) framed as the payoff of the
+      whole chapter: "Here are your first drafts — built from your website
+      and our chat." Uses the Inbox screen (UI-7) with first-run copy
+      variants; ends at the G-5 activation moment (first post approved and
+      scheduled/live). States: sources thin → drafts arrive after ten
+      interview minutes instead; founder edits heavily (APR-3 learning starts
+      here); no channel connected yet (approve → "connect Facebook to send
+      it" handoff to UI-26).
+
+  # ───────────────────── Flows: weekly digest (UI-2) ─────────────────────
+
+  UI-28:
+    v: 1
+    kind: flow
+    parent: UI-2
+    title: "Flow: digest arrival"
+    body: |
+      The digest email (UI-54) is most founders' front door (APR-4): subject
+      and preview carry the week's shape; deep links land on the Inbox entry
+      state (0 of N, time estimate, mix ReasonLine). States: web-push
+      variant (P1), stale link (digest already done → completion state),
+      logged-out landing (email-first dev login per constitution).
+
+  UI-29:
+    v: 1
+    kind: flow
+    parent: UI-2
+    title: "Flow: review the week"
+    body: |
+      The finite stack, per item: approve / per-channel toggle / inline edit
+      (with colleague acknowledgment, APR-3) / skip / free-text redirect
+      (APR-1). Per DEC-8: every card carries a quiet provenance line ("from
+      your update last Tuesday · your website" → tap-through to Memory
+      entries), and Skip offers an optional one-tap reason ("not now" /
+      "not our style" / tell me why) that writes to Memory — dismissible,
+      never blocking. Fit badges show per-channel fit or skip-with-reason,
+      overridable (GEN-5). Approving advances to the next pending card.
+      Screens: UI-6 (shell), UI-7 (stack), UI-8 (single-post review).
+      States: awaiting-picture (→ UI-30), external card (citation-first),
+      veto-window card (TL1, → UI-39 — needs NO action: excluded from the
+      "N of M" count and from batch approve), batch approve ("approve all
+      ready"), empty week (system explains why and what it needs),
+      approved-item undo (every approval is revocable in place until it
+      publishes — the sibling of UI-34's redirect Undo; validated in mockup
+      rounds 1-2), rule proposal (APR-3's visible payoff: after recurring
+      edit patterns, a system-initiated card — "You've shortened 4 X posts
+      in a row — set 'max 200 chars on X' as a rule?" — with accept / edit
+      / decline; accepted rules land in the Strategy visibly via UI-41,
+      declined ones are not re-asked soon), ask-hygiene card (PRO-3: the
+      proposed missing impact post arrives as a normal card whose
+      ReasonLine names the flag — "we've asked twice without reporting
+      back").
+
+  UI-30:
+    v: 1
+    kind: flow
+    parent: UI-2
+    title: "Flow: fix a picture"
+    body: |
+      An awaiting-picture draft (GEN-4) is complete-but-blocked, never an
+      error: dashed warn slot, library suggestions with a reason, one-tap
+      attach, disabled Approve until resolved (validated in mockup round 2).
+      States: no library matches (→ hands off to a photo request, UI-14),
+      upload from device inline.
+
+  UI-31:
+    v: 1
+    kind: flow
+    parent: UI-2
+    title: "Flow: finish and streak"
+    body: |
+      The completion moment — quiet pride, the product's only celebratory
+      element: streak numeral (G-4), what's heading out with times, and
+      "next from me" (VAL-6). States: first-ever week ("your first full
+      week", no dots), streak broken last week (grace, never guilt —
+      restart framed forward), partial finish (blocked items called out
+      with their unblock path).
+
+  UI-32:
+    v: 1
+    kind: flow
+    parent: UI-2
+    title: "Flow: the missed week"
+    body: |
+      A digest untouched >72h gets ONE gentle nudge (APR-6, UI-57): reason
+      attached, guilt-free tone, one-tap entry back into UI-29. States:
+      second consecutive miss (no escalation — the system quietly holds
+      time-insensitive items and says so), founder returns after weeks
+      (re-entry summary: "here's what happened while you were away" — held
+      items, nothing published without permission at TL0).
+
+  # ───────────────────── Flows: talk (UI-3) ─────────────────────
+
+  UI-33:
+    v: 1
+    kind: flow
+    parent: UI-3
+    title: "Flow: ask anything"
+    body: |
+      Full-context Q&A (CHT-1): "what's going out this week?", "what do you
+      know about our volunteer program?" — answered from Memory with sources.
+      Rich cards render inline (drafts, photos, strategy snippets). Screen:
+      UI-9 (full surface) and the docked companion mode (UI-6). States:
+      question the system can't answer (honest "I don't know — want me to
+      note it as a gap?"), interview handoff (INT-1 sessions live here),
+      periodic-curiosity arrival (INT-3, P1: a probe never sits in an
+      unopened chat — it rides the next digest as a card and shows as a
+      quiet companion badge; its own touchpoint only if calendar-urgent).
+
+  UI-34:
+    v: 1
+    kind: flow
+    parent: UI-3
+    title: "Flow: redirect and confirm-back"
+    body: |
+      Plain-language feedback from anywhere ("less formal", "never name
+      donors") → the system confirms back what it understood and WHERE it
+      landed (Memory vs Strategy) before it binds (CHT-2, VAL-3) — with
+      Undo. Validated in mockup round 2 (inline card variant). States:
+      ambiguous redirect (system asks one clarifying question, never
+      guesses silently), conflicting rule (surfaces the conflict with the
+      existing rule it would override).
+
+  UI-35:
+    v: 1
+    kind: flow
+    parent: UI-3
+    title: "Flow: do it by chat (P1)"
+    body: |
+      Command actions (CHT-3): create a draft, reschedule, pause a channel,
+      trigger a campaign — same pipelines as the UI, confirmation required
+      for destructive actions. States: chat-initiated composition (P0 subset
+      per APR-5 — creation lands as a confirmable draft), permission-scoped
+      failures explained in colleague voice.
+
+  # ───────────────────── Flows: photos, campaigns, autonomy ─────────────────────
+
+  UI-5:
+    v: 2
+    kind: flow
+    parent: UI-14
+    title: "Flow: request and upload"
+    body: |
+      The request arrives with its reason (PRO-1, UI-55) → dead-simple
+      mobile-first upload (camera-roll multi-select, drag on desktop) →
+      library ingestion + tagging → blocked drafts unblock visibly with a
+      payoff line. Screen: UI-51. States: founder has no photos ("that's
+      okay — here's what I'll do instead"), upload failure / poor
+      connectivity in the field (resumable retry, nothing lost, honest
+      progress — the flow's most likely failure given its own "from a
+      phone in the field" framing), partial upload, wrong photos (library
+      edit affordance).
+
+  UI-36:
+    v: 1
+    kind: flow
+    parent: UI-15
+    title: "Flow: campaign proposal"
+    body: |
+      A seasonal package (PRO-2) arrives pre-drafted: the arc, the posts,
+      the asks (spacing-checked per GEN-1 overlays), the material it still
+      needs. One Approve adopts the whole package into the calendar; edits
+      per item remain available in the normal digest flow. Screen: UI-52.
+      States: decline (no guilt, offer to revisit), partial adopt (pick
+      posts), campaign needing photos (chains to UI-14).
+
+  UI-37:
+    v: 1
+    kind: flow
+    parent: UI-15
+    title: "Flow: milestone recap (P1)"
+    body: |
+      Founder taps "we hit a milestone" (or a campaign ends) → thank-you +
+      impact-recap package proposed (STW-2), material requests via UI-14.
+
+  UI-38:
+    v: 1
+    kind: flow
+    parent: UI-16
+    title: "Flow: the offer"
+    body: |
+      After earned consistency (AUT-2 thresholds), the system OFFERS
+      promotion — "Impact stories: you've approved 10 in a row unchanged.
+      Want me to publish these on my own, with a 24-hour veto window?" —
+      never takes it. Permanent caps stated plainly. Surface: settings
+      (UI-12) + an inline offer card in the digest. States: decline
+      (retained, not re-asked soon), auto-demotion after edit spikes
+      (explained with its reason, framed as listening, not failure).
+
+  UI-39:
+    v: 1
+    kind: flow
+    parent: UI-16
+    title: "Flow: the veto window"
+    body: |
+      TL1 in daily life: auto-published items appear in the digest as
+      "published on my own — you can veto until Thu" cards (DEC-8: designed
+      into UI-7 now), with a veto-notice touchpoint (UI-56) for
+      time-sensitive ones. Veto = one tap, takes the post down, writes the
+      learning to Memory. States: veto after expiry (honest: "it's live —
+      want me to delete it?"), veto reasons (optional, like skip).
+
+  UI-40:
+    v: 1
+    kind: flow
+    parent: UI-16
+    title: "Flow: the kill switch"
+    body: |
+      AUT-3: a global pause, one gesture from Settings (UI-12), always
+      visible, never buried — plus per-channel pause. The founder arrives
+      scared; the flow's job is instant calm: immediate confirmation of
+      what stopped, what remains scheduled (nothing will send), and one
+      line on how to resume. States: paused state across the app (banner,
+      never nagging), resume, partial (single channel) pause.
+
+  # ───────────────────── Flows: brain, compose, account, ops ─────────────────────
+
+  UI-41:
+    v: 1
+    kind: flow
+    parent: UI-17
+    title: "Flow: steer the strategy"
+    body: |
+      The five STR-1 sections in the founder's language, versioned with
+      diffs (STR-2); edits bind immediately; chat redirects land here
+      visibly (UI-34 cross-link). Screen: UI-11 (strategy tab). States:
+      view a past version, revert, section empty (auto-draft pending —
+      narrated).
+
+  UI-42:
+    v: 1
+    kind: flow
+    parent: UI-17
+    title: "Flow: planned and published"
+    body: |
+      The rolling month ahead (GEN-1) and the publish log (PUB-3) with
+      links and variant text. Read-mostly at P0 — EXCEPT recall: an
+      approved-but-unpublished item can always be unscheduled/recalled at
+      P0 (VAL-3 "always revocable"; the calendar-side sibling of UI-29's
+      approved-undo). Full reschedule/edit-scheduled arrive with CHT-3/P1.
+      Screen: UI-10. States: empty month (system explains + points at what
+      it needs), publish failure surfaced ONLY if founder action is needed
+      (PUB-1).
+
+  UI-43:
+    v: 1
+    kind: flow
+    parent: UI-17
+    title: "Flow: browse the memory (P1)"
+    body: |
+      MEM-3: view / edit / delete what the system knows, grouped by entry
+      type, provenance on every entry. Screen: UI-11 (memory tab). States:
+      delete cascades explained ("3 scheduled drafts use this — regenerate?").
+
+  UI-4:
+    v: 2
+    kind: flow
+    parent: UI-18
+    title: "Flow: compose"
+    body: |
+      Master text → picture (upload or library) → channels (or fit-gate
+      suggestion) → adapted variants → confirm (APR-5). Progressive
+      disclosure in one surface (UI-13), reachable from Inbox/Calendar and
+      chat. States: fit-gate disagrees (visible reason + override), no
+      picture (GEN-4 rules apply), draft-save on abandon.
+
+  UI-44:
+    v: 1
+    kind: flow
+    parent: UI-19
+    title: "Flow: plan and billing"
+    body: |
+      BIL-1: the single plan, card state, invoices; guarantee terms in
+      plain language. Screen: UI-12 (billing section). States: payment
+      failure (grace + plain retry, publishing unaffected during grace).
+
+  UI-45:
+    v: 1
+    kind: flow
+    parent: UI-19
+    title: "Flow: cancel with dignity"
+    body: |
+      BIL-2: cancel stops publishing, offers export, honors the 30-day
+      guarantee in one click + one-question survey. No retention maze; one
+      honest "here's what you'll lose" summary (the memory and rhythm the
+      system built). States: refund window active vs expired, export
+      delivery, data deletion on request (BIL-2 "deletion honored" — a
+      plain affordance, not a support ticket; policy per SEC), re-subscribe
+      (memory retained per data policy unless deleted, SEC).
+
+  UI-46:
+    v: 1
+    kind: flow
+    parent: UI-20
+    title: "Flow: silent QA pass (internal)"
+    body: |
+      OPS-1: per-org draft QA before Inbox (with a dial to reduce it as G-2
+      improves), failure queues, transcripts, radar precision review.
+      Screen: UI-53. Low fidelity by decision (DEC-8).
+
+  # ───────────────────────── Screens ─────────────────────────
+
+  UI-6:
+    v: 2
+    kind: screen
+    parent: UI-29
+    title: "Screen: app shell"
+    body: |
+      The navigation frame (UX-1..7, ARC-5; foundations DEC-7) — homed here
+      because Inbox is the landing surface, but present across every
+      journey. Desktop: quiet left rail (Inbox home + count chip, Calendar,
+      Chat, Organization, Settings; Compose as action; account menu
+      founder-name-first) + summonable docked chat companion (three-layer
+      elevation). Mobile: bottom tab bar; companion as slide-up sheet.
+      Single terracotta accent: active nav + the screen's primary action
+      (DS-2); wordmark in ink (Q-1). Validated in mockup rounds 1-2.
+
+      Brief: design/briefs/ui-6-app-shell.md
+
+  UI-7:
+    v: 2
+    kind: screen
+    parent: UI-29
+    title: "Screen: inbox (home)"
+    body: |
+      The digest stack (UX-3, APR-1): finite, vertically generous post
+      cards — org photo 4:3, category + planned-slot line, master text,
+      ReasonLine, provenance line (DEC-8), FitBadges, awaiting-picture
+      state (DS-5); actions Approve (accent) / Edit (inline, with
+      acknowledgment) / Skip (optional one-tap reason, DEC-8) / Redirect
+      (confirm-back). Approve advances to the next pending card; entry
+      state sets the contract (count, time estimate, mix line); completion
+      state celebrates the streak quietly (G-4). TL1-aware (DEC-8): a
+      distinct "published — veto until <time>" card class (UI-39) with its
+      own quiet visual register, never confusable with needs-approval.
+      Two audited rounds: design/mockups/ui-7-inbox/round-1..2/.
+
+      Brief: design/briefs/ui-7-inbox.md
+
+  UI-8:
+    v: 2
+    kind: screen
+    parent: UI-29
+    title: "Screen: post review / detail"
+    body: |
+      One draft in full: master text + per-channel variant tabs (GEN-2),
+      picture (or library suggestions when awaiting, GEN-4), per-channel
+      fit reasons (GEN-5), inline edit per variant or master (APR-1),
+      provenance detail (DEC-8: the Memory entries this draft grounded on).
+      Desktop: sticky approve panel right rail (three-layer elevation);
+      mobile: bottom-anchored approve bar.
+
+      Brief: design/briefs/ui-8-post-review.md
+
+  UI-9:
+    v: 2
+    kind: screen
+    parent: UI-33
+    title: "Screen: chat"
+    body: |
+      The full conversational surface (UX-2, CHT-1..4): interviewer
+      sessions, ideation, questions, redirects — colleague presence,
+      spacious rhythm, rich inline cards (drafts, photos, strategy
+      snippets), never a support-widget bubble. The docked companion
+      (UI-6) is the same conversation, narrower.
+
+  UI-10:
+    v: 2
+    kind: screen
+    parent: UI-42
+    title: "Screen: calendar / published"
+    body: |
+      Planned and published across channels (UX-4, PUB-3): rolling month
+      + publish log with links and variant text. Read-mostly at P0.
+
+  UI-11:
+    v: 2
+    kind: screen
+    parent: UI-41
+    title: "Screen: organization"
+    body: |
+      Two tabs (UX-5): Profile & Memory — what the system knows, with
+      AssumedNotes and provenance (MEM-2, VAL-3; MEM-3 browser at P1) —
+      and Posting Strategy — the versioned five-section editor with diffs
+      (STR-1/STR-2). The glass wall of UI-17.
+
+  UI-12:
+    v: 2
+    kind: screen
+    parent: UI-38
+    title: "Screen: settings / billing"
+    body: |
+      Cadence (APR-2), notifications (APR-4), per-category TrustLevels with
+      permanent caps stated (AUT-1, DS-5), per-channel pause + kill switch
+      — one gesture, never buried (AUT-3) — channel connections (ONB-4),
+      plan/billing (BIL-1). Homed under the trust journey because autonomy
+      is its gravitational center; billing flow (UI-44) shares the surface.
+      Cadence selection here is the founder-selected half of APR-2 —
+      deliberately a settings affordance, not a task flow of its own (its
+      experienced half, digest arrival, lives in UI-28).
+
+  UI-13:
+    v: 2
+    kind: screen
+    parent: UI-4
+    title: "Screen: composer"
+    body: |
+      The compose surface (APR-5): master editor, picture picker, channel
+      selection with fit suggestions, variant preview + confirm. An
+      overlay/action, not a destination (UX-7).
+
+  UI-47:
+    v: 1
+    kind: screen
+    parent: UI-21
+    title: "Screen: signup"
+    body: |
+      Org name + email, EIN optional (ONB-1); consent in plain language;
+      colleague voice from the first sentence. No password at dev stage
+      (constitution: BetterAuth, email-only dev login).
+
+  UI-48:
+    v: 1
+    kind: screen
+    parent: UI-22
+    title: "Screen: ingestion narration"
+    body: |
+      The working-out-loud surface (DS-6): what I'm reading, what I found
+      so far (facts/tone/photos streaming in), what happens next, and the
+      standing invitation to chat meanwhile. Failure states honest and
+      non-blocking.
+
+  UI-49:
+    v: 1
+    kind: screen
+    parent: UI-24
+    title: "Screen: profile review — here's what I know"
+    body: |
+      The assembled profile grouped by facts / tone / programs / people,
+      AssumedNotes on every inference, one-tap corrections that become
+      permanent rules (ONB-5, MEM-1). The "this isn't us" escape.
+
+  UI-50:
+    v: 1
+    kind: screen
+    parent: UI-26
+    title: "Screen: channel connect"
+    body: |
+      Four channel cards (FB/IG/Threads/X) with connect state, OAuth
+      launch, per-channel activation note, and later reconnect-with-reason
+      states (ONB-4). Reachable from onboarding and Settings.
+
+  UI-51:
+    v: 1
+    kind: screen
+    parent: UI-5
+    title: "Screen: quick upload"
+    body: |
+      Mobile-first photo intake: the request's reason on top, camera-roll
+      multi-select, upload progress, payoff line ("these unblocked
+      Thursday's post"). Desktop: drag-and-drop equivalent (PRO-1).
+
+  UI-52:
+    v: 1
+    kind: screen
+    parent: UI-36
+    title: "Screen: campaign proposal"
+    body: |
+      The pre-drafted package (PRO-2): arc summary, the posts as a stack,
+      ask spacing shown, material needed flagged; one Approve adopts all.
+
+  UI-53:
+    v: 1
+    kind: screen
+    parent: UI-46
+    title: "Screen: operator dashboard (internal, low-fi)"
+    body: |
+      OPS-1 utility surface: QA queue with dial, failure queues,
+      transcripts, radar precision review. Deliberately un-designed beyond
+      utility (DEC-8) — internal persona, cohort-1 tool.
+
+  # ───────────────────────── Touchpoints (email outer loop) ─────────────────────────
+
+  UI-54:
+    v: 1
+    kind: touchpoint
+    parent: UI-28
+    title: "Touchpoint: weekly digest email"
+    body: |
+      The most-seen artifact of the product (APR-4). Subject + preview
+      carry the week's shape ("5 posts ready — a milestone week"); body
+      lists the stack with thumbnails; one deep link per item + one "review
+      the week" CTA. Colleague voice, steward tokens adapted to email
+      constraints, no dark-pattern urgency. States: time-sensitive item
+      variant, digest-complete variant (nothing to do — rare, celebratory).
+
+  UI-55:
+    v: 1
+    kind: touchpoint
+    parent: UI-5
+    title: "Touchpoint: photo request email"
+    body: |
+      PRO-1's reason-first ask, mobile-optimized: the event context, "send
+      me 3 photos", one tap into UI-51. Never more than one open request
+      reminder.
+
+  UI-56:
+    v: 1
+    kind: touchpoint
+    parent: UI-39
+    title: "Touchpoint: veto notice"
+    body: |
+      TL1 auto-publish notice (AUT-1): what published/will publish, the
+      veto window and one-tap veto link, why it qualified (earned trust,
+      category). Calm by design — this notice is the autonomy contract
+      made visible.
+
+  UI-57:
+    v: 1
+    kind: touchpoint
+    parent: UI-32
+    title: "Touchpoint: nudge email"
+    body: |
+      APR-6: the single gentle nudge after 72h. Reason attached, zero
+      guilt, one-tap re-entry; explicitly states what is safely on hold.

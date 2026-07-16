@@ -72,6 +72,15 @@ are first-class, reused everywhere, and carry the "nothing hidden" identity:
 - **Awaiting-picture state** — a written-but-blocked draft renders complete
   with a quiet `--warn`-tinted picture slot and library suggestions; never
   an error state, always a next step.
+- **ProvenanceLine** — the Memory sources a draft grounded on ("from your
+  update last Tuesday · your website"), quiet metadata with tap-through to
+  the entries. Trust for weeks 1–8 lives here.
+- **OptionalReason** — the one-tap, dismissible reason affordance ("not
+  now" / "not our style" / tell me why) shared by Skip and veto; feeds
+  Memory, never blocks the primary action.
+- **Veto-window card** — TL1's "published on my own — you can veto until
+  Thu" card class: its own quiet visual register, excluded from progress
+  counts and batch actions, never confusable with needs-approval.
 
 ## Voice in pixels (VAL-5, DS-6)
 

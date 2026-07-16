@@ -149,6 +149,7 @@ Who decides what. Right-sized for a two-founder product; the decisive artifact i
 - [learnings.yaml](learnings.yaml) — engineering learnings: gotchas, dead-ends, patterns (`LRN-*`)
 - [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts; [specs/challenges/](specs/challenges/) holds challenge evidence
 - [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval)
+- [experience/](experience/) — the experience spine: journeys/flows/screens/touchpoints (`UI-*`), the experienced-HOW parallel to architecture (method/ui.md)
 - [product/decisions.yaml](product/decisions.yaml) — HITL decision log (`DEC-*`); [product/constraints.yaml](product/constraints.yaml) — operational/compliance/deployment constraints (`CON-*`)
 - [adr/](adr/) — decision journal (markdown)
 - the **cortex** plugin + pinned dependency — provides the docs-check lint engine, the Claude Code hooks, the Architect Challenger agent, and the `/cortex:change-request` skill (consumed via a version pin, never vendored)

@@ -8,7 +8,7 @@ intent: >-
   for Steward's shape: a C4-style module map, a persisted data model, external
   channel/service integrations, the LLM pipeline, and the security posture.
 # Top-level element kinds (an element with no `parent` must be one of these).
-roots: [c4-context, data-entity, integration, pipeline, posture, journey, flow, screen]
+roots: [c4-context, data-entity, integration, pipeline, posture, journey]
 kinds:
   c4-context:     { nests: [c4-container] }        # the system in its environment
   c4-container:   { nests: [c4-component] }        # a runtime unit: client / backend / datastore
@@ -18,10 +18,12 @@ kinds:
   pipeline:       { nests: [pipeline-stage] }      # an LLM/processing pipeline
   pipeline-stage: { nests: [] }                    # a stage within a pipeline
   posture:        { nests: [] }                    # a security / privacy / compliance stance
-  # UI/UX design-element kinds (method/ui.md) — the vocabulary for design work
-  # (Claude Design output homes here as design-elements; screens carry wireframe /
-  # Claude Design artifact links + direct evidence, and are validated by @validates
-  # e2e/visual-regression through the stories layer).
-  journey:        { nests: [flow, screen] }        # an end-to-end user journey
-  flow:           { nests: [screen] }              # a UX flow — an ordered set of screens
-  screen:         { nests: [] }                    # a single screen / view
+  # Experience-spine kinds (method/ui.md, v0.14): strict top-down nesting —
+  # screen ∈ flow ∈ journey; a journey carries the serves edge to requirements.
+  # touchpoint is Steward's project-specific kind for out-of-app surfaces the
+  # founder experiences (digest/nudge/request/veto emails, web push) — designed
+  # like screens, homed in flows.
+  journey:        { nests: [flow] }                # an end-to-end user journey (a chapter)
+  flow:           { nests: [screen, touchpoint] }  # a task within a journey
+  screen:         { nests: [] }                    # a single in-app surface
+  touchpoint:     { nests: [] }                    # an out-of-app surface (email, push)

@@ -97,6 +97,27 @@ items:
       theme's DESIGN.md and the DS requirements register. Authorizes
       ADR-0001; a flexibility-limiting choice recorded per HITL policy (A5).
 
+  DEC-8:
+    v: 1
+    date: 2026-07-16
+    by: founder (shpin.p@diffco.us)
+    binds: [GR-7, UI-1, UI-2, UI-7, UI-16, UI-20]
+    title: Found the experience spine (v0.14 experience layer)
+    statement: >-
+      Establish Steward's full experience spine under the cortex v0.14
+      experience layer, as directed by the founder: the relationship-arc
+      journey map (day-one, weekly digest, talk, photos, campaigns, earned
+      autonomy, inspectable brain, compose, account, ops) with flows,
+      screens, and email touchpoints as governed design-elements
+      (experience/ui.yaml), plus the mandated conform-to-the-design-system
+      guardrail (GR-7, per method/ui.md §5). Four product calls decided in
+      the same round: (1) draft cards carry a Memory-provenance line;
+      (2) Skip offers an optional one-tap reason written to Memory; (3) the
+      Inbox is designed TL1-aware now (veto-window card class) to avoid a
+      month-3 core-screen redesign; (4) the operator-console journey is
+      mapped thin, design investment deferred. The register reaches
+      approved after the Product-Designer challenger pass of this round.
+
   DEC-7:
     v: 1
     date: 2026-07-16
