@@ -88,6 +88,8 @@ items:
       item and the screen's primary action (DS-2); wordmark "Steward" (Q-1)
       in ink, not accent.
 
+      Brief: design/briefs/ui-6-app-shell.md
+
   UI-7:
     v: 1
     kind: screen
@@ -102,6 +104,8 @@ items:
       celebrates the streak (G-4) — progress and doneness, not discovery,
       are the dopamine here.
 
+      Brief: design/briefs/ui-7-inbox.md
+
   UI-8:
     v: 1
     kind: screen
@@ -113,6 +117,8 @@ items:
       sticky approve panel in the right rail — the substrate's booking-panel
       pattern (three-layer elevation) repurposed: Approve CTA, channel
       toggles, schedule note. Mobile: bottom-anchored approve bar.
+
+      Brief: design/briefs/ui-8-post-review.md
 
   UI-9:
     v: 1
