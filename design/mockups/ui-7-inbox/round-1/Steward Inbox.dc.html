@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_ds/ai-1-f3e3b06a-c768-44f2-a8c7-ba42dea50fe3/tokens.css">
+<script src="_ds/ai-1-f3e3b06a-c768-44f2-a8c7-ba42dea50fe3/_ds_bundle.js"></script>
+<style>
+  html,body{margin:0}
+  *{box-sizing:border-box}
+  body{background:#eceae4;color:var(--fg);font-family:var(--font-body);font-weight:500;font-size:var(--text-base);line-height:var(--leading-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  a{color:var(--fg-2);text-decoration:underline;text-underline-offset:2px}
+  a:hover{color:var(--fg)}
+  ::selection{background:color-mix(in srgb, var(--accent) 22%, #fff)}
+  @keyframes stwFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @keyframes stwSettle{from{opacity:0.35;transform:scale(0.995)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+<div style="padding:72px 80px 96px;display:flex;flex-direction:column;gap:16px;width:max-content">
+  <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:16px">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--meta)">Steward · Communications for small nonprofits</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:var(--tracking-display);color:var(--fg)">Inbox — the digest stack <span style="color:var(--meta);font-weight:600">(UI-7)</span></div>
+    <div style="font-size:15px;color:var(--muted);max-width:760px;margin-top:4px">The home screen. A finite, calm review the founder finishes in minutes — approve or redirect, nothing to operate. The desktop frame is live: approve the impact story, give the blocked draft a photo from the library, then approve it to reach the streak moment.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:56px;align-items:flex-start">
+    <!-- ============ FRAME 1 · DESKTOP MID-REVIEW (interactive) ============ -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span style="font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--meta)">Desktop · Inbox — mid-review</span>
+        <button onClick="{{ reset }}" style="font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--border);border-radius:var(--radius-pill);padding:5px 12px" style-hover="{{ resetHover }}">↺ Reset demo</button>
+      </div>
+
+      <div style="width:1280px;min-height:864px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:rgba(0,0,0,0.05) 0 2px 8px, rgba(0,0,0,0.09) 0 18px 44px -12px;overflow:hidden;display:grid;grid-template-columns:266px 1fr">
+
+        <!-- LEFT NAV RAIL -->
+        <aside style="width:266px;flex:none;border-right:1px solid var(--border-soft);padding:26px 16px 20px;display:flex;flex-direction:column;gap:6px;background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:11px;padding:2px 10px 22px">
+            <span style="width:34px;height:34px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;letter-spacing:-0.02em">S</span>
+            <span style="font-size:21px;font-weight:700;letter-spacing:-0.02em;color:var(--fg)">Steward</span>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);background:color-mix(in srgb, var(--accent) 9%, var(--surface));color:var(--accent);font-weight:600;font-size:15px">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h3.5l1.4 2.6h6.2L16.5 13H20"/><path d="M4.6 13 6.7 5.4A1.6 1.6 0 0 1 8.2 4.2h7.6a1.6 1.6 0 0 1 1.5 1.2L19.4 13v4.8a1.6 1.6 0 0 1-1.6 1.6H6.2a1.6 1.6 0 0 1-1.6-1.6z"/></svg>
+            <span style="flex:1">Inbox</span>
+            <span style="min-width:20px;height:20px;padding:0 6px;border-radius:var(--radius-pill);background:var(--accent);color:var(--accent-on);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">{{ remaining }}</span>
+          </div>
+
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2.4"/><path d="M3.5 9h17M8 3v3M16 3v3"/></svg>
+            <span>Calendar</span>
+          </button>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7.5 7.5 0 0 1-10.9 6.7L4 20l1.3-4.1A7.5 7.5 0 1 1 20 12z"/></svg>
+            <span>Chat</span>
+          </button>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6.5A1.5 1.5 0 0 1 5.5 5h7A1.5 1.5 0 0 1 14 6.5V20M14 10h4.5A1.5 1.5 0 0 1 20 11.5V20M3 20h18M7 9h3M7 13h3"/></svg>
+            <span>Organization</span>
+          </button>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12M6 12h12M6 17h12"/><circle cx="9" cy="7" r="2" fill="var(--surface)"/><circle cx="15" cy="17" r="2" fill="var(--surface)"/></svg>
+            <span>Settings</span>
+          </button>
+
+          <button style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:16px;padding:11px 14px;border-radius:var(--radius-pill);border:1px solid var(--border);color:var(--fg);font-weight:600;font-size:14px" style-hover="{{ composeHover }}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Compose</span>
+          </button>
+
+          <div style="flex:1"></div>
+
+          <div style="display:flex;align-items:center;gap:11px;padding:10px;border-top:1px solid var(--border-soft)">
+            <span style="width:32px;height:32px;border-radius:var(--radius-pill);background:#d8cdbd;color:var(--fg-2);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">CC</span>
+            <div style="flex:1;min-width:0;line-height:1.25">
+              <div style="font-size:13px;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ orgShort }}</div>
+              <div style="font-size:12px;color:var(--meta)">Weekly digest</div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--meta)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10l4 4 4-4"/></svg>
+          </div>
+        </aside>
+
+        <!-- CONTENT AREA -->
+        <div style="flex:1;min-width:0;position:relative;display:flex;flex-direction:column;background:var(--surface)">
+          <div style="min-width:0;padding:44px 44px 72px">
+            <div style="max-width:680px;margin:0 auto">
+
+              <!-- ===== ACTIVE (mid-review) ===== -->
+              <sc-if value="{{ active }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column">
+                  <!-- header -->
+                  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+                    <div>
+                      <h1 style="margin:0;font-size:var(--text-2xl);font-weight:700;letter-spacing:var(--tracking-display);line-height:var(--leading-tight);color:var(--fg)">Your week is ready</h1>
+                      <p style="margin:8px 0 0;font-size:16px;color:var(--muted);max-width:440px">I lined up five posts for {{ orgShort }} this week. {{ remainingLabel }} — everything else is set.</p>
+                    </div>
+                    <button onClick="{{ approveAll }}" style="flex:none;margin-top:4px;background:var(--surface);color:var(--fg);border:1px solid var(--border);padding:11px 18px;border-radius:var(--radius-pill);font-size:14px;font-weight:600" style-hover="{{ composeHover }}">Approve all</button>
+                  </div>
+                  <!-- progress -->
+                  <div style="display:flex;align-items:center;gap:14px;margin-top:22px">
+                    <div style="flex:1;max-width:300px;height:6px;border-radius:var(--radius-pill);background:var(--border-soft);overflow:hidden">
+                      <div style="height:100%;width:{{ progressPct }}%;background:var(--fg-2);border-radius:var(--radius-pill);transition:width var(--motion-base) var(--ease-standard)"></div>
+                    </div>
+                    <span style="font-size:13px;font-weight:600;color:var(--muted)">{{ reviewed }} of {{ total }} reviewed</span>
+                  </div>
+
+                  <div style="height:1px;background:var(--border-soft);margin:32px 0 0"></div>
+
+                  <!-- ---- POST 1 · IMPACT STORY (active hero) ---- -->
+                  <article style="display:flex;flex-direction:column;gap:14px;padding:32px 0">
+                    <div style="position:relative;width:100%;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden">
+                      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%"><rect width="400" height="300" fill="#e9e1d6"/><circle cx="312" cy="80" r="42" fill="#f4eee5"/><path d="M0 236 L104 156 L188 214 L272 140 L400 232 L400 300 L0 300Z" fill="#d8cdbd"/><path d="M0 264 L132 202 L246 258 L342 210 L400 246 L400 300 L0 300Z" fill="#c7b8a4"/></svg>
+                    </div>
+                    <div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);font-weight:600">
+                      <span style="background:var(--surface-warm);padding:3px 10px;border-radius:var(--radius-pill);color:var(--fg-2)">Impact story</span>
+                      <span>Facebook · Instagram</span>
+                    </div>
+                    <div style="font-size:16px;color:var(--fg);line-height:var(--leading-body)">Bella waited 214 days for this morning. She left with the Alvarez family — our 100th adoption this year, and the whole reason we open the doors each day. Thank you for turning long waits into wagging tails.</div>
+                    <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:14px"><span style="color:var(--meta)">↳</span><span>You just passed 100 adoptions — donors who gave in January were promised you'd share the milestones.</span></div>
+                    <sc-if value="{{ impactActive }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                      <span style="display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);color:var(--success);border:1px solid color-mix(in srgb, var(--success) 35%, var(--border));background:color-mix(in srgb, var(--success) 6%, var(--surface))">Facebook</span>
+                      <span style="display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);color:var(--success);border:1px solid color-mix(in srgb, var(--success) 35%, var(--border));background:color-mix(in srgb, var(--success) 6%, var(--surface))">Instagram</span>
+                      <span style="display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);color:var(--muted);background:var(--surface-warm);text-decoration:line-through">X</span>
+                      <span style="font-size:13px;color:var(--muted)">skipped X: over policy "no long stories on X" — <a href="#" onClick="{{ noop }}">override?</a></span>
+                    </div>
+
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px">
+                      <button onClick="{{ approveImpact }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;background:var(--accent);color:var(--accent-on);padding:13px 26px;border-radius:var(--radius-sm);font-size:15px;font-weight:600" style-hover="{{ approveHover }}" style-active="{{ approveActive }}">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        Approve
+                      </button>
+                      <div style="display:flex;align-items:center;gap:2px">
+                        <button style="color:var(--muted);padding:10px 13px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Edit</button>
+                        <button style="color:var(--muted);padding:10px 13px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Skip</button>
+                        <button onClick="{{ toggleRedirect }}" style="color:var(--muted);padding:10px 13px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Redirect…</button>
+                      </div>
+                    </div>
+
+                    <sc-if value="{{ redirectOpen }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:4px;animation:stwFade var(--motion-base) var(--ease-standard)">
+                        <textarea rows="2" placeholder="Tell me anything — &quot;keep it shorter&quot;, &quot;name the volunteer who fostered her&quot;, &quot;warmer tone&quot;…" style="width:100%;font:inherit;font-weight:500;font-size:14px;color:var(--fg);background:var(--surface);border:1px solid var(--fg);border-radius:var(--radius-sm);padding:13px 15px;box-shadow:var(--focus-ring);resize:none"></textarea>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px">
+                          <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:13px"><span style="color:var(--meta)">↳</span><span>Redirects become permanent rules — I'll confirm what I understood before saving.</span></div>
+                          <div style="display:flex;gap:6px;flex:none">
+                            <button onClick="{{ toggleRedirect }}" style="color:var(--muted);padding:8px 12px;font-size:13px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Cancel</button>
+                            <button onClick="{{ toggleRedirect }}" style="background:var(--surface);color:var(--fg);border:1px solid var(--border);padding:8px 15px;border-radius:var(--radius-pill);font-size:13px;font-weight:600" style-hover="{{ composeHover }}">Send to Steward</button>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    </sc-if>
+                    <sc-if value="{{ impactReviewed }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;font-size:14px;font-weight:600;color:var(--success);animation:stwSettle var(--motion-base) var(--ease-standard)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Approved</span><span style="color:var(--meta);font-weight:500">· Facebook, Instagram · goes out Mon 8:00 AM</span><button style="margin-left:auto;color:var(--muted);font-size:13px;font-weight:600;padding:6px 10px;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Undo</button></div>
+                    </sc-if>
+                  </article>
+
+                  <!-- ---- POST 2 · AWAITING PICTURE ---- -->
+                  <article style="display:flex;flex-direction:column;gap:14px;padding:32px 0;border-top:1px solid var(--border-soft)">
+                    <sc-if value="{{ eventAwaiting }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;flex-direction:column;gap:14px;animation:stwFade var(--motion-base) var(--ease-standard)">
+                        <div style="aspect-ratio:4/3;border:2px dashed color-mix(in srgb, var(--warn) 45%, var(--border));border-radius:var(--radius-md);display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;color:var(--muted);font-size:14px;background:color-mix(in srgb, var(--warn) 4%, var(--surface));text-align:center;padding:24px">
+                          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="14" rx="2.2"/><circle cx="8.5" cy="10.5" r="1.8"/><path d="M4 17l4.5-4 3.5 3 3-2.5L20 17"/></svg>
+                          <strong style="color:var(--fg-2);font-weight:600">Needs a photo before it can go out</strong>
+                          <span>The words are ready — add one and I'll schedule it.</span>
+                          <button onClick="{{ choosePhoto }}" style="margin-top:2px;background:var(--surface);color:var(--fg);border:1px solid var(--border);padding:10px 18px;border-radius:var(--radius-pill);font-size:14px;font-weight:600" style-hover="{{ composeHover }}">Choose from library</button>
+                        </div>
+                        <div style="display:flex;gap:10px">
+                          <button onClick="{{ choosePhoto }}" style="width:88px;height:66px;border-radius:var(--radius-sm);border:1px solid var(--border-soft);overflow:hidden;padding:0" style-hover="{{ thumbHover }}"><svg viewBox="0 0 88 66" style="display:block;width:100%;height:100%"><rect width="88" height="66" fill="#ded0be"/><circle cx="66" cy="20" r="12" fill="#efe6d8"/><path d="M0 54 L26 38 L44 50 L64 34 L88 52 L88 66 L0 66Z" fill="#c8b9a4"/></svg></button>
+                          <button onClick="{{ choosePhoto }}" style="width:88px;height:66px;border-radius:var(--radius-sm);border:1px solid var(--border-soft);overflow:hidden;padding:0" style-hover="{{ thumbHover }}"><svg viewBox="0 0 88 66" style="display:block;width:100%;height:100%"><rect width="88" height="66" fill="#e4d8c8"/><circle cx="22" cy="22" r="14" fill="#f1e9dc"/><path d="M0 56 L30 42 L52 54 L88 40 L88 66 L0 66Z" fill="#cbbca6"/></svg></button>
+                          <button onClick="{{ choosePhoto }}" style="width:88px;height:66px;border-radius:var(--radius-sm);border:1px solid var(--border-soft);overflow:hidden;padding:0" style-hover="{{ thumbHover }}"><svg viewBox="0 0 88 66" style="display:block;width:100%;height:100%"><rect width="88" height="66" fill="#e9e1d4"/><path d="M0 50 L28 44 L50 52 L72 42 L88 48 L88 66 L0 66Z" fill="#d0c2ad"/><path d="M0 60 L30 52 L58 60 L88 54 L88 66 L0 66Z" fill="#bcaE95"/></svg></button>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:13px"><span style="color:var(--meta)">↳</span><span>These three from Sunday's fair look right for this recap.</span></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ eventHasPhoto }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:relative;width:100%;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden;animation:stwSettle var(--motion-base) var(--ease-standard)">
+                        <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%"><rect width="400" height="300" fill="#ece3d6"/><circle cx="84" cy="86" r="46" fill="#f5efe6"/><path d="M0 250 L120 190 L210 236 L300 176 L400 224 L400 300 L0 300Z" fill="#d3c6b4"/><path d="M0 274 L150 224 L260 268 L360 232 L400 250 L400 300 L0 300Z" fill="#bfae98"/></svg>
+                      </div>
+                    </sc-if>
+
+                    <div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);font-weight:600">
+                      <span style="background:var(--surface-warm);padding:3px 10px;border-radius:var(--radius-pill);color:var(--fg-2)">Event recap</span>
+                      <span>Instagram · Facebook</span>
+                    </div>
+                    <div style="font-size:16px;color:var(--fg);line-height:var(--leading-body)">Sunday's adoption fair in Riverside Park was our biggest yet — 23 animals met their families and half the town turned up to cheer them on. Here's the day in pictures.</div>
+                    <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:14px"><span style="color:var(--meta)">↳</span><span>You told me the fair was Sunday — this recap should go out while the day is still fresh.</span></div>
+
+                    <sc-if value="{{ eventActive }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px">
+                      <sc-if value="{{ eventAwaiting }}" hint-placeholder-val="{{ true }}">
+                        <button disabled style="display:inline-flex;align-items:center;gap:8px;min-height:44px;background:var(--surface-warm);color:var(--meta);padding:13px 26px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:default">Approve</button>
+                      </sc-if>
+                      <sc-if value="{{ eventReady }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ approveEvent }}" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;background:var(--accent);color:var(--accent-on);padding:13px 26px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;animation:stwFade var(--motion-fast) var(--ease-standard)" style-hover="{{ approveHover }}" style-active="{{ approveActive }}">
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                          Approve
+                        </button>
+                      </sc-if>
+                      <div style="display:flex;align-items:center;gap:2px">
+                        <button style="color:var(--muted);padding:10px 13px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Edit</button>
+                        <button style="color:var(--muted);padding:10px 13px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Skip</button>
+                        <button style="color:var(--muted);padding:10px 13px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Redirect…</button>
+                      </div>
+                    </div>
+                    </sc-if>
+                    <sc-if value="{{ eventReviewed }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;font-size:14px;font-weight:600;color:var(--success);animation:stwSettle var(--motion-base) var(--ease-standard)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Approved</span><span style="color:var(--meta);font-weight:500">· Instagram, Facebook · goes out Sat 5:00 PM</span><button style="margin-left:auto;color:var(--muted);font-size:13px;font-weight:600;padding:6px 10px;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Undo</button></div>
+                    </sc-if>
+                  </article>
+
+                  <!-- ===== REVIEWED · settled ===== -->
+                  <div style="display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:4px">
+                    <span style="font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--meta)">Reviewed this week</span>
+                    <div style="flex:1;height:1px;background:var(--border-soft)"></div>
+                  </div>
+
+                  <!-- settled: volunteer -->
+                  <article style="display:flex;gap:18px;padding:26px 0;border-bottom:1px solid var(--border-soft);opacity:0.72">
+                    <div style="width:132px;flex:none;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%"><rect width="400" height="300" fill="#e7e2da"/><circle cx="120" cy="96" r="50" fill="#f2ede4"/><path d="M0 244 L96 200 L182 240 L280 190 L400 236 L400 300 L0 300Z" fill="#d6cdc0"/><path d="M0 272 L128 232 L250 270 L356 236 L400 254 L400 300 L0 300Z" fill="#c3b7a6"/></svg></div>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:7px">
+                      <div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);font-weight:600"><span style="background:var(--surface-warm);padding:3px 10px;border-radius:var(--radius-pill);color:var(--fg-2)">Volunteer spotlight</span><span>Facebook · Instagram</span></div>
+                      <div style="font-size:15px;color:var(--fg-2);line-height:1.4">Meet Denise. Every Saturday for three years she's walked the dogs no one else will — the shy ones, the seniors, the ones who need extra time.</div>
+                      <div style="display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;font-weight:600;color:var(--success)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Approved</span><span style="color:var(--meta);font-weight:500">· Facebook, Instagram · goes out Tue 9:00 AM</span></div>
+                    </div>
+                    <button style="flex:none;align-self:center;color:var(--muted);font-size:13px;font-weight:600;padding:8px 12px;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Undo</button>
+                  </article>
+
+                  <!-- settled: external news + citation -->
+                  <article style="display:flex;gap:18px;padding:26px 0;border-bottom:1px solid var(--border-soft);opacity:0.72">
+                    <div style="width:132px;flex:none;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-soft);background:var(--surface-warm);display:flex;align-items:center;justify-content:center"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--meta)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h13a1.5 1.5 0 0 1 1.5 1.5v10.5a1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5V9"/><path d="M4 5.5A1.5 1.5 0 0 0 2.5 7v11A1.5 1.5 0 0 0 4 19.5h14.5"/><path d="M6 9h8M6 12h8M6 15h5"/></svg></div>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:7px">
+                      <div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);font-weight:600"><span style="background:var(--surface-warm);padding:3px 10px;border-radius:var(--radius-pill);color:var(--fg-2)">Worth sharing</span><span>Facebook</span></div>
+                      <div style="font-size:15px;color:var(--fg-2);line-height:1.4">Good news for local pets: the city just funded a low-cost spay/neuter clinic opening this fall. Fewer surprise litters means fewer animals waiting for homes like ours.</div>
+                      <div style="font-size:12px;color:var(--meta);display:flex;align-items:center;gap:6px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15l6-6M10 6.5l1-1a4 4 0 0 1 5.5 5.5l-1 1M14 17.5l-1 1A4 4 0 0 1 7.5 13l1-1"/></svg>Source: Cedar Creek Gazette · <a href="#" onClick="{{ noop }}">cedarcreekgazette.com</a></div>
+                      <div style="display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;font-weight:600;color:var(--success)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Approved</span><span style="color:var(--meta);font-weight:500">· Facebook · goes out Wed 12:30 PM</span></div>
+                    </div>
+                    <button style="flex:none;align-self:center;color:var(--muted);font-size:13px;font-weight:600;padding:8px 12px;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Undo</button>
+                  </article>
+
+                  <!-- settled: gratitude -->
+                  <article style="display:flex;gap:18px;padding:26px 0;opacity:0.72">
+                    <div style="width:132px;flex:none;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%"><rect width="400" height="300" fill="#eae2d4"/><circle cx="308" cy="92" r="46" fill="#f4eee4"/><path d="M0 248 L110 196 L200 240 L300 188 L400 232 L400 300 L0 300Z" fill="#d9ccb8"/><path d="M0 272 L140 230 L256 268 L360 234 L400 252 L400 300 L0 300Z" fill="#c6b7a0"/></svg></div>
+                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:7px">
+                      <div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--muted);font-weight:600"><span style="background:var(--surface-warm);padding:3px 10px;border-radius:var(--radius-pill);color:var(--fg-2)">Thank you</span><span>Facebook · Instagram · X</span></div>
+                      <div style="font-size:15px;color:var(--fg-2);line-height:1.4">To everyone who gave during the spring drive: you funded 60 vet visits, 1,200 meals, and a lot of second chances. We couldn't do any of it without you.</div>
+                      <div style="display:flex;align-items:center;gap:8px;margin-top:2px;font-size:13px;font-weight:600;color:var(--success)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>Approved</span><span style="color:var(--meta);font-weight:500">· all channels · goes out Thu 10:00 AM</span></div>
+                    </div>
+                    <button style="flex:none;align-self:center;color:var(--muted);font-size:13px;font-weight:600;padding:8px 12px;border-radius:var(--radius-sm)" style-hover="{{ quietHover }}">Undo</button>
+                  </article>
+
+                  <div style="text-align:center;color:var(--meta);font-size:13px;padding:28px 0 4px">That's the whole week — nothing hidden.</div>
+                </div>
+              </sc-if>
+
+              <!-- ===== COMPLETION (in place) ===== -->
+              <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:24px 0;animation:stwFade var(--motion-base) var(--ease-standard)">
+                  <div style="background:var(--surface-warm);border:1px solid var(--border-soft);border-radius:var(--radius-lg);padding:48px 44px;display:flex;flex-direction:column;gap:18px">
+                    <div style="display:flex;align-items:center;gap:10px">
+                      <span style="width:30px;height:30px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">S</span>
+                      <span style="font-size:13px;font-weight:600;color:var(--muted)">Steward</span>
+                    </div>
+                    <div style="display:flex;align-items:baseline;gap:14px">
+                      <span style="font-size:var(--text-3xl);font-weight:700;letter-spacing:var(--tracking-display);line-height:1;color:var(--fg)">{{ streakWeeks }}</span>
+                      <span style="font-size:18px;font-weight:600;color:var(--fg-2)">week streak</span>
+                    </div>
+                    <div style="display:flex;gap:7px">
+                      <sc-for list="{{ streakDots }}" as="d" hint-placeholder-count="6"><span style="width:10px;height:10px;border-radius:var(--radius-pill);background:var(--fg-2)"></span></sc-for>
+                    </div>
+                    <div style="font-size:19px;color:var(--fg);line-height:1.4;max-width:460px;letter-spacing:-0.01em">That's everything for this week — five posts heading out. See you next Tuesday.</div>
+                    <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:15px"><span style="color:var(--meta)">↳</span><span>Next from me: I'll ask Saturday's volunteers for the adoption-fair photos, and start your GivingTuesday plan.</span></div>
+                    <div style="margin-top:6px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:11px">
+                      <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--meta)">Heading out this week</div>
+                      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Bella's adoption — the 100th<span style="color:var(--meta);margin-left:auto">Mon 8:00 AM</span></div>
+                      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Volunteer spotlight — Denise<span style="color:var(--meta);margin-left:auto">Tue 9:00 AM</span></div>
+                      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Spay/neuter clinic — local news<span style="color:var(--meta);margin-left:auto">Wed 12:30 PM</span></div>
+                      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Spring-drive thank you<span style="color:var(--meta);margin-left:auto">Thu 10:00 AM</span></div>
+                      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Adoption-fair recap<span style="color:var(--meta);margin-left:auto">Sat 5:00 PM</span></div>
+                    </div>
+                  </div>
+                  <div style="text-align:center;margin-top:20px"><button onClick="{{ reset }}" style="color:var(--muted);font-size:14px;font-weight:600;padding:10px 16px;border-radius:var(--radius-pill);border:1px solid var(--border)" style-hover="{{ composeHover }}">Review this week again</button></div>
+                </div>
+              </sc-if>
+
+            </div>
+          </div>
+
+          <!-- collapsed chat companion -->
+          <sc-if value="{{ showChat }}" hint-placeholder-val="{{ true }}">
+            <button style="position:absolute;right:24px;bottom:24px;display:inline-flex;align-items:center;gap:10px;padding:9px 16px 9px 10px;border-radius:var(--radius-pill);background:var(--surface);border:1px solid var(--border);box-shadow:rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.1) 0 4px 8px" style-hover="{{ composeHover }}">
+              <span style="width:30px;height:30px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">S</span>
+              <span style="font-size:14px;font-weight:600;color:var(--fg)">Ask Steward</span>
+            </button>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    <!-- ============ FRAME 2 · DESKTOP COMPLETION ============ -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span style="font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--meta)">Desktop · Completion — the streak moment</span>
+      </div>
+      <div style="width:1280px;min-height:864px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:rgba(0,0,0,0.05) 0 2px 8px, rgba(0,0,0,0.09) 0 18px 44px -12px;overflow:hidden;display:flex">
+        <aside style="width:266px;flex:none;border-right:1px solid var(--border-soft);padding:26px 16px 20px;display:flex;flex-direction:column;gap:6px;background:var(--surface)">
+          <div style="display:flex;align-items:center;gap:11px;padding:2px 10px 22px">
+            <span style="width:34px;height:34px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;letter-spacing:-0.02em">S</span>
+            <span style="font-size:21px;font-weight:700;letter-spacing:-0.02em;color:var(--fg)">Steward</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);background:color-mix(in srgb, var(--accent) 9%, var(--surface));color:var(--accent);font-weight:600;font-size:15px">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h3.5l1.4 2.6h6.2L16.5 13H20"/><path d="M4.6 13 6.7 5.4A1.6 1.6 0 0 1 8.2 4.2h7.6a1.6 1.6 0 0 1 1.5 1.2L19.4 13v4.8a1.6 1.6 0 0 1-1.6 1.6H6.2a1.6 1.6 0 0 1-1.6-1.6z"/></svg>
+            <span style="flex:1">Inbox</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.85"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2.4"/><path d="M3.5 9h17M8 3v3M16 3v3"/></svg><span>Calendar</span></button>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7.5 7.5 0 0 1-10.9 6.7L4 20l1.3-4.1A7.5 7.5 0 1 1 20 12z"/></svg><span>Chat</span></button>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6.5A1.5 1.5 0 0 1 5.5 5h7A1.5 1.5 0 0 1 14 6.5V20M14 10h4.5A1.5 1.5 0 0 1 20 11.5V20M3 20h18M7 9h3M7 13h3"/></svg><span>Organization</span></button>
+          <button style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:var(--radius-sm);color:var(--fg-2);font-weight:500;font-size:15px;text-align:left" style-hover="{{ navHover }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12M6 12h12M6 17h12"/><circle cx="9" cy="7" r="2" fill="var(--surface)"/><circle cx="15" cy="17" r="2" fill="var(--surface)"/></svg><span>Settings</span></button>
+          <button style="display:flex;align-items:center;justify-content:center;gap:9px;margin-top:16px;padding:11px 14px;border-radius:var(--radius-pill);border:1px solid var(--border);color:var(--fg);font-weight:600;font-size:14px" style-hover="{{ composeHover }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Compose</span></button>
+          <div style="flex:1"></div>
+          <div style="display:flex;align-items:center;gap:11px;padding:10px;border-top:1px solid var(--border-soft)">
+            <span style="width:32px;height:32px;border-radius:var(--radius-pill);background:#d8cdbd;color:var(--fg-2);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none">CC</span>
+            <div style="flex:1;min-width:0;line-height:1.25"><div style="font-size:13px;font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ orgShort }}</div><div style="font-size:12px;color:var(--meta)">Weekly digest</div></div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--meta)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10l4 4 4-4"/></svg>
+          </div>
+        </aside>
+        <div style="flex:1;min-width:0;position:relative;display:flex;flex-direction:column;background:var(--surface)">
+          <div style="flex:1;min-width:0;padding:64px 44px 72px;display:flex;flex-direction:column;justify-content:center">
+            <div style="max-width:600px;margin:0 auto;width:100%">
+              <div style="background:var(--surface-warm);border:1px solid var(--border-soft);border-radius:var(--radius-lg);padding:48px 44px;display:flex;flex-direction:column;gap:18px">
+                <div style="display:flex;align-items:center;gap:10px"><span style="width:30px;height:30px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">S</span><span style="font-size:13px;font-weight:600;color:var(--muted)">Steward</span></div>
+                <div style="display:flex;align-items:baseline;gap:14px"><span style="font-size:var(--text-3xl);font-weight:700;letter-spacing:var(--tracking-display);line-height:1;color:var(--fg)">{{ streakWeeks }}</span><span style="font-size:18px;font-weight:600;color:var(--fg-2)">week streak</span></div>
+                <div style="display:flex;gap:7px"><sc-for list="{{ streakDots }}" as="d" hint-placeholder-count="6"><span style="width:10px;height:10px;border-radius:var(--radius-pill);background:var(--fg-2)"></span></sc-for></div>
+                <div style="font-size:19px;color:var(--fg);line-height:1.4;max-width:460px;letter-spacing:-0.01em">That's everything for this week — five posts heading out. See you next Tuesday.</div>
+                <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:15px"><span style="color:var(--meta)">↳</span><span>Next from me: I'll ask Saturday's volunteers for the adoption-fair photos, and start your GivingTuesday plan.</span></div>
+                <div style="margin-top:6px;padding-top:20px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:11px">
+                  <div style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--meta)">Heading out this week</div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Bella's adoption — the 100th<span style="color:var(--meta);margin-left:auto">Mon 8:00 AM</span></div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Volunteer spotlight — Denise<span style="color:var(--meta);margin-left:auto">Tue 9:00 AM</span></div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Spay/neuter clinic — local news<span style="color:var(--meta);margin-left:auto">Wed 12:30 PM</span></div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Spring-drive thank you<span style="color:var(--meta);margin-left:auto">Thu 10:00 AM</span></div>
+                  <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Adoption-fair recap<span style="color:var(--meta);margin-left:auto">Sat 5:00 PM</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button style="position:absolute;right:24px;bottom:24px;display:inline-flex;align-items:center;gap:10px;padding:9px 16px 9px 10px;border-radius:var(--radius-pill);background:var(--surface);border:1px solid var(--border);box-shadow:rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px, rgba(0,0,0,0.1) 0 4px 8px" style-hover="{{ composeHover }}"><span style="width:30px;height:30px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">S</span><span style="font-size:14px;font-weight:600;color:var(--fg)">Ask Steward</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:56px;align-items:flex-start;margin-top:56px">
+    <!-- ============ FRAME 3 · MOBILE MID-REVIEW ============ -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--meta)">Mobile · Inbox — mid-review</div>
+      <div style="width:390px;height:844px;background:var(--surface);border-radius:46px;border:1px solid var(--border);box-shadow:rgba(0,0,0,0.05) 0 2px 8px, rgba(0,0,0,0.10) 0 20px 46px -14px;overflow:hidden;position:relative;display:flex;flex-direction:column">
+        <div style="height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 34px;font-size:15px;font-weight:600;color:var(--fg)">
+          <span>9:41</span>
+          <div style="display:flex;align-items:center;gap:7px">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="var(--fg)"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.35"/></svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="var(--fg)" stroke-width="1.4" stroke-linecap="round"><path d="M1 4.2A11 11 0 0 1 16 4.2"/><path d="M3.5 6.9A7 7 0 0 1 13.5 6.9"/><path d="M6 9.4A3.2 3.2 0 0 1 11 9.4"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.6" y="0.6" width="21" height="11.8" rx="3" stroke="var(--fg)" stroke-opacity="0.4" stroke-width="1.1"/><rect x="2.2" y="2.2" width="17" height="8.6" rx="1.8" fill="var(--fg)"/><rect x="23" y="4" width="2" height="5" rx="1" fill="var(--fg)" fill-opacity="0.4"/></svg>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:6px 20px 0;display:flex;flex-direction:column;gap:16px">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:9px">
+                <span style="width:30px;height:30px;border-radius:var(--radius-pill);background:#d8cdbd;color:var(--fg-2);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px">CC</span>
+                <span style="font-size:14px;font-weight:600;color:var(--fg)">{{ orgShort }}</span>
+              </div>
+              <button style="display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--radius-pill);border:1px solid var(--border);color:var(--fg);font-size:13px;font-weight:600"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Compose</button>
+            </div>
+            <h1 style="margin:0;font-size:var(--text-lg);font-weight:700;letter-spacing:var(--tracking-display);line-height:var(--leading-tight);color:var(--fg)">Your week is ready</h1>
+            <p style="margin:6px 0 0;font-size:14px;color:var(--muted)">Five posts for the week. Two still need you.</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:14px">
+              <div style="flex:1;height:6px;border-radius:var(--radius-pill);background:var(--border-soft);overflow:hidden"><div style="height:100%;width:60%;background:var(--fg-2);border-radius:var(--radius-pill)"></div></div>
+              <span style="font-size:12px;font-weight:600;color:var(--muted);flex:none">3 of 5</span>
+            </div>
+          </div>
+
+          <div style="height:1px;background:var(--border-soft)"></div>
+
+          <article style="display:flex;flex-direction:column;gap:11px">
+            <div style="width:100%;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" style="display:block;width:100%;height:100%"><rect width="400" height="300" fill="#e9e1d6"/><circle cx="312" cy="80" r="42" fill="#f4eee5"/><path d="M0 236 L104 156 L188 214 L272 140 L400 232 L400 300 L0 300Z" fill="#d8cdbd"/><path d="M0 264 L132 202 L246 258 L342 210 L400 246 L400 300 L0 300Z" fill="#c7b8a4"/></svg></div>
+            <div style="display:flex;gap:9px;align-items:center;font-size:12px;color:var(--muted);font-weight:600"><span style="background:var(--surface-warm);padding:3px 10px;border-radius:var(--radius-pill);color:var(--fg-2)">Impact story</span><span>Facebook · Instagram</span></div>
+            <div style="font-size:15px;color:var(--fg);line-height:1.45">Bella waited 214 days. This morning she left with the Alvarez family — our 100th adoption this year. Thank you for turning long waits into wagging tails.</div>
+            <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:13px"><span style="color:var(--meta)">↳</span><span>You just passed 100 adoptions — January's donors were promised the milestones.</span></div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px">
+              <span style="display:inline-flex;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);color:var(--success);border:1px solid color-mix(in srgb, var(--success) 35%, var(--border));background:color-mix(in srgb, var(--success) 6%, var(--surface))">Facebook</span>
+              <span style="display:inline-flex;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);color:var(--success);border:1px solid color-mix(in srgb, var(--success) 35%, var(--border));background:color-mix(in srgb, var(--success) 6%, var(--surface))">Instagram</span>
+              <span style="display:inline-flex;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);color:var(--muted);background:var(--surface-warm);text-decoration:line-through">X</span>
+            </div>
+            <button style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;background:var(--accent);color:var(--accent-on);padding:14px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;margin-top:2px" style-hover="{{ approveHover }}" style-active="{{ approveActive }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Approve</button>
+            <div style="display:flex;align-items:center;justify-content:center;gap:4px"><button style="color:var(--muted);padding:9px 16px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)">Edit</button><button style="color:var(--muted);padding:9px 16px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)">Skip</button><button style="color:var(--muted);padding:9px 16px;font-size:14px;font-weight:500;border-radius:var(--radius-sm)">Redirect…</button></div>
+          </article>
+
+          <article style="display:flex;flex-direction:column;gap:11px;padding-top:16px;border-top:1px solid var(--border-soft)">
+            <div style="aspect-ratio:16/7;border:2px dashed color-mix(in srgb, var(--warn) 45%, var(--border));border-radius:var(--radius-md);display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;color:var(--muted);font-size:13px;background:color-mix(in srgb, var(--warn) 4%, var(--surface));text-align:center;padding:16px">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="14" rx="2.2"/><circle cx="8.5" cy="10.5" r="1.8"/><path d="M4 17l4.5-4 3.5 3 3-2.5L20 17"/></svg>
+              <strong style="color:var(--fg-2);font-weight:600">Needs a photo before it can go out</strong>
+            </div>
+          </article>
+        </div>
+        <div style="flex:none;border-top:1px solid var(--border-soft);padding:10px 6px 26px;display:flex;justify-content:space-around;align-items:flex-start;background:var(--surface)">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--accent);min-width:58px">
+            <div style="position:relative"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h3.5l1.4 2.6h6.2L16.5 13H20"/><path d="M4.6 13 6.7 5.4A1.6 1.6 0 0 1 8.2 4.2h7.6a1.6 1.6 0 0 1 1.5 1.2L19.4 13v4.8a1.6 1.6 0 0 1-1.6 1.6H6.2a1.6 1.6 0 0 1-1.6-1.6z"/></svg><span style="position:absolute;top:-4px;right:-7px;min-width:15px;height:15px;padding:0 4px;border-radius:var(--radius-pill);background:var(--accent);color:var(--accent-on);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;border:1.5px solid var(--surface)">2</span></div>
+            <span style="font-size:11px;font-weight:600">Inbox</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2.4"/><path d="M3.5 9h17M8 3v3M16 3v3"/></svg><span style="font-size:11px;font-weight:500">Calendar</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7.5 7.5 0 0 1-10.9 6.7L4 20l1.3-4.1A7.5 7.5 0 1 1 20 12z"/></svg><span style="font-size:11px;font-weight:500">Chat</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6.5A1.5 1.5 0 0 1 5.5 5h7A1.5 1.5 0 0 1 14 6.5V20M14 10h4.5A1.5 1.5 0 0 1 20 11.5V20M3 20h18M7 9h3M7 13h3"/></svg><span style="font-size:11px;font-weight:500">Org</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12M6 12h12M6 17h12"/><circle cx="9" cy="7" r="2" fill="var(--surface)"/><circle cx="15" cy="17" r="2" fill="var(--surface)"/></svg><span style="font-size:11px;font-weight:500">Settings</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ FRAME 4 · MOBILE COMPLETION ============ -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--meta)">Mobile · Completion</div>
+      <div style="width:390px;height:844px;background:var(--surface);border-radius:46px;border:1px solid var(--border);box-shadow:rgba(0,0,0,0.05) 0 2px 8px, rgba(0,0,0,0.10) 0 20px 46px -14px;overflow:hidden;position:relative;display:flex;flex-direction:column">
+        <div style="height:50px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 34px;font-size:15px;font-weight:600;color:var(--fg)">
+          <span>9:41</span>
+          <div style="display:flex;align-items:center;gap:7px">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="var(--fg)"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.35"/></svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="var(--fg)" stroke-width="1.4" stroke-linecap="round"><path d="M1 4.2A11 11 0 0 1 16 4.2"/><path d="M3.5 6.9A7 7 0 0 1 13.5 6.9"/><path d="M6 9.4A3.2 3.2 0 0 1 11 9.4"/></svg>
+            <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.6" y="0.6" width="21" height="11.8" rx="3" stroke="var(--fg)" stroke-opacity="0.4" stroke-width="1.1"/><rect x="2.2" y="2.2" width="17" height="8.6" rx="1.8" fill="var(--fg)"/><rect x="23" y="4" width="2" height="5" rx="1" fill="var(--fg)" fill-opacity="0.4"/></svg>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;overflow:hidden;padding:14px 20px 0;display:flex;flex-direction:column">
+          <div style="background:var(--surface-warm);border:1px solid var(--border-soft);border-radius:var(--radius-lg);padding:28px 24px;display:flex;flex-direction:column;gap:15px">
+            <div style="display:flex;align-items:center;gap:9px"><span style="width:28px;height:28px;border-radius:var(--radius-pill);background:var(--fg);color:var(--bg);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">S</span><span style="font-size:13px;font-weight:600;color:var(--muted)">Steward</span></div>
+            <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:var(--text-3xl);font-weight:700;letter-spacing:var(--tracking-display);line-height:1;color:var(--fg)">{{ streakWeeks }}</span><span style="font-size:16px;font-weight:600;color:var(--fg-2)">week streak</span></div>
+            <div style="display:flex;gap:6px"><sc-for list="{{ streakDots }}" as="d" hint-placeholder-count="6"><span style="width:9px;height:9px;border-radius:var(--radius-pill);background:var(--fg-2)"></span></sc-for></div>
+            <div style="font-size:17px;color:var(--fg);line-height:1.4;letter-spacing:-0.01em">That's everything for this week — five posts heading out. See you next Tuesday.</div>
+            <div style="display:flex;gap:8px;align-items:baseline;color:var(--muted);font-size:14px"><span style="color:var(--meta)">↳</span><span>Next from me: I'll ask Saturday's volunteers for the fair photos, and start your GivingTuesday plan.</span></div>
+            <div style="margin-top:2px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--meta)">Heading out this week</div>
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Bella's adoption — the 100th<span style="color:var(--meta);margin-left:auto">Mon</span></div>
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Volunteer spotlight — Denise<span style="color:var(--meta);margin-left:auto">Tue</span></div>
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Spay/neuter clinic — news<span style="color:var(--meta);margin-left:auto">Wed</span></div>
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Spring-drive thank you<span style="color:var(--meta);margin-left:auto">Thu</span></div>
+              <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--fg-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--success);flex:none"></span>Adoption-fair recap<span style="color:var(--meta);margin-left:auto">Sat</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;border-top:1px solid var(--border-soft);padding:10px 6px 26px;display:flex;justify-content:space-around;align-items:flex-start;background:var(--surface)">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--accent);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13h3.5l1.4 2.6h6.2L16.5 13H20"/><path d="M4.6 13 6.7 5.4A1.6 1.6 0 0 1 8.2 4.2h7.6a1.6 1.6 0 0 1 1.5 1.2L19.4 13v4.8a1.6 1.6 0 0 1-1.6 1.6H6.2a1.6 1.6 0 0 1-1.6-1.6z"/></svg><span style="font-size:11px;font-weight:600">Inbox</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2.4"/><path d="M3.5 9h17M8 3v3M16 3v3"/></svg><span style="font-size:11px;font-weight:500">Calendar</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a7.5 7.5 0 0 1-10.9 6.7L4 20l1.3-4.1A7.5 7.5 0 1 1 20 12z"/></svg><span style="font-size:11px;font-weight:500">Chat</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V6.5A1.5 1.5 0 0 1 5.5 5h7A1.5 1.5 0 0 1 14 6.5V20M14 10h4.5A1.5 1.5 0 0 1 20 11.5V20M3 20h18M7 9h3M7 13h3"/></svg><span style="font-size:11px;font-weight:500">Org</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--meta);min-width:58px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12M6 12h12M6 17h12"/><circle cx="9" cy="7" r="2" fill="var(--surface)"/><circle cx="15" cy="17" r="2" fill="var(--surface)"/></svg><span style="font-size:11px;font-weight:500">Settings</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;orgName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Cedar Creek Animal Rescue&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;streakWeeks&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:6,&quot;min&quot;:0,&quot;max&quot;:52,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;showChatCompanion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Shell&quot;}}">
+class Component extends DCLogic {
+  state = { impactReviewed:false, eventHasPhoto:false, eventReviewed:false, redirectOpen:false };
+  renderVals(){
+    const s=this.state;
+    const orgName=this.props.orgName ?? "Cedar Creek Animal Rescue";
+    const parts=orgName.split(" ");
+    const orgShort=parts.slice(0,2).join(" ") || orgName;
+    const streakWeeks=Math.max(0, this.props.streakWeeks ?? 6);
+    const showChat=this.props.showChatCompanion ?? true;
+    const total=5;
+    const reviewed=3+(s.impactReviewed?1:0)+(s.eventReviewed?1:0);
+    const remaining=total-reviewed;
+    const done=reviewed>=total;
+    const progressPct=Math.round((reviewed/total)*100);
+    const streakDots=Array.from({length:Math.min(streakWeeks,12)},(_,i)=>i);
+    const hoverBg={background:'var(--surface-warm)'};
+    return {
+      orgName, orgShort, streakWeeks, showChat,
+      total, reviewed, remaining, done, active:!done, progressPct, streakDots,
+      remainingLabel: remaining<=0 ? "you're all caught up" : (remaining===1?"One still needs you":`${remaining} still need you`),
+      impactReviewed:s.impactReviewed, impactActive:!s.impactReviewed,
+      eventReviewed:s.eventReviewed,
+      eventActive: !s.eventReviewed,
+      eventHasPhoto: s.eventHasPhoto,
+      eventAwaiting: !s.eventHasPhoto && !s.eventReviewed,
+      eventReady: s.eventHasPhoto && !s.eventReviewed,
+      redirectOpen:s.redirectOpen,
+      noop:(e)=>{ if(e&&e.preventDefault) e.preventDefault(); },
+      navHover:{background:'var(--surface-warm)',color:'var(--fg)'},
+      quietHover:{background:'var(--surface-warm)',color:'var(--fg)'},
+      composeHover:{background:'var(--surface-warm)'},
+      thumbHover:{borderColor:'var(--fg-2)'},
+      resetHover:{background:'var(--surface-warm)',color:'var(--fg)'},
+      approveHover:{background:'var(--accent-hover)'},
+      approveActive:{background:'var(--accent-active)',transform:'scale(0.97)'},
+      approveImpact:()=>this.setState({impactReviewed:true,redirectOpen:false}),
+      choosePhoto:()=>this.setState({eventHasPhoto:true}),
+      approveEvent:()=>{ if(this.state.eventHasPhoto) this.setState({eventReviewed:true}); },
+      toggleRedirect:()=>this.setState(st=>({redirectOpen:!st.redirectOpen})),
+      approveAll:()=>this.setState(st=>({impactReviewed:true, eventReviewed: st.eventHasPhoto?true:st.eventReviewed})),
+      reset:()=>this.setState({impactReviewed:false,eventHasPhoto:false,eventReviewed:false,redirectOpen:false})
+    };
+  }
+}
+</script>
+</body>
+</html>
