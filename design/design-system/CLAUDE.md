@@ -13,9 +13,13 @@ contract — schema names identical, values differ):
 - [steward/](steward/) — **the theme Steward actually uses**: `tokens.css`
   (the single token source, DS-1 — terracotta accent, Inter; deltas
   documented inline), `tailwind-v4.css` (identical mapping to the
-  reference, import swapped), and `DESIGN.md` (Steward's adaptation
+  reference, import swapped), `DESIGN.md` (Steward's adaptation
   language: the marketplace→workspace inversion, trust chrome, voice
-  rules — deltas only, substrate not repeated).
+  rules — deltas only, substrate not repeated), and `preview/` — the
+  `@dsCard` preview kit uploaded to Claude Design via `/design-sync`.
+  **Never edit `preview/*.html` by hand**: they are stamped from
+  `build-previews.mjs` (which inlines `tokens.css`); edit the template
+  or the tokens and re-run `node build-previews.mjs`.
 
 Consumers (mockups now, `@client` components later) import **steward only**.
 Governance: DS-1..7 (requirements), ADR-0001, DEC-6/DEC-7.
