@@ -18,6 +18,7 @@ tRPC
 WebSocket for realtime updates with light payloads
 BetterAuth - Google Sign-in + Dev login by entering email only (no password shortcut)
 Vercel AI SDK 7
+OpenTelemetry (for dev - LGTM) 
 
 ## Code Standards
 Strict Typing (no `any`), no exceptions
