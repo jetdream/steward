@@ -4,7 +4,8 @@ Everything the product must be and why — decomposed from PRD v0.3 (deleted; se
 
 | File | Owns | IDs |
 |---|---|---|
-| [vision.md](vision.md) | Narrative WHY: problem, insight, positioning (**non-normative**) | — |
+| [vision.yaml](vision.yaml) | Mission + north star — governed, deliberately inert | `VIS-*` |
+| [vision.md](vision.md) | Narrative WHY: problem, insight, positioning (**non-normative** companion) | — |
 | [overview.md](overview.md) | System concept and the core loop (narrative) | — |
 | [goals.yaml](goals.yaml) | Goals, success metrics, north star | `G-*` |
 | [values.yaml](values.yaml) | Product values — the soft decision compass (tiebreakers) | `VAL-*` |

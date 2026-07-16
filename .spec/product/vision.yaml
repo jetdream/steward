@@ -1,0 +1,38 @@
+kind: vision
+prefix: VIS
+title: Product Vision
+status: approved
+intent: >-
+  The product's WHY — mission (what Steward is) and north star (the ideal future
+  it moves toward). Directional and HITL-governed, but DELIBERATELY INERT: no
+  edges, no assertions, no roll-up participation. Vision steers intake (a request
+  contradicting it triggers pushback) and is injected each session as part of the
+  project compass; it never vetoes a spec. Current state is DERIVED (the roll-up),
+  never written here — so this register stays purely directional. The long-form
+  narrative (problem, insight, positioning) lives in the companion vision.md;
+  these two items are its normative distillation.
+items:
+  VIS-1:
+    v: 1
+    origin: baseline
+    title: Why Steward exists
+    statement: >-
+      Every small US nonprofit gets the communications manager it could never
+      afford: an AI employee that knows the organization, plans and writes its
+      donor-facing content, publishes across channels almost autonomously, and
+      that the founder can simply TALK TO. The model is inverted — not "teach a
+      mission-expert founder to operate AI tools" (they bounce off) but "make the
+      AI behave like the hired human who shows up, brings finished work, asks good
+      questions, and can be spoken to in plain language."
+  VIS-2:
+    v: 1
+    origin: baseline
+    title: North star
+    statement: >-
+      Small nonprofits sustain a living communications rhythm without a marketer,
+      because the work simply gets DONE: the system owns the context (gathers
+      everything knowable without asking, remembers permanently), moves first
+      (proposes, never a blank page), and is one conversational surface aware of
+      everything. The founder's whole job is two verbs — approve and redirect —
+      and the sector's default of going dark is replaced by an unbroken
+      stewardship streak.

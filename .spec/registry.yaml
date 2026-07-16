@@ -6,6 +6,7 @@ intent: >-
   former prose table in .spec/CLAUDE.md during the Cortex extraction (DEC-4).
 filename-owned: [ADR]
 prefixes:
+  VIS: product/vision.yaml
   G: product/goals.yaml
   VAL: product/values.yaml
   GR: product/guardrails.yaml

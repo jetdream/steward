@@ -12,7 +12,7 @@ Each layer owns exactly one question. A layer references neighbors by ID or link
 
 ```mermaid
 graph TD
-  V[vision.md — narrative WHY, non-normative] --> G[goals.yaml — G-*]
+  V["vision.yaml — VIS-* : governed WHY, deliberately inert (+ vision.md narrative)"] -.steers.-> G[goals.yaml — G-*]
   G --> REQ[requirements/*.yaml — WHAT, priority, acceptance]
   GR[guardrails.yaml — GR-* : hard rules] -.constrains.-> REQ
   GR -.constrains.-> SPEC
@@ -28,7 +28,7 @@ graph TD
 
 | Question | Single source | IDs |
 |---|---|---|
-| Why does this product exist? | [product/vision.md](product/vision.md) (narrative, non-normative) | — |
+| Why does this product exist (mission / north star)? | [product/vision.yaml](product/vision.yaml) (governed, inert) + [product/vision.md](product/vision.md) (narrative) | `VIS-*` |
 | What are the goals and success metrics? | [product/goals.yaml](product/goals.yaml) | `G-*` |
 | What values guide decisions (soft compass)? | [product/values.yaml](product/values.yaml) | `VAL-*` |
 | What guardrails hard-constrain everything? | [product/guardrails.yaml](product/guardrails.yaml) | `GR-*` |
