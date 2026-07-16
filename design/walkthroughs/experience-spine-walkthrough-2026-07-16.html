@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steward — Experience Spine Walkthrough</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-warm: #f7f7f7;
+    --fg: #222222;
+    --fg-2: #3f3f3f;
+    --muted: #6a6a6a;
+    --meta: #929292;
+    --border: #dddddd;
+    --border-soft: #ebebeb;
+    --accent: #b5502e;
+    --accent-on: #ffffff;
+    --accent-hover: #a8492a;
+    --success: #008a05;
+    --warn: #c47700;
+    --danger: #c13515;
+    --elev-raised: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px 0, rgba(0,0,0,0.1) 0 4px 8px 0;
+    --font-body: "Inter Variable", Inter, -apple-system, system-ui, "Helvetica Neue", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #211c18;
+      --surface: #282221;
+      --surface-warm: #2e2823;
+      --fg: #ece5dd;
+      --fg-2: #d6ccc1;
+      --muted: #a89e93;
+      --meta: #7d746a;
+      --border: #3d362f;
+      --border-soft: #332d27;
+      --accent: #d98a68;
+      --accent-on: #211c18;
+      --accent-hover: #e29a7a;
+      --success: #85c07e;
+      --warn: #d9a25a;
+      --danger: #e08063;
+      --elev-raised: rgba(0,0,0,0.25) 0 0 0 1px, rgba(0,0,0,0.3) 0 2px 6px 0, rgba(0,0,0,0.4) 0 4px 10px 0;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --surface: #ffffff; --surface-warm: #f7f7f7;
+    --fg: #222222; --fg-2: #3f3f3f; --muted: #6a6a6a; --meta: #929292;
+    --border: #dddddd; --border-soft: #ebebeb;
+    --accent: #b5502e; --accent-on: #ffffff; --accent-hover: #a8492a;
+    --success: #008a05; --warn: #c47700; --danger: #c13515;
+    --elev-raised: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px 0, rgba(0,0,0,0.1) 0 4px 8px 0;
+  }
+  :root[data-theme="dark"] {
+    --bg: #211c18; --surface: #282221; --surface-warm: #2e2823;
+    --fg: #ece5dd; --fg-2: #d6ccc1; --muted: #a89e93; --meta: #7d746a;
+    --border: #3d362f; --border-soft: #332d27;
+    --accent: #d98a68; --accent-on: #211c18; --accent-hover: #e29a7a;
+    --success: #85c07e; --warn: #d9a25a; --danger: #e08063;
+    --elev-raised: rgba(0,0,0,0.25) 0 0 0 1px, rgba(0,0,0,0.3) 0 2px 6px 0, rgba(0,0,0,0.4) 0 4px 10px 0;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 16px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 1080px; margin: 0 auto; padding: 56px 28px 96px; }
+  a { color: var(--fg-2); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--fg); }
+  :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--fg); border-radius: 4px; }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--meta); text-transform: uppercase;
+  }
+  h1 {
+    margin: 10px 0 0; font-size: 40px; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance;
+  }
+  .lede { margin: 18px 0 0; max-width: 66ch; font-size: 17px; color: var(--muted); }
+  .lede strong { color: var(--fg); font-weight: 600; }
+
+  .status-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; padding: 5px 12px;
+    border-radius: 999px; border: 1px solid var(--border);
+    color: var(--fg-2); background: var(--surface);
+  }
+  .chip.ok { color: var(--success); border-color: color-mix(in srgb, var(--success) 35%, var(--border)); background: color-mix(in srgb, var(--success) 7%, var(--surface)); }
+  .chip .dot { width: 7px; height: 7px; border-radius: 999px; background: currentColor; }
+
+  h2 {
+    margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
+    line-height: 1.2; text-wrap: balance;
+  }
+  .sect { margin-top: 72px; }
+  .sect-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .sect-head .k {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+    color: var(--accent); text-transform: uppercase; white-space: nowrap;
+  }
+  .sect-sub { margin: 10px 0 0; max-width: 68ch; color: var(--muted); font-size: 15px; }
+
+  /* ── live component exhibit ─────────────────────────── */
+  .exhibit {
+    margin-top: 26px; border: 1px solid var(--border); border-radius: 20px;
+    background: var(--surface); padding: 28px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 26px 32px;
+  }
+  .ex { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .ex .lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--meta); }
+  .ex .lbl b { color: var(--accent); font-weight: 700; }
+  .reason { display: flex; gap: 8px; color: var(--muted); font-size: 14px; align-items: baseline; }
+  .reason::before { content: "↳"; color: var(--meta); }
+  .prov { font-size: 13px; color: var(--meta); }
+  .prov a { color: var(--muted); }
+  .fitrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .fit {
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--fg-2); background: var(--surface);
+  }
+  .fit.ok { color: var(--success); border-color: color-mix(in srgb, var(--success) 35%, var(--border)); background: color-mix(in srgb, var(--success) 6%, var(--surface)); }
+  .fit.skip { color: var(--muted); background: var(--surface-warm); text-decoration: line-through; }
+  .optreason { display: flex; gap: 8px; flex-wrap: wrap; }
+  .optreason button {
+    font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    color: var(--fg-2); background: var(--surface); border: 1px solid var(--border);
+    border-radius: 999px; padding: 7px 14px;
+  }
+  .optreason button:hover { background: var(--surface-warm); }
+  .veto-card {
+    border: 1px solid var(--border-soft); background: var(--surface-warm);
+    border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px;
+  }
+  .veto-card .vc-top { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--fg-2); }
+  .veto-card .vc-top .pulse { width: 8px; height: 8px; border-radius: 999px; background: var(--warn); }
+  .veto-card .vc-body { font-size: 14px; color: var(--fg-2); }
+  .veto-card .vc-act { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .assumed {
+    display: inline-flex; gap: 8px; align-items: baseline; font-size: 14px;
+    padding: 9px 12px; border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--warn) 30%, var(--border));
+    background: color-mix(in srgb, var(--warn) 6%, var(--surface));
+  }
+  .assumed .tag { font-size: 11px; font-weight: 700; color: var(--warn); }
+  .streak { display: flex; align-items: baseline; gap: 12px; }
+  .streak .n { font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+  .streak .w { font-size: 15px; font-weight: 600; color: var(--fg-2); }
+  .btn-approve {
+    font: inherit; font-weight: 600; font-size: 14px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+    background: var(--accent); color: var(--accent-on); border: none;
+    padding: 12px 22px; border-radius: 8px; min-height: 44px;
+  }
+  .btn-approve:hover { background: var(--accent-hover); }
+
+  /* ── journey map ─────────────────────────────────────── */
+  .arc-label {
+    margin: 34px 0 0; font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--meta);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .arc-label::after { content: ""; flex: 1; height: 1px; background: var(--border-soft); }
+  .jgrid { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+  .jcard {
+    border: 1px solid var(--border); border-radius: 14px; background: var(--surface);
+    padding: 20px 20px 16px; display: flex; flex-direction: column; gap: 12px; min-width: 0;
+  }
+  .jcard.hero { grid-column: 1 / -1; }
+  .j-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .j-id { font-size: 12px; font-weight: 700; color: var(--accent); }
+  .j-title { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; }
+  .j-arc { font-size: 15px; color: var(--muted); max-width: 72ch; }
+  .serves { display: flex; flex-wrap: wrap; gap: 5px; }
+  .serves span {
+    font-size: 11px; font-weight: 600; color: var(--meta);
+    border: 1px solid var(--border-soft); border-radius: 999px; padding: 2px 8px;
+    background: var(--surface-warm);
+  }
+  .flows { display: flex; flex-direction: column; border-top: 1px solid var(--border-soft); }
+  .flow { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border-soft); font-size: 14px; align-items: baseline; }
+  .flow:last-child { border-bottom: none; }
+  .flow .fid { font-size: 11px; font-weight: 700; color: var(--meta); white-space: nowrap; padding-top: 1px; }
+  .flow .fn { color: var(--fg-2); }
+  .flow .fn b { color: var(--fg); font-weight: 600; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 999px; padding: 1px 8px; margin-left: 4px; white-space: nowrap; }
+  .pill.scr { color: var(--fg-2); background: var(--surface-warm); border: 1px solid var(--border-soft); }
+  .pill.tp  { color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border)); }
+  .legend { display: flex; gap: 14px; margin-top: 14px; font-size: 12px; color: var(--muted); flex-wrap: wrap; align-items: center; }
+
+  /* ── judgment calls ──────────────────────────────────── */
+  .jc {
+    margin-top: 22px; border: 1px solid var(--border); border-radius: 20px;
+    background: var(--surface); box-shadow: var(--elev-raised);
+    padding: 26px 26px 22px;
+  }
+  .jc-head { display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap; }
+  .jc-num {
+    font-size: 13px; font-weight: 700; color: var(--accent-on); background: var(--accent);
+    border-radius: 999px; padding: 3px 12px; white-space: nowrap;
+  }
+  .jc-title { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .jc-where { width: 100%; font-size: 12px; color: var(--meta); font-weight: 600; }
+  .jc-body { margin: 12px 0 0; max-width: 72ch; color: var(--fg-2); font-size: 15px; }
+  .opts { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .opt { border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; background: var(--surface); }
+  .opt.chosen { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); background: color-mix(in srgb, var(--accent) 4%, var(--surface)); }
+  .opt .o-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--meta); }
+  .opt.chosen .o-tag { color: var(--accent); }
+  .opt .o-name { font-size: 15px; font-weight: 600; }
+  .opt .o-why { font-size: 13px; color: var(--muted); }
+  .speak { margin-top: 14px; font-size: 14px; color: var(--muted); display: flex; gap: 8px; align-items: baseline; }
+  .speak::before { content: "↳"; color: var(--meta); }
+  .speak b { color: var(--fg-2); font-weight: 600; }
+
+  /* ── next / footer ───────────────────────────────────── */
+  .next { margin-top: 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+  .nx { border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; background: var(--surface-warm); }
+  .nx .n-k { font-size: 12px; font-weight: 700; color: var(--accent); }
+  .nx .n-t { font-size: 15px; font-weight: 600; margin-top: 4px; }
+  .nx .n-d { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  footer { margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border-soft); font-size: 13px; color: var(--meta); display: flex; flex-direction: column; gap: 4px; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.86em; background: var(--surface-warm); border: 1px solid var(--border-soft); border-radius: 5px; padding: 1px 5px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Steward · experience spine · founding round walkthrough</div>
+    <h1>The whole experience, one page — and eight calls I want your eyes on</h1>
+    <p class="lede">Everything below is now governed truth in <code>.spec/experience/ui.yaml</code>: <strong>10 journeys, 26 flows, 15 screens, 4 email touchpoints</strong>, every journey traced to the requirements it serves. This page renders in the steward theme itself — the components you see are the real design system, not illustrations. Reply in chat with a JC number to push back on any call.</p>
+    <div class="status-row">
+      <span class="chip ok"><span class="dot"></span>Register approved · DEC-8</span>
+      <span class="chip ok"><span class="dot"></span>Product-Designer challenger: pass (9 findings applied)</span>
+      <span class="chip"><span class="dot" style="background:var(--accent)"></span>Commit 57b3c08 · graph green, 242 IDs</span>
+    </div>
+  </header>
+
+  <!-- ══════════════ 1 · the trust chrome, live ══════════════ -->
+  <section class="sect">
+    <div class="sect-head"><span class="k">01 · The vocabulary</span><h2>Trust chrome — rendered live</h2></div>
+    <p class="sect-sub">The eight components that make “a colleague, nothing hidden” into pixels (DS-5 v2). The three marked <b style="color:var(--accent)">new</b> came from your four decisions this round and were folded into the owned inventory after the challenger caught them being invented at screen level (GR-7).</p>
+    <div class="exhibit">
+      <div class="ex"><span class="lbl">ReasonLine</span>
+        <div class="reason">Your beach cleanup is Saturday — donors respond best to before/after pairs, so I'd love 3 photos.</div>
+      </div>
+      <div class="ex"><span class="lbl">ProvenanceLine · <b>new</b></span>
+        <div class="prov">from <a href="#" onclick="return false">your update last Tuesday</a> · <a href="#" onclick="return false">your website</a></div>
+        <div class="reason" style="font-size:13px">Every draft shows what it was grounded on — tap through to the Memory entries.</div>
+      </div>
+      <div class="ex"><span class="lbl">FitBadge</span>
+        <div class="fitrow"><span class="fit ok">Facebook</span><span class="fit ok">Instagram</span><span class="fit skip">X</span><span style="font-size:13px;color:var(--muted)">skipped X: over policy “no long stories” — override?</span></div>
+      </div>
+      <div class="ex"><span class="lbl">OptionalReason · <b>new</b></span>
+        <div class="optreason"><button type="button">Not now</button><button type="button">Not our style</button><button type="button">Tell me why…</button></div>
+        <div class="reason" style="font-size:13px">Offered after Skip and veto — dismissible, feeds Memory, never blocks.</div>
+      </div>
+      <div class="ex"><span class="lbl">Veto-window card · <b>new</b></span>
+        <div class="veto-card">
+          <div class="vc-top"><span class="pulse"></span>Published on my own — you can veto until Thu 9 AM</div>
+          <div class="vc-body">Volunteer spotlight — Denise · went out Tue 9:00 AM</div>
+          <div class="vc-act">Veto (one tap) · needs no action · excluded from your “N of M”</div>
+        </div>
+      </div>
+      <div class="ex"><span class="lbl">AssumedNote</span>
+        <div class="assumed"><span class="tag">assumed</span><span>Your service area is Travis County — I read it off your website. <a href="#" onclick="return false">Not right?</a></span></div>
+      </div>
+      <div class="ex"><span class="lbl">Primary verb</span>
+        <button class="btn-approve" type="button">✓&nbsp; Approve</button>
+        <div class="reason" style="font-size:13px">The one accent action per screen — and since this round, always revocable until publish.</div>
+      </div>
+      <div class="ex"><span class="lbl">Streak (completion only)</span>
+        <div class="streak"><span class="n">6</span><span class="w">week streak</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ 2 · the journey map ══════════════ -->
+  <section class="sect">
+    <div class="sect-head"><span class="k">02 · The map</span><h2>Ten journeys — the chapters of a relationship</h2></div>
+    <p class="sect-sub">The unit of design is the chapter, not the screen. Chapters 1–4 are a real sequence in the founder's life; the rest are recurring or edge arcs woven through it. Every journey lists what it <em>serves</em> — those edges are lint-enforced.</p>
+    <div class="legend"><span class="pill scr">screen</span><span class="pill tp">email touchpoint</span><span>· flows read top-to-bottom inside each journey</span></div>
+
+    <div class="arc-label">The arc · chapters in sequence</div>
+    <div class="jgrid">
+      <article class="jcard hero">
+        <div class="j-top"><span class="j-title">Day one — hired</span><span class="j-id">UI-1 · chapter 1</span></div>
+        <p class="j-arc">From “org name + email” to the first approved post inside the first session. The founder must feel they <b>hired someone</b>: the system works immediately, narrates itself, asks only what it can't find, shows what it learned, introduces its editorial contract, delivers finished work. Founder-paced — every flow skippable and resumable, never a wizard.</p>
+        <div class="serves"><span>ONB-1..6</span><span>INT-1..2</span><span>STR-2</span><span>goal: G-5 · first post in 48h</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-21</span><span class="fn"><b>Sign up &amp; consent</b> — nothing blocks on completeness<span class="pill scr">signup</span></span></div>
+          <div class="flow"><span class="fid">UI-22</span><span class="fn"><b>Watch it learn</b> — ingestion narrates itself; findings stream in live<span class="pill scr">narration</span></span></div>
+          <div class="flow"><span class="fid">UI-23</span><span class="fn"><b>The first interview</b> — curious colleague, runs in chat, resumable forever</span></div>
+          <div class="flow"><span class="fid">UI-24</span><span class="fn"><b>Here's what I know</b> — corrections become permanent rules; a “this isn't us” escape<span class="pill scr">profile review</span></span></div>
+          <div class="flow"><span class="fid">UI-25</span><span class="fn"><b>Meet your strategy</b> — “here's how I plan to speak for you; change anything”</span></div>
+          <div class="flow"><span class="fid">UI-26</span><span class="fn"><b>Connect channels</b> — any order, any time; expired tokens never fail silently<span class="pill scr">channel connect</span></span></div>
+          <div class="flow"><span class="fid">UI-27</span><span class="fn"><b>The first approval</b> — the chapter's payoff, first-run copy in the Inbox</span></div>
+        </div>
+      </article>
+
+      <article class="jcard hero">
+        <div class="j-top"><span class="j-title">The weekly digest</span><span class="j-id">UI-2 · chapters 2–3, recurring</span></div>
+        <p class="j-arc">The heart of the product, already validated by two audited mockup rounds. Email in → finite stack → done, inside the 15-minute weekly budget. The exception arc is first-class: a missed week gets <b>one</b> gentle nudge, never guilt.</p>
+        <div class="serves"><span>APR-1..4, 6</span><span>GEN-2, 4, 5</span><span>EXT-2</span><span>PRO-3</span><span>STW-1</span><span>UX-1, 3</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-28</span><span class="fn"><b>Digest arrival</b> — subject carries the week's shape; deep link lands at “0 of 5”<span class="pill tp">digest email</span></span></div>
+          <div class="flow"><span class="fid">UI-29</span><span class="fn"><b>Review the week</b> — approve / edit / skip / redirect per card; provenance on every draft; rule-proposal cards; approve is undoable until publish<span class="pill scr">shell</span><span class="pill scr">inbox</span><span class="pill scr">post review</span></span></div>
+          <div class="flow"><span class="fid">UI-30</span><span class="fn"><b>Fix a picture</b> — blocked, never broken; library suggestions with a reason</span></div>
+          <div class="flow"><span class="fid">UI-31</span><span class="fn"><b>Finish &amp; streak</b> — quiet pride, what's heading out, “next from me”</span></div>
+          <div class="flow"><span class="fid">UI-32</span><span class="fn"><b>The missed week</b> — one nudge; a second miss holds quietly, no escalation<span class="pill tp">nudge email</span></span></div>
+        </div>
+      </article>
+
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Earned autonomy</span><span class="j-id">UI-16 · chapter 4</span></div>
+        <p class="j-arc">The trust arc: promotion is offered after earned consistency, never taken; TL1 changes what the inbox <em>means</em>; the kill switch turns panic into calm in one gesture. TL2 consciously deferred.</p>
+        <div class="serves"><span>AUT-1..3</span><span>UX-6</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-38</span><span class="fn"><b>The offer</b><span class="pill scr">settings</span></span></div>
+          <div class="flow"><span class="fid">UI-39</span><span class="fn"><b>The veto window</b><span class="pill tp">veto notice</span></span></div>
+          <div class="flow"><span class="fid">UI-40</span><span class="fn"><b>The kill switch</b> — fear → calm</span></div>
+        </div>
+      </article>
+
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Just talk to it</span><span class="j-id">UI-3 · cross-cutting</span></div>
+        <p class="j-arc">One conversation aware of everything, docked on every surface. Redirects always confirm back what was understood and where it landed — the trust checkpoint.</p>
+        <div class="serves"><span>CHT-1..4</span><span>INT-3</span><span>MEM-2</span><span>UX-2</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-33</span><span class="fn"><b>Ask anything</b><span class="pill scr">chat</span></span></div>
+          <div class="flow"><span class="fid">UI-34</span><span class="fn"><b>Redirect &amp; confirm-back</b></span></div>
+          <div class="flow"><span class="fid">UI-35</span><span class="fn"><b>Do it by chat</b> (P1)</span></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="arc-label">Woven through · recurring &amp; founder-initiated</div>
+    <div class="jgrid">
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Send me three photos</span><span class="j-id">UI-14</span></div>
+        <p class="j-arc">The system moves first to feed its scarcest resource. Phone-in-the-field, under a minute, blocked drafts unblock visibly with a payoff line.</p>
+        <div class="serves"><span>PRO-1</span><span>GEN-3</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-5</span><span class="fn"><b>Request &amp; upload</b> — resumable over bad connectivity<span class="pill tp">request email</span><span class="pill scr">quick upload</span></span></div>
+        </div>
+      </article>
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Approve once</span><span class="j-id">UI-15</span></div>
+        <p class="j-arc">Campaigns arrive pre-drafted; one Approve adopts the whole package. Milestone recaps (P1) turn “we hit a milestone” into a thank-you package.</p>
+        <div class="serves"><span>PRO-2</span><span>STW-2</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-36</span><span class="fn"><b>Campaign proposal</b><span class="pill scr">campaign</span></span></div>
+          <div class="flow"><span class="fid">UI-37</span><span class="fn"><b>Milestone recap</b> (P1)</span></div>
+        </div>
+      </article>
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Compose your own</span><span class="j-id">UI-18</span></div>
+        <p class="j-arc">Write → picture → channels → variants → confirm. An action from anywhere, never a nav destination.</p>
+        <div class="serves"><span>APR-5</span><span>UX-7</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-4</span><span class="fn"><b>Compose</b><span class="pill scr">composer</span></span></div>
+        </div>
+      </article>
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">The inspectable brain</span><span class="j-id">UI-17</span></div>
+        <p class="j-arc">The glass wall: what it knows, what rules it follows, what's planned, what went out. Visited rarely; carries disproportionate trust.</p>
+        <div class="serves"><span>STR-1..2</span><span>MEM-3</span><span>PUB-3</span><span>GEN-1</span><span>UX-4..5</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-41</span><span class="fn"><b>Steer the strategy</b><span class="pill scr">organization</span></span></div>
+          <div class="flow"><span class="fid">UI-42</span><span class="fn"><b>Planned &amp; published</b> — recall at P0<span class="pill scr">calendar</span></span></div>
+          <div class="flow"><span class="fid">UI-43</span><span class="fn"><b>Browse the memory</b> (P1)</span></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="arc-label">The edges · exit &amp; internal</div>
+    <div class="jgrid">
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Fair account &amp; exit</span><span class="j-id">UI-19</span></div>
+        <p class="j-arc">Cancel with dignity: export, one-click refund honor, data deletion as a plain affordance, one honest “here's what you'll lose.” No retention maze — the brand promise to a guilt-prone persona.</p>
+        <div class="serves"><span>BIL-1..2</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-44</span><span class="fn"><b>Plan &amp; billing</b></span></div>
+          <div class="flow"><span class="fid">UI-45</span><span class="fn"><b>Cancel with dignity</b></span></div>
+        </div>
+      </article>
+      <article class="jcard">
+        <div class="j-top"><span class="j-title">Operator QA</span><span class="j-id">UI-20 · internal</span></div>
+        <p class="j-arc">Us, silently guaranteeing cohort-1 quality. Deliberately thin — one flow, one utility screen, no design investment yet.</p>
+        <div class="serves"><span>OPS-1</span></div>
+        <div class="flows">
+          <div class="flow"><span class="fid">UI-46</span><span class="fn"><b>Silent QA pass</b><span class="pill scr">dashboard</span></span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══════════════ 3 · judgment calls ══════════════ -->
+  <section class="sect">
+    <div class="sect-head"><span class="k">03 · Your eyes here</span><h2>Eight judgment calls</h2></div>
+    <p class="sect-sub">Each was decided with reasoning, not defaulted — but they're product-taste calls where your instinct may beat mine. The chosen option is marked; reply with a JC number to override or refine. Silence = the chosen option stands.</p>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-1</span><span class="jc-title">Approve is undoable until it publishes</span>
+      <span class="jc-where">UI-29 · UI-42 — from the challenger's sharpest finding: Approve was the only irreversible verb in the product</span></div>
+      <p class="jc-body">A founder who spots a typo ten minutes after approving had exactly one tool before this fix: the kill switch — a panic lever for a routine mistake. Redirects had Undo, skips were recoverable, vetoes existed.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Undo in place until publish + recall from Calendar</span><span class="o-why">Symmetric with every other verb; “you can change anything until it goes out” becomes literally true. Cost: scheduled posts are mutable state until send.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Short undo toast only (~5 min)</span><span class="o-why">Simpler mental model and implementation; but re-introduces a window where the only recourse is panic.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> you want approval to feel more final — some products argue commitment reduces second-guessing.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-2</span><span class="jc-title">Where the learning loop shows its face</span>
+      <span class="jc-where">UI-29 · APR-3 — “you've shortened 4 X posts in a row — make it a rule?”</span></div>
+      <p class="jc-body">The rule proposal is the moment the founder <em>sees</em> the system learning — arguably the product's best retention moment. It needs a home.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">A digest card, in the stack</span><span class="o-why">Arrives where attention already is, on cadence, with accept / edit / decline. Declined = not re-asked soon.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Chat-only</span><span class="o-why">More conversational, but chat is opened irregularly — proposals would rot unseen.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Inline, immediately after the Nth edit</span><span class="o-why">Maximum context, but interrupts the founder mid-task — the one time they're moving fast.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> you'd rather it interrupt at the moment of the pattern — immediacy versus flow protection.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-3</span><span class="jc-title">Provenance on every card — density risk accepted</span>
+      <span class="jc-where">UI-7 · UI-8 · DS-5 ProvenanceLine — your “yes” to provenance, extended to all drafts</span></div>
+      <p class="jc-body">You approved provenance; the open nuance was <em>where</em>. I put it on every card: the card already carries photo, text, ReasonLine, FitBadges, actions — one more quiet metadata line is real density.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Every draft, always</span><span class="o-why">Uniformity is itself trust — a card without provenance would read as “this one it made up.” Kept to one muted line.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Only inferred &amp; external content</span><span class="o-why">Lighter cards; provenance appears exactly where doubt is likely. But absence becomes a signal founders must learn.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> round-3 mockups feel cluttered — this is the first line I'd demote to tap-to-reveal.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-4</span><span class="jc-title">Veto cards don't count and can't be batch-approved</span>
+      <span class="jc-where">UI-29 · UI-7 — the TL1 card class you asked to design now</span></div>
+      <p class="jc-body">At TL1, auto-published items appear in the digest. I excluded them from the “3 of 5 reviewed” count and from “Approve all ready” — they need <em>no</em> action, and a batch verb that touches already-published things is a footgun.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Informational class: visible, excluded from count &amp; batch</span><span class="o-why">The count stays a promise (“what still needs you”); veto stays a deliberate, single-item act.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Counted, with “acknowledge” as their verb</span><span class="o-why">Forces awareness of what published autonomously — but converts earned autonomy back into homework, against G-3.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> you think unacknowledged auto-publishes are a bigger risk than the added friction.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-5</span><span class="jc-title">Skip asks “why?” after the skip, never before</span>
+      <span class="jc-where">UI-29 · DS-5 OptionalReason — your “yes” to skip reasons, with a timing decision</span></div>
+      <p class="jc-body">The reason chips appear <em>after</em> the skip completes — the card is already gone from the pending count; answering is a gift, not a toll. Same affordance reused for veto reasons (sibling coherence).</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Post-action, dismissible, one-tap</span><span class="o-why">Zero added friction to the verb; some reasons lost, all skips fast.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Reason as part of the skip gesture</span><span class="o-why">Every skip teaches — but now skipping costs a decision, and G-3 pays for it.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> learning speed matters more than verb speed in the first cohort.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-6</span><span class="jc-title">Settings lives inside the trust journey — no “manage settings” journey exists</span>
+      <span class="jc-where">UI-12 homed under UI-38 · APR-2's selection is an affordance, not a flow</span></div>
+      <p class="jc-body">Autonomy is the gravitational center of Settings (trust levels, kill switch, pauses); cadence, notifications, channels, and billing share the surface as affordances. The alternative — a dedicated “manage” journey — would be a chapter nobody's life contains.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Settings = the trust journey's surface</span><span class="o-why">Journeys stay honest arcs; settings tasks are one-tap affordances documented in the screen body.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">A “configure Steward” journey</span><span class="o-why">Structurally tidier coverage, experientially fictional — nobody journeys to a cadence dropdown.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> you expect settings to grow enough (multi-seat later?) to deserve its own arc.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-7</span><span class="jc-title">After the one nudge: silence, and a graceful re-entry</span>
+      <span class="jc-where">UI-32 · UI-57 — beyond APR-6's single-nudge rule</span></div>
+      <p class="jc-body">APR-6 mandates one nudge. I decided what happens <em>after</em>: a second missed week escalates nothing — the system quietly holds time-insensitive items, says so, and greets a returning founder with “here's what happened while you were away,” streak restarted without ceremony.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Hold quietly, welcome back warmly</span><span class="o-why">Guilt is this persona's churn engine; the product must be the one place that never generates it (VAL-5).</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Operator-mediated check-in (human email at week 3+)</span><span class="o-why">Cohort-1 retention lever; humans can say what software can't. Could coexist — an ops-console follow-up, not a product behavior.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> you want the operator check-in wired into UI-20 for cohort 1 — I'd support that as an ops practice.</p>
+    </article>
+
+    <article class="jc">
+      <div class="jc-head"><span class="jc-num">JC-8</span><span class="jc-title">Email is a first-class design element — “touchpoint” is now a pattern kind</span>
+      <span class="jc-where">pattern.yaml · UI-54..57 — the outer loop, governed</span></div>
+      <p class="jc-body">The digest email is the most-seen artifact of the product, so I extended the project pattern with a <code>touchpoint</code> kind (nests in flows, like screens) rather than modeling emails as “screens” or leaving them as prose. Four exist: digest, photo request, veto notice, nudge.</p>
+      <div class="opts">
+        <div class="opt chosen"><span class="o-tag">Chosen</span><span class="o-name">Distinct kind, same governance</span><span class="o-why">Semantic honesty (out-of-app ≠ screen); GR-7 conformance and the design gate apply to emails too.</span></div>
+        <div class="opt"><span class="o-tag">Alternative</span><span class="o-name">Emails as screens</span><span class="o-why">One fewer kind; but “screen” starts lying, and email-specific constraints (clients, dark-mode mangling) get no home.</span></div>
+      </div>
+      <p class="speak"><b>Speak up if</b> the naming feels off — <b>touchpoint</b> vs <b>notice</b> vs <b>message</b> — it's cheap to rename now, expensive after specs cite it.</p>
+    </article>
+  </section>
+
+  <!-- ══════════════ 4 · what's next ══════════════ -->
+  <section class="sect">
+    <div class="sect-head"><span class="k">04 · Next</span><h2>Where the canvas goes from here</h2></div>
+    <div class="next">
+      <div class="nx"><div class="n-k">1 · UI-7 round 3</div><div class="n-t">The inbox absorbs this round</div><div class="n-d">ProvenanceLine, OptionalReason, veto-window card, approve-undo, rule-proposal card — all now design-system truth the mockup must pick up.</div></div>
+      <div class="nx"><div class="n-k">2 · Storyboards</div><div class="n-t">UI-2 end to end, then UI-1</div><div class="n-d">Digest email → entry → review → streak as one canvas storyboard; then the day-one chapter with the ingestion narration.</div></div>
+      <div class="nx"><div class="n-k">3 · The gate is live</div><div class="n-t">Specs build on approved screens</div><div class="n-d">UI spec-elements cite screens via constrained-by; GR-7 governs conformance; requirement bumps flag journeys for re-review.</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Steward experience spine · founded 2026-07-16 · DEC-8 · commit <code>57b3c08</code> · challenge record <code>experience-ui-2026-07-16-r1</code></span>
+    <span>Rendered in the steward theme (terracotta <code>#B5502E</code>, Inter 500-body). The product ships light-only (DS-7); this document adapts to your viewer theme.</span>
+  </footer>
+</main>
+
+</body>
+</html>
