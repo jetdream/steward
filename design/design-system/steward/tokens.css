@@ -1,0 +1,153 @@
+/* ─────────────────────────────────────────────────────────────────────────
+ * design-systems/steward/tokens.css
+ *
+ * Steward theme — the Open Design token schema (shared with the vendored
+ * airbnb reference package, ../airbnb/tokens.css) re-bound for Steward.
+ * @implements DS-1 (single token source), DS-2 (accent), DS-3 (type),
+ * DS-7 (light-only); decided by DEC-6/DEC-7, rationale in ADR-0001.
+ *
+ * Contract: schema token NAMES are preserved exactly (OD cross-brand
+ * rule). Components resolve every value via var(--*) from this file only —
+ * never from the airbnb reference, never as raw values (DS-1).
+ *
+ * Steward-specific bindings (deltas from the airbnb reference; everything
+ * not commented here is intentionally inherited unchanged — the spacious
+ * canvas, ink ramp, hairline borders, radius geometry, three-layer
+ * elevation, and two-mode type rhythm are exactly what DEC-6 adopted):
+ *
+ *   #Bind S1 — --accent is warm terracotta/clay #B5502E (DEC-7), not a
+ *              coral: earthy, human, "stewardship" not "commerce".
+ *              5.06:1 against white — AA for normal text in both
+ *              directions (DS-4), unlike the reference's 3.52:1 Rausch.
+ *              Hover/active are hand-bound deeper clays (mirroring the
+ *              reference's hand-binding rationale — color-mix drifts
+ *              toward brick red).
+ *
+ *   #Bind S2 — fonts: Inter variable replaces proprietary Cereal VF.
+ *              Body weight is 500, never 400 (DS-3) — consuming
+ *              components must set it explicitly; the confident texture
+ *              comes from the weight, not the face.
+ *
+ *   #Bind S3 — --danger doubles as the kill-switch/destructive tier
+ *              (AUT-3 surfaces); semantic pixels stay under five percent
+ *              of any page. --success may mark published/fit states
+ *              (FitBadge pass), --warn the awaiting-picture state
+ *              (GEN-4) — quiet tints, never banner floods.
+ *
+ *   #Bind S4 — --focus-ring stays 2px ink (photography-safe, DS-4): org
+ *              photos are the hero surface and a terracotta ring would
+ *              vanish against warm-toned imagery.
+ *
+ * Light theme only (DS-7). A future dark theme is a sibling binding file
+ * on this same schema — never a component-level fork.
+ * ─────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ─── Surface (3 levels) — inherited: canvas-white page and card,
+   * separation from hairlines and photography, warm tier for stepped-
+   * back sections (digest completion, footer, date-range middles). */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-warm: #f7f7f7;
+
+  /* ─── Foreground ramp (4 levels) — inherited ink ramp; --fg carries
+   * ~90% of text, never true #000000. */
+  --fg: #222222;
+  --fg-2: #3f3f3f;
+  --muted: #6a6a6a;
+  --meta: #929292;
+
+  /* ─── Border (2 levels) — inherited hairlines. */
+  --border: #dddddd;
+  --border-soft: #ebebeb;
+
+  /* ─── Accent — #Bind S1. Reserve for the primary action (Approve or
+   * the screen's single verb), the active-nav indicator, and at most
+   * one focal element per viewport (DS-2). */
+  --accent: #b5502e;
+  --accent-on: #ffffff;
+  --accent-hover: #a8492a;       /* hand-bound deeper clay */
+  --accent-active: #9e4426;      /* pressed — deepest clay */
+
+  /* ─── Semantic — #Bind S3. */
+  --success: #008a05;
+  --warn: #c47700;
+  --danger: #c13515;
+
+  /* ─── Typography — fonts — #Bind S2. */
+  --font-display:
+    "Inter Variable", Inter, -apple-system, system-ui,
+    "Helvetica Neue", Roboto, sans-serif;
+  --font-body:
+    "Inter Variable", Inter, -apple-system, system-ui,
+    "Helvetica Neue", Roboto, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Monaco,
+    Consolas, monospace;
+
+  /* ─── Typography — type scale — inherited: conversational 12–22px
+   * cluster, 28px section headings; 44/56px reserved for the streak
+   * numeral (the completion moment, UI-7) — Steward's analog of the
+   * reference's rating lockup. */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 44px;
+  --text-4xl: 56px;
+
+  /* ─── Typography — leading & tracking — inherited two-mode rhythm:
+   * chiseled display, magazine body. */
+  --leading-body: 1.43;
+  --leading-tight: 1.2;
+  --tracking-display: -0.02em;   /* at sizes ≥20px only */
+
+  /* ─── Spacing — inherited 4px-grid scale, 8px base unit. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* ─── Section rhythm — inherited generous breathing room. */
+  --section-y-desktop: 64px;
+  --section-y-tablet: 48px;
+  --section-y-phone: 32px;
+
+  /* ─── Radius — inherited soft-circle geometry: 14px is the post-card
+   * workhorse, 20px the approve panel, pill for avatars/icon buttons. */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+
+  /* ─── Elevation — inherited: flat cards on canvas; the three-layer
+   * stack is reserved for the sticky approve panel (UI-8), modals, the
+   * docked chat companion, and dropdowns. Never a single drop shadow. */
+  --elev-flat: none;
+  --elev-ring: 0 0 0 1px var(--border);
+  --elev-raised:
+    rgba(0, 0, 0, 0.02) 0 0 0 1px,
+    rgba(0, 0, 0, 0.04) 0 2px 6px 0,
+    rgba(0, 0, 0, 0.1) 0 4px 8px 0;
+
+  /* ─── Focus ring — #Bind S4. */
+  --focus-ring: 0 0 0 2px var(--fg);
+
+  /* ─── Motion — inherited: short, purposeful, no overshoot. */
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ─── Layout — inherited 1280px content cap; Steward is a workspace,
+   * not a marketplace — there is no ultra-wide grid mode. */
+  --container-max: 1280px;
+  --container-gutter-desktop: 40px;
+  --container-gutter-tablet: 24px;
+  --container-gutter-phone: 16px;
+}

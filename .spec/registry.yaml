@@ -32,7 +32,9 @@ prefixes:
   BIL: product/requirements/bil-billing.yaml
   OPS: product/requirements/ops-console.yaml
   UX: product/requirements/ux-app-shell.yaml
+  DS: product/requirements/ds-design-system.yaml
   ARC: architecture/overview.yaml
+  UI: architecture/ui.yaml
   DM: architecture/data-model.yaml
   IG: architecture/integrations.yaml
   PIPE: architecture/llm-pipeline.yaml

@@ -16,4 +16,5 @@ Use [TEMPLATE.md](TEMPLATE.md).
 
 | ADR | Title | Status |
 |---|---|---|
-| *(first ADRs arrive with the repo skeleton — including one consolidating the constitution-fixed stack choices)* | | |
+| [ADR-0001](0001-design-system-substrate.md) | Design-system substrate — re-themed Airbnb open-design fork | accepted |
+| *(a consolidating ADR for the constitution-fixed stack choices arrives with the repo skeleton)* | | |

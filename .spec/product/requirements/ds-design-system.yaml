@@ -1,0 +1,97 @@
+kind: requirements
+prefix: DS
+title: Design System
+status: approved
+serves: [G-3, G-5]
+
+intent: >-
+  What Steward's design system guarantees, independent of any one screen.
+  Substrate: the Open Design airbnb package re-themed as the steward theme
+  (DEC-6, ADR-0001) — spacious, breathing, content-first; the org's own
+  photography is the hero. Airbnb's marketplace UX is inverted into a calm
+  workspace: the founder finishes a small stack with confidence rather than
+  browsing options for pleasure. The trust chrome (DS-5) and the
+  no-empty-state rule (DS-6) are where VAL-3/VAL-5/VAL-6 become pixels.
+
+items:
+  DS-1:
+    v: 1
+    decided-by: DEC-6
+    priority: P0
+    flexibility: hard
+    title: Single token source
+    statement: >-
+      All UI color, typography, spacing, radius, elevation, and motion values
+      resolve from the steward theme token file
+      (design/design-system/steward/tokens.css), which binds the Open Design
+      token schema (schema names preserved exactly, per the OD contract). No
+      raw values in components; the Tailwind theme derives from the same
+      file.
+
+  DS-2:
+    v: 1
+    decided-by: DEC-7
+    priority: P0
+    title: Single-accent discipline
+    statement: >-
+      One accent — warm terracotta/clay (#B5502E) — reserved for the primary
+      action, the active-nav indicator, and at most one focal element per
+      viewport; everything else is the grayscale ramp. The primary action per
+      screen is Approve (or the screen's single equivalent verb, VAL-6).
+
+  DS-3:
+    v: 1
+    decided-by: DEC-6
+    priority: P0
+    title: Typography
+    statement: >-
+      Inter (variable) replaces the proprietary Airbnb Cereal VF with the
+      substrate's texture preserved: body weight 500 (never 400), tight
+      display leading (1.2) with negative tracking at ≥20px, generous body
+      leading (1.43), sentence case throughout.
+
+  DS-4:
+    v: 1
+    decided-by: DEC-6
+    priority: P0
+    flexibility: hard
+    title: Accessibility baseline
+    statement: >-
+      WCAG 2.1 AA contrast on all text (the accent passes 5.06:1 against
+      white in both directions); ≥44px touch targets; visible focus rings
+      (2px ink, per the substrate's photography-safe treatment).
+
+  DS-5:
+    v: 1
+    decided-by: DEC-6
+    priority: P0
+    title: Trust components
+    statement: >-
+      Steward's signature shared components, first-class in the component
+      inventory: ReasonLine (why the system did/asks this — VAL-5, every
+      system-initiated item), FitBadge (per-channel fit or skip-with-reason —
+      GEN-5), TrustLevel indicator (AUT-1), AssumedNote (visible "assumed"
+      marker — MEM-2, VAL-3), and the awaiting-picture state (GEN-4). They
+      carry the "colleague, nothing hidden" identity the way the substrate's
+      signature lockups carry Airbnb's.
+
+  DS-6:
+    v: 1
+    decided-by: DEC-6
+    priority: P0
+    title: No empty states
+    statement: >-
+      Every zero-state narrates what the system is already doing or proposes
+      the next concrete step (VAL-6) — never a blank canvas, never a
+      create-from-scratch prompt. Loading and onboarding states speak in
+      colleague voice (VAL-5).
+
+  DS-7:
+    v: 1
+    decided-by: DEC-7
+    priority: P0
+    title: Light-only v1
+    statement: >-
+      v1 ships the light theme only; the calm white canvas is part of the
+      product's posture. The token schema keeps dark mode open as a future
+      binding file, not a redesign.

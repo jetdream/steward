@@ -79,3 +79,36 @@ items:
       (github:DiffCo/cortex, pinned by tag) run as npx cortex-docs-check. The
       prefix registry moves to .spec/registry.yaml (data). This removes the
       divergent engine copy and its version drift.
+
+  DEC-6:
+    v: 1
+    date: 2026-07-16
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0001]
+    title: Design-system substrate — re-themed Airbnb open-design fork
+    statement: >-
+      Adopt the Open Design "airbnb" package (github:nexu-io/open-design,
+      vendored at design/design-system/airbnb/) as Steward's design-system
+      substrate, for its spacious, breathing, welcoming, content-first
+      character. It is consumed as a re-themed fork: the OD token schema is
+      the stable contract; Steward binds its own brand values in a sibling
+      theme (design/design-system/steward/). Airbnb's marketplace UX is
+      explicitly NOT adopted — the adaptation rules live in the steward
+      theme's DESIGN.md and the DS requirements register. Authorizes
+      ADR-0001; a flexibility-limiting choice recorded per HITL policy (A5).
+
+  DEC-7:
+    v: 1
+    date: 2026-07-16
+    by: founder (shpin.p@diffco.us)
+    binds: [DS-2, DS-7, UI-6]
+    title: UX foundations — home surface, accent, dark-mode scope
+    statement: >-
+      Three founding UX decisions taken together with DEC-6: (1) the shell is
+      Inbox-first with a docked, always-summonable chat companion — the
+      founder lands on the digest stack, and talking stays one gesture away
+      on every surface (reconciles VIS-1's conversational front door with
+      G-3 and UX-3); (2) the Steward accent is warm terracotta/clay
+      (#B5502E), replacing Airbnb's trademark Rausch coral while keeping the
+      single-accent discipline; (3) v1 ships light-only — the token schema
+      keeps a dark theme possible later as a binding file, not a redesign.
