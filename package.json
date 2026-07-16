@@ -10,7 +10,7 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "cortex": "github:DiffCo/cortex#v0.13.0",
+    "cortex": "github:DiffCo/cortex#v0.13.1",
     "husky": "^9.1.7"
   }
 }
