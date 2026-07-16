@@ -7,7 +7,7 @@ source: PRD v0.3 §8 (UX requirements were unnumbered there; IDs assigned at dec
 
 intent: >-
   Five navigation surfaces plus one action, on a responsive web app. The shell
-  embodies P-5 (colleague voice) and P-6 (no empty states — the system always
+  embodies VAL-5 (colleague voice) and VAL-6 (no empty states — the system always
   moves first).
 
 items:

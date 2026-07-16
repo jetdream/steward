@@ -31,7 +31,7 @@ items:
     statement: >-
       The system may interrupt the founder only for (a) field-only raw
       material, (b) genuinely founder-owned decisions, (c) blocking unknowns.
-      All else defaults sensibly with a visible "assumed" note (P-3).
+      All else defaults sensibly with a visible "assumed" note (VAL-3).
 
   MEM-3:
     v: 1

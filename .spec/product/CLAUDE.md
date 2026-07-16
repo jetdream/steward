@@ -7,7 +7,8 @@ Everything the product must be and why — decomposed from PRD v0.3 (deleted; se
 | [vision.md](vision.md) | Narrative WHY: problem, insight, positioning (**non-normative**) | — |
 | [overview.md](overview.md) | System concept and the core loop (narrative) | — |
 | [goals.yaml](goals.yaml) | Goals, success metrics, north star | `G-*` |
-| [principles.yaml](principles.yaml) | Product principles (tiebreakers) + platform guardrails | `P-*`, `GR-*` |
+| [values.yaml](values.yaml) | Product values — the soft decision compass (tiebreakers) | `VAL-*` |
+| [guardrails.yaml](guardrails.yaml) | Platform guardrails — hard, near-immovable rules | `GR-*` |
 | [glossary.yaml](glossary.yaml) | Authoritative domain vocabulary (`terms:` map) | — |
 | [scope.md](scope.md) | Non-goals, deferral order, boundary cases | — |
 | [users.md](users.md) | Personas and go-to-market | — |
@@ -18,4 +19,4 @@ Everything the product must be and why — decomposed from PRD v0.3 (deleted; se
 | [inconsistencies.yaml](inconsistencies.yaml) | Detected contradictions with lifecycle | `INC-*` |
 | [requirements/](requirements/) | Capability requirement registers | capability prefixes |
 
-Rules of this layer: requirements serve goals (`serves:` fields); principles constrain everything below them; contradictions become `INC-*` entries, never silent edits. See [../CLAUDE.md](../CLAUDE.md) for the change protocol.
+Rules of this layer: requirements serve goals (`serves:` fields); guardrails hard-constrain everything below them and values guide where no hard rule dictates; contradictions become `INC-*` entries, never silent edits. See [../CLAUDE.md](../CLAUDE.md) for the change protocol.

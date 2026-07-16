@@ -11,7 +11,7 @@ intent: >-
   INC (a detected contradiction), and Q (a still-open question): a DEC is a
   *made* human decision at product/scope/requirement altitude, with
   provenance. Product-altitude changes cite the authorizing DEC via
-  `decided-by:` (DCX-16). Each item carries the decision (statement), who
+  `decided-by:`. Each item carries the decision (statement), who
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
@@ -48,10 +48,10 @@ items:
     title: Enforce governance with teeth, not prose
     statement: >-
       Where a governance rule can be made deterministic, it must be: the
-      mandatory Architect Challenger at spec approval (DCX-13), the pre-commit
-      graph gate (DCX-14), the executable acceptance harness (DCX-15), and
-      lint-enforced HITL sign-off on product-altitude changes (DCX-16). Chosen
-      over lighter prose-only options at each fork. Authorizes the DCX-16
+      mandatory Architect Challenger at spec approval, the pre-commit
+      graph gate, the executable acceptance harness, and lint-enforced
+      HITL sign-off on product-altitude changes. Chosen over lighter
+      prose-only options at each fork. Authorizes the HITL sign-off lint
       tooth and the SDLC protocol's enforcement posture.
 
   DEC-4:

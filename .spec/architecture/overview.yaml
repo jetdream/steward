@@ -1,60 +1,265 @@
 kind: architecture
+prefix: ARC
 title: System Overview
 status: sketch
 
-summary: >-
+intent: >-
   Technical module map for the core loop described in product/overview.md.
   Constitution-fixed stack: NodeJS 24, TypeScript, Vite + React, Tailwind +
   ShadCN, Postgres + pgvector, tRPC, WebSocket for realtime, BetterAuth,
-  Vercel AI SDK (/CLAUDE.md).
+  Vercel AI SDK (/CLAUDE.md). Modelled as a C4 register: one c4-context (the
+  system), its c4-container runtime units (client, backend, datastore), and the
+  c4-component capability modules inside them.
 
-layout: >-
-  Three source roots per the constitution — client (@client), backend
-  (@backend), shared (@shared) — with folder-modules per capability and a
-  dedicated shared folder for cross-module code. Every module folder carries a
-  CLAUDE.md (purpose, implemented spec IDs, structure, dependencies, optional
-  module-scoped principles and Gotchas). All client→backend calls go through
-  domain-specific API React hooks; realtime updates arrive over WebSocket with
-  light payloads. Channel adapters are isolated per platform so a policy
-  change on one channel never blocks the others (R-6).
+items:
+  ARC-1:
+    v: 1
+    kind: c4-context
+    title: Steward System
+    body: |
+      The Steward system in its environment: a browser client, a NodeJS
+      backend, and a Postgres + pgvector datastore, wired by tRPC + WebSocket.
 
-module-map: |
-  graph TD
-    subgraph client
-      SHELL[app-shell — UX-1..7]
-      CCHAT[chat UI]
-      CINBOX[inbox UI]
-      CCAL[calendar UI]
-      CORG[organization UI]
-    end
-    subgraph backend
-      AUTH[auth — BetterAuth]
-      MEMB[memory — MEM]
-      ONBB[onboarding/ingestion — ONB]
-      CHATB[chat + interviewer — CHT, INT]
-      STRB[strategy — STR]
-      GENB[content engine — GEN, STW]
-      EXTB[radar — EXT]
-      APRB[inbox/approvals — APR]
-      PUBB[publisher + channel adapters — PUB]
-      PROB[proactive — PRO]
-      AUTB[autonomy — AUT]
-      BILB[billing — BIL]
-      OPSB[ops console — OPS]
-    end
-    SHARED[shared — types, DTOs, channel profiles]
-    client -->|tRPC + WS| backend
-    backend --> SHARED
-    client --> SHARED
-    MEMB --> GENB
-    STRB --> GENB
-    EXTB --> GENB
-    GENB --> APRB
-    APRB --> PUBB
-    AUTB -.governs.-> PUBB
+      Layout — Three source roots per the constitution: client (@client),
+      backend (@backend), shared (@shared) — with folder-modules per capability
+      and a dedicated shared folder for cross-module code. Every module folder
+      carries a CLAUDE.md (purpose, implemented spec IDs, structure,
+      dependencies, optional module-scoped principles and Gotchas). All
+      client→backend calls go through domain-specific API React hooks; realtime
+      updates arrive over WebSocket with light payloads. Channel adapters are
+      isolated per platform so a policy change on one channel never blocks the
+      others (R-6).
 
-pending-adrs: >-
-  Stack choices fixed by the constitution get a retroactive consolidating ADR
-  with the repo skeleton; genuinely open technical decisions (job scheduling,
-  queue strategy for publishing, media storage, transactional email vendor)
-  get ADRs as they are made.
+      Module map (SHARED is @shared source compiled into both client and
+      backend — a shared library, not a runtime container — so it is kept in
+      this diagram rather than modelled as its own element):
+
+      graph TD
+        subgraph client
+          SHELL[app-shell — UX-1..7]
+          CCHAT[chat UI]
+          CINBOX[inbox UI]
+          CCAL[calendar UI]
+          CORG[organization UI]
+        end
+        subgraph backend
+          AUTH[auth — BetterAuth]
+          MEMB[memory — MEM]
+          ONBB[onboarding/ingestion — ONB]
+          CHATB[chat + interviewer — CHT, INT]
+          STRB[strategy — STR]
+          GENB[content engine — GEN, STW]
+          EXTB[radar — EXT]
+          APRB[inbox/approvals — APR]
+          PUBB[publisher + channel adapters — PUB]
+          PROB[proactive — PRO]
+          AUTB[autonomy — AUT]
+          BILB[billing — BIL]
+          OPSB[ops console — OPS]
+        end
+        SHARED[shared — types, DTOs, channel profiles]
+        client -->|tRPC + WS| backend
+        backend --> SHARED
+        client --> SHARED
+        MEMB --> GENB
+        STRB --> GENB
+        EXTB --> GENB
+        GENB --> APRB
+        APRB --> PUBB
+        AUTB -.governs.-> PUBB
+
+      Pending ADRs — Stack choices fixed by the constitution get a retroactive
+      consolidating ADR with the repo skeleton; genuinely open technical
+      decisions (job scheduling, queue strategy for publishing, media storage,
+      transactional email vendor) get ADRs as they are made.
+
+  ARC-2:
+    v: 1
+    kind: c4-container
+    title: Client (@client)
+    parent: ARC-1
+    body: |
+      Browser SPA: Vite + React, Tailwind + ShadCN. Folder-modules per
+      capability UI; all calls to the backend go through domain-specific API
+      React hooks, with realtime updates over WebSocket (light payloads).
+      Houses the app-shell and the capability UI components.
+
+  ARC-3:
+    v: 1
+    kind: c4-container
+    title: Backend (@backend)
+    parent: ARC-1
+    body: |
+      NodeJS 24 + TypeScript service exposing a tRPC + WebSocket surface,
+      authenticated by BetterAuth and driving the LLM work via the Vercel AI
+      SDK. Folder-modules per capability host the memory, ingestion, chat,
+      strategy, content, radar, approval, publishing, proactive, autonomy,
+      billing, and ops capabilities.
+
+  ARC-4:
+    v: 1
+    kind: c4-container
+    title: Datastore — Postgres + pgvector
+    parent: ARC-1
+    body: |
+      Postgres as the system of record for all org-owned entities (see the
+      data-model register), with the pgvector extension storing MemoryEntry
+      embeddings for retrieval-grounded generation.
+
+  ARC-5:
+    v: 1
+    kind: c4-component
+    title: App Shell
+    parent: ARC-2
+    body: |
+      The application shell / navigation frame (app-shell). Implements the UX
+      capability (UX-1..7).
+
+  ARC-6:
+    v: 1
+    kind: c4-component
+    title: Chat UI
+    parent: ARC-2
+    body: |
+      Client surface for the agentic chat and interviewer conversations.
+
+  ARC-7:
+    v: 1
+    kind: c4-component
+    title: Inbox UI
+    parent: ARC-2
+    body: |
+      Client surface for the approval inbox — reviewing drafts, edits, and
+      verdicts.
+
+  ARC-8:
+    v: 1
+    kind: c4-component
+    title: Calendar UI
+    parent: ARC-2
+    body: |
+      Client surface for the posting calendar / scheduled slots.
+
+  ARC-9:
+    v: 1
+    kind: c4-component
+    title: Organization UI
+    parent: ARC-2
+    body: |
+      Client surface for organization profile, memory, and settings.
+
+  ARC-10:
+    v: 1
+    kind: c4-component
+    title: Auth
+    parent: ARC-3
+    body: |
+      Authentication module built on BetterAuth (Google Sign-in + dev
+      email-only login).
+
+  ARC-11:
+    v: 1
+    kind: c4-component
+    title: Memory
+    parent: ARC-3
+    body: |
+      Org-memory module (MEM). Owns MemoryEntry read/write and pgvector
+      retrieval; feeds the content engine.
+
+  ARC-12:
+    v: 1
+    kind: c4-component
+    title: Onboarding / Ingestion
+    parent: ARC-3
+    body: |
+      Onboarding and account/website ingestion module (ONB).
+
+  ARC-13:
+    v: 1
+    kind: c4-component
+    title: Chat + Interviewer
+    parent: ARC-3
+    body: |
+      Agentic chat and structured interviewer module (CHT, INT), sharing the
+      Memory read/write layer.
+
+  ARC-14:
+    v: 1
+    kind: c4-component
+    title: Strategy
+    parent: ARC-3
+    body: |
+      Posting-strategy module (STR); produces the StrategyDoc that grounds
+      generation.
+
+  ARC-15:
+    v: 1
+    kind: c4-component
+    title: Content Engine
+    parent: ARC-3
+    body: |
+      Content generation + stewardship module (GEN, STW). Central hub: consumes
+      Memory, Strategy, and Radar context and produces drafts for the approval
+      inbox (see the llm-pipeline register).
+
+  ARC-16:
+    v: 1
+    kind: c4-component
+    title: External Radar
+    parent: ARC-3
+    body: |
+      External-signal radar module (EXT); surfaces external items for grounded,
+      citation-bearing drafts.
+
+  ARC-17:
+    v: 1
+    kind: c4-component
+    title: Inbox / Approvals
+    parent: ARC-3
+    body: |
+      Approval-inbox module (APR); receives drafts and records edits/verdicts
+      before publishing.
+
+  ARC-18:
+    v: 1
+    kind: c4-component
+    title: Publisher + Channel Adapters
+    parent: ARC-3
+    body: |
+      Publishing module (PUB): per-platform channel adapters behind a shared
+      channel-profile configuration, isolated so one platform's change never
+      blocks the others (R-6). See the integrations register.
+
+  ARC-19:
+    v: 1
+    kind: c4-component
+    title: Proactive Manager
+    parent: ARC-3
+    body: |
+      Proactive account-manager module (PRO).
+
+  ARC-20:
+    v: 1
+    kind: c4-component
+    title: Autonomy
+    parent: ARC-3
+    body: |
+      Autonomy / Trust-Level governance module (AUT); governs what publishing
+      may proceed without founder approval.
+
+  ARC-21:
+    v: 1
+    kind: c4-component
+    title: Billing
+    parent: ARC-3
+    body: |
+      Subscription billing module (BIL); Stripe linkage for our subscription.
+
+  ARC-22:
+    v: 1
+    kind: c4-component
+    title: Ops Console
+    parent: ARC-3
+    body: |
+      Operations console module (OPS); model-call QA, failure queues, and
+      operator alerting.

@@ -7,8 +7,8 @@ intent: >-
 filename-owned: [ADR]
 prefixes:
   G: product/goals.yaml
-  P: product/principles.yaml
-  GR: product/principles.yaml
+  VAL: product/values.yaml
+  GR: product/guardrails.yaml
   A: product/assumptions.yaml
   R: product/risks.yaml
   Q: product/open-questions.yaml
@@ -31,6 +31,9 @@ prefixes:
   BIL: product/requirements/bil-billing.yaml
   OPS: product/requirements/ops-console.yaml
   UX: product/requirements/ux-app-shell.yaml
-  DCX: specs/dcx-docs-check.yaml
-  CTX: specs/ctx-context-hooks.yaml
+  ARC: architecture/overview.yaml
+  DM: architecture/data-model.yaml
+  IG: architecture/integrations.yaml
+  PIPE: architecture/llm-pipeline.yaml
+  SEC: architecture/security-privacy.yaml
   ADR: adr/NNNN-slug.md

@@ -1,0 +1,57 @@
+kind: values
+prefix: VAL
+title: Product Values
+status: approved
+intent: >-
+  The decision-making compass — strong product preferences that guide the hundred
+  small choices no requirement enumerates. Values are CONSULTED at decision time
+  (Phase A intake) and when an unspecified case is hit in implementation (derive the
+  answer from a value and record it, e.g. `// per VAL-4`), never cited as hard
+  constraints — a spec's `governed-by` names GUARDRAILS, never values. Re-homed from
+  the former principles register (P-*) during the cortex v0.13 migration; statements
+  unchanged, so they remain the founding baseline.
+items:
+  VAL-1:
+    v: 1
+    origin: baseline
+    title: We sell the process, never the leads
+    statement: >-
+      No promises of donation outcomes; the promise is professional, consistent
+      execution of a process every nonprofit must run anyway.
+  VAL-2:
+    v: 1
+    origin: baseline
+    title: Build on what already works
+    statement: >-
+      The org's existing channels teach the system the org's real voice; the
+      system amplifies before it invents.
+  VAL-3:
+    v: 1
+    origin: baseline
+    title: Nothing hidden
+    statement: >-
+      The strategy is explicit and editable; autonomy is earned and always
+      revocable; everything auto-done is logged and visible.
+  VAL-4:
+    v: 1
+    origin: baseline
+    title: Real over synthetic
+    statement: >-
+      Org photos over generated images; the org's actual stories over generic
+      content; cited sources on anything external.
+  VAL-5:
+    v: 1
+    origin: baseline
+    title: A colleague, never software
+    statement: >-
+      Product-wide voice requirement: "I drafted next week's posts" — not
+      "Generation complete." Every system-initiated message or request carries
+      a reason. Cited by CHT-4 and all user-facing surfaces.
+  VAL-6:
+    v: 1
+    origin: baseline
+    title: The system moves first
+    statement: >-
+      It proposes; the founder disposes. No empty states that ask the founder
+      to create from scratch. The founder's job is two verbs: approve and
+      redirect.

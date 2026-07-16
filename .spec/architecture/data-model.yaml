@@ -1,55 +1,129 @@
 kind: architecture
+prefix: DM
 title: Data Model
 status: sketch
 
-summary: >-
+intent: >-
   Entity semantics and relationships, seeded from PRD §9. Once @shared types
   exist they are the machine truth for fields; this file keeps only diagrams
   and meaning, linking to the type files. Postgres + pgvector (embeddings for
-  Memory retrieval).
+  Memory retrieval). Each entity below is a data-entity design-element; the
+  cross-entity ERD lives on Org (the aggregate root) and the ContentItem
+  lifecycle lives on ContentItem. ChannelVariant is modelled as part of
+  ContentItem (master + ChannelVariant[]), not as a separate entity.
 
-entities: |
-  - Org — the customer organization; includes optional donationUrl (a plain
-    Memory-adjacent fact, not a donations module — product/scope.md).
-  - MemoryEntry — fact / story / styleRule / taboo / person / program / event;
-    source + timestamps (MEM-1). Embedded for retrieval.
-  - StrategyDoc — sections (a)–(e) per STR-1, versioned with diffs (STR-2).
-  - MediaAsset — tags, provenance (upload vs harvested); the media library.
-  - ContentItem — master + ChannelVariant[]; per-variant fit verdicts (GEN-5);
-    edit-diff log (APR-3).
-  - ChatSession / ChatMessage — including interviewer transcripts (INT-2).
-  - ExternalItem — source, URL, relevance rationale, disposition (EXT-1).
-  - TrustLevel — per content category (AUT-1).
-  - PostMetric — P1 (GEN-6).
-  - Subscription — Stripe linkage (BIL-1).
+items:
+  DM-1:
+    v: 1
+    kind: data-entity
+    title: Org
+    body: |
+      The customer organization; includes optional donationUrl (a plain
+      Memory-adjacent fact, not a donations module — product/scope.md). The
+      aggregate root: every other entity is owned by an Org.
 
-erd: |
-  erDiagram
-    ORG ||--o{ MEMORY_ENTRY : owns
-    ORG ||--|| STRATEGY_DOC : "has current"
-    ORG ||--o{ MEDIA_ASSET : owns
-    ORG ||--o{ CONTENT_ITEM : owns
-    ORG ||--o{ CHAT_SESSION : owns
-    ORG ||--o{ EXTERNAL_ITEM : owns
-    ORG ||--o{ TRUST_LEVEL : "per category"
-    ORG ||--|| SUBSCRIPTION : has
-    CONTENT_ITEM ||--o{ CHANNEL_VARIANT : "adapts to"
-    CONTENT_ITEM }o--o| MEDIA_ASSET : "carries picture"
-    CONTENT_ITEM }o--o| EXTERNAL_ITEM : "sourced from"
-    CHANNEL_VARIANT ||--o{ POST_METRIC : yields
-    CHAT_SESSION ||--o{ CHAT_MESSAGE : contains
+      Relationships (ERD):
 
-content-item-states: |
-  stateDiagram-v2
-    [*] --> draft : generated (GEN-1) or composed (APR-5)
-    draft --> awaiting_picture : no picture assigned (GEN-4)
-    awaiting_picture --> draft : picture attached
-    draft --> approved : founder approves / TL permits (AUT-1)
-    approved --> scheduled : slot assigned (PUB-1)
-    scheduled --> published : posted, logged (PUB-3)
-    draft --> skipped : founder skips
-    scheduled --> paused : kill switch / channel pause (AUT-3)
+      erDiagram
+        ORG ||--o{ MEMORY_ENTRY : owns
+        ORG ||--|| STRATEGY_DOC : "has current"
+        ORG ||--o{ MEDIA_ASSET : owns
+        ORG ||--o{ CONTENT_ITEM : owns
+        ORG ||--o{ CHAT_SESSION : owns
+        ORG ||--o{ EXTERNAL_ITEM : owns
+        ORG ||--o{ TRUST_LEVEL : "per category"
+        ORG ||--|| SUBSCRIPTION : has
+        CONTENT_ITEM ||--o{ CHANNEL_VARIANT : "adapts to"
+        CONTENT_ITEM }o--o| MEDIA_ASSET : "carries picture"
+        CONTENT_ITEM }o--o| EXTERNAL_ITEM : "sourced from"
+        CHANNEL_VARIANT ||--o{ POST_METRIC : yields
+        CHAT_SESSION ||--o{ CHAT_MESSAGE : contains
 
-invariants: >-
-  A draft cannot leave awaiting_picture toward approved without a picture
-  (GEN-3, GEN-4 — hard rule).
+  DM-2:
+    v: 1
+    kind: data-entity
+    title: MemoryEntry
+    body: |
+      fact / story / styleRule / taboo / person / program / event; source +
+      timestamps (MEM-1). Embedded for retrieval (pgvector).
+
+  DM-3:
+    v: 1
+    kind: data-entity
+    title: StrategyDoc
+    body: |
+      sections (a)–(e) per STR-1, versioned with diffs (STR-2).
+
+  DM-4:
+    v: 1
+    kind: data-entity
+    title: MediaAsset
+    body: |
+      tags, provenance (upload vs harvested); the media library.
+
+  DM-5:
+    v: 1
+    kind: data-entity
+    title: ContentItem
+    body: |
+      master + ChannelVariant[]; per-variant fit verdicts (GEN-5); edit-diff
+      log (APR-3).
+
+      Lifecycle (ContentItem states):
+
+      stateDiagram-v2
+        [*] --> draft : generated (GEN-1) or composed (APR-5)
+        draft --> awaiting_picture : no picture assigned (GEN-4)
+        awaiting_picture --> draft : picture attached
+        draft --> approved : founder approves / TL permits (AUT-1)
+        approved --> scheduled : slot assigned (PUB-1)
+        scheduled --> published : posted, logged (PUB-3)
+        draft --> skipped : founder skips
+        scheduled --> paused : kill switch / channel pause (AUT-3)
+
+      Invariant: A draft cannot leave awaiting_picture toward approved without a
+      picture (GEN-3, GEN-4 — hard rule).
+
+  DM-6:
+    v: 1
+    kind: data-entity
+    title: ChatSession
+    body: |
+      A conversation session, including interviewer transcripts (INT-2).
+      Contains ChatMessages.
+
+  DM-7:
+    v: 1
+    kind: data-entity
+    title: ChatMessage
+    body: |
+      An individual message within a ChatSession (agentic chat or interviewer
+      transcript, INT-2).
+
+  DM-8:
+    v: 1
+    kind: data-entity
+    title: ExternalItem
+    body: |
+      source, URL, relevance rationale, disposition (EXT-1).
+
+  DM-9:
+    v: 1
+    kind: data-entity
+    title: TrustLevel
+    body: |
+      per content category (AUT-1).
+
+  DM-10:
+    v: 1
+    kind: data-entity
+    title: PostMetric
+    body: |
+      P1 (GEN-6).
+
+  DM-11:
+    v: 1
+    kind: data-entity
+    title: Subscription
+    body: |
+      Stripe linkage (BIL-1).

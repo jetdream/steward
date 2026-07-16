@@ -186,24 +186,25 @@ items:
     title: Example @implements headers in prose files trip the write-guard
     statement: >-
       .spec/CLAUDE.md carries "@implements STR-3 v1" as an example in its layer
-      diagram; the CTX-5 write-guard reads @implements lines from the target
-      file, so every Edit to .spec/CLAUDE.md deny-once-blocks on STR-3 until it
-      is loaded. Also: an ID authored via Edit/Write this session is not in
-      the read-ledger (only Read marks IDs seen), so the write-guard fires on
-      IDs you just wrote. Both are harmless (deny-once = one speed bump) and
-      are accepted CTX-5 costs — noted so they are recognized, not
-      re-diagnosed as bugs.
+      diagram; the context-hooks write-guard reads @implements lines from the
+      target file, so every Edit to .spec/CLAUDE.md deny-once-blocks on STR-3
+      until it is loaded. Also: an ID authored via Edit/Write this session is
+      not in the read-ledger (only Read marks IDs seen), so the write-guard
+      fires on IDs you just wrote. Both are harmless (deny-once = one speed
+      bump) and are accepted write-guard costs — noted so they are recognized,
+      not re-diagnosed as bugs.
 
   LRN-16:
     v: 1
     type: pattern
     scope: [testing, process]
-    source: DCX round 9 (.spec/specs/challenges/dcx-docs-check-2026-07-13-r9.md), plus the parallel CTX r3 coupling note
+    source: acceptance-harness fixture-coupling incident, 2026-07-13
     title: Acceptance cases must not hardcode a churning fixture
     statement: >-
-      Two DCX-13 harness cases hardcoded the r2 challenge-record filename;
-      when a parallel CTX re-challenge repointed the spec's record to r3, the
-      cases silently no-op'd (their string replace found nothing) and stopped
+      Two acceptance-harness cases hardcoded the r2 challenge-record filename;
+      when a parallel re-challenge of a sibling spec repointed the spec's
+      record to r3, the cases silently no-op'd (their string replace found
+      nothing) and stopped
       testing. Fix: derive the churning value at mutation time (read the
       spec's current `record:` path) instead of pinning a literal. General
       rule: a test that pins an artifact which the normal workflow rotates
@@ -213,7 +214,7 @@ items:
     v: 1
     type: pattern
     scope: [lint, security, design]
-    source: challenge round 6 (.spec/specs/challenges/dcx-docs-check-2026-07-13-r6.md), medium findings
+    source: challenge round 6 (dcx spec), medium findings
     title: Exemptions must be bound to provenance, never self-declared
     statement: >-
       Any check exemption keyed on a self-declarable property (a kind field,

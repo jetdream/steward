@@ -7,7 +7,7 @@ normative: false
 
 # Product Vision v0.2: An AI Communications Manager for Small US Nonprofits
 
-> **Non-normative narrative.** This document carries the WHY — problem, insight, positioning. Normative truth lives in the layered docs: [goals.yaml](goals.yaml), [principles.yaml](principles.yaml), [requirements/](requirements/), [scope.md](scope.md). Where this narrative and those files diverge, the layered files win (record the divergence in [inconsistencies.yaml](inconsistencies.yaml)).
+> **Non-normative narrative.** This document carries the WHY — problem, insight, positioning. Normative truth lives in the layered docs: [goals.yaml](goals.yaml), [values.yaml](values.yaml), [guardrails.yaml](guardrails.yaml), [requirements/](requirements/), [scope.md](scope.md). Where this narrative and those files diverge, the layered files win (record the divergence in [inconsistencies.yaml](inconsistencies.yaml)).
 
 **Working name:** *Steward* (Q-1)
 **Version:** 0.2 · July 12, 2026 (supersedes v0.1)
@@ -106,9 +106,9 @@ Deliberately staged after the content core proves itself (autonomy score met, co
 
 The price anchors against humans, not software: a freelancer at $500–1,000/month, an agency at $2,500+, a part-time hire at $1,500+. This is the only option under $500 where the work actually gets done — a $30 scheduler that never gets used costs infinitely more, because its real price is a dead channel. **Pricing:** a single plan at **$199/month**, 30-day money-back guarantee, no free trial. One product, the whole promise.
 
-## Product principles
+## Product values and guardrails
 
-Moved to [principles.yaml](principles.yaml) (P-1 … P-6, plus the platform guardrails GR-1 … GR-6).
+Moved to [values.yaml](values.yaml) (VAL-1 … VAL-6, the soft decision compass) plus the platform [guardrails.yaml](guardrails.yaml) (GR-1 … GR-6, the hard rules).
 
 ## Success metrics
 

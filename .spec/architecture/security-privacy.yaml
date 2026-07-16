@@ -1,33 +1,73 @@
 kind: architecture
+prefix: SEC
 title: Security, Privacy, Compliance
 status: sketch
 
-summary: >-
+intent: >-
   From PRD §10. The behavioral guardrails themselves live in
-  product/principles.yaml (GR-1..GR-6); this file covers the operational
-  posture.
+  product/guardrails.yaml (GR-1..GR-6); this file covers the operational
+  posture — one posture design-element per stance. Pending: threat model,
+  attack surface, and audit posture get their own pass (and ADRs where choices
+  exist) before cohort-1 production traffic.
 
-posture: |
-  - Platform policy compliance: Meta/X/Threads developer policies — app
-    review, permitted automation only (GR-6). Publishing-only permission set
-    requested (A-1).
-  - No legal/tax advice, no outcome promises: GR-1, GR-2;
-    charitable-solicitation registration remains the org's responsibility
-    (ToS).
-  - No third-party PII stored: no engagement features in scope
-    (product/scope.md); the system reads public presence with signup consent
-    (A-5).
-  - Org data confidentiality: interview/chat content is org-provided
-    confidential data — exported and deleted on request (BIL-2).
-  - External content safety: mandatory citations (GR-5); sensitive-topic
-    classifier forces human approval regardless of Trust Level (GR-3);
-    permanent TL1 cap for external content (EXT-3).
-  - Visual policy: GR-4 (generation disabled; branded-graphics-only if ever
-    enabled per Q-3).
-  - Auth: BetterAuth — Google Sign-in + dev login by email only
-    (constitution). Dev login must be disabled outside development
-    environments.
+items:
+  SEC-1:
+    v: 1
+    kind: posture
+    title: Platform Policy Compliance
+    body: |
+      Platform policy compliance: Meta/X/Threads developer policies — app
+      review, permitted automation only (GR-6). Publishing-only permission set
+      requested (A-1).
 
-pending: >-
-  Threat model, attack surface, and audit posture get their own pass (and
-  ADRs where choices exist) before cohort-1 production traffic.
+  SEC-2:
+    v: 1
+    kind: posture
+    title: No Legal / Tax Advice
+    body: |
+      No legal/tax advice, no outcome promises: GR-1, GR-2;
+      charitable-solicitation registration remains the org's responsibility
+      (ToS).
+
+  SEC-3:
+    v: 1
+    kind: posture
+    title: No Third-Party PII
+    body: |
+      No third-party PII stored: no engagement features in scope
+      (product/scope.md); the system reads public presence with signup consent
+      (A-5).
+
+  SEC-4:
+    v: 1
+    kind: posture
+    title: Org Data Confidentiality
+    body: |
+      Org data confidentiality: interview/chat content is org-provided
+      confidential data — exported and deleted on request (BIL-2).
+
+  SEC-5:
+    v: 1
+    kind: posture
+    title: External Content Safety
+    body: |
+      External content safety: mandatory citations (GR-5); sensitive-topic
+      classifier forces human approval regardless of Trust Level (GR-3);
+      permanent TL1 cap for external content (EXT-3).
+
+  SEC-6:
+    v: 1
+    kind: posture
+    title: Visual Policy
+    body: |
+      Visual policy: GR-4 (generation disabled; branded-graphics-only if ever
+      enabled per Q-3).
+
+  SEC-7:
+    v: 1
+    kind: posture
+    title: Auth
+    body: |
+      Auth: BetterAuth — Google Sign-in + dev login by email only
+      (constitution). Dev login must be disabled outside development
+      environments.

@@ -1,39 +1,58 @@
 kind: architecture
+prefix: PIPE
 title: LLM Pipeline
 status: sketch
 
-summary: >-
-  From PRD §9. Vercel AI SDK; model choices get an ADR when the skeleton
-  lands.
+intent: >-
+  From PRD §9. Vercel AI SDK; model choices get an ADR when the skeleton lands.
+  Modelled as one pipeline (its grounding/guardrail principles in the body)
+  with a pipeline-stage per generation flow.
 
-principles: |
-  - Grounded, not vibes: all generation is grounded in Memory + Strategy via
-    retrieval (pgvector over MemoryEntry embeddings). Cite P-2, P-4.
-  - One brain, several skills: chat, interviewer, and generation share the
-    same Memory read/write layer — a redirect in chat (CHT-2) and an inbox
-    edit (APR-3) land in the same store the planner reads.
-  - Guardrails before queues: Strategy validation (STR-3) + platform
-    guardrails (GR-1..GR-6, sensitive-topic classifier GR-3) run before
-    anything enters any queue.
-  - Everything logged: all model calls logged per org for ops QA (OPS-1) and
-    cost tracking. Target COGS (LLM + search + APIs) <$25/org/month.
+items:
+  PIPE-1:
+    v: 1
+    kind: pipeline
+    title: Steward LLM Pipeline
+    body: |
+      Principles governing every stage:
 
-draft-generation-flow: |
-  sequenceDiagram
-    participant PL as Planner (GEN-1)
-    participant RET as Retrieval (Memory+Strategy)
-    participant GEN as Generator
-    participant VAL as Guardrail chain (STR-3, GR checks)
-    participant FIT as Fit gate (GEN-5)
-    participant INB as Inbox (APR-1)
-    PL->>RET: slot context (category, calendar, org profile)
-    RET-->>GEN: grounded context package
-    GEN->>GEN: master + per-channel variants (GEN-2)
-    GEN->>VAL: validate every variant
-    VAL-->>GEN: pass / regenerate / escalate (GR-3)
-    VAL->>FIT: per-channel fit verdicts
-    FIT->>INB: draft with variants + verdicts (or awaiting_picture)
+      - Grounded, not vibes: all generation is grounded in Memory + Strategy via
+        retrieval (pgvector over MemoryEntry embeddings). Cite VAL-2, VAL-4.
+      - One brain, several skills: chat, interviewer, and generation share the
+        same Memory read/write layer — a redirect in chat (CHT-2) and an inbox
+        edit (APR-3) land in the same store the planner reads.
+      - Guardrails before queues: Strategy validation (STR-3) + platform
+        guardrails (GR-1..GR-6, sensitive-topic classifier GR-3) run before
+        anything enters any queue.
+      - Everything logged: all model calls logged per org for ops QA (OPS-1) and
+        cost tracking. Target COGS (LLM + search + APIs) <$25/org/month.
 
-external-drafts: >-
-  External drafts (EXT-2) enter the same chain with mandatory citation (GR-5)
-  and forced human approval routing (EXT-3).
+  PIPE-2:
+    v: 1
+    kind: pipeline-stage
+    title: Draft Generation Flow
+    parent: PIPE-1
+    body: |
+      sequenceDiagram
+        participant PL as Planner (GEN-1)
+        participant RET as Retrieval (Memory+Strategy)
+        participant GEN as Generator
+        participant VAL as Guardrail chain (STR-3, GR checks)
+        participant FIT as Fit gate (GEN-5)
+        participant INB as Inbox (APR-1)
+        PL->>RET: slot context (category, calendar, org profile)
+        RET-->>GEN: grounded context package
+        GEN->>GEN: master + per-channel variants (GEN-2)
+        GEN->>VAL: validate every variant
+        VAL-->>GEN: pass / regenerate / escalate (GR-3)
+        VAL->>FIT: per-channel fit verdicts
+        FIT->>INB: draft with variants + verdicts (or awaiting_picture)
+
+  PIPE-3:
+    v: 1
+    kind: pipeline-stage
+    title: External Drafts
+    parent: PIPE-1
+    body: |
+      External drafts (EXT-2) enter the same chain with mandatory citation
+      (GR-5) and forced human approval routing (EXT-3).

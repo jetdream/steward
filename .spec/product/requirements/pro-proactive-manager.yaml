@@ -5,9 +5,9 @@ status: approved
 serves: [G-3, G-4]
 
 intent: >-
-  The system moves first (P-6). It requests scarce raw material (pictures
+  The system moves first (VAL-6). It requests scarce raw material (pictures
   above all, given R-3), proposes campaigns pre-drafted, and keeps fundraising
-  asks honest — always with a reason (P-5).
+  asks honest — always with a reason (VAL-5).
 
 items:
   PRO-1:

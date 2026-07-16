@@ -6,7 +6,7 @@ serves: [G-2]
 
 intent: >-
   The system's editorial judgment written down where the founder can see and
-  change it (P-3) — an explicit contract, not a black box. Enforced on every
+  change it (VAL-3) — an explicit contract, not a black box. Enforced on every
   draft; the mechanism by which redirects (CHT-2) durably bind future content.
 
 items:

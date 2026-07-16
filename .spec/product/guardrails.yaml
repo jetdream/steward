@@ -1,0 +1,55 @@
+kind: guardrails
+prefix: GR
+title: Platform Guardrails
+status: approved
+intent: >-
+  Hard, near-immovable rules — the non-negotiable boundaries every draft is checked
+  against before it enters any queue (STR-3, STR-4), and what a spec's `governed-by`
+  cites. Top of the precedence order (a guardrail outranks goals, requirements, and
+  values); org-level rules can only TIGHTEN them, never loosen. Changing one is a
+  deliberate, HITL guardrail change. Re-homed unchanged from the former principles
+  register during the cortex v0.13 migration.
+items:
+  GR-1:
+    v: 1
+    origin: baseline
+    title: No outcome promises
+    rule: Content never promises fundraising or program outcomes.
+  GR-2:
+    v: 1
+    origin: baseline
+    title: No tax or legal advice
+    rule: >-
+      The product and its content never give legal or tax advice.
+      Charitable-solicitation registration remains the org's responsibility
+      (ToS).
+  GR-3:
+    v: 1
+    origin: baseline
+    title: Sensitive-topic escalation
+    rule: >-
+      A sensitive-topic classifier forces human approval regardless of Trust
+      Level.
+  GR-4:
+    v: 1
+    origin: baseline
+    title: AI-visual policy
+    rule: >-
+      AI image generation ships disabled behind a feature flag (Q-3 governs
+      enabling). When enabled it produces branded graphics/illustrations only
+      — never photorealistic depictions of beneficiaries, animals, staff, or
+      impact scenes.
+  GR-5:
+    v: 1
+    origin: baseline
+    title: Mandatory citation of external content
+    rule: >-
+      Every external-content post carries a source citation and commentary
+      framing (the org's perspective, not rehashed news).
+  GR-6:
+    v: 1
+    origin: baseline
+    title: Official platform APIs and permitted automation only
+    rule: >-
+      Meta/X/Threads developer-policy compliance; no scraping-based or
+      policy-violating publishing paths.
