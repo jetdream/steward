@@ -8,7 +8,7 @@ intent: >-
   for Steward's shape: a C4-style module map, a persisted data model, external
   channel/service integrations, the LLM pipeline, and the security posture.
 # Top-level element kinds (an element with no `parent` must be one of these).
-roots: [c4-context, data-entity, integration, pipeline, posture]
+roots: [c4-context, data-entity, integration, pipeline, posture, journey, flow, screen]
 kinds:
   c4-context:     { nests: [c4-container] }        # the system in its environment
   c4-container:   { nests: [c4-component] }        # a runtime unit: client / backend / datastore
@@ -16,5 +16,12 @@ kinds:
   data-entity:    { nests: [] }                    # a persisted domain entity (Postgres + pgvector)
   integration:    { nests: [] }                    # an isolated adapter to an external service
   pipeline:       { nests: [pipeline-stage] }      # an LLM/processing pipeline
-  pipeline-stage: { nests: [] }                    # a stage/flow within a pipeline
+  pipeline-stage: { nests: [] }                    # a stage within a pipeline
   posture:        { nests: [] }                    # a security / privacy / compliance stance
+  # UI/UX design-element kinds (method/ui.md) — the vocabulary for design work
+  # (Claude Design output homes here as design-elements; screens carry wireframe /
+  # Claude Design artifact links + direct evidence, and are validated by @validates
+  # e2e/visual-regression through the stories layer).
+  journey:        { nests: [flow, screen] }        # an end-to-end user journey
+  flow:           { nests: [screen] }              # a UX flow — an ordered set of screens
+  screen:         { nests: [] }                    # a single screen / view
