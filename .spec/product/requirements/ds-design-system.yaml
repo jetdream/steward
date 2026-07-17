@@ -107,14 +107,15 @@ items:
       binding file, not a redesign.
 
   DS-8:
-    v: 1
-    decided-by: DEC-9
+    v: 2
+    decided-by: DEC-10
     priority: P0
     title: News-page template
     statement: >-
       The public news page (NWS-3) renders on an org-branded minimal reading
-      template: a steward-token base with SANCTIONED org slots — name, logo,
-      accent color — plus the "published with Steward" footer component. The
-      slots are part of the design system, so per-org branding never
-      violates GR-7 (an org accent is a sanctioned token, not an invented
-      value). Reading-surface a11y per DS-4; theming depth is Q-10.
+      template: a steward-token base with SANCTIONED org slots — org name,
+      logo, and accent color ONLY (no per-org typography — Q-10) — plus the
+      "published with Steward" footer component. The slots are part of the
+      design system, so per-org branding never violates GR-7 (an org accent
+      is a sanctioned token, not an invented value). Reading-surface a11y
+      per DS-4.

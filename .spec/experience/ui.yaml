@@ -547,8 +547,9 @@ items:
       honest "here's what you'll lose" summary (the memory and rhythm the
       system built — and, per DEC-9's challenger round, the org NEWS PAGE:
       its public articles and every social link pointing at them; articles
-      are included in the data export, and the URL afterlife policy is
-      Q-11). States: refund window active vs expired, export delivery, data
+      are included in the data export, and article URLs stay reserved only
+      while the account is active — Q-11 resolved by DEC-10). States: refund
+      window active vs expired, export delivery, data
       deletion on request (BIL-2 "deletion honored" — a plain affordance,
       not a support ticket; policy per SEC), re-subscribe (memory retained
       per data policy unless deleted, SEC).

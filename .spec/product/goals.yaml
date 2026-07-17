@@ -21,7 +21,7 @@ items:
         decomposition gap. This asserts the requirement decomposition is sufficient;
         goal ACHIEVEMENT is pending spec-elements + implementation (Phase 4), and this
         assertion dirties if any pinned requirement is version-bumped.
-      against: [BIL-1@1, BIL-2@1, BIL-3@1, NWS-1@1, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, OPS-1@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1]
+      against: [BIL-1@1, BIL-2@1, BIL-3@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, OPS-1@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1]
     statement: >-
       ≥1 nonprofit paying $199/mo within 90 days of dev start; 5 paying orgs
       by month 5. Refund rate under the 30-day guarantee <20% in cohort 1.
@@ -56,7 +56,7 @@ items:
         shell (UX), and the design system (DS) — the capabilities that keep the founder's
         weekly time under the target by doing the work and surfacing only approve/redirect.
         No decomposition gap; achievement pending spec-elements (Phase 4).
-      against: [APR-1@1, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@1, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@1, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@1, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
+      against: [APR-1@1, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@1, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@1, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
     statement: >-
       Median founder time in product <15 min/week after the first week (time
       voluntarily spent chatting excluded).
@@ -73,7 +73,7 @@ items:
         (GEN), and the org news site (NWS) — the capabilities that keep an org's 4-week
         posting streak unbroken. No decomposition gap; achievement pending spec-elements
         (Phase 4).
-      against: [EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@1, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@1, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@1, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1]
+      against: [EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@1, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1]
     statement: >-
       ≥80% of active orgs maintain an unbroken 4-week posting streak.
 
@@ -88,7 +88,7 @@ items:
         first-approval flow that serves G-5 only), the interviewer (INT), and the design
         system (DS) — the capabilities that get a first approved post live within 48h. No
         decomposition gap; achievement pending spec-elements (Phase 4).
-      against: [DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@1, INT-1@1, INT-2@1, INT-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1]
+      against: [DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1]
     statement: >-
       First approved post live within 48 hours of the org's first session.
       (Absorbed from Vision v0.2 metrics; see INC-1.)

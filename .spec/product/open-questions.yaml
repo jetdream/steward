@@ -66,14 +66,18 @@ items:
 
   Q-8:
     v: 1
-    status: open
+    status: resolved
     decidable-by: user
+    resolution: DEC-10
     title: News-site URL strategy at P0
     statement: >-
       App-domain path (<app>/news/<org-slug>) vs a dedicated news domain
       with per-org slugs (<org>.<news-domain>). Path is zero-infra; the
       dedicated domain reads more like the org's own address and separates
       SEO reputations. Decide before NWS-1 build (P1b).
+      RESOLVED (DEC-10): configurable — dev defaults to the app-domain path,
+      prod defaults to the dedicated Steward news domain, org may choose its
+      own subdomain in Settings (NWS-6).
 
   Q-9:
     v: 1
@@ -86,20 +90,26 @@ items:
 
   Q-10:
     v: 1
-    status: open
+    status: resolved
     decidable-by: user
+    resolution: DEC-10
     title: Org theming depth on the news page
     statement: >-
       How far the DS-8 sanctioned slots go: name + logo + accent only
       (recommended — keeps the template unmistakably calm), or also
       typography/imagery treatments per org.
+      RESOLVED (DEC-10): name + logo + accent only; no per-org typography.
 
   Q-11:
     v: 1
-    status: open
+    status: resolved
+    resolution: DEC-10
     title: News-page URL afterlife on churn
     statement: >-
       When an org cancels (BIL-2, UI-45): do published article URLs
       tombstone (a polite "this org's page has moved on" — preserves inbound
       social links from NWS-5) or hard-410? Interacts with the data-deletion
       affordance and SEC policy; decide before the first cohort-1 churn.
+      RESOLVED (DEC-10): the URL stays reserved and served while the org's
+      account is active; reservation is a benefit of an active account, not
+      held indefinitely for inactive ones.

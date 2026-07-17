@@ -15,6 +15,25 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-10:
+    v: 1
+    date: 2026-07-17
+    by: founder (shpin.p@diffco.us)
+    binds: [Q-8, Q-10, Q-11, NWS-1, NWS-6, DS-8]
+    title: Resolve news-site open questions — URL strategy, theming, afterlife
+    statement: >-
+      Resolves the three DEC-9 open questions, amending NWS-1/NWS-6/DS-8.
+      Q-8 (URL strategy): the news-page address is environment- and
+      org-configurable — dev defaults to an app-domain path (zero-infra);
+      prod defaults to a dedicated Steward-operated news domain (org slug);
+      an org may choose its own news subdomain in Settings (NWS-6). Q-10
+      (theming depth): the DS-8 org slots are name + logo + accent color
+      ONLY — no per-org typography (keeps the template unmistakably calm,
+      GR-7). Q-11 (URL afterlife): an article URL stays reserved and served
+      as long as the org's account is active — reservation is a benefit of
+      an active account, not held indefinitely for inactive ones (interacts
+      with BIL-2 cancel and the SEC deletion policy).
+
   DEC-1:
     v: 1
     date: 2026-07-12

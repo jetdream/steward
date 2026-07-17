@@ -17,15 +17,19 @@ intent: >-
 
 items:
   NWS-1:
-    v: 1
-    decided-by: DEC-9
+    v: 2
+    decided-by: DEC-10
     priority: P0
     title: Hosted news page per org
     statement: >-
-      Every org gets a hosted news page at a Steward-operated address (P0:
-      app-domain path or a dedicated news-domain slug — Q-8 decides which).
-      Articles publish to it through a standard channel adapter (ARC-18),
-      additive to — never part of — PUB-1's four launch channels.
+      Every org gets a hosted news page at a Steward-operated address. The
+      address is environment- and org-configurable (Q-8): dev defaults to an
+      app-domain path (<app>/news/<org-slug>, zero-infra); prod defaults to a
+      dedicated Steward news domain (org slug); an org may upgrade to its own
+      news subdomain in Settings (NWS-6). The address is reserved and served
+      while the org's account is active (Q-11). Articles publish through a
+      standard channel adapter (ARC-18), additive to — never part of —
+      PUB-1's four launch channels.
 
   NWS-2:
     v: 1
@@ -72,13 +76,14 @@ items:
       long-form home. Never a link to an unpublished article.
 
   NWS-6:
-    v: 1
-    decided-by: DEC-9
+    v: 2
+    decided-by: DEC-10
     priority: P1
-    title: Custom org subdomains
+    title: Org-selected custom subdomain
     statement: >-
-      Orgs may attach their own subdomain (news.<org-domain>) with managed
-      DNS guidance and automatic SSL. Until then the Steward-operated address
-      (NWS-1) is canonical. Experienced as a settings affordance (UI-12
-      vicinity) — deliberately no serving journey, like APR-2's cadence
-      selection.
+      In prod an org may choose, in Settings, its own news subdomain
+      (news.<org-domain>) over the default dedicated Steward news domain
+      (NWS-1), with managed DNS guidance and automatic SSL. Until chosen, the
+      Steward-operated address is canonical. Experienced as a settings
+      affordance (UI-12 vicinity) — deliberately no serving journey, like
+      APR-2's cadence selection.
