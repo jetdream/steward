@@ -12,6 +12,16 @@ items:
     v: 1
     origin: baseline
     title: Commercial proof
+    coverage:
+      status: complete
+      reasoning: >-
+        Decomposed across billing (BIL), publishing (PUB), the org news site (NWS),
+        onboarding (ONB-1..5), and the ops console (OPS) — the requirement set spans the
+        acquisition -> first-value -> paid-retention path this goal measures, with no
+        decomposition gap. This asserts the requirement decomposition is sufficient;
+        goal ACHIEVEMENT is pending spec-elements + implementation (Phase 4), and this
+        assertion dirties if any pinned requirement is version-bumped.
+      against: [BIL-1@1, BIL-2@1, BIL-3@1, NWS-1@1, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, OPS-1@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1]
     statement: >-
       ≥1 nonprofit paying $199/mo within 90 days of dev start; 5 paying orgs
       by month 5. Refund rate under the 30-day guarantee <20% in cohort 1.
@@ -21,12 +31,32 @@ items:
     v: 1
     origin: baseline
     title: Autonomy proof
+    coverage:
+      status: complete
+      reasoning: >-
+        Decomposed across the draft-quality -> earned-autonomy path: content generation
+        (GEN), posting strategy (STR), org memory (MEM), the interviewer (INT), messenger
+        ingestion (BOT), external radar (EXT), agentic chat (CHT), the approval inbox
+        (APR), the autonomy system (AUT), and ops (OPS) — the capabilities that make a
+        draft good enough to ship without edits and then raise the trust level. No
+        decomposition gap; achievement pending spec-elements (Phase 4).
+      against: [APR-1@1, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@1, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@1, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@1]
     statement: ≥70% of drafts approved without edits by an org's week 8.
 
   G-3:
     v: 1
     origin: baseline
     title: Effort proof
+    coverage:
+      status: complete
+      reasoning: >-
+        Decomposed across the low-effort surfaces: onboarding (ONB-1..5), the interviewer
+        (INT), org memory (MEM), the proactive manager (PRO), messenger ingestion (BOT),
+        agentic chat (CHT), the approval inbox (APR), the autonomy system (AUT), the app
+        shell (UX), and the design system (DS) — the capabilities that keep the founder's
+        weekly time under the target by doing the work and surfacing only approve/redirect.
+        No decomposition gap; achievement pending spec-elements (Phase 4).
+      against: [APR-1@1, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@1, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@1, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@1, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
     statement: >-
       Median founder time in product <15 min/week after the first week (time
       voluntarily spent chatting excluded).
@@ -35,6 +65,15 @@ items:
     v: 1
     origin: baseline
     title: Consistency proof
+    coverage:
+      status: complete
+      reasoning: >-
+        Decomposed across the cadence engine: the proactive manager (PRO), posting via
+        publishing (PUB), stewardship (STW), external radar (EXT), content generation
+        (GEN), and the org news site (NWS) — the capabilities that keep an org's 4-week
+        posting streak unbroken. No decomposition gap; achievement pending spec-elements
+        (Phase 4).
+      against: [EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@1, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@1, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@1, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1]
     statement: >-
       ≥80% of active orgs maintain an unbroken 4-week posting streak.
 
@@ -42,6 +81,14 @@ items:
     v: 1
     origin: baseline
     title: Activation
+    coverage:
+      status: complete
+      reasoning: >-
+        Decomposed across the first-session path: onboarding (ONB, incl. the ONB-6
+        first-approval flow that serves G-5 only), the interviewer (INT), and the design
+        system (DS) — the capabilities that get a first approved post live within 48h. No
+        decomposition gap; achievement pending spec-elements (Phase 4).
+      against: [DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@1, INT-1@1, INT-2@1, INT-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1]
     statement: >-
       First approved post live within 48 hours of the org's first session.
       (Absorbed from Vision v0.2 metrics; see INC-1.)
