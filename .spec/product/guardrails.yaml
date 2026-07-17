@@ -54,13 +54,15 @@ items:
       Meta/X/Threads developer-policy compliance; no scraping-based or
       policy-violating publishing paths.
   GR-7:
-    v: 1
-    decided-by: DEC-8
+    v: 2
+    decided-by: DEC-9
     title: Conform to the design system
     rule: >-
       Every user-facing surface — screens, touchpoints, and the components
       inside them — resolves its visual values from the steward theme tokens
-      and reuses the design-system component inventory (DS-1..7). A screen,
-      email, or UI spec inventing its own component, color, spacing, or type
-      role is a governed violation, not a matter of taste. UI specs cite this
-      guardrail via governed-by (method/ui.md §5).
+      and reuses the design-system component inventory (DS-1..8, including
+      the news-page template's sanctioned org slots). A screen, email, or UI
+      spec inventing its own component, color, spacing, or type role is a
+      governed violation, not a matter of taste. UI specs cite this
+      guardrail via governed-by (method/ui.md §5). (v2: inventory pointer
+      widened to DS-8 — DEC-9; the rule itself is unchanged.)

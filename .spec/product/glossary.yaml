@@ -77,7 +77,20 @@ terms:
     official channel APIs. Owned by PUB requirements.
   Channel: >-
     A connected social destination: Facebook Page, Instagram feed, Threads,
-    or X.
+    or X. Qualified since DEC-9: "social channel" means these four;
+    "publishing destination" additionally includes the org news page, which
+    publishes through the same adapter model (ARC-18, NWS-1) but is never
+    "connected" (no OAuth) and never counted in PUB-1's launch set.
+  Article: >-
+    A long-form story published to the org news page (NWS-1): headline, hero
+    image, body, topic tags (NWS-4). Rides the same draft pipeline as posts
+    (Strategy-checked, guardrail-checked); its social variants may carry the
+    article link (NWS-5).
+  News page: >-
+    The org's hosted, SEO-first public news surface (NWS-1..6) on the DS-8
+    org-branded template — one templated surface per org, not website
+    building (scope.md boundary case). Read by the audience-reader persona
+    (users.md), journey UI-58.
   Channel profile: >-
     Per-channel technical configuration: length limits, media requirements,
     link behavior, rate limits (PUB-2).

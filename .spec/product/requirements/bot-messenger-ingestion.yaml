@@ -1,0 +1,50 @@
+kind: requirements
+prefix: BOT
+title: Messenger Ingestion Bots
+status: approved
+serves: [G-3, G-2]
+
+intent: >-
+  On-the-go, founder-facing ingestion through the messengers already on the
+  founder's phone — the lowest-friction pipe for the scarcest resource (real
+  photos, GEN-3) and for spontaneous facts and links. Everything sent to a
+  bot lands in the same context layer the app uses; the bots are deliberately
+  NOT a second product surface. Boundary (scope.md): these are founder-facing
+  tools — audience comments/DMs remain the deferred engagement-handling
+  scope. Committed to WhatsApp + Telegram at P1 by DEC-9; SMS/MMS evaluation
+  is Q-9; WhatsApp Business API approval is A-8.
+
+items:
+  BOT-1:
+    v: 1
+    decided-by: DEC-9
+    priority: P1
+    title: Ingestion channel
+    statement: >-
+      WhatsApp and Telegram bots accept photos (→ media library, tagged by
+      Memory — GEN-3/PRO-1 flows), and facts/links/voice-notes-as-text
+      (→ Memory entries with source + timestamp, MEM-1). Ingested material
+      is acknowledged with its destination and payoff in colleague voice
+      ("got them — three photos filed for Saturday's recap").
+
+  BOT-2:
+    v: 1
+    decided-by: DEC-9
+    priority: P1
+    title: Light Q&A, never a second chat product
+    statement: >-
+      The bots answer simple org-aware questions from the same context layer
+      as the in-app chat (CHT-1 subset, CHT-4 voice) and hand anything
+      deeper back to the app with a deep link. No approval actions, no
+      strategy edits, no command actions through bots.
+
+  BOT-3:
+    v: 1
+    decided-by: DEC-9
+    priority: P1
+    flexibility: hard
+    title: Official bot APIs only
+    statement: >-
+      WhatsApp Business API and Telegram Bot API through official terms
+      (the GR-6 posture extended to messengers); no unofficial clients or
+      automation. WhatsApp platform approval and costs tracked as A-8.

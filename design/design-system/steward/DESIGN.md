@@ -81,6 +81,12 @@ are first-class, reused everywhere, and carry the "nothing hidden" identity:
 - **Veto-window card** — TL1's "published on my own — you can veto until
   Thu" card class: its own quiet visual register, excluded from progress
   counts and batch actions, never confusable with needs-approval.
+- **CitationBlock** — GR-5's visual form: source, link, and the org's
+  commentary framing as one treatment, shared by inbox external cards and
+  public news articles (DEC-9).
+- **ArticleLink badge** — FitBadge's sibling: which social variants carry
+  the news-page article link and why (length-limited channels first);
+  never shown for unpublished articles (NWS-5, DEC-9).
 
 ## Voice in pixels (VAL-5, DS-6)
 

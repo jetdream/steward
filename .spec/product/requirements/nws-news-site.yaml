@@ -1,0 +1,84 @@
+kind: requirements
+prefix: NWS
+title: Org News Site
+status: approved
+serves: [G-1, G-4]
+
+intent: >-
+  A hosted, SEO-first news page per org — the long-form home the social
+  channels link back to (decisive for length-limited X/Threads), the org's
+  first donor-facing owned surface, and Steward's growth loop ("published
+  with Steward"). Explicitly NOT website building (scope.md boundary case):
+  one templated news surface, no page builder. Publishes through the standard
+  channel-adapter model (ARC-18; isolation per R-6's precedent) and never
+  joins PUB-1's launch four. Content guardrails apply in full (GR-1, GR-2,
+  GR-5). Adopted at P0 as a THIN SLICE by DEC-9 (risk R-9): our-domain URLs,
+  one minimal template, no custom domains until NWS-6.
+
+items:
+  NWS-1:
+    v: 1
+    decided-by: DEC-9
+    priority: P0
+    title: Hosted news page per org
+    statement: >-
+      Every org gets a hosted news page at a Steward-operated address (P0:
+      app-domain path or a dedicated news-domain slug — Q-8 decides which).
+      Articles publish to it through a standard channel adapter (ARC-18),
+      additive to — never part of — PUB-1's four launch channels.
+
+  NWS-2:
+    v: 1
+    decided-by: DEC-9
+    priority: P0
+    title: SEO-first and shareable
+    statement: >-
+      Server-rendered, perfectly indexable: Open Graph + Twitter-card meta,
+      sitemap.xml, canonical URLs, semantic HTML, fast first paint. A social
+      share of any article must unfurl correctly on all four launch channels.
+
+  NWS-3:
+    v: 1
+    decided-by: DEC-9
+    priority: P0
+    title: Org-branded minimal template
+    statement: >-
+      One unified, minimalistic, Medium-like reading layout on the
+      org-branded template (DS-8): org name/logo/accent in sanctioned slots,
+      steward-token base underneath. Footer carries the "published with
+      Steward" reference — the growth loop (G-1). Theming depth is Q-10.
+
+  NWS-4:
+    v: 1
+    decided-by: DEC-9
+    priority: P0
+    title: Front page and topic navigation
+    statement: >-
+      A front page listing articles with a topic navigation rail. Topics come
+      from two ladders: the universal categories (the GEN-1 content taxonomy
+      — mission, founder, case studies, events, people, external) and
+      org-domain topics derived from the org's cause profile in Memory
+      (the same profile that seeds EXT-1).
+
+  NWS-5:
+    v: 1
+    decided-by: DEC-9
+    priority: P0
+    title: Cross-channel linking
+    statement: >-
+      When a story is published on the news page, its per-channel social
+      variants (GEN-2) may carry the article link — the designed relief valve
+      for length-limited channels (X, Threads): short post + link to the
+      long-form home. Never a link to an unpublished article.
+
+  NWS-6:
+    v: 1
+    decided-by: DEC-9
+    priority: P1
+    title: Custom org subdomains
+    statement: >-
+      Orgs may attach their own subdomain (news.<org-domain>) with managed
+      DNS guidance and automatic SSL. Until then the Steward-operated address
+      (NWS-1) is canonical. Experienced as a settings affordance (UI-12
+      vicinity) — deliberately no serving journey, like APR-2's cadence
+      selection.

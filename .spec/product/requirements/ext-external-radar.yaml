@@ -55,3 +55,18 @@ items:
       (research) as structured feeds; add Perplexity and/or Tavily/Exa as
       discovery engines (order: Q-4). Per-org controls in Strategy section (a):
       external topics welcomed/banned.
+
+  EXT-5:
+    v: 1
+    decided-by: DEC-9
+    priority: P1
+    depends: [EXT-1, MEM-1]
+    title: Radar feed
+    statement: >-
+      Every discovered candidate (EXT-1) is stored and browsable as the
+      org's personalized feed (surfaced on UX-8): one-tap
+      relevant/not-relevant marks write to Memory (MEM-1) and tune future
+      discovery — an effortless alignment channel and a news aggregator for
+      the org itself. Strictly a PULL surface: never badged, counted, or
+      nudged (VAL-6); browsing time is treated like voluntary chat time
+      under G-3.

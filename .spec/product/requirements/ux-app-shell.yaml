@@ -72,3 +72,14 @@ items:
     statement: >-
       A button in Inbox/Calendar (or via chat), not a nav item: master text →
       picture → channels → adapted variants → confirm (APR-5).
+
+  UX-8:
+    v: 1
+    decided-by: DEC-9
+    priority: P1
+    title: Radar surface
+    statement: >-
+      A sixth navigation surface: the org's personalized feed of discovered
+      external content (EXT-5). Pull-only by rule — the nav item never
+      carries a badge or count, the feed never generates tasks, digest
+      entries, or nudges.

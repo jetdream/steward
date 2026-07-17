@@ -63,3 +63,43 @@ items:
     statement: >-
       Vertical-agnostic launch; the flag-planting vertical ("built for
       animal-welfare nonprofits") is chosen from cohort-1 data.
+
+  Q-8:
+    v: 1
+    status: open
+    decidable-by: user
+    title: News-site URL strategy at P0
+    statement: >-
+      App-domain path (<app>/news/<org-slug>) vs a dedicated news domain
+      with per-org slugs (<org>.<news-domain>). Path is zero-infra; the
+      dedicated domain reads more like the org's own address and separates
+      SEO reputations. Decide before NWS-1 build (P1b).
+
+  Q-9:
+    v: 1
+    status: open
+    title: SMS/MMS ingestion adapter
+    statement: >-
+      US founders skew SMS/iMessage over WhatsApp/Telegram; evaluate a
+      Twilio SMS/MMS adapter alongside the committed bots (BOT-1) once
+      cohort-1 usage shows where founders actually send photos from.
+
+  Q-10:
+    v: 1
+    status: open
+    decidable-by: user
+    title: Org theming depth on the news page
+    statement: >-
+      How far the DS-8 sanctioned slots go: name + logo + accent only
+      (recommended — keeps the template unmistakably calm), or also
+      typography/imagery treatments per org.
+
+  Q-11:
+    v: 1
+    status: open
+    title: News-page URL afterlife on churn
+    statement: >-
+      When an org cancels (BIL-2, UI-45): do published article URLs
+      tombstone (a polite "this org's page has moved on" — preserves inbound
+      social links from NWS-5) or hard-410? Interacts with the data-deletion
+      affordance and SEC policy; decide before the first cohort-1 churn.

@@ -33,6 +33,8 @@ prefixes:
   OPS: product/requirements/ops-console.yaml
   UX: product/requirements/ux-app-shell.yaml
   DS: product/requirements/ds-design-system.yaml
+  NWS: product/requirements/nws-news-site.yaml
+  BOT: product/requirements/bot-messenger-ingestion.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml
   DM: architecture/data-model.yaml

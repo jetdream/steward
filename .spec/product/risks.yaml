@@ -74,3 +74,15 @@ items:
     statement: >-
       The P0 line is the scope; the ops console substitutes process for
       headcount (OPS-1).
+
+  R-9:
+    v: 1
+    depends: [R-8]
+    title: News-site P0 inflates the launch window
+    statement: >-
+      A hosted, SEO-first public surface (NWS-1..5) is real infrastructure
+      inside the 12-week clock (DEC-9 accepted this consciously).
+      Mitigations: THIN slice only — Steward-operated URLs, one minimal
+      template (DS-8), no custom domains (NWS-6 stays P1), publishing
+      through the existing channel-adapter model (ARC-18); the slice is cut
+      before any other P0 scope if the clock slips.

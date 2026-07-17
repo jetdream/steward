@@ -12,10 +12,12 @@ intent: >-
   decompose into flows, flows into screens and touchpoints. The founder's
   experience is a relationship over months — journeys are its chapters.
   Foundations: DEC-6/DEC-7 (substrate, inbox-first shell, terracotta,
-  light-only), DS-1..7 + GR-7 (design system), DEC-8 (this spine, draft
-  provenance, skip-with-reason, TL1-aware inbox, thin ops journey). Design
-  artifacts live under design/ and are linked from element bodies; Claude
-  Design output homes as attachments, never as truth.
+  light-only), DS-1..8 + GR-7 (design system), DEC-8 (this spine, draft
+  provenance, skip-with-reason, TL1-aware inbox, thin ops journey), DEC-9
+  (news site, radar feed, bots — and the spine's first NON-founder chapter:
+  the org's audience reads the public news page, UI-58). Design artifacts
+  live under design/ and are linked from element bodies; Claude Design
+  output homes as attachments, never as truth.
 
 items:
   # ───────────────────────── Journeys (the chapters) ─────────────────────────
@@ -71,10 +73,10 @@ items:
       VAL-5); AssumedNotes surface here for correction (MEM-2).
 
   UI-14:
-    v: 1
+    v: 2
     kind: journey
     title: "Send me three photos"
-    serves: [PRO-1, GEN-3]
+    serves: [PRO-1, GEN-3, BOT-1, BOT-2, BOT-3]
     body: |
       The material-request journey — the system moves first (VAL-6) to feed
       its scarcest resource (real photos, GEN-3/GR-4). A reason-carrying
@@ -82,6 +84,9 @@ items:
       from a phone in the field in under a minute (UI-5 → UI-51), and blocked
       awaiting-picture drafts (GEN-4) unblock visibly. The payoff line closes
       the loop: "these three photos just completed Thursday's impact post."
+      v2 (DEC-9): the messenger bots (BOT-1..3) join as the lowest-friction
+      pipe — flow UI-64: anything sent to the WhatsApp/Telegram bot lands in
+      the same context layer, with light Q&A and a deep link back to the app.
 
   UI-15:
     v: 1
@@ -115,18 +120,20 @@ items:
       not a redesign.
 
   UI-17:
-    v: 1
+    v: 2
     kind: journey
     title: "The inspectable brain"
-    serves: [STR-1, STR-2, MEM-3, PUB-3, GEN-1, UX-4, UX-5]
+    serves: [STR-1, STR-2, MEM-3, PUB-3, GEN-1, EXT-5, UX-4, UX-5, UX-8]
     body: |
       Nothing hidden (VAL-3): the founder can always answer "what does it
       think it knows, what rules is it following, what's planned, what went
-      out?" Flows: steer the strategy (UI-41 — the five STR-1 sections,
-      versioned with diffs), planned & published (UI-42 — the rolling
-      calendar GEN-1 + publish log PUB-3), browse the memory (UI-43, P1,
-      MEM-3). This journey is visited occasionally but carries
-      disproportionate trust weight — it is the product's glass wall.
+      out — and what has it seen out there?" Flows: steer the strategy
+      (UI-41 — the five STR-1 sections, versioned with diffs), planned &
+      published (UI-42 — the rolling calendar GEN-1 + publish log PUB-3),
+      browse the memory (UI-43, P1, MEM-3), and — v2, DEC-9 — browse the
+      radar (UI-62: the org's personalized feed of everything discovered,
+      EXT-5, on its own pull-only nav surface UX-8). Visited occasionally
+      but carries disproportionate trust weight — the product's glass wall.
 
   UI-18:
     v: 1
@@ -489,7 +496,10 @@ items:
       links and variant text. Read-mostly at P0 — EXCEPT recall: an
       approved-but-unpublished item can always be unscheduled/recalled at
       P0 (VAL-3 "always revocable"; the calendar-side sibling of UI-29's
-      approved-undo). Full reschedule/edit-scheduled arrive with CHT-3/P1.
+      approved-undo), and a PUBLISHED news-page article can be unpublished
+      at P0 (the news page is the one channel with no native delete outside
+      Steward — this is what makes UI-59's recalled state reachable).
+      Full reschedule/edit-scheduled arrive with CHT-3/P1.
       Screen: UI-10. States: empty month (system explains + points at what
       it needs), publish failure surfaced ONLY if founder action is needed
       (PUB-1).
@@ -535,10 +545,13 @@ items:
       BIL-2: cancel stops publishing, offers export, honors the 30-day
       guarantee in one click + one-question survey. No retention maze; one
       honest "here's what you'll lose" summary (the memory and rhythm the
-      system built). States: refund window active vs expired, export
-      delivery, data deletion on request (BIL-2 "deletion honored" — a
-      plain affordance, not a support ticket; policy per SEC), re-subscribe
-      (memory retained per data policy unless deleted, SEC).
+      system built — and, per DEC-9's challenger round, the org NEWS PAGE:
+      its public articles and every social link pointing at them; articles
+      are included in the data export, and the URL afterlife policy is
+      Q-11). States: refund window active vs expired, export delivery, data
+      deletion on request (BIL-2 "deletion honored" — a plain affordance,
+      not a support ticket; policy per SEC), re-subscribe (memory retained
+      per data policy unless deleted, SEC).
 
   UI-46:
     v: 1
@@ -553,19 +566,22 @@ items:
   # ───────────────────────── Screens ─────────────────────────
 
   UI-6:
-    v: 2
+    v: 3
     kind: screen
     parent: UI-29
     title: "Screen: app shell"
     body: |
-      The navigation frame (UX-1..7, ARC-5; foundations DEC-7) — homed here
+      The navigation frame (UX-1..8, ARC-5; foundations DEC-7) — homed here
       because Inbox is the landing surface, but present across every
       journey. Desktop: quiet left rail (Inbox home + count chip, Calendar,
-      Chat, Organization, Settings; Compose as action; account menu
+      Chat, Radar, Organization, Settings; Compose as action; account menu
       founder-name-first) + summonable docked chat companion (three-layer
       elevation). Mobile: bottom tab bar; companion as slide-up sheet.
-      Single terracotta accent: active nav + the screen's primary action
-      (DS-2); wordmark in ink (Q-1). Validated in mockup rounds 1-2.
+      v3 (DEC-9): Radar is the sixth destination (UX-8) and NEVER carries a
+      badge or count — the only permitted NAV chip stays on Inbox (the chat
+      companion's quiet badge, UI-33, is companion vocabulary, not nav). Single
+      terracotta accent: active nav + the screen's primary action (DS-2);
+      wordmark in ink (Q-1). Validated in mockup rounds 1-2 (pre-Radar).
 
       Brief: design/briefs/ui-6-app-shell.md
 
@@ -590,7 +606,7 @@ items:
       Brief: design/briefs/ui-7-inbox.md
 
   UI-8:
-    v: 2
+    v: 3
     kind: screen
     parent: UI-29
     title: "Screen: post review / detail"
@@ -599,6 +615,13 @@ items:
       picture (or library suggestions when awaiting, GEN-4), per-channel
       fit reasons (GEN-5), inline edit per variant or master (APR-1),
       provenance detail (DEC-8: the Memory entries this draft grounded on).
+      v3 (DEC-9): when the story is published on the org news page, variant
+      tabs show the article-link state (NWS-5, the ArticleLink badge from
+      DS-5) — which social variants carry the link and why (length-limited
+      channels first); never a link to an unpublished article. The news
+      variant itself gets a long-form review treatment (headline, hero
+      image, body — not a social card), with the article's topic tags
+      (NWS-4, donor-visible on UI-60/61) shown and editable before publish.
       Desktop: sticky approve panel right rail (three-layer elevation);
       mobile: bottom-anchored approve bar.
 
@@ -775,3 +798,129 @@ items:
     body: |
       APR-6: the single gentle nudge after 72h. Reason attached, zero
       guilt, one-tap re-entry; explicitly states what is safely on hold.
+
+  # ─────────────────── DEC-9 additions: news site, radar feed, bots ───────────────────
+
+  UI-58:
+    v: 1
+    kind: journey
+    title: "The donor reads"
+    serves: [NWS-1, NWS-2, NWS-3, NWS-4, NWS-5]
+    body: |
+      The FIRST non-founder journey — persona: the org's audience (donors,
+      volunteers, local community). They arrive from a social post's link
+      (NWS-5), a search result (NWS-2), or a shared URL, and must land on
+      something that reads unmistakably as the ORG's page (NWS-3, DS-8) —
+      calm, fast, credible — with a path deeper (topic navigation, NWS-4)
+      and a quiet "published with Steward" discovery seam for the founder
+      persona reading someone else's page (the growth loop, G-1). Content
+      guardrails hold on this surface exactly as on social (GR-1, GR-2,
+      GR-5 citations on external stories). Flow: UI-59.
+
+  UI-59:
+    v: 1
+    kind: flow
+    parent: UI-58
+    title: "Flow: arrive from a link and read"
+    body: |
+      Social post → article page (UI-60) → optionally the front page /
+      topic rail (UI-61) → back out (share, follow the org's channels, or
+      the donation URL when the org stores one — a plain Memory fact, per
+      the scope boundary, never a donations module). States: article
+      unpublished/recalled (a warm org-branded not-here page, never a bare
+      404), slow network (server-rendered text first, images progressive),
+      link unfurl previews (OG correctness is part of this flow's
+      acceptance), search-engine entry (canonical URLs).
+
+  UI-60:
+    v: 1
+    kind: screen
+    parent: UI-59
+    title: "Screen: news article (public)"
+    body: |
+      Medium-like reading surface on the DS-8 template: org masthead
+      (name/logo/accent slot), generous type, the story with its real
+      photos, citation block on external stories (GR-5), topic tags
+      (NWS-4), "published with Steward" footer. No app chrome, no founder
+      controls — this is the donor's surface.
+
+  UI-61:
+    v: 1
+    kind: screen
+    parent: UI-59
+    title: "Screen: news front page (public)"
+    body: |
+      The org's article list with a topic navigation rail (NWS-4: universal
+      categories + org-domain topics), newest-first, calm density — the
+      org's living public record of its work (G-4's rhythm made visible to
+      donors). Empty state narrates honestly ("stories are on their way")
+      rather than showing a bare page.
+
+  UI-62:
+    v: 1
+    kind: flow
+    parent: UI-17
+    title: "Flow: browse the radar"
+    body: |
+      The org's personalized feed of everything the radar discovered
+      (EXT-5) on the Radar surface (UX-8, UI-63): scan, open sources, mark
+      relevant / not relevant in one tap — marks write to Memory and tune
+      discovery; "make this a draft" hands off to the normal drafting
+      pipeline (arriving in the digest, not published directly). PULL-ONLY
+      by rule: no badge, no count, no nudge, no digest entries (DEC-9,
+      VAL-6, G-3). States: fresh org (feed warming up — narrated, with the
+      cause-profile inputs shown), item already drafted (marked), source
+      unavailable (kept with a note), empty topic.
+
+  UI-63:
+    v: 1
+    kind: screen
+    parent: UI-62
+    title: "Screen: radar feed"
+    body: |
+      The sixth surface (UX-8): a calm list of discovered items — source,
+      relevance ReasonLine (why the radar thinks the org's audience cares),
+      one-tap relevant/not-relevant (OptionalReason pattern reuse), "make
+      this a draft" as the quiet action. Explicitly a reading room, not a
+      task list: no progress, no counts, no completion state (contrast
+      with UI-7 by design).
+
+  UI-64:
+    v: 1
+    kind: flow
+    parent: UI-14
+    title: "Flow: send it to the bot"
+    body: |
+      BOT-1..3: the founder sends photos/facts/links to the WhatsApp or
+      Telegram bot (UI-65/UI-66) from wherever they are; everything lands
+      in the same context layer (library + Memory) with a colleague-voice
+      acknowledgment naming the destination and payoff; simple org-aware
+      questions get answers (BOT-2), anything deeper gets a deep link into
+      the app chat (UI-9, cross-link UI-3). States: unlinked sender
+      (secure account-link handshake first), voice notes supported —
+      transcribed to text and filed to Memory (BOT-1) with the transcript
+      echoed back, unsupported media scoped to video/stickers/documents
+      (honest "send it as a photo, voice note, or text"), mid-request
+      arrival (photos sent in response to UI-55 route to that request's
+      drafts first), rate/spam guard (quiet).
+
+  UI-65:
+    v: 1
+    kind: touchpoint
+    parent: UI-64
+    title: "Touchpoint: Telegram bot"
+    body: |
+      The Telegram face of UI-64 (official Bot API, BOT-3): same context,
+      same voice (CHT-4); command-free — plain messages and media only,
+      with a pinned "what I can do here" note.
+
+  UI-66:
+    v: 1
+    kind: touchpoint
+    parent: UI-64
+    title: "Touchpoint: WhatsApp bot"
+    body: |
+      The WhatsApp face of UI-64 (WhatsApp Business API, BOT-3, A-8): same
+      contract as UI-65; template-message constraints respected (the bot
+      initiates only within platform rules — photo requests ride UI-55
+      email when the messaging window is closed).

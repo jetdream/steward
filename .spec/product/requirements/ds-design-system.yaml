@@ -62,8 +62,8 @@ items:
       (2px ink, per the substrate's photography-safe treatment).
 
   DS-5:
-    v: 2
-    decided-by: DEC-8
+    v: 3
+    decided-by: DEC-9
     priority: P0
     title: Trust components
     statement: >-
@@ -73,13 +73,17 @@ items:
       GEN-5), TrustLevel indicator (AUT-1), AssumedNote (visible "assumed"
       marker — MEM-2, VAL-3), the awaiting-picture state (GEN-4),
       ProvenanceLine (the Memory sources a draft grounded on, with
-      tap-through — DEC-8, VAL-3), OptionalReason (the one-tap
-      dismissible reason affordance shared by Skip and veto — DEC-8), and
+      tap-through — DEC-8, VAL-3), OptionalReason (the one-tap dismissible
+      reason affordance shared by Skip, veto, and radar-feed marks — DEC-8),
       the veto-window card class ("published — veto until <time>", TL1's
-      quiet visual register, never confusable with needs-approval — DEC-8).
+      quiet visual register, never confusable with needs-approval — DEC-8),
+      CitationBlock (GR-5's visual form — source + link + commentary
+      framing, one treatment shared by inbox external cards and public news
+      articles — DEC-9), and the ArticleLink badge (which social variants
+      carry the news-page link and why — NWS-5, FitBadge's sibling — DEC-9).
       They carry the "colleague, nothing hidden" identity the way the
-      substrate's signature lockups carry Airbnb's. (v2: DEC-8's three
-      trust elements folded into the owned inventory per GR-7.)
+      substrate's signature lockups carry Airbnb's. (v3: DEC-9 folds
+      CitationBlock and ArticleLink into the owned inventory per GR-7.)
 
   DS-6:
     v: 1
@@ -101,3 +105,16 @@ items:
       v1 ships the light theme only; the calm white canvas is part of the
       product's posture. The token schema keeps dark mode open as a future
       binding file, not a redesign.
+
+  DS-8:
+    v: 1
+    decided-by: DEC-9
+    priority: P0
+    title: News-page template
+    statement: >-
+      The public news page (NWS-3) renders on an org-branded minimal reading
+      template: a steward-token base with SANCTIONED org slots — name, logo,
+      accent color — plus the "published with Steward" footer component. The
+      slots are part of the design system, so per-org branding never
+      violates GR-7 (an org accent is a sanctioned token, not an invented
+      value). Reading-surface a11y per DS-4; theming depth is Q-10.

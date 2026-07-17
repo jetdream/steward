@@ -49,3 +49,12 @@ items:
       Orgs consent at signup to our reading their public web/social presence
       and connected accounts. Stripe is used for our subscription billing
       only.
+
+  A-8:
+    v: 1
+    title: WhatsApp Business API is attainable on the P1 timeline
+    statement: >-
+      Meta approves our WhatsApp Business API use for founder-facing bots
+      (BOT-1..3) within the v1-complete window, at per-conversation costs
+      that fit the $199/mo unit economics; Telegram Bot API has no
+      equivalent gate. If approval slips, Telegram ships first.

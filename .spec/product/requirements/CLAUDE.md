@@ -22,5 +22,7 @@ Register shape and item grammar are defined once in [../../CLAUDE.md](../../CLAU
 | OPS | [Operations console](ops-console.yaml) | approved |
 | UX | [App shell & navigation](ux-app-shell.yaml) | approved |
 | DS | [Design system](ds-design-system.yaml) | approved |
+| NWS | [Org news site](nws-news-site.yaml) | approved |
+| BOT | [Messenger ingestion bots](bot-messenger-ingestion.yaml) | approved |
 
 Requirement IDs are carried verbatim from PRD v0.3 (git history); `UX-*` were assigned during decomposition. The PRD's F1 split into ONB + MEM, F2 into CHT + INT — Memory is a core asset consumed by everything, Onboarding is a flow; Chat is a surface, the Interviewer is a skill.
