@@ -7,10 +7,6 @@ intent: >-
   The goals every requirement must serve (register `serves:` fields). A
   requirement serving no goal is a removal candidate.
 
-north-star: >-
-  Orgs with a live stewardship rhythm — an unbroken 4-week streak including at
-  least one impact or gratitude post.
-
 items:
   G-1:
     v: 1

@@ -5,6 +5,12 @@ intent: >-
   the cortex engine — the single source of valid namespaces. Adopted from the
   former prose table in .spec/CLAUDE.md during the Cortex extraction (DEC-4).
 filename-owned: [ADR]
+# A project may widen the engine's canonical field-set per kind. Steward keeps
+# `binds` on decisions as a forward index of what each decision authorized/affected (a declared
+# project field; the engine does not act on it — the decided-by back-reference is the
+# governed-item link, and a resolved INC carries its own `resolution`).
+extra-fields:
+  decisions: [binds]
 prefixes:
   VIS: product/vision.yaml
   G: product/goals.yaml
