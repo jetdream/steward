@@ -15,6 +15,36 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-16:
+    v: 1
+    date: 2026-07-18
+    by: founder (shpin.p@diffco.us)
+    binds: [APR-1, UX-3, UX-8, AUT-1, EXT-5, UI-6, UI-7, DEC-7]
+    title: Terminology alignment — rename Inbox→Ready; de-jargon streak/trust-levels/radar
+    statement: >-
+      Founder-triggered vocabulary pass after the vision→experience audit found that
+      several founder-facing terms carry mental models that fight the "colleague who
+      brings finished work" vision (VIS-1, VAL-5, VAL-6). Decisions: (1) the core
+      approval surface is renamed from "Inbox" to "Ready" (nav + home header "Ready for
+      you") — "Inbox" evoked the email drudgery the persona bounced off (users.md) and
+      the reactive/never-done model, the opposite of "the system moves first" and the
+      finite-completion design; "Ready" names the state (finished work awaiting the one
+      verb, Approve) and is cadence-agnostic. (2) "Streak" → "rhythm / steady presence"
+      in founder-facing copy (it imported gamified guilt for a guilt-prone persona whose
+      promise is "grace, never guilt"); the glossary concept "Stewardship rhythm" already
+      used the better word; "streak" survives only as an internal metric name (G-4
+      unchanged). (3) Trust levels shed the "TL0/TL1/TL2" codes in founder-facing labels
+      → "Ask me first / Publish with a heads-up / Run on your own"; the codes stay
+      internal (AUT-1 concept unchanged). (4) "Radar" → founder-facing "Discoveries"
+      (surveillance metaphor → a calm reading room). SCOPE: this changes the canonical
+      glossary vocabulary + current requirement/experience/design copy going forward;
+      historical records (DEC-7/DEC-14, INC-3, challenge logs) keep their original wording
+      as a log; internal file names and IDs are unchanged (e.g. apr-approval-inbox.yaml,
+      the APR prefix). Two related coherence items from the same audit — squaring the
+      vision text ("chat as primary" vs DEC-7's home-first-with-companion; "two verbs" vs
+      four surfaced actions) and scoping the "zero-homework" onboarding promise for
+      thin-source orgs — are proposed separately (they touch vision/requirement altitude).
+
   DEC-15:
     v: 1
     date: 2026-07-18

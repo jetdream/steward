@@ -1,6 +1,6 @@
 kind: requirements
 prefix: APR
-title: Approval Inbox & Composer
+title: Approval surface (Ready) & Composer
 status: approved
 serves: [G-2, G-3]
 
@@ -12,12 +12,12 @@ intent: >-
 
 items:
   APR-1:
-    v: 2
-    decided-by: DEC-13
+    v: 3
+    decided-by: DEC-16
     priority: P0
     serves: [G-1, G-2, G-3, G-4, G-5]
     depends: [GEN-5]
-    title: Inbox
+    title: Ready
     statement: >-
       Drafts with per-channel variant preview and fit indicators (GEN-5);
       one-tap Approve (all variants), per-channel toggle, inline Edit (per

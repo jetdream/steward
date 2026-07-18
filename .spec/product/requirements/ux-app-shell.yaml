@@ -28,10 +28,10 @@ items:
       ideation, redirects (CHT-1, CHT-2); (P1) commands (CHT-3).
 
   UX-3:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-16
     priority: P0
-    title: Inbox surface
+    title: Ready surface
     statement: >-
       Approval queue with per-channel variants, fit indicators,
       awaiting-picture states (APR-1, GEN-4). Where 90% of non-chat time
