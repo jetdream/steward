@@ -1,12 +1,16 @@
 kind: architecture
 prefix: IG
 title: External Integrations
-status: sketch
+status: approved
+# Approved 2026-07-18 (architecture-approval pass). Challenger pass:
+# specs/challenges/architecture-2026-07-18-r1.md. Adapters behind ports (ADR-0003).
 
 intent: >-
   From PRD §9 + assumptions. Each publishing integration is an isolated adapter
   behind a shared channel-profile configuration (PUB-2) so one platform's
-  change never blocks the others (R-6). Failure policy (all adapters): retry
+  change never blocks the others (R-6). All external services are reached
+  through domain-defined ports (ADR-0003); the entries below name the v1
+  adapters, swappable by configuration. Failure policy (all adapters): retry
   with backoff, alert operators via failure queues (OPS-1), founder alerted
   only when action is needed (PUB-1 acceptance).
 
@@ -52,8 +56,10 @@ items:
     kind: integration
     title: Transactional Email
     body: |
-      Transactional email (Postmark or Resend — ADR pending) — digest +
-      time-sensitive notifications (APR-4). Web push is P1.
+      Transactional email behind the Email port (ADR-0003): React-email
+      templates (the steward-token digest/nudge/request/veto touchpoints
+      UI-54..57), adapter SendGrid initially, Resend later as a config-only
+      switch. Digest + time-sensitive notifications (APR-4). Web push is P1.
 
   IG-6:
     v: 1
@@ -70,3 +76,32 @@ items:
     body: |
       Website scraper — fact + style ingestion (ONB-2). Own implementation;
       respects consent given at signup (A-5).
+
+  IG-8:
+    v: 1
+    kind: integration
+    title: WhatsApp Business API
+    body: |
+      P1 (BOT-1..3, adapters ARC-24). Founder-facing bot behind the messaging
+      port (ADR-0003): photo/fact ingestion + light Q&A. Official API only
+      (BOT-3, SEC-9); platform approval + per-conversation costs tracked as
+      A-8; message-window rules respected (bot-initiated messages fall back to
+      the UI-55 email when the window is closed). Vendor infra ADR deferred.
+
+  IG-9:
+    v: 1
+    kind: integration
+    title: Telegram Bot API
+    body: |
+      P1 (BOT-1..3, adapters ARC-24). Same messaging-port contract as IG-8; no
+      approval gate — ships first if WhatsApp approval (A-8) slips.
+
+  IG-10:
+    v: 1
+    kind: integration
+    title: Object Storage (Cloudflare R2)
+    body: |
+      Media + public news images behind the Blob port (ADR-0003, S3 API):
+      Cloudflare R2 in prod (zero egress), MinIO/filesystem in self-contained
+      dev. Serves the media library (DM-4) and the public renderer's images
+      (ARC-23).

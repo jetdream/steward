@@ -1,12 +1,16 @@
 kind: architecture
 prefix: PIPE
 title: LLM Pipeline
-status: sketch
+status: approved
+# Approved 2026-07-18 (architecture-approval pass). Challenger pass:
+# specs/challenges/architecture-2026-07-18-r1.md. Model selection ADR deferred.
 
 intent: >-
-  From PRD §9. Vercel AI SDK; model choices get an ADR when the skeleton lands.
-  Modelled as one pipeline (its grounding/guardrail principles in the body)
-  with a pipeline-stage per generation flow.
+  From PRD §9. Vercel AI SDK — its provider abstraction is an instance of the
+  ADR-0003 ports principle (LLM/search behind a port; providers swappable).
+  Model choices get an ADR when the skeleton lands (deferred). Modelled as one
+  pipeline (its grounding/guardrail principles in the body) with a
+  pipeline-stage per generation flow.
 
 items:
   PIPE-1:
@@ -18,9 +22,11 @@ items:
 
       - Grounded, not vibes: all generation is grounded in Memory + Strategy via
         retrieval (pgvector over MemoryEntry embeddings). Cite VAL-2, VAL-4.
-      - One brain, several skills: chat, interviewer, and generation share the
-        same Memory read/write layer — a redirect in chat (CHT-2) and an inbox
-        edit (APR-3) land in the same store the planner reads.
+      - One brain, several skills: chat, interviewer, generation, and the
+        messenger bots (BOT-2, P1) share the same Memory read/write layer — a
+        redirect in chat (CHT-2), an inbox edit (APR-3), a bot-sent fact, and a
+        radar-feed relevant/not mark (EXT-5) all land in the same store the
+        planner reads.
       - Guardrails before queues: Strategy validation (STR-3) + platform
         guardrails (GR-1..GR-6, sensitive-topic classifier GR-3) run before
         anything enters any queue.

@@ -1,7 +1,9 @@
 kind: architecture
 prefix: DM
 title: Data Model
-status: sketch
+status: approved
+# Approved 2026-07-18 (architecture-approval pass). Challenger pass:
+# specs/challenges/architecture-2026-07-18-r1.md (F3 state-machine split applied).
 
 intent: >-
   Entity semantics and relationships, seeded from PRD §9. Once @shared types
@@ -19,8 +21,14 @@ items:
     title: Org
     body: |
       The customer organization; includes optional donationUrl (a plain
-      Memory-adjacent fact, not a donations module — product/scope.md). The
-      aggregate root: every other entity is owned by an Org.
+      Memory-adjacent fact, not a donations module — product/scope.md;
+      surfaceable on ask posts and the news page per DEC-9). The aggregate
+      root: every other entity is owned by an Org.
+
+      Also carries newsConfig — the news-site addressing (slug, domain mode:
+      app-path/dedicated/custom, optional customDomain) per NWS-1 + DEC-10 —
+      and owns MessagingLink records (DM-12) binding messenger senders to the
+      org (BOT-1, P1).
 
       Relationships (ERD):
 
@@ -32,6 +40,7 @@ items:
         ORG ||--o{ CHAT_SESSION : owns
         ORG ||--o{ EXTERNAL_ITEM : owns
         ORG ||--o{ TRUST_LEVEL : "per category"
+        ORG ||--o{ MESSAGING_LINK : "linked bot senders"
         ORG ||--|| SUBSCRIPTION : has
         CONTENT_ITEM ||--o{ CHANNEL_VARIANT : "adapts to"
         CONTENT_ITEM }o--o| MEDIA_ASSET : "carries picture"
@@ -67,22 +76,43 @@ items:
     title: ContentItem
     body: |
       master + ChannelVariant[]; per-variant fit verdicts (GEN-5); edit-diff
-      log (APR-3).
+      log (APR-3). A ContentItem may also carry a long-form article body: the
+      news page is a publishing destination (glossary) that renders the item's
+      article form (NWS, ADR-0004), while its social variants stay short and
+      may link back to it (NWS-5). No separate Article entity — the master
+      story is the article (avoids over-abstraction).
 
-      Lifecycle (ContentItem states):
+      Two state machines at two altitudes (they were conflated in v1 — a
+      multi-destination item cannot have one status): EDITORIAL state on the
+      ContentItem, DELIVERY state per ChannelVariant (i.e. per destination).
+
+      Editorial lifecycle (ContentItem):
 
       stateDiagram-v2
         [*] --> draft : generated (GEN-1) or composed (APR-5)
         draft --> awaiting_picture : no picture assigned (GEN-4)
         awaiting_picture --> draft : picture attached
         draft --> approved : founder approves / TL permits (AUT-1)
-        approved --> scheduled : slot assigned (PUB-1)
-        scheduled --> published : posted, logged (PUB-3)
+        approved --> draft : recalled before any variant is scheduled (VAL-3; UI-42)
         draft --> skipped : founder skips
-        scheduled --> paused : kill switch / channel pause (AUT-3)
 
-      Invariant: A draft cannot leave awaiting_picture toward approved without a
-      picture (GEN-3, GEN-4 — hard rule).
+      Delivery lifecycle (per ChannelVariant — one per destination, incl. the
+      news page):
+
+      stateDiagram-v2
+        [*] --> pending : variant fit-passed (GEN-5), item approved
+        pending --> scheduled : slot assigned at engagement-optimal time (PUB-1)
+        scheduled --> published : posted/served, logged (PUB-3)
+        scheduled --> paused : kill switch / per-channel pause (AUT-3)
+        paused --> scheduled : resumed
+        published --> unpublished : taken down — news only (DEC-9; SEC-8)
+
+      Invariants: (1) A ContentItem cannot leave awaiting_picture toward
+      approved without a picture (GEN-3, GEN-4 — hard rule). (2) No variant
+      schedules while the item is not approved. (3) `unpublished` applies only
+      to the news destination (the one channel Steward solely controls);
+      social variants are deleted natively on their platform, so their
+      delivery state ends at `published`.
 
   DM-6:
     v: 1
@@ -105,7 +135,10 @@ items:
     kind: data-entity
     title: ExternalItem
     body: |
-      source, URL, relevance rationale, disposition (EXT-1).
+      source, URL, relevance rationale, disposition (EXT-1). Every discovered
+      candidate is retained and browsable as the radar feed (EXT-5); the
+      disposition holds the founder's one-tap relevant/not-relevant mark,
+      written back to Memory to tune future discovery.
 
   DM-9:
     v: 1
@@ -127,3 +160,13 @@ items:
     title: Subscription
     body: |
       Stripe linkage (BIL-1).
+
+  DM-12:
+    v: 1
+    kind: data-entity
+    title: MessagingLink
+    body: |
+      P1 (BOT-1). Binds a messenger sender (platform + external user id) to an
+      Org via an explicit account-linking handshake (SEC-9), so bot-ingested
+      photos/facts route to the right org. Owned by Org; no third-party PII
+      beyond the linked founder's own handle.

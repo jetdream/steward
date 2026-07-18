@@ -17,4 +17,6 @@ Use [TEMPLATE.md](TEMPLATE.md).
 | ADR | Title | Status |
 |---|---|---|
 | [ADR-0001](0001-design-system-substrate.md) | Design-system substrate — re-themed Airbnb open-design fork | accepted |
-| *(a consolidating ADR for the constitution-fixed stack choices arrives with the repo skeleton)* | | |
+| [ADR-0002](0002-stack-baseline.md) | Consolidated stack baseline | accepted |
+| [ADR-0003](0003-deployment-portability.md) | Deployment portability via ports & adapters | accepted |
+| [ADR-0004](0004-news-site-rendering.md) | Public news-site rendering & hosting | accepted |

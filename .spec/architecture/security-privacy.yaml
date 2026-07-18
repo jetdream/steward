@@ -1,14 +1,19 @@
 kind: architecture
 prefix: SEC
 title: Security, Privacy, Compliance
-status: sketch
+status: approved
+# Approved 2026-07-18 (architecture-approval pass). Challenger pass:
+# specs/challenges/architecture-2026-07-18-r1.md (F2 cache-purge, F7 deletion).
+# Threat-model/audit pass deferred to before the public surface goes live.
 
 intent: >-
   From PRD §10. The behavioral guardrails themselves live in
   product/guardrails.yaml (GR-1..GR-6); this file covers the operational
   posture — one posture design-element per stance. Pending: threat model,
   attack surface, and audit posture get their own pass (and ADRs where choices
-  exist) before cohort-1 production traffic.
+  exist) — gated before the public news surface (SEC-8) and bot webhooks
+  (SEC-9) go live, the largest new attack surface, not merely before general
+  cohort-1 production traffic.
 
 items:
   SEC-1:
@@ -71,3 +76,38 @@ items:
       Auth: BetterAuth — Google Sign-in + dev login by email only
       (constitution). Dev login must be disabled outside development
       environments.
+
+  SEC-8:
+    v: 1
+    kind: posture
+    title: Public news surface
+    body: |
+      The org news site (NWS, renderer ARC-23, ADR-0004) is Steward's first
+      PUBLIC, unauthenticated surface — a distinct posture from the
+      authenticated app. Serves only published, founder-approved article
+      content; no authenticated data, no other-org data, no third-party PII
+      (SEC-3 holds). CDN-cacheable with **tag-based purge** on
+      publish/edit/unpublish, so takedown is immediate DESPITE caching
+      (ADR-0004; SSR alone only helps cache misses); rate-limited and
+      bot/abuse-guarded independently of the app. robots/sitemap per NWS-2.
+      URL/slug reservation (a small record, not the whole Org) follows the
+      account-active rule (Q-11, DEC-10): while active/tombstoned an
+      unpublished-or-recalled route serves the warm org-branded "not here"
+      page (UI-59); after a BIL-2 hard deletion (org data + branding removed,
+      SEC-4) the slug returns a GENERIC 410 gone page, never a stale
+      org-branded one. The "published with Steward" footer is the only
+      cross-org element.
+
+  SEC-9:
+    v: 1
+    kind: posture
+    title: Messenger bot channels
+    body: |
+      Founder-facing WhatsApp + Telegram bots (BOT-1..3, adapters ARC-24, P1):
+      official platform APIs only (BOT-3, extends GR-6). A sender is bound to
+      an org only through an explicit account-linking handshake before any
+      ingestion; unlinked senders are refused. Inbound media/text is org-owned
+      confidential data (SEC-4) — same confidentiality, export, and deletion
+      rules as in-app content (BIL-2). No third-party PII is solicited or
+      stored (SEC-3); platform message-window and data-retention rules are
+      respected per each provider's terms.

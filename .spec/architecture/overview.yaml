@@ -1,15 +1,22 @@
 kind: architecture
 prefix: ARC
 title: System Overview
-status: sketch
+status: approved
+# Approved 2026-07-18 (architecture-approval pass). Challenger pass:
+# specs/challenges/architecture-2026-07-18-r1.md (F1–F3 resolved in-change).
+# Backed by ADR-0002 (stack), ADR-0003 (portability), ADR-0004 (news renderer).
 
 intent: >-
   Technical module map for the core loop described in product/overview.md.
-  Constitution-fixed stack: NodeJS 24, TypeScript, Vite + React, Tailwind +
-  ShadCN, Postgres + pgvector, tRPC, WebSocket for realtime, BetterAuth,
-  Vercel AI SDK (/CLAUDE.md). Modelled as a C4 register: one c4-context (the
-  system), its c4-container runtime units (client, backend, datastore), and the
-  c4-component capability modules inside them.
+  Stack baseline is ADR-0002 (constitution-fixed: NodeJS 24, TypeScript, Vite +
+  React, Tailwind + ShadCN, Postgres + pgvector, tRPC, WebSocket, BetterAuth,
+  Vercel AI SDK, OTel/LGTM). Cross-cutting principle: deployment portability via
+  ports & adapters (ADR-0003) — every external/infra dependency behind a
+  domain-defined port with environment-selected adapters. Modelled as a C4
+  register: one c4-context (the system), its c4-container runtime units (client,
+  backend, datastore, and the public news renderer per ADR-0004), and the
+  c4-component capability modules inside them. Covers the DEC-9 additions (news
+  site, messenger bots, radar feed).
 
 items:
   ARC-1:
@@ -28,18 +35,23 @@ items:
       client→backend calls go through domain-specific API React hooks; realtime
       updates arrive over WebSocket with light payloads. Channel adapters are
       isolated per platform so a policy change on one channel never blocks the
-      others (R-6).
+      others (R-6) — one instance of the general ports-&-adapters principle
+      (ADR-0003): jobs, blob storage, email, the publishing transport, and
+      LLM/search each sit behind a domain-defined port with environment-selected
+      adapters (self-contained dev → single instance → cloud), so domain code
+      never imports a vendor SDK directly.
 
       Module map (SHARED is @shared source compiled into both client and
       backend — a shared library, not a runtime container — so it is kept in
       this diagram rather than modelled as its own element):
 
       graph TD
-        subgraph client
-          SHELL[app-shell — UX-1..7]
+        subgraph client [client SPA]
+          SHELL[app-shell — UX-1..8]
           CCHAT[chat UI]
           CINBOX[inbox UI]
           CCAL[calendar UI]
+          CRADAR[radar UI — UX-8, EXT-5]
           CORG[organization UI]
         end
         subgraph backend
@@ -51,27 +63,36 @@ items:
           GENB[content engine — GEN, STW]
           EXTB[radar — EXT]
           APRB[inbox/approvals — APR]
-          PUBB[publisher + channel adapters — PUB]
+          PUBB[publisher + channel & news adapters — PUB, NWS]
+          BOTB[messenger bots — BOT, P1]
           PROB[proactive — PRO]
           AUTB[autonomy — AUT]
           BILB[billing — BIL]
           OPSB[ops console — OPS]
         end
-        SHARED[shared — types, DTOs, channel profiles]
+        NEWS[public news renderer — NWS, ADR-0004]
+        SHARED[shared — types, DTOs, channel profiles, ports]
         client -->|tRPC + WS| backend
+        NEWS -->|reads published articles| backend
         backend --> SHARED
         client --> SHARED
         MEMB --> GENB
         STRB --> GENB
         EXTB --> GENB
+        EXTB --> CRADAR
+        BOTB --> MEMB
         GENB --> APRB
         APRB --> PUBB
+        PUBB -.news publish-state + cache purge.-> NEWS
         AUTB -.governs.-> PUBB
 
-      Pending ADRs — Stack choices fixed by the constitution get a retroactive
-      consolidating ADR with the repo skeleton; genuinely open technical
-      decisions (job scheduling, queue strategy for publishing, media storage,
-      transactional email vendor) get ADRs as they are made.
+      ADRs — the consolidating stack baseline is ADR-0002; job scheduling,
+      publishing queue, media storage, and transactional email are settled as
+      ports (with v1 adapters pg-boss / R2 / SendGrid→Resend) under ADR-0003;
+      the public news renderer is ADR-0004. Consciously deferred (recorded, not
+      yet written): the messenger-bot infra vendor ADR (BOT, P1), the LLM
+      model-selection ADR (at skeleton time — PIPE-1), and the SEC
+      threat-model/audit pass (SEC intent).
 
   ARC-2:
     v: 1
@@ -113,7 +134,7 @@ items:
     parent: ARC-2
     body: |
       The application shell / navigation frame (app-shell). Implements the UX
-      capability (UX-1..7).
+      capability (UX-1..8), including the sixth Radar nav surface (UX-8).
 
   ARC-6:
     v: 1
@@ -228,7 +249,16 @@ items:
     body: |
       Publishing module (PUB): per-platform channel adapters behind a shared
       channel-profile configuration, isolated so one platform's change never
-      blocks the others (R-6). See the integrations register.
+      blocks the others (R-6). The org news page is an additional publishing
+      destination (NWS-1) — additive to, never part of, PUB-1's four launch
+      channels — but it is NOT symmetric with the social adapters: social
+      adapters make outbound third-party API calls, whereas "publishing" to the
+      news page only sets the article's publish-state in our DB and purges the
+      renderer's cache tag (ADR-0004, SEC-8). The public renderer (ARC-23) then
+      pulls published articles downstream via the backend read-API — the
+      renderer is downstream of the data, not pushed to by the publisher.
+      Social variants may carry the published article link (NWS-5). See the
+      integrations register.
 
   ARC-19:
     v: 1
@@ -263,3 +293,39 @@ items:
     body: |
       Operations console module (OPS); model-call QA, failure queues, and
       operator alerting.
+
+  ARC-23:
+    v: 1
+    kind: c4-container
+    title: Public News Renderer
+    parent: ARC-1
+    body: |
+      A separate SEO-first SSR/SSG deployable (Astro + React islands, ADR-0004)
+      serving the org news site (NWS-1..6) to the public reader persona
+      (journey UI-58). Reads published article/topic data from the backend
+      read-API and images via the Blob port (ADR-0003); renders the DS-8
+      org-branded template. Isolated from the authenticated SPA so its
+      caching/SEO/rate-limit posture (SEC-8) is independent. Resolves the
+      DEC-10 URL routing (dev path / prod dedicated domain / org subdomain).
+
+  ARC-24:
+    v: 1
+    kind: c4-component
+    title: Messenger Bot Adapters
+    parent: ARC-3
+    body: |
+      Founder-facing WhatsApp + Telegram bot adapters (BOT-1..3, P1) behind a
+      messaging port (ADR-0003). Ingest photos → media library and
+      facts/links/voice-notes → Memory (MEM); light Q&A reuses the chat context
+      layer (BOT-2, shares CHATB). Vendor infra ADR deferred (P1). Official
+      APIs only (BOT-3, SEC-9).
+
+  ARC-25:
+    v: 1
+    kind: c4-component
+    title: Radar UI
+    parent: ARC-2
+    body: |
+      Client surface for the radar feed (UX-8, EXT-5) — the org's personalized
+      feed of discovered external items, marked relevant/not-relevant.
+      Pull-only: never badged or counted (VAL-6, G-3).
