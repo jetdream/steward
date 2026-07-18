@@ -40,15 +40,19 @@ items:
       screen is Approve (or the screen's single equivalent verb, VAL-6).
 
   DS-3:
-    v: 1
-    decided-by: DEC-6
+    v: 2
+    decided-by: DEC-15
     priority: P0
     title: Typography
     statement: >-
-      Inter (variable) replaces the proprietary Airbnb Cereal VF with the
-      substrate's texture preserved: body weight 500 (never 400), tight
-      display leading (1.2) with negative tracking at ≥20px, generous body
-      leading (1.43), sentence case throughout.
+      Bricolage Grotesque (display) + Source Sans 3 (body) replace the
+      proprietary Airbnb Cereal VF — a characterful grotesk display over a
+      neutral humanist body (DEC-15, off the Inter default). The substrate's
+      two-mode rhythm is preserved: confident body weight (≥500 in UI density),
+      tight display leading (1.2) with negative tracking at ≥20px, generous
+      body leading (1.43), sentence case throughout. Surfaces load both
+      webfonts. (v2: DEC-15 changed the faces from Inter; the rhythm rules are
+      unchanged.)
 
   DS-4:
     v: 1
@@ -62,8 +66,8 @@ items:
       (2px ink, per the substrate's photography-safe treatment).
 
   DS-5:
-    v: 3
-    decided-by: DEC-9
+    v: 4
+    decided-by: DEC-14
     priority: P0
     title: Trust components
     statement: >-
@@ -79,11 +83,17 @@ items:
       quiet visual register, never confusable with needs-approval — DEC-8),
       CitationBlock (GR-5's visual form — source + link + commentary
       framing, one treatment shared by inbox external cards and public news
-      articles — DEC-9), and the ArticleLink badge (which social variants
-      carry the news-page link and why — NWS-5, FitBadge's sibling — DEC-9).
+      articles — DEC-9), the ArticleLink badge (which social variants
+      carry the news-page link and why — NWS-5, FitBadge's sibling — DEC-9),
+      and HeldForApproval (the sensitive-topic hold card class — a draft that
+      WOULD have auto-published at TL1/TL2 but is held for the founder
+      regardless of Trust Level per GR-3; visually distinct from both
+      needs-approval and the veto-window class, counted in the inbox and never
+      batch-approvable, its ReasonLine naming the hold — DEC-14).
       They carry the "colleague, nothing hidden" identity the way the
       substrate's signature lockups carry Airbnb's. (v3: DEC-9 folds
-      CitationBlock and ArticleLink into the owned inventory per GR-7.)
+      CitationBlock and ArticleLink into the owned inventory per GR-7. v4:
+      DEC-14 adds HeldForApproval, GR-3's founder-facing manifestation.)
 
   DS-6:
     v: 1

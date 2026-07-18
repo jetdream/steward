@@ -7,7 +7,7 @@
 > deliberately does not repeat it (single source of truth). This file holds
 > only what Steward **changes, forbids, or adds**. Governance: DEC-6/DEC-7,
 > ADR-0001, DS-1..7; the screens applying this language are UI-1..13 in
-> `.spec/architecture/ui.yaml`.
+> `.spec/experience/ui.yaml`.
 
 ## Who this is for
 
@@ -22,7 +22,7 @@ screen: **approve** and **redirect**.
 | Substrate | Steward |
 |---|---|
 | Rausch coral `#ff385c` (Airbnb trademark) | Warm terracotta/clay `#B5502E` (`--accent`) — earthy, human, AA-compliant |
-| Airbnb Cereal VF (proprietary) | Inter variable, body weight **500, never 400** |
+| Airbnb Cereal VF (proprietary) | **Bricolage Grotesque** (display) + **Source Sans 3** (body) — a characterful grotesk over a neutral humanist body (DS-3 v2, DEC-15); confident body weight (≥500 in UI) |
 | Airbnb wordmark/gradient/laurel lockups | "Steward" wordmark in ink (`--fg`), no gradient |
 
 Everything else in the substrate's visual physics is adopted: canvas-white

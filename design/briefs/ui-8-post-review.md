@@ -17,6 +17,13 @@ with the approve action always in reach.
   (length, image crop). Inline edit affordance per variant and on the
   master. Below: the ReasonLine for why this post exists and an
   AssumedNote if anything was defaulted.
+- **News-page variant (DEC-9, UI-8 v3):** when the story is published on the
+  org news page, a variant tab holds the LONG-FORM article — headline, hero
+  image, Medium-length body — reviewed here (not a social card); its
+  donor-visible topic tags (NWS-4) are shown and editable before publish.
+- **ArticleLink badge (NWS-5):** social variants that carry the news-page
+  link show the ArticleLink badge (the FitBadge sibling) — the length relief
+  valve for X/Threads. Never a link to an unpublished article.
 - Sticky right rail (~36%): the **approve panel** from the design system —
   three-layer elevation, rounded 20px: "Ready to publish" heading, channel
   rows with scheduled times ("Tue 9:05 am — when your followers are

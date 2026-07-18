@@ -49,7 +49,7 @@ and re-binds: accent → warm terracotta `#B5502E` (DEC-7, AA-compliant),
 fonts → Inter with body weight 500, plus Steward-specific deltas documented
 in the theme's DESIGN.md. The marketplace→workspace UX inversion and the
 trust chrome are normative in the DS register (DS-1..7); the UX structure
-that applies them is `architecture/ui.yaml` (UI-1..13).
+that applies them is `experience/ui.yaml` (UI-*).
 
 ## Consequences
 
@@ -63,3 +63,13 @@ that applies them is `architecture/ui.yaml` (UI-1..13).
 - Rausch coral, Cereal VF, and other Airbnb trademarks must never appear in
   shipped surfaces; the reference package exists for its philosophy and
   recipes, not its brand.
+
+## Amendments
+
+- **2026-07-18 (DEC-15).** The foundations were reopened and re-explored (four
+  theme directions, then real-font type pairings). Outcome: this substrate and
+  the terracotta/light-only/single-accent pillars are **reaffirmed** — no
+  supersession. Two theme-layer refinements landed in the steward theme (not
+  the substrate): the neutral ramp was warmed to a deliberate accent bias, and
+  the type moved off Inter to Bricolage Grotesque (display) + Source Sans 3
+  (body) (DS-3 v2). The substrate/OD-schema decision here is unchanged.

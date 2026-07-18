@@ -11,6 +11,28 @@ intent: >-
   open count.
 
 items:
+  INC-3:
+    v: 1
+    status: resolved
+    binds: [GR-3, UI-7, UI-29, DS-5]
+    title: Guardrail GR-3 had no founder-facing manifestation in the experience spine
+    statement: >-
+      Detected 2026-07-18 (founder-requested pre-UI reconciliation audit of the
+      approved experience spine). GR-3 — a hard, top-of-precedence guardrail — forces
+      a sensitive-topic item to human approval REGARDLESS of Trust Level. At TL1/TL2
+      the inbox otherwise auto-publishes, so GR-3 requires a distinct founder-facing
+      state (an item that WOULD have auto-published but was held for approval, with the
+      reason shown). The approved spine referenced GR-3 only in EXT-2's backend body;
+      no screen, flow state, or DS component manifested it, and — unlike the APR-2 /
+      NWS-6 / TL2 conscious-deferral precedents — it was not recorded as a deliberate
+      omission. A hard guardrail with no experience manifestation would surface late,
+      on the inbox (UI-7), the most-designed screen.
+    resolution: >-
+      DEC-14 designs the manifestation: a distinct "held for your approval" card class
+      (DS-5 v4, GR-3), counted in the inbox and never batch-approvable, with a
+      ReasonLine naming the sensitive-topic hold (UI-7 v3, UI-29 v2). Vetted in the
+      same round by the Product-Designer challenger.
+
   INC-2:
     v: 1
     status: resolved

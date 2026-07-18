@@ -4,7 +4,10 @@ title: Steward Experience Spine — Journeys, Flows, Screens, Touchpoints
 status: approved
 # Sign-off: DEC-8 (founding round); Product-Designer challenger pass recorded
 # at specs/challenges/experience-ui-2026-07-16-r1.md (findings applied in the
-# same change per the convergence rule).
+# same change per the convergence rule). DEC-9 delta challenged at
+# experience-ui-2026-07-17-r2.md. DEC-14 reconciliation round (GR-3
+# held-for-approval card, TL2 inbox, activity center UI-67/68, UI-45 screen
+# node) challenged at experience-ui-2026-07-18-r3.md.
 
 intent: >-
   The experienced-HOW of Steward (method/ui.md, v0.14 experience layer):
@@ -101,7 +104,7 @@ items:
       "we hit a milestone" that turns into a thank-you + impact package.
 
   UI-16:
-    v: 1
+    v: 2
     kind: journey
     title: "Earned autonomy"
     serves: [AUT-1, AUT-2, AUT-3, UX-6]
@@ -113,14 +116,17 @@ items:
       Thu" cards, designed into UI-7 now per DEC-8), and the kill switch
       (UI-40 — a panicked founder goes from fear to calm in one gesture,
       AUT-3). Permanent caps (fundraising asks, external content) are always
-      stated where the trust level shows. TL2 (full autopilot) is
-      consciously deferred with AUT-2/P1: its digest meaning ("here's what
-      went out") and offer moment are designed when promotion mechanics
-      ship — TL1-awareness now (DEC-8) keeps that a card-class extension,
-      not a redesign.
+      stated where the trust level shows. v2 (DEC-14): TL2 (full autopilot)
+      inbox meaning is now designed rather than deferred — at TL2 the inbox is
+      mostly silent, its only content the GR-3 sensitive-topic holds
+      (UI-7 HeldForApproval), publish failures, and the streak; "here's what
+      went out" lives in the activity center (UI-67). This is the natural
+      companion of the GR-3 work (the hold IS the TL2 inbox's main content),
+      so DEC-8's TL1-aware-now logic extends to TL2 in the same round. The TL2
+      promotion-offer moment still rides AUT-2/P1 mechanics.
 
   UI-17:
-    v: 2
+    v: 3
     kind: journey
     title: "The inspectable brain"
     serves: [STR-1, STR-2, MEM-3, PUB-3, GEN-1, EXT-5, UX-4, UX-5, UX-8]
@@ -130,9 +136,11 @@ items:
       out — and what has it seen out there?" Flows: steer the strategy
       (UI-41 — the five STR-1 sections, versioned with diffs), planned &
       published (UI-42 — the rolling calendar GEN-1 + publish log PUB-3),
-      browse the memory (UI-43, P1, MEM-3), and — v2, DEC-9 — browse the
-      radar (UI-62: the org's personalized feed of everything discovered,
-      EXT-5, on its own pull-only nav surface UX-8). Visited occasionally
+      browse the memory (UI-43, P1, MEM-3), browse the radar (v2, DEC-9 —
+      UI-62: the org's personalized feed of everything discovered, EXT-5, on
+      its own pull-only nav surface UX-8), and — v3, DEC-14 — the activity
+      center (UI-68: the chronological log of what the system did on its own
+      and the few things that need the founder, PUB-3). Visited occasionally
       but carries disproportionate trust weight — the product's glass wall.
 
   UI-18:
@@ -281,7 +289,7 @@ items:
       logged-out landing (email-first dev login per constitution).
 
   UI-29:
-    v: 1
+    v: 2
     kind: flow
     parent: UI-2
     title: "Flow: review the week"
@@ -297,8 +305,14 @@ items:
       Screens: UI-6 (shell), UI-7 (stack), UI-8 (single-post review).
       States: awaiting-picture (→ UI-30), external card (citation-first),
       veto-window card (TL1, → UI-39 — needs NO action: excluded from the
-      "N of M" count and from batch approve), batch approve ("approve all
-      ready"), empty week (system explains why and what it needs),
+      "N of M" count and from batch approve), held-for-approval card (GR-3,
+      DEC-14 — a sensitive-topic item pulled OUT of the auto-publish path
+      REGARDLESS of trust level: the DS-5 HeldForApproval class, always needs
+      action, IS counted in "N of M", NEVER batch-approvable, ReasonLine names
+      the hold; the deliberate inverse of the veto-window card and never
+      confusable with it), batch approve ("approve all ready" — skips both
+      veto-window and held-for-approval cards), empty week (system explains
+      why and what it needs),
       approved-item undo (every approval is revocable in place until it
       publishes — the sibling of UI-34's redirect Undo; validated in mockup
       rounds 1-2), rule proposal (APR-3's visible payoff: after recurring
@@ -537,7 +551,7 @@ items:
       failure (grace + plain retry, publishing unaffected during grace).
 
   UI-45:
-    v: 1
+    v: 2
     kind: flow
     parent: UI-19
     title: "Flow: cancel with dignity"
@@ -548,11 +562,13 @@ items:
       system built — and, per DEC-9's challenger round, the org NEWS PAGE:
       its public articles and every social link pointing at them; articles
       are included in the data export, and article URLs stay reserved only
-      while the account is active — Q-11 resolved by DEC-10). States: refund
-      window active vs expired, export delivery, data
-      deletion on request (BIL-2 "deletion honored" — a plain affordance,
-      not a support ticket; policy per SEC), re-subscribe (memory retained
-      per data policy unless deleted, SEC).
+      while the account is active — Q-11 resolved by DEC-10). Screen: the
+      cancel section of UI-12 (settings/billing) — homed explicitly per
+      DEC-14 to close the one flow that named no surface; the sibling of
+      UI-44's billing section. States: refund window active vs expired,
+      export delivery, data deletion on request (BIL-2 "deletion honored" — a
+      plain affordance, not a support ticket; policy per SEC), re-subscribe
+      (memory retained per data policy unless deleted, SEC).
 
   UI-46:
     v: 1
@@ -567,7 +583,7 @@ items:
   # ───────────────────────── Screens ─────────────────────────
 
   UI-6:
-    v: 3
+    v: 4
     kind: screen
     parent: UI-29
     title: "Screen: app shell"
@@ -583,11 +599,19 @@ items:
       companion's quiet badge, UI-33, is companion vocabulary, not nav). Single
       terracotta accent: active nav + the screen's primary action (DS-2);
       wordmark in ink (Q-1). Validated in mockup rounds 1-2 (pre-Radar).
+      v4 (DEC-14): a single activity affordance opens the activity center
+      (UI-67). It lives in the TOP CHROME (near the account menu), NOT in the
+      left nav — so it is not a second nav chip — and it stays silent by
+      default, showing a count ONLY when something genuinely needs the founder
+      (a publish failure, a channel needing re-auth). This preserves the
+      calm-no-vanity-badges rule (the Inbox nav chip and the pull-only Radar
+      rule are unchanged); the activity affordance is deliberately the one
+      place the shell may raise an actionable count.
 
       Brief: design/briefs/ui-6-app-shell.md
 
   UI-7:
-    v: 2
+    v: 3
     kind: screen
     parent: UI-29
     title: "Screen: inbox (home)"
@@ -602,7 +626,26 @@ items:
       state celebrates the streak quietly (G-4). TL1-aware (DEC-8): a
       distinct "published — veto until <time>" card class (UI-39) with its
       own quiet visual register, never confusable with needs-approval.
-      Two audited rounds: design/mockups/ui-7-inbox/round-1..2/.
+      v3 (DEC-14) adds the two remaining trust-level meanings so the inbox
+      never needs a later redesign:
+      (a) HELD-FOR-APPROVAL card (GR-3, DS-5 HeldForApproval): a
+      sensitive-topic item held for the founder regardless of trust level —
+      counted, always actionable, never batch-approvable, visually the inverse
+      of the veto-window card. Because GR-3 is a hard guardrail, the hold must
+      be SURFACED, not just rendered: it raises the Inbox count chip at every
+      trust level (so even a TL2 founder who has delegated review is pulled
+      back), and a time-sensitive hold additionally rides a notification
+      (APR-4) — the UI-26/UI-56 "never discover it silently" precedent applied
+      to the guardrail this round exists to serve; and
+      (b) the TL2 (full-autopilot) inbox: mostly silent — when nothing needs
+      the founder it is a calm confirmation ("nothing needs you this week —
+      5 posts went out on their own") plus the streak; its only actionable
+      content is held-for-approval cards and publish failures. "What went out
+      on its own" is browsable in the activity center (UI-67), not listed as
+      inbox cards. TL0/TL1/TL2 are the same screen at three volumes of demand,
+      not three screens.
+      Two audited rounds (pre-DEC-14): design/mockups/ui-7-inbox/round-1..2/;
+      the DEC-14 states are absorbed in round 3.
 
       Brief: design/briefs/ui-7-inbox.md
 
@@ -661,7 +704,7 @@ items:
       (STR-1/STR-2). The glass wall of UI-17.
 
   UI-12:
-    v: 2
+    v: 3
     kind: screen
     parent: UI-38
     title: "Screen: settings / billing"
@@ -673,7 +716,9 @@ items:
       is its gravitational center; billing flow (UI-44) shares the surface.
       Cadence selection here is the founder-selected half of APR-2 —
       deliberately a settings affordance, not a task flow of its own (its
-      experienced half, digest arrival, lives in UI-28).
+      experienced half, digest arrival, lives in UI-28). v3 (DEC-14): the
+      surface also holds the CANCEL section — the sibling of the billing
+      section — where cancel-with-dignity (UI-45, BIL-2) runs.
 
   UI-13:
     v: 2
@@ -925,3 +970,50 @@ items:
       contract as UI-65; template-message constraints respected (the bot
       initiates only within platform rules — photo requests ride UI-55
       email when the messaging window is closed).
+
+  # ─────────────────── DEC-14 addition: activity & notifications ───────────────────
+
+  UI-68:
+    v: 1
+    kind: flow
+    parent: UI-17
+    title: "Flow: review what happened"
+    body: |
+      The founder-facing realization of VAL-3 "everything auto-done is logged
+      and visible" (DEC-14): a single chronological place answering "what did
+      you do on your own, and is there anything I need to handle?" Content:
+      auto-published posts (the TL1/TL2 output — PUB-3 publish log, colleague
+      voice, each with a link to what went out), and the few ACTIONABLE items
+      the founder must resolve — a publish failure (retry / see why) and a
+      channel needing re-auth (UI-26's token-expiry case). Distinct from UI-42
+      (the calendar/publish log browsed by time) — this is the alerts + did-it
+      feed browsed by recency, and the home of the shell's actionable count
+      (UI-6). PULL by default: it raises a count only when something needs the
+      founder — never for routine auto-done work (VAL-6, the calm-badges
+      rule). States: nothing to see (narrated, DS-6 — "all quiet; here's what
+      I did this week"), actionable items present (grouped first), a failure
+      resolved, an item already handled elsewhere. Screen: UI-67.
+
+  UI-67:
+    v: 1
+    kind: screen
+    parent: UI-68
+    title: "Screen: activity & notifications center"
+    body: |
+      One calm reverse-chronological surface on the design system (GR-7): a
+      "needs you" group at the top (publish failures, channel re-auth — each a
+      plain one-tap resolution, never a support ticket) and, below, the
+      auto-done log (what published on its own at TL1/TL2, PUB-3, in colleague
+      voice with links). No counts-as-homework framing — the auto-done section
+      is reassurance, not a task list (contrast UI-7's finite stack and UI-63's
+      reading room). Opened from the top-chrome activity affordance (UI-6 v4).
+      Composed ENTIRELY from existing DS-5 primitives — each row is a
+      ReasonLine + a timestamp + (for a "needs you" item) a single one-tap
+      action; no new component is introduced (GR-7). The auto-done section is a
+      recency VIEW of the single PUB-3 publish log — the same source UI-42
+      renders as a calendar/time view, never a second, divergent log. A
+      publish failure appears here in "needs you" and is NOT also an inbox
+      card, so the inbox count and the activity count never double-count one
+      event. The primary (and usually only) accent action is whatever a "needs
+      you" item requires; when the list is all auto-done, there is no accent
+      action at all.

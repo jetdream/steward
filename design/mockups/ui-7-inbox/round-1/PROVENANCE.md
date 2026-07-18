@@ -16,4 +16,4 @@
 - **Screenshot:** not captured (server-side rendering disabled on this
   endpoint; no local browser tooling) — view via the editor link
 - **Round verdict:** see `AUDIT.md` in this folder once the design audit
-  runs; the owning design-element is UI-7 (`.spec/architecture/ui.yaml`)
+  runs; the owning design-element is UI-7 (`.spec/experience/ui.yaml`)

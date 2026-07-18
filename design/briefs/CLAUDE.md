@@ -1,6 +1,6 @@
 # briefs/ — Claude Design screen briefs
 
-One brief per screen design-element (UI-* in `.spec/architecture/ui.yaml`),
+One brief per screen design-element (UI-* in `.spec/experience/ui.yaml`),
 written as ready-to-use Claude Design prompts: goal, persona, layout,
 content, and the binding rules — distilled from the owning UI-* body, the
 DS register, and `../design-system/steward/DESIGN.md`. The repo is attached

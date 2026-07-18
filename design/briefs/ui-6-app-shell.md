@@ -14,13 +14,20 @@ looks like marketing software.
 
 ## Layout — desktop (1280px content cap)
 
-- Quiet left rail: wordmark "Steward" in ink (never accent), then five
+- Quiet left rail: wordmark "Steward" in ink (never accent), then six
   destinations — **Inbox** (home, with a count chip when items wait),
-  **Calendar**, **Chat**, **Organization**, **Settings** — plus a
+  **Calendar**, **Chat**, **Radar**, **Organization**, **Settings** — plus a
   **Compose** action button (secondary style, it is an action, not a place).
+  **Radar** (UX-8) NEVER carries a badge or count — it is a pull-only reading
+  surface; the Inbox count chip is the only nav chip.
 - Active nav item marked with the terracotta accent — the only accent in
   the chrome; one accent element beyond it per viewport max (the current
   screen's primary action).
+- Top chrome (near the account menu): a single **activity affordance** that
+  opens the Activity & Notifications center (UI-67). It is NOT a nav item and
+  stays silent by default — it shows a count ONLY when something needs the
+  founder (a publish failure, a channel needing re-auth). This is the one
+  place the shell may raise an actionable count beyond the Inbox chip.
 - Docked chat companion: a summonable right-side panel (three-layer
   elevation) present on every surface — the same conversation as the full
   Chat page, narrower. Collapsed state: a quiet pill with the colleague

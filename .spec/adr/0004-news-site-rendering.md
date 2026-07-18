@@ -30,7 +30,7 @@ the reservation rule (URLs live while the account is active).
    retained as a caching optimization.
 3. **Dedicated React SSR service reusing SPA/DS components.** Keeps one
    framework (ADR-0002's thesis) and reuses the shared DS component inventory —
-   notably DS-5's CitationBlock, which DS-5 v3 shares between inbox external
+   notably DS-5's CitationBlock, which DS-5 shares between inbox external
    cards and public articles. Con: ships React/JS to a pure reading page that
    needs none, and couples the public surface's build to the app's.
 4. **Dedicated SSR/SSG renderer, Astro + React islands (chosen).** A small

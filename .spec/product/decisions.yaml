@@ -15,6 +15,63 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-15:
+    v: 1
+    date: 2026-07-18
+    by: founder (shpin.p@diffco.us)
+    binds: [DS-3, DS-1, DEC-6, DEC-7, ADR-0001]
+    title: Design foundations re-explored — substrate + terracotta reaffirmed, neutrals refined, type changed
+    statement: >-
+      The founder reopened the design foundations (choosing the deepest redesign
+      option) and, after a fresh exploration — four theme directions rendered as an
+      Artifact, then three real-font type pairings in Claude Design (project AI-S-PR) —
+      REAFFIRMED the substrate (ADR-0001, the Airbnb open-design fork) and the
+      terracotta accent, light-only, single-accent, and calm-colleague pillars
+      (DEC-6/DEC-7). This is therefore a reaffirmation, NOT a supersession of ADR-0001
+      or DEC-6/DEC-7. Two refinements are adopted, both realized in
+      design/design-system/steward/tokens.css: (1) the neutral ramp is warmed to a
+      deliberate bias toward the accent — page ground (#fbfaf8), ink ramp, and
+      hairlines — so the neutrals read "chosen, not inherited", while card surfaces
+      stay clean white for photo contrast (VAL-4); (2) typography moves OFF Inter (a
+      generic default) to Bricolage Grotesque (display) + Source Sans 3 (body) — a
+      characterful grotesk over a neutral humanist body — chosen over editorial-serif
+      and single-humanist candidates, amending DEC-6's Inter choice and bumping DS-3 to
+      v2. Downstream: the full component inventory and screens are rebuilt on this
+      foundation and published to the AI-S-DS design system via /design-sync; ADR-0001
+      gains a dated amendment note (substrate unchanged).
+
+  DEC-14:
+    v: 1
+    date: 2026-07-18
+    by: founder (shpin.p@diffco.us)
+    binds: [INC-3, GR-3, DS-5, UI-6, UI-7, UI-16, UI-29, UI-45, UI-17, UI-67, UI-68]
+    title: Pre-UI experience reconciliation — GR-3 manifestation, TL2 inbox, activity center
+    statement: >-
+      Resolves the founder-requested pre-UI reconciliation audit of the approved
+      experience spine (INC-3 plus three deferrals). Four calls, taken together so the
+      inbox absorbs them in one design round rather than across three future redesigns:
+      (1) GR-3 sensitive-topic holds get a DISTINCT "held for your approval" card class
+      (DS-5 v4) — visible, counted in "N of M", never batch-approvable, ReasonLine names
+      the hold — chosen over a lighter ReasonLine-only variant or inverting the
+      veto-window card, because a hard guardrail deserves an unmistakable, non-confusable
+      surface (resolves INC-3; UI-7 v3, UI-29 v2). (2) TL2 (full autopilot) inbox
+      semantics are designed NOW rather than deferred to AUT-2/P1 — at TL2 the inbox is
+      mostly silent and its only content is GR-3 holds + publish failures + the streak,
+      so designing the hold effectively designs the TL2 inbox; consistent with DEC-8's
+      TL1-aware-now rationale (UI-7 v3, UI-16 v2). (3) An in-app ACTIVITY & NOTIFICATIONS
+      center is added to the spine (new screen UI-67, flow UI-68 under UI-17 "the
+      inspectable brain") — the founder-facing realization of VAL-3 "everything auto-done
+      is logged and visible", aggregating auto-published actions (PUB-3 publish log),
+      publish failures, and channel re-auth prompts (UI-26) — each surfaced only when the
+      founder must act. Its shell affordance lives in the TOP CHROME, not the left nav,
+      and shows a count ONLY when founder action is required — reconciling the addition
+      with UI-6's "only Inbox carries a nav chip" rule rather than breaking it (UI-6 v4).
+      (4) UI-45 "cancel with dignity" is given an explicit screen node (the cancel
+      section of UI-12), closing the one flow that cited no surface. The
+      offline-connectivity posture beyond UI-5's resumable upload stays P0-minimal and is
+      subsumed by the actionable-alerts model (no separate global offline mode at P0).
+      Reaches approved after the Product-Designer challenger pass of this round.
+
   DEC-13:
     v: 1
     date: 2026-07-18
