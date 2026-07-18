@@ -1,4 +1,5 @@
 kind: registry
+format-version: 1
 title: Steward Prefix Registry
 intent: >-
   Maps every ID prefix to the file that owns its definitions. Read as data by
