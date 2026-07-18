@@ -15,6 +15,72 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-13:
+    v: 1
+    date: 2026-07-18
+    by: founder (shpin.p@diffco.us)
+    binds: [Q-12, G-1, G-2, G-3, G-4, G-5, GEN-1, APR-1, PUB-1, AUT-1]
+    title: Close the goal-honesty pass — resolve Q-12 + adopt the outcome tier
+    statement: >-
+      Completes the DEC-11 pass now that the cortex outcome-validation tier has shipped
+      (Steward pins cortex v0.20.1). Two moves. (1) RESOLVES Q-12 — closes the G-1/G-4/G-5
+      capability gaps by wiring the generate→approve→publish core loop to those goals:
+      GEN-1 and APR-1 gain `serves` G-1 + G-5; APR-1 and AUT-1 gain `serves` G-4; PUB-1
+      gains `serves` G-5. Each touched requirement bumps a version (GEN-1/APR-1/PUB-1/
+      AUT-1 → v2) and cascades a re-pin of the coverage `against` lists that reference it;
+      G-1/G-4/G-5 coverage flips partial→complete because the loop is now on-path, not
+      relied on in prose. (2) ADOPTS the outcome tier — every Steward goal is a field-metric
+      goal, so each now declares an `outcome` assertion (status in-progress: no cohort
+      measurement exists yet). This STRUCTURALLY gates a goal's `achieved` on a field
+      measurement, not on build alone, replacing the DEC-11 prose caveat with an
+      engine-enforced tier. Net honest state: coverage = capability decomposition (complete
+      for all five), outcome = field validation (in-progress until cohort data). Recorded
+      per HITL (a requirement/goal change): the founder authorized both moves on 2026-07-18.
+      CHALLENGE EVIDENCE (compass lens): specs/challenges/goals-2026-07-18-r3.md (pass —
+      serves-closures on-path, against-pins reconciled, outcome tier honest, INC-2
+      structurally closed), continuing the r1→r2 chain recorded on DEC-11.
+
+  DEC-11:
+    v: 1
+    date: 2026-07-18
+    by: founder (shpin.p@diffco.us)
+    binds: [INC-2, Q-12, G-1, G-2, G-3, G-4, G-5]
+    title: Goal coverage is a capability claim, not an outcome promise
+    statement: >-
+      Resolves INC-2 (goal-coverage backfill overstated achievability). Adopted via
+      the founder's two AskUserQuestion choices on 2026-07-18. (1) HONESTY POLICY:
+      every goal here is a field-measured OUTCOME/METRIC goal, so `coverage: complete`
+      asserts only that the CAPABILITY DECOMPOSITION is complete — no capability the
+      metric plausibly needs is missing — and explicitly NOT that the metric target
+      will be met; metric achievement is empirical, validated by cohort measurement,
+      and the causal leap is named against each goal's risks (R-1/R-5, A-5, R-3). (2)
+      GRANULARITY: coverage reasoning is argued requirement-by-requirement so the
+      `against` pin is auditable; every pinned ID must be placed in the causal chain.
+      (2b) CRITICAL-PATH rule (added after the r1 challenger fail): `complete` requires
+      the serving set to pin every capability on the metric's CRITICAL PATH; omitting a
+      step is a gap even when another goal decomposes it, because the roll-up has no
+      goal→goal edge. The status split is DERIVED from this rule, not asserted: G-2
+      (approval-rate, path ends at APPROVE) and G-3 (in-app time, an aspect property)
+      are `complete` — their paths are fully pinned; G-1 (pay/stay — value delivery
+      needs the loop, pins PUB but omits GEN+APR), G-4 (streak — pins GEN+PUB, omits the
+      APR/AUT approve step), and G-5 (first live post — pins none of GEN/APR/PUB) are
+      `partial`. The earlier r1 attempt kept G-1/G-4 `complete` on a "cross-goal reliance
+      in prose" device; the challenger correctly ruled that the very prose-substitution
+      INC-2 rejects, so all three critical-path gaps are now `partial`, tracked for
+      closure as Q-12. The `serves`-edge audit found APR-2/4/6, CHT-3, BOT-2/3 serve G-2
+      only weakly (file-level inheritance); left uncorrected as defensible, noted in G-2
+      coverage. Coverage reasoning cites requirement IDs by causal role only — no
+      restated parameters or priorities (the r1 low finding). (4) METHOD
+      ESCALATION: the root cause is a Cortex gap — the roll-up models `achievable`
+      (decomposed) and `achieved` (built) but has no OUTCOME-VALIDATION tier for a
+      field-measured goal, so it would imply a behavioral metric is achieved when only
+      capabilities are built. Raised as a change-request against the cortex method
+      (capability-goal vs outcome-goal distinction); until it lands, the leap is
+      carried in prose + risks here. CHALLENGE EVIDENCE (compass lens, mandatory for a
+      goal-register reshape): specs/challenges/goals-2026-07-18-r1.md (fail — the
+      G-1/G-4 coherence defect) → goals-2026-07-18-r2.md (pass — rule stated + statuses
+      re-derived + altitude leak cleared).
+
   DEC-10:
     v: 1
     date: 2026-07-17

@@ -11,9 +11,10 @@ intent: >-
 
 items:
   GEN-1:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-13
     priority: P0
+    serves: [G-1, G-2, G-4, G-5]
     depends: [MEM-1, STR-1, EXT-1]
     title: Rolling 4-week calendar
     statement: |

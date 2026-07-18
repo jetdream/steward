@@ -14,6 +14,28 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-17:
+    v: 1
+    type: pattern
+    scope: [docs-format, process]
+    source: goal-coverage honesty pass (INC-2 / DEC-11, 2026-07-18)
+    title: A coverage claim is only as honest as its granularity and its scope
+    statement: >-
+      Two traps when asserting `coverage: complete` on a parent (goal/requirement).
+      (1) GRANULARITY: argue sufficiency at the SAME granularity as the `against`
+      pin. A `reasoning` that names capability REGISTERS ("across BIL, PUB, NWS")
+      while the pin lists individual IDs is a backfill the lint trusts but no human
+      can audit, and it hides gaps — writing the argument requirement-by-requirement
+      is what surfaced that G-5 pinned none of the generate→approve→publish chain its
+      own metric needs. Every pinned ID must be placeable in the causal chain. (2)
+      SCOPE: for an OUTCOME/METRIC parent (a field-measured target — churn %, approval
+      %, time, activation), `complete` can only mean "the CAPABILITY decomposition is
+      complete," never "the metric will be met" — capabilities are necessary but not
+      sufficient for a market/behavioral outcome. State the scope in the reasoning and
+      name the outcome-leap against a risk. The deeper fix (an outcome-validation tier
+      distinct from decomposed/built) is a method-level change, raised to cortex — but
+      the authoring discipline above holds regardless.
+
   LRN-1:
     v: 1
     type: gotcha

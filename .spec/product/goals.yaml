@@ -7,6 +7,34 @@ intent: >-
   The goals every requirement must serve (register `serves:` fields). A
   requirement serving no goal is a removal candidate.
 
+  Every goal here is a field-measured OUTCOME goal, so each carries TWO
+  justified assertions (DEC-11, DEC-13):
+
+  - `coverage` — is the CAPABILITY decomposition complete? `status: complete`
+    requires the serving set to include every capability on the metric's
+    CRITICAL PATH: the chain of capabilities that produces the metric's subject,
+    up to its measurement point (a capability that only moves whether the TARGET
+    is HIT — not whether the subject exists — is an outcome dependency, not a
+    path step). Omitting a critical-path step is a gap even when another goal
+    decomposes it, because the roll-up has no goal→goal edge. The shared product
+    core loop is generate (GEN) → approve/autopublish (APR/AUT) → publish (PUB);
+    a goal whose metric's path runs through the loop pins the steps it runs
+    through. Metrics that stop earlier pin only that far — e.g. approval-rate
+    (G-2) ends at APPROVE, so PUB is legitimately off its path. The Q-12 closure
+    (DEC-13) wired the loop to G-1/G-4/G-5, so all five are now `complete`.
+
+  - `outcome` — is the metric VALIDATED in the field? Building and testing the
+    capabilities is necessary but NOT sufficient for a market/behavioral result,
+    so a goal's `achieved` state additionally requires this assertion `validated`
+    (backed by a cohort-measurement record the engine checks exists + names the
+    goal — it never ingests analytics). All five sit at `in-progress` — no cohort
+    data yet — so none can report `achieved` on build alone. This replaces the
+    former prose caveat with the engine-enforced outcome tier that shipped in the
+    cortex toolchain (the resolution of the method gap this project surfaced).
+
+  Reasoning is argued requirement-by-requirement so each `against` pin is
+  auditable; every pinned ID must be placeable on the metric's path.
+
 items:
   G-1:
     v: 1
@@ -15,13 +43,25 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Decomposed across billing (BIL), publishing (PUB), the org news site (NWS),
-        onboarding (ONB-1..5), and the ops console (OPS) — the requirement set spans the
-        acquisition -> first-value -> paid-retention path this goal measures, with no
-        decomposition gap. This asserts the requirement decomposition is sufficient;
-        goal ACHIEVEMENT is pending spec-elements + implementation (Phase 4), and this
-        assertion dirties if any pinned requirement is version-bumped.
-      against: [BIL-1@1, BIL-2@1, BIL-3@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, OPS-1@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1]
+        CAPABILITY-decomposition complete along the commercial funnel + the value-delivery
+        loop the metric runs through (the Q-12 gap closed by DEC-13: GEN-1 + APR-1 now serve
+        G-1). VALUE-DELIVERY LOOP (the product must produce posts to be worth paying for):
+        GEN-1 (generation) → APR-1 (approval) → PUB-1 (publish) — the full chain is now
+        on-path. COMMERCIAL LAYER: ACQUISITION — ONB-1 + ONB-2 + ONB-3 + ONB-4 + ONB-5 lower
+        the cost of reaching first value; PROOF & growth loop — NWS-1..5 give a visible
+        donor-facing deliverable and carry the "published with Steward" reference (NWS-3),
+        NWS-6 the custom-subdomain upgrade; CONVERSION & refund mechanics — BIL-1 (the paywall
+        + the refund the refund-rate metric measures), BIL-3; DELIVERY reliability beyond the
+        base pipe — PUB-2..4; RETENTION QA — OPS-1. No capability gap. The metric TARGETS
+        (paying-org counts, refund <20%, churn <3%) are field outcomes — see this goal's
+        `outcome` assertion; the standing bet is R-1/R-5 and A-5.
+      against: [APR-1@2, BIL-1@1, BIL-2@1, BIL-3@1, GEN-1@2, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, OPS-1@1, PUB-1@2, PUB-2@1, PUB-3@1, PUB-4@1]
+    outcome:
+      status: in-progress
+      reasoning: >-
+        Field-validated only by cohort-1 billing/retention data — paying-org counts at day-90
+        and month-5, 30-day refund rate, post-cohort monthly churn. No cohort exists yet, so
+        this is in-progress; `achieved` is correctly gated until a measurement record lands.
     statement: >-
       ≥1 nonprofit paying $199/mo within 90 days of dev start; 5 paying orgs
       by month 5. Refund rate under the 30-day guarantee <20% in cohort 1.
@@ -34,13 +74,28 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Decomposed across the draft-quality -> earned-autonomy path: content generation
-        (GEN), posting strategy (STR), org memory (MEM), the interviewer (INT), messenger
-        ingestion (BOT), external radar (EXT), agentic chat (CHT), the approval inbox
-        (APR), the autonomy system (AUT), and ops (OPS) — the capabilities that make a
-        draft good enough to ship without edits and then raise the trust level. No
-        decomposition gap; achievement pending spec-elements (Phase 4).
-      against: [APR-1@1, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@1, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@1, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@1]
+        CAPABILITY-decomposition complete. The metric's critical path ENDS AT APPROVAL —
+        ≥70% approved-without-edits is measured when the founder approves — so the path is
+        generate→approve, both fully pinned; publishing is correctly off this path. QUALITY
+        inputs feeding the path: MEM-1 (corrections persist and are never violated again — the
+        compounding that makes near-autonomy possible), MEM-2, MEM-3; GEN-1 + GEN-2 + GEN-3 +
+        GEN-4 + GEN-5 + GEN-6 (on-mission, per-channel, gated drafts with a real picture);
+        STR-1..4 (the editorial contract enforced on every draft); INT-1..3 (the story
+        material that makes content specific, not generic); EXT-1..5 (the external well,
+        in-voice with mandatory citations); CHT-1 + CHT-2 + CHT-4 (context, redirects that bind
+        future drafts, colleague voice); BOT-1 (raw material). APPROVE + learning loop: APR-1 +
+        APR-3 + APR-5. EARNED AUTONOMY (the ultimate approve-without-edit): AUT-1 + AUT-2 +
+        AUT-3. QUALITY FLOOR: OPS-1. No capability gap on the approval-rate path. Weakly-serving
+        inherited edges (APR-2/APR-4/APR-6, CHT-3, BOT-2/BOT-3 primarily serve effort, G-3)
+        noted, left uncorrected as defensible (DEC-11). The 70% target is a field outcome — see
+        the `outcome` assertion; R-5 is the quality dial.
+      against: [APR-1@2, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@2, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@1]
+    outcome:
+      status: in-progress
+      reasoning: >-
+        Field-validated only by the per-org approval-without-edit rate measured at an org's
+        week 8 across the cohort. No cohort data yet → in-progress; `achieved` gated until a
+        measurement record lands.
     statement: ≥70% of drafts approved without edits by an org's week 8.
 
   G-3:
@@ -50,13 +105,27 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Decomposed across the low-effort surfaces: onboarding (ONB-1..5), the interviewer
-        (INT), org memory (MEM), the proactive manager (PRO), messenger ingestion (BOT),
-        agentic chat (CHT), the approval inbox (APR), the autonomy system (AUT), the app
-        shell (UX), and the design system (DS) — the capabilities that keep the founder's
-        weekly time under the target by doing the work and surfacing only approve/redirect.
-        No decomposition gap; achievement pending spec-elements (Phase 4).
-      against: [APR-1@1, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@1, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@1, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
+        CAPABILITY-decomposition complete. This metric measures a PROPERTY of using the product
+        (median in-app time), not a core-loop execution, so its critical path is the set of
+        surfaces + automations that consume — or remove — founder time, all pinned; generation
+        quality and publishing live on other goals' paths. THE TWO-VERBS SURFACE (approve/
+        redirect fast): APR-1 + APR-2 + APR-4 + APR-6; UX-1..7 (the shell + compose) and UX-8
+        (radar, whose browse time the metric explicitly excludes); DS-1..8 (DS-6 no-empty-states
+        and DS-2 single-accent make the next action obvious; DS-4 a11y cuts friction; DS-3/DS-7
+        are texture/posture). WORK DONE FOR THE FOUNDER: PRO-1..3 (moves first), AUT-1..3
+        (auto-publish removes approvals from the queue as trust is earned), MEM-1 + MEM-2 (never
+        ask twice), ONB-1..5 (zero-homework setup). LOW-FRICTION INPUT: BOT-1..3 (from the
+        phone), CHT-1..4 (talk instead of click), INT-1..3 (a few questions at a time). No
+        capability gap on the effort path. The <15-min target is a field outcome — see the
+        `outcome` assertion; it leans downstream on AUT auto-publish firing and on high draft
+        quality (G-2) so edits — the biggest time sink — are rare.
+      against: [APR-1@2, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@1, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
+    outcome:
+      status: in-progress
+      reasoning: >-
+        Field-validated only by median founder in-app time/week (chat/radar-browse excluded)
+        measured across the cohort after week 1. No cohort data yet → in-progress; `achieved`
+        gated until a measurement record lands.
     statement: >-
       Median founder time in product <15 min/week after the first week (time
       voluntarily spent chatting excluded).
@@ -68,12 +137,24 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Decomposed across the cadence engine: the proactive manager (PRO), posting via
-        publishing (PUB), stewardship (STW), external radar (EXT), content generation
-        (GEN), and the org news site (NWS) — the capabilities that keep an org's 4-week
-        posting streak unbroken. No decomposition gap; achievement pending spec-elements
-        (Phase 4).
-      against: [EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@1, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@1, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1]
+        CAPABILITY-decomposition complete across the cadence loop (the Q-12 gap closed by
+        DEC-13: APR-1 + AUT-1 now serve G-4). A 4-week streak is a sustained cadence of LIVE
+        posts, so its path is generate→approve/autopublish→publish, repeatedly — now fully
+        pinned: SUPPLY — GEN-1 (the rolling calendar, the metronome, with the ≥1-per-4-weeks
+        stewardship overlay baked in) + GEN-2..6; EXT-1..5 (the second well); STW-1 + STW-2
+        (stewardship overlays); NWS-1..6 (an owned content surface). APPROVE/AUTOPUBLISH —
+        APR-1 (the approval that turns a supplied draft into a live post) + AUT-1 (auto-publish
+        that keeps the cadence without a manual step). ANTI-STALL — PRO-1 (requests the scarce
+        pictures that block posts) + PRO-2 + PRO-3. DELIVERY — PUB-1..4. No capability gap. The
+        80% target is a field outcome — see the `outcome` assertion; the top field threat is
+        the picture bottleneck (R-3).
+      against: [APR-1@2, AUT-1@2, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@2, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@2, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1]
+    outcome:
+      status: in-progress
+      reasoning: >-
+        Field-validated only by the share of active orgs holding an unbroken 4-week posting
+        streak, measured across the cohort. No cohort data yet → in-progress; `achieved` gated
+        until a measurement record lands.
     statement: >-
       ≥80% of active orgs maintain an unbroken 4-week posting streak.
 
@@ -84,11 +165,24 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Decomposed across the first-session path: onboarding (ONB, incl. the ONB-6
-        first-approval flow that serves G-5 only), the interviewer (INT), and the design
-        system (DS) — the capabilities that get a first approved post live within 48h. No
-        decomposition gap; achievement pending spec-elements (Phase 4).
-      against: [DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1]
+        CAPABILITY-decomposition complete (the Q-12 gap closed by DEC-13: GEN-1 + APR-1 + PUB-1
+        now serve G-5). The metric is a post APPROVED AND LIVE within 48h, so its critical path
+        is the full generate→approve→publish loop under a deadline — now fully pinned. SETUP →
+        first draft: ONB-1..5 (zero-friction setup) + ONB-6 (first drafts inside the first
+        session — G-5-only) + INT-1..3 (the interviewer fills thin context in the first ten
+        minutes). PRODUCE THE LIVE POST: GEN-1 (generation, which ONB-6 leans on), APR-1
+        (approval), PUB-1 (publishing). SURFACES: DS-1..8. No capability gap. NOTE (tracked as
+        the resolved Q-12 sub-question): GEN-3's hard every-post-needs-a-picture rule (via GEN-4
+        awaiting-picture) is the likeliest 48h blocker in the field — an outcome risk, mitigated
+        by library seeding at ingestion (R-3), not a decomposition gap. The 48h target is a
+        field outcome — see the `outcome` assertion.
+      against: [APR-1@2, DS-1@1, DS-2@1, DS-3@1, DS-4@1, DS-5@3, DS-6@1, DS-7@1, DS-8@2, GEN-1@2, INT-1@1, INT-2@1, INT-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1, PUB-1@2]
+    outcome:
+      status: in-progress
+      reasoning: >-
+        Field-validated only by time-to-first-approved-live-post measured per org against the
+        48h target across the cohort. No cohort data yet → in-progress; `achieved` gated until
+        a measurement record lands.
     statement: >-
       First approved post live within 48 hours of the org's first session.
       (Absorbed from Vision v0.2 metrics; see INC-1.)

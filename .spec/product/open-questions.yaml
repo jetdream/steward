@@ -100,6 +100,35 @@ items:
       typography/imagery treatments per org.
       RESOLVED (DEC-10): name + logo + accent only; no per-org typography.
 
+  Q-12:
+    v: 1
+    status: resolved
+    decidable-by: user
+    binds: [G-1, G-4, G-5]
+    resolution: >-
+      RESOLVED (DEC-13, 2026-07-18): the serves-edge closures were made — GEN-1 + APR-1 →
+      G-1/G-5, APR-1 + AUT-1 → G-4, PUB-1 → G-5 (GEN-1/APR-1/PUB-1/AUT-1 → v2, coverage
+      re-pinned). G-1/G-4/G-5 coverage is now complete: the generate→approve→publish core
+      loop is on each goal's critical path. The GEN-3 picture-blocker sub-question was
+      classified an OUTCOME risk (mitigated by R-3 library seeding), not a decomposition
+      gap — carried by G-5's `outcome` assertion, not a serving edge.
+    title: Close the core-loop serves-edge gaps (G-1/G-4/G-5 → complete)
+    statement: >-
+      Three OUTCOME goals are `coverage: partial` because their serving sets omit
+      steps of the generate→approve→publish core loop their metrics run through:
+      G-5 (post live in 48h) omits GEN, APR, and PUB entirely; G-4 (4-week streak)
+      omits the approve/autopublish step (APR, AUT); G-1 (pay/stay) omits the
+      generation + approval steps its value delivery rests on (GEN, APR). Closing
+      them means adding the missing `serves:` edges (candidate minimum: GEN-1 +
+      APR-1 + PUB-1 → G-5; APR-1 + AUT-1 → G-4; GEN-1 + APR-1 → G-1) — a requirement
+      change: each edited requirement bumps a version and cascades a re-pin of every
+      coverage `against` list that references it. Deferred out of the DEC-11 honesty
+      pass to keep that pass scoped to the goals layer. Sub-question: is GEN-3's hard
+      every-post-needs-a-picture rule (via GEN-4 awaiting-picture) a genuine 48h
+      ACTIVATION RISK for G-5 worth a mitigation (e.g. a first-post picture-optional
+      path), or is library seeding at ingestion (R-3) sufficient? Recommendation:
+      make the edge additions, then re-affirm the three goals to complete.
+
   Q-11:
     v: 1
     status: resolved

@@ -11,6 +11,36 @@ intent: >-
   open count.
 
 items:
+  INC-2:
+    v: 1
+    status: resolved
+    binds: [G-1, G-2, G-3, G-4, G-5]
+    title: Goal coverage overstated achievability (register-granular sufficiency)
+    statement: >-
+      Detected 2026-07-18 (founder review of the 49e70df goal-coverage backfill).
+      Every goal carried `coverage: status: complete` whose `reasoning` argued
+      sufficiency at REGISTER granularity ("decomposed across billing (BIL),
+      publishing (PUB)…") while the `against` pin listed 19–45 INDIVIDUAL
+      requirement IDs — so the sufficiency claim was asserted, never demonstrated at
+      the level it pinned, and no missing capability could surface. Two consequences:
+      (1) the lint trusts `coverage: complete` at face value, so the graph would flip
+      each goal to `achievable` on the strength of unauditable prose the moment specs
+      land; (2) all five are OUTCOME/METRIC goals, and `complete` conflated CAPABILITY
+      completeness with OUTCOME achievement — a leap no requirement set can guarantee.
+      Writing the argument at requirement granularity then exposed a concrete false
+      claim: G-5 (post live in 48h) pinned NONE of the generate→approve→publish chain
+      its own metric requires.
+    resolution: >-
+      DEC-11 adopts the capability-vs-outcome honesty policy: coverage on a metric
+      goal is rewritten requirement-by-requirement, `status: complete` is scoped to
+      "capability decomposition complete — not the metric will be met" with the
+      outcome-leap named against its risks, and status is DERIVED per-goal from a
+      stated critical-path rule. G-1, G-4, and G-5 were downgraded to `partial` (each
+      omits a step of the generate→approve→publish core loop its metric runs through;
+      gaps tracked as Q-12); G-2 and G-3 stay `complete` (their metric paths are fully
+      pinned). The underlying method gap (no outcome-validation tier) is raised against
+      cortex (DEC-11).
+
   INC-1:
     v: 1
     status: resolved
