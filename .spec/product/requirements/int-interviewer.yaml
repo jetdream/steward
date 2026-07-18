@@ -43,3 +43,24 @@ items:
       After launch weeks, the Interviewer occasionally (rate-limited) probes
       for fresh material tied to the calendar ("your beach cleanup is Saturday
       — want me to prep a before/after pair of posts?").
+
+  INT-4:
+    v: 1
+    decided-by: DEC-17
+    priority: P1
+    title: Progressive enrichment
+    statement: >-
+      Onboarding gathers what it can and never blocks on gaps (ONB-1); the rest
+      is filled PROGRESSIVELY, on the founder's time, not via upfront forms
+      (R-10). The system keeps a gentle, always-available set of OPEN QUESTIONS
+      — visible but never a nag — that the founder can answer in a spare ten
+      minutes, each tied to why it helps ("a founder-story detail would sharpen
+      next week's posts"). Answers flow to Org Memory (MEM-1) and improve future
+      drafts. Complements INT-3's calendar-triggered curiosity with
+      DISPOSITION-triggered asks (the enrichment loop, CHT-5): a Skip or reject
+      invites one deeper question. Surface: the Organization page (UX-5) and via
+      chat; rate-limited and dismissible, never blocking.
+    acceptance: >-
+      A founder who provided minimal onboarding still receives drafts; an
+      always-available "help me understand you" list holds a few specific open
+      questions; answering one is reflected in later drafts.

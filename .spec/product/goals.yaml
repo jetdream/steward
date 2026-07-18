@@ -80,16 +80,16 @@ items:
         inputs feeding the path: MEM-1 (corrections persist and are never violated again — the
         compounding that makes near-autonomy possible), MEM-2, MEM-3; GEN-1 + GEN-2 + GEN-3 +
         GEN-4 + GEN-5 + GEN-6 (on-mission, per-channel, gated drafts with a real picture);
-        STR-1..4 (the editorial contract enforced on every draft); INT-1..3 (the story
+        STR-1..4 (the editorial contract enforced on every draft); INT-1..4 (the story
         material that makes content specific, not generic); EXT-1..5 (the external well,
-        in-voice with mandatory citations); CHT-1 + CHT-2 + CHT-4 (context, redirects that bind
+        in-voice with mandatory citations); CHT-1 + CHT-2 + CHT-4 + CHT-5 (context, redirects that bind
         future drafts, colleague voice); BOT-1 (raw material). APPROVE + learning loop: APR-1 +
         APR-3 + APR-5. EARNED AUTONOMY (the ultimate approve-without-edit): AUT-1 + AUT-2 +
         AUT-3. QUALITY FLOOR: OPS-1. No capability gap on the approval-rate path. Weakly-serving
         inherited edges (APR-2/APR-4/APR-6, CHT-3, BOT-2/BOT-3 primarily serve effort, G-3)
         noted, left uncorrected as defensible (DEC-11). The 70% target is a field outcome — see
         the `outcome` assertion; R-5 is the quality dial.
-      against: [APR-1@3, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@2, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@1]
+      against: [APR-1@3, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, CHT-5@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@1, GEN-1@2, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@1]
     outcome:
       status: in-progress
       reasoning: >-
@@ -115,11 +115,11 @@ items:
         are texture/posture). WORK DONE FOR THE FOUNDER: PRO-1..3 (moves first), AUT-1..3
         (auto-publish removes approvals from the queue as trust is earned), MEM-1 + MEM-2 (never
         ask twice), ONB-1..5 (zero-homework setup). LOW-FRICTION INPUT: BOT-1..3 (from the
-        phone), CHT-1..4 (talk instead of click), INT-1..3 (a few questions at a time). No
+        phone), CHT-1..5 (talk instead of click), INT-1..4 (a few questions at a time). No
         capability gap on the effort path. The <15-min target is a field outcome — see the
         `outcome` assertion; it leans downstream on AUT auto-publish firing and on high draft
         quality (G-2) so edits — the biggest time sink — are rare.
-      against: [APR-1@3, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@2, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
+      against: [APR-1@3, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, CHT-5@1, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@1, UX-2@1, UX-3@2, UX-4@1, UX-5@1, UX-6@1, UX-7@1, UX-8@1]
     outcome:
       status: in-progress
       reasoning: >-
@@ -169,14 +169,14 @@ items:
         now serve G-5). The metric is a post APPROVED AND LIVE within 48h, so its critical path
         is the full generate→approve→publish loop under a deadline — now fully pinned. SETUP →
         first draft: ONB-1..5 (zero-friction setup) + ONB-6 (first drafts inside the first
-        session — G-5-only) + INT-1..3 (the interviewer fills thin context in the first ten
+        session — G-5-only) + INT-1..4 (the interviewer fills thin context in the first ten
         minutes). PRODUCE THE LIVE POST: GEN-1 (generation, which ONB-6 leans on), APR-1
         (approval), PUB-1 (publishing). SURFACES: DS-1..8. No capability gap. NOTE (tracked as
         the resolved Q-12 sub-question): GEN-3's hard every-post-needs-a-picture rule (via GEN-4
         awaiting-picture) is the likeliest 48h blocker in the field — an outcome risk, mitigated
         by library seeding at ingestion (R-3), not a decomposition gap. The 48h target is a
         field outcome — see the `outcome` assertion.
-      against: [APR-1@3, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, GEN-1@2, INT-1@1, INT-2@1, INT-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1, PUB-1@2]
+      against: [APR-1@3, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, GEN-1@2, INT-1@1, INT-2@1, INT-3@1, INT-4@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, ONB-6@1, PUB-1@2]
     outcome:
       status: in-progress
       reasoning: >-

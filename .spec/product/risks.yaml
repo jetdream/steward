@@ -75,6 +75,19 @@ items:
       The P0 line is the scope; the ops console substitutes process for
       headcount (OPS-1).
 
+  R-10:
+    v: 1
+    title: A technical action surface churns the persona
+    statement: >-
+      The founder persona is tech- and marketing-averse and blank-page-averse
+      (users.md) — they bounced off schedulers and ChatGPT. An action surface
+      or chat that turns technical or overwhelming drives churn even when the
+      system is capable (threatens G-1 retention, G-3 effort). Mitigations:
+      affordances stay minimal, plain, and consequence-clear (VAL-6 v2, VAL-5);
+      the chat LEADS rather than presenting a blank prompt (CHT-5); no empty
+      states (DS-6); progressive, non-blocking enrichment rather than upfront
+      forms (INT-4).
+
   R-9:
     v: 1
     depends: [R-8]

@@ -53,19 +53,20 @@ arrive (ONB-6, UI-27)`.
 org has an ingestable web/social presence. For the newest, thinnest-source orgs
 the arc becomes **interview-first** — a gentle, few-questions-at-a-time
 conversation (**INT-1/INT-2, UI-23**), the one place the founder supplies raw
-material. It lands in the persona's comfort zone (talking, not marketing tools),
-but the promise (ONB-1/ONB-6, glossary "Lazy onboarding") should name this floor
-rather than imply literal zero input for everyone.
+material. It lands in the persona's comfort zone (talking, not marketing tools). Scoped
+by DEC-17: "zero-homework" means no *blocking* homework, and the gaps are filled
+progressively via **INT-4** (a gentle, always-available set of open questions) —
+never a gate; the glossary "Lazy onboarding" now states this.
 
-## Two conscious reconciliations (vision text vs. built spine)
-
-Recorded here so they are not mistaken for gaps; squaring the vision *language*
-with the spine is a HITL edit (see the terminology/coherence pass):
+## Two reconciliations (vision text vs. built spine) — resolved by DEC-17
 
 1. **Primary surface.** vision.md frames chat as *the primary interaction
-   model*; **DEC-7** made the shell the week's-work-first surface *with* a docked
-   chat companion. The spine's reconciliation is deliberate — the vision text
-   should be squared with it.
-2. **"Two verbs."** VIS-2/VAL-6 promise two verbs; the review surface shows four
-   actions. They collapse to two *concepts* (approve; redirect) with Edit/Skip as
-   facets — but the promise should be stated so it stays literally true.
+   model*; **DEC-7** made the shell the **Ready**-first surface *with* a docked
+   chat companion. Resolved: chat is the always-**proactive, leading**
+   conversational layer (**CHT-5**) — the founder mostly *answers*, and it is
+   never a blank surface they must drive. "Primary" is squared as "the
+   conversational layer that leads," not "the home surface."
+2. **"Two verbs."** VIS-2/VAL-6 promise two verbs; the surface shows more
+   actions. Resolved (**VAL-6 v2**): "two verbs" is the disposition-not-
+   production *essence* (approve / redirect); Edit/Adjust and Skip are facets,
+   kept minimal, plain, and consequence-clear — never technical (VAL-5, R-10).

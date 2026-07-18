@@ -51,3 +51,26 @@ items:
     statement: >-
       Colleague, never software; every system-initiated message carries a
       reason. Governed by VAL-5.
+
+  CHT-5:
+    v: 1
+    decided-by: DEC-17
+    priority: P0
+    title: Proactive, leading chat — never a blank prompt
+    statement: >-
+      Chat never presents a blank prompt (VAL-6, DS-6 applied to chat). It
+      LEADS the conversation so the founder mostly ANSWERS questions they
+      already know the answers to; when idle it offers a few non-trivial,
+      context-relevant suggested openings rather than an empty box. It hosts
+      the guided "Adjust" — the alternative to APR-1's raw inline Edit: instead
+      of a text editor, the chat asks what to change and offers the most
+      relevant options given the overall context (Memory + Strategy + this
+      draft). And it is the home of the ENRICHMENT LOOP (learn-by-disposing):
+      an information-bearing disposition — a Skip/reject ("mind saying why?",
+      OptionalReason) or an Adjust — becomes a short, optional conversation
+      that deepens Org Memory (MEM-1). Blank-page avoidance is the point: the
+      hardest thing for this persona is knowing what to say (R-10).
+    acceptance: >-
+      Opening chat with no prior context shows suggested, specific openings
+      (never an empty box); skipping a draft offers a one-line "why?" that,
+      answered, writes a rule/fact to Memory.

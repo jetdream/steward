@@ -15,6 +15,35 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-17:
+    v: 1
+    date: 2026-07-18
+    by: founder (shpin.p@diffco.us)
+    binds: [VAL-6, CHT-5, INT-4, R-10, APR-1, DEC-16]
+    title: Interaction-model refinements — leading chat, learn-by-disposing enrichment, non-blocking onboarding
+    statement: >-
+      Founder refinements taken while resolving the alignment audit's coherence items —
+      four decisions on HOW the founder interacts, all grounded in the persona
+      (tech/marketing-averse, blank-page-averse). (2.1) The "two verbs" promise is the
+      DISPOSITION-not-production essence; the concrete action set may exceed two verbs
+      (Edit/Adjust, Skip) but each must stay minimal, plain-language, and
+      consequence-clear — never technical; a technical/overwhelming surface is a churn
+      risk (VAL-6 v2, R-10). This resolves the audit's "two-verbs" coherence item. (2.2)
+      Chat must LEAD: it never shows a blank prompt — it drives the conversation so the
+      founder mostly ANSWERS what they already know, offers non-trivial context-relevant
+      suggested prompts when idle, and hosts the guided "Adjust" (what to change, with
+      the most relevant options) as the alternative to APR-1's raw inline Edit (new
+      CHT-5, P0). This resolves the audit's "chat-as-primary" coherence item — chat is
+      the always-proactive conversational layer, not a blank surface the founder must
+      drive. (2.3) "Zero-homework" onboarding means no BLOCKING homework: the system uses
+      whatever it can find, structures it flexibly, and never blocks on gaps (ONB-1
+      already), while a gentle, always-available set of OPEN QUESTIONS invites the founder
+      to deepen the org's context in spare time (new INT-4, P1). This scopes the audit's
+      zero-homework honesty item. Unifying concept: the ENRICHMENT LOOP ("learn by
+      disposing") — every disposition that carries information (Skip/reject "why?", an
+      Adjust) becomes a short optional conversation that deepens Org Memory (spans CHT-5,
+      APR, INT-4; added to the glossary).
+
   DEC-16:
     v: 1
     date: 2026-07-18

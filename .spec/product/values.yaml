@@ -48,10 +48,13 @@ items:
       "Generation complete." Every system-initiated message or request carries
       a reason. Cited by CHT-4 and all user-facing surfaces.
   VAL-6:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-17
     title: The system moves first
     statement: >-
       It proposes; the founder disposes. No empty states that ask the founder
-      to create from scratch. The founder's job is two verbs: approve and
-      redirect.
+      to create from scratch. The founder's job is essentially two verbs —
+      approve and redirect — the disposition, not production. The concrete
+      affordances may exceed two (Edit/Adjust, Skip) but each must stay
+      minimal, plain-language, and consequence-clear — never technical
+      (VAL-5); a technical, overwhelming action surface is a churn risk (R-10).

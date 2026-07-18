@@ -125,8 +125,16 @@ terms:
     (fundraising ask) A donation-request post; capped at 25% of the mix and
     permanently at most TL1.
   Lazy onboarding: >-
-    Zero-homework start: org name + email suffices; the product improves as
-    sources and interview answers arrive. Owned by ONB requirements.
+    No *blocking* homework (DEC-17): org name + email suffices to start
+    (ONB-1), the system uses whatever it can gather (ONB-2), and the rest is
+    filled progressively (INT-4) — never a gate. "Zero-homework" is literal for
+    orgs with an ingestable presence; thin-source orgs get a gentle
+    interview-first path (INT-1/INT-2), not a blocker. Owned by ONB/INT.
+  Enrichment loop: >-
+    (learn-by-disposing — DEC-17) Every information-bearing disposition — a
+    Skip/reject "why?", an Adjust request — becomes a short optional
+    conversation that deepens Org Memory (MEM-1). Spans CHT-5 (the leading
+    chat), APR (the disposition), and INT-4 (progressive open questions).
   Source ingestion: >-
     Harvesting the org's website and existing social accounts for facts and
     style at onboarding (ONB-2).
