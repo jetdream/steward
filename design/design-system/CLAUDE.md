@@ -11,7 +11,8 @@ contract — schema names identical, values differ):
   visual philosophy, `components.manifest.json` / `components.html` for
   component recipes, `preview/` for visual sanity checks.
 - [steward/](steward/) — **the theme Steward actually uses**: `tokens.css`
-  (the single token source, DS-1 — terracotta accent, Inter; deltas
+  (the single token source, DS-1 — terracotta accent, Bricolage Grotesque
+  + Source Sans 3; deltas
   documented inline), `tailwind-v4.css` (identical mapping to the
   reference, import swapped), `DESIGN.md` (Steward's adaptation
   language: the marketplace→workspace inversion, trust chrome, voice
@@ -22,4 +23,4 @@ contract — schema names identical, values differ):
   or the tokens and re-run `node build-previews.mjs`.
 
 Consumers (mockups now, `@client` components later) import **steward only**.
-Governance: DS-1..7 (requirements), ADR-0001, DEC-6/DEC-7.
+Governance: DS-1..8 (requirements), ADR-0001, DEC-6/DEC-7/DEC-15.

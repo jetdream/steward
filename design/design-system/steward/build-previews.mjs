@@ -19,10 +19,14 @@ body { margin: 0; background: var(--bg); color: var(--fg);
   font-family: var(--font-body); font-weight: 500;
   font-size: var(--text-base); line-height: var(--leading-body); }
 main { padding: var(--space-6); }
-h1 { font-size: var(--text-xl); font-weight: 600; margin: 0 0 var(--space-4);
-  line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }
+h1 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600;
+  margin: 0 0 var(--space-4); line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display); }
 h2 { font-size: var(--text-sm); font-weight: 600; color: var(--muted);
   margin: var(--space-6) 0 var(--space-3); }
+/* Display face for headlines, card titles, and the streak numerals; body
+ * stays Source Sans. (DS-3 v2 — chiseled display over magazine body.) */
+.display { font-family: var(--font-display); letter-spacing: var(--tracking-display); }
 .note { color: var(--muted); font-size: var(--text-sm); }
 .row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
 .stack { display: flex; flex-direction: column; gap: var(--space-3); }
@@ -107,15 +111,15 @@ ${[['Background', '--bg'], ['Surface', '--surface'], ['Surface warm', '--surface
   },
   {
     file: 'typography.html', group: 'Foundations', name: 'Typography',
-    subtitle: 'Inter — 500 body, tight display', width: 760,
+    subtitle: 'Bricolage Grotesque display · Source Sans 3 body', width: 760,
     implements: 'DS-3',
     css: `.spec { color: var(--meta); font-size: var(--text-xs); font-weight: 500; margin: var(--space-4) 0 2px; }
-.d { line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }`,
+.d { font-family: var(--font-display); line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }`,
     body: `<h1>Type scale</h1>
 <p class="spec">28px · 700 · display</p><div class="d" style="font-size: var(--text-2xl); font-weight: 700">Your week is ready</div>
 <p class="spec">22px · 600 · subsection</p><div class="d" style="font-size: var(--text-xl); font-weight: 600">What I know about your programs</div>
 <p class="spec">20px · 600 · card title</p><div class="d" style="font-size: var(--text-lg); font-weight: 600">Saturday's cleanup, in photos</div>
-<p class="spec">16px · 500 · body</p><div>Body text runs at weight 500, never 400 — a quietly confident texture at magazine leading.</div>
+<p class="spec">16px · 500 · body (Source Sans 3)</p><div>Body runs Source Sans 3 at weight 500 — a quietly confident texture at magazine leading, calm against Bricolage's characterful headlines.</div>
 <p class="spec">14px · 500 · caption / buttons</p><div style="font-size: var(--text-sm)">Captions, metadata, secondary buttons.</div>
 <p class="spec">12px · 500 · micro</p><div style="font-size: var(--text-xs); color: var(--muted)">Timestamps, footnotes, legal.</div>
 <p class="spec">44px · 700 · streak numeral (completion moments only)</p><div class="d" style="font-size: var(--text-3xl); font-weight: 700">6</div>`,
@@ -301,7 +305,7 @@ ${[1, 2, 3, 4, 6, 8, 12].map(n => `  <div class="row"><span class="lbl">--space-
     subtitle: 'The system narrates — never a blank page', width: 680,
     implements: 'DS-6',
     css: `.zero { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
-.streak { font-size: var(--text-3xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }`,
+.streak { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }`,
     body: `<h1>Zero states</h1>
 <div class="stack" style="gap: var(--space-4)">
   <div class="zero">
@@ -316,6 +320,112 @@ ${[1, 2, 3, 4, 6, 8, 12].map(n => `  <div class="row"><span class="lbl">--space-
   </div>
 </div>`,
   },
+  {
+    file: 'held-for-approval.html', group: 'Trust', name: 'HeldForApproval',
+    subtitle: 'Sensitive-topic hold — approval forced at any Trust Level (GR-3)', width: 460,
+    implements: 'DS-5',
+    css: `main { max-width: 420px; }
+.held { background: var(--surface); border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--border)); border-radius: var(--radius-md); box-shadow: inset 3px 0 0 var(--accent); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.hh { display: inline-flex; gap: var(--space-2); align-items: center; font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); }
+.hh .d { width: 6px; height: 6px; border-radius: var(--radius-pill); background: var(--accent); }`,
+    body: `<article class="held">
+  <span class="hh"><span class="d"></span>Held for your approval</span>
+  <div>A note on the flooding at the county shelter — how we're helping the animals displaced this week, and how neighbors can pitch in.</div>
+  <div class="reason">This touches a sensitive topic, so I'm not publishing it myself — it's yours to approve, whatever your trust settings.</div>
+  <div class="row"><button class="btn btn-primary">Approve</button><button class="btn btn-quiet">Edit</button><button class="btn btn-quiet">Redirect…</button></div>
+</article>
+<p class="note" style="margin-top: var(--space-4)">Counted in the inbox, never batch-approvable, visually the inverse of the veto-window card — a hard guardrail with a face (GR-3).</p>`,
+  },
+  {
+    file: 'veto-window.html', group: 'Trust', name: 'Veto-window card',
+    subtitle: 'TL1 auto-publish — visible, reversible, no action needed', width: 460,
+    implements: 'DS-5',
+    css: `main { max-width: 420px; }
+.veto { background: var(--surface-warm); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.vh { display: inline-flex; gap: var(--space-2); align-items: center; font-size: var(--text-xs); font-weight: 600; color: var(--muted); }
+.vh .d { width: 6px; height: 6px; border-radius: var(--radius-pill); background: var(--success); }`,
+    body: `<article class="veto">
+  <span class="vh"><span class="d"></span>Published · you can veto until Thu 6:00 pm</span>
+  <div>Volunteer spotlight: Maria's 200th shift — went out to Facebook and Instagram this morning.</div>
+  <div class="reason">You've approved 10 of these unedited, so I published on your behalf. Undo any time in the window.</div>
+  <div class="row"><button class="btn btn-quiet">Veto &amp; pull it</button><button class="btn btn-quiet">See what went out</button></div>
+</article>
+<p class="note" style="margin-top: var(--space-4)">Quiet, informational register — excluded from the "N of M" count and batch-approve, never confusable with a needs-approval card.</p>`,
+  },
+  {
+    file: 'provenance-line.html', group: 'Trust', name: 'ProvenanceLine',
+    subtitle: 'What a draft was built from — tap through to Memory', width: 640,
+    implements: 'DS-5',
+    css: `.prov { display: flex; gap: var(--space-2); align-items: baseline; font-size: var(--text-xs); color: var(--meta); }
+.prov a { color: var(--muted); text-decoration: underline dotted; text-underline-offset: 2px; }`,
+    body: `<h1>ProvenanceLine</h1>
+<div class="stack">
+  <div class="prov">Built from <a href="#">your update last Tuesday</a> · <a href="#">your website</a></div>
+  <div class="prov">Built from <a href="#">3 photos you sent Saturday</a> · <a href="#">the interview</a></div>
+  <div class="prov">Built from <a href="#">the County Wildlife Report</a> — external</div>
+</div>
+<p class="note" style="margin-top: var(--space-4)">Every draft carries one — "this one it made up" is never a question. One muted line; a tap opens the source in Memory (DEC-8, VAL-3).</p>`,
+  },
+  {
+    file: 'optional-reason.html', group: 'Trust', name: 'OptionalReason',
+    subtitle: 'One-tap, dismissible — shared by Skip, veto, radar marks', width: 640,
+    implements: 'DS-5',
+    css: `.chips { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.rchip { font: inherit; font-weight: 500; font-size: var(--text-sm); cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--fg-2); border-radius: var(--radius-pill); padding: 6px 14px; }
+.rchip:hover { border-color: var(--fg); }`,
+    body: `<h1>OptionalReason</h1>
+<div class="card" style="padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); max-width: 460px">
+  <div style="font-size: var(--text-sm)">Skipped. Mind saying why? <span class="note">(optional — it helps me learn)</span></div>
+  <div class="chips"><button class="rchip">Not now</button><button class="rchip">Not our style</button><button class="rchip">Wrong facts</button><button class="rchip">Tell me…</button></div>
+</div>
+<p class="note" style="margin-top: var(--space-4)">Appears after the action — the card's already gone from the count, so answering is a gift, never a toll. Same affordance for veto and radar marks.</p>`,
+  },
+  {
+    file: 'citation-block.html', group: 'Trust', name: 'CitationBlock',
+    subtitle: 'Mandatory source + commentary framing (GR-5)', width: 640,
+    implements: 'DS-5',
+    css: `.cite { border-left: 3px solid color-mix(in srgb, var(--accent) 40%, var(--border)); background: var(--surface-warm); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); font-size: var(--text-sm); display: flex; flex-direction: column; gap: 4px; }
+.cite .src { font-weight: 600; color: var(--fg-2); }
+.cite a { color: var(--accent); }`,
+    body: `<h1>CitationBlock</h1>
+<div class="stack" style="max-width: 520px">
+  <div style="font-size: var(--text-base)">Wetlands like ours filter a city's water for free — and our county just lost 12% of them in a decade. Here's why the marsh restoration you funded matters more than ever.</div>
+  <div class="cite"><span class="src">County Wildlife Report, March 2026</span><a href="#">conservation.example.org/report</a></div>
+</div>
+<p class="note" style="margin-top: var(--space-4)">Every external-content post carries its source and the org's own framing — never rehashed news (GR-5). One treatment, shared by inbox external cards and public articles.</p>`,
+  },
+  {
+    file: 'article-link.html', group: 'Trust', name: 'ArticleLink badge',
+    subtitle: 'Which social variant carries the news-page link (NWS-5)', width: 640,
+    implements: 'DS-5',
+    css: `.alink { display: inline-flex; gap: 6px; align-items: center; font-size: var(--text-xs); font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border)); color: var(--accent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }`,
+    body: `<h1>ArticleLink badge</h1>
+<div class="row"><span class="fit ok">FB</span><span class="fit ok">IG</span><span class="alink">X · links to your article</span><span class="alink">Threads · links to your article</span></div>
+<div class="reason" style="margin-top: var(--space-3)">X and Threads are length-limited, so those variants carry a short post plus a link to the full story on your news page.</div>
+<p class="note" style="margin-top: var(--space-4)">FitBadge's sibling — never links to an unpublished article.</p>`,
+  },
+  {
+    file: 'news-template.html', group: 'News', name: 'News page template',
+    subtitle: 'Org-branded public reading surface — name/logo/accent slots (DS-8)', width: 680,
+    implements: 'DS-8',
+    css: `main { max-width: 640px; }
+.masthead { display: flex; align-items: center; gap: var(--space-3); padding-bottom: var(--space-4); border-bottom: 1px solid var(--border); }
+.orglogo { width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--accent); color: var(--accent-on); display: grid; place-items: center; font-weight: 700; font-family: var(--font-display); }
+.orgname { font-family: var(--font-display); font-weight: 700; font-size: var(--text-lg); letter-spacing: var(--tracking-display); }
+.article { padding: var(--space-6) 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.headline { font-family: var(--font-display); font-weight: 700; font-size: var(--text-2xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-display); margin: 0; }
+.tags { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.tag2 { font-size: var(--text-xs); color: var(--muted); background: var(--surface-warm); border-radius: var(--radius-pill); padding: 4px 10px; }
+.pgfooter { border-top: 1px solid var(--border); padding-top: var(--space-4); font-size: var(--text-xs); color: var(--meta); display: flex; justify-content: space-between; align-items: center; }`,
+    body: `<div class="masthead"><span class="orglogo">H</span><span class="orgname">Hope &amp; Paws</span><span class="note" style="margin-left: auto">Stories</span></div>
+<article class="article">
+  <div class="tags"><span class="tag2">Impact</span><span class="tag2">Adoptions</span></div>
+  <h1 class="headline">The senior dogs nobody expected to adopt — and the weekend that changed everything</h1>
+  ${PHOTO}
+  <div style="font-size: var(--text-base)">Two hundred and fourteen days. That's how long Biscuit waited for a family. This Saturday, at our adoption day, everything changed — because of a community that keeps showing up.</div>
+</article>
+<div class="pgfooter"><span>Published with Steward</span><span>news.hopeandpaws.org</span></div>`,
+  },
 ];
 
 const outDir = join(here, 'preview');
@@ -328,6 +438,9 @@ for (const c of cards) {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <title>Steward — ${c.name}</title>
 <style>
 ${root}

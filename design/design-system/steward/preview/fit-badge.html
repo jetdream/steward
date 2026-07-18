@@ -5,26 +5,30 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <title>Steward — FitBadge</title>
 <style>
 :root {
   /* ─── Surface (3 levels) — inherited: canvas-white page and card,
    * separation from hairlines and photography, warm tier for stepped-
    * back sections (digest completion, footer, date-range middles). */
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-warm: #f7f7f7;
+  --bg: #fbfaf8;                 /* refined: subtle warm page ground (DEC-15) */
+  --surface: #ffffff;            /* cards stay clean white — photo contrast */
+  --surface-warm: #f5f2ec;       /* refined warm stepped-back tier */
 
-  /* ─── Foreground ramp (4 levels) — inherited ink ramp; --fg carries
+  /* ─── Foreground ramp (4 levels) — inherited ink ramp, refined to a warm
+   * bias toward the accent (DEC-15: "chosen, not inherited"); --fg carries
    * ~90% of text, never true #000000. */
-  --fg: #222222;
-  --fg-2: #3f3f3f;
-  --muted: #6a6a6a;
-  --meta: #929292;
+  --fg: #26221f;
+  --fg-2: #423c36;
+  --muted: #6e655c;
+  --meta: #978c81;
 
-  /* ─── Border (2 levels) — inherited hairlines. */
-  --border: #dddddd;
-  --border-soft: #ebebeb;
+  /* ─── Border (2 levels) — inherited hairlines, warmed (DEC-15). */
+  --border: #e6e0d7;
+  --border-soft: #f0ebe3;
 
   /* ─── Accent — #Bind S1. Reserve for the primary action (Approve or
    * the screen's single verb), the active-nav indicator, and at most
@@ -39,13 +43,15 @@
   --warn: #c47700;
   --danger: #c13515;
 
-  /* ─── Typography — fonts — #Bind S2. */
+  /* ─── Typography — fonts — #Bind S2 (DS-3 v2, DEC-15). Display and body
+   * are DISTINCT faces now: a characterful grotesk display over a neutral
+   * humanist body — personality without a serif, off the Inter default. */
   --font-display:
-    "Inter Variable", Inter, -apple-system, system-ui,
-    "Helvetica Neue", Roboto, sans-serif;
+    "Bricolage Grotesque", "Bricolage Grotesque Variable",
+    -apple-system, system-ui, "Helvetica Neue", sans-serif;
   --font-body:
-    "Inter Variable", Inter, -apple-system, system-ui,
-    "Helvetica Neue", Roboto, sans-serif;
+    "Source Sans 3", "Source Sans Pro", -apple-system, system-ui,
+    "Helvetica Neue", sans-serif;
   --font-mono:
     ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Monaco,
     Consolas, monospace;
@@ -123,10 +129,14 @@ body { margin: 0; background: var(--bg); color: var(--fg);
   font-family: var(--font-body); font-weight: 500;
   font-size: var(--text-base); line-height: var(--leading-body); }
 main { padding: var(--space-6); }
-h1 { font-size: var(--text-xl); font-weight: 600; margin: 0 0 var(--space-4);
-  line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }
+h1 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600;
+  margin: 0 0 var(--space-4); line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display); }
 h2 { font-size: var(--text-sm); font-weight: 600; color: var(--muted);
   margin: var(--space-6) 0 var(--space-3); }
+/* Display face for headlines, card titles, and the streak numerals; body
+ * stays Source Sans. (DS-3 v2 — chiseled display over magazine body.) */
+.display { font-family: var(--font-display); letter-spacing: var(--tracking-display); }
 .note { color: var(--muted); font-size: var(--text-sm); }
 .row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; }
 .stack { display: flex; flex-direction: column; gap: var(--space-3); }
