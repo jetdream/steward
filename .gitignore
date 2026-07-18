@@ -1,1 +1,3 @@
 node_modules
+# cortex graph cache (CTXS-10) — a disposable generated artifact, never committed
+.spec/.cache/
