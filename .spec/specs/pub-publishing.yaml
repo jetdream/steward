@@ -147,12 +147,13 @@ items:
 
 open-questions:
   - >-
-    The AUT-1 TL1 veto-window mechanics — whether a scheduled variant is HELD
-    until the 24h window closes or auto-published then TAKEN DOWN on veto — and
-    how that maps onto the DM-5 delivery lifecycle (is there a veto-hold state, or
-    is it the AUT-3 pause during the window?) belong to the future AUT spec. PUBS-1
-    honors the window but does not define it; settle the DM-5 interaction when the
-    AUT spec is authored (a cross-spec reconciliation, not a PUB defect).
+    RESOLVED (DEC-26, AUTS-1): the TL1 veto model is a founder-operator setting,
+    default PUBLISH-THEN-TAKEDOWN (publish at the optimal slot, then a 24h pull —
+    native delete for social, DM-5 published->unpublished for news) with an opt-in
+    HOLD-THEN-PUBLISH (held in the DM-5 pending phase 24h). PUBS-1 publishes
+    approved+scheduled variants and, under the default model, exposes the 24h pull;
+    the hold-then-publish delay lives in the AUT/DM-5 pending phase upstream of
+    scheduling, so PUB needs no veto-hold state of its own.
   - >-
     News-page UNPUBLISH/takedown (DM-5 published -> unpublished, news-only; a P0
     affordance in EXP-31; mechanically an ARC-18 publisher cache-purge per

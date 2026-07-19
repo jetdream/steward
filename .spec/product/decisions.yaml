@@ -45,6 +45,38 @@ items:
       slice (which would leave proactive topic identification — the core of the
       idea — unbuilt).
 
+  DEC-26:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [AUT-1]
+    title: TL1 veto model is a founder-operator choice; default PUBLISH-THEN-TAKEDOWN (semantics pinned now; activation stays P2)
+    statement: >-
+      AUT-1's "TL1 auto-publish with 24h veto window" (DEC-13) is ambiguous
+      between publish-then-takedown and hold-then-publish, and the safety-vs-speed
+      trade is genuinely founder-specific. Decision: the TL1 veto model is a
+      FOUNDER-OPERATOR-selectable setting, DEFAULTING to PUBLISH-THEN-TAKEDOWN.
+      (a) DEFAULT publish-then-takedown — the approved design (EXP-26 "Published —
+      you can stop it until Thu 6pm", the DS-5 veto-window card, vision.md #8): a
+      clean draft auto-publishes at its optimal time and the founder may PULL it
+      within the 24h window (native platform delete for social; DM-5
+      published->unpublished for news). This preserves the autonomy proof — it
+      just gets done (VIS-2, G-4) — and requires NO spine/DS/vision change.
+      (b) OPT-IN hold-then-publish — for a cautious founder: the draft is
+      auto-approved but HELD in the DM-5 pending phase for 24h (veto = the
+      approved->draft recall during pending), publishing only if unvetoed; nothing
+      is public within the window. Either way the guardrail backstops (GR-3
+      sensitive, GR-8 taboo) already HOLD dangerous drafts for the founder
+      regardless of Trust Level, so publish-then-takedown never exposes a
+      guardrail-violating post — only a "clean but the founder might have tweaked
+      it" one, briefly. A veto/pull in EITHER model hands that item to founder
+      control and it is NEVER re-auto-approved. Realized in the AUT behavior spec;
+      TL1 ACTIVATION remains P2 (rides the AUT-2 promotion). Resolves the PUBS-1
+      veto-window open-question; the opt-in hold-then-publish founder-facing card
+      is a deferred P2 experience surface (the default veto-window card exists).
+      Extends DEC-13. (Corrects this decision's initial hold-then-publish-only
+      framing, which conflicted with the approved publish-then-takedown design.)
+
   DEC-22:
     v: 1
     date: 2026-07-19

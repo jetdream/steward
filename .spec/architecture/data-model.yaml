@@ -108,7 +108,7 @@ items:
 
       stateDiagram-v2
         [*] --> pending : variant fit-passed (GEN-5), item approved
-        pending --> scheduled : slot assigned at engagement-optimal time (PUB-1)
+        pending --> scheduled : slot assigned at engagement-optimal time (PUB-1); under the opt-in hold-then-publish veto model the pending phase first holds the 24h window (AUT-1, DEC-26)
         scheduled --> published : posted/served, logged (PUB-3)
         scheduled --> paused : kill switch / per-channel pause (AUT-3)
         paused --> scheduled : resumed

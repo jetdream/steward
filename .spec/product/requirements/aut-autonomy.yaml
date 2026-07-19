@@ -20,6 +20,15 @@ items:
       TL0 approve-everything (launch state) → TL1 auto-publish with 24h veto
       window → TL2 full autopilot. Categories follow the content taxonomy
       (each internal category, external, overlays) (GEN-1).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by AUTS-1 (approved, challenge r3 pass): per-category Trust Levels
+        (DM-9); the TL1 veto model is a founder-operator setting, default
+        publish-then-takedown, opt-in hold-then-publish (DEC-26), with a durable
+        veto latch; GR-3/GR-8 always override autonomy. P1b active = TL0.
+        Realization pending code.
+      against: [AUTS-1@1]
 
   AUT-2:
     v: 1
@@ -32,6 +41,14 @@ items:
       TL1; rejection/edit spikes auto-demote. Permanent caps at TL1:
       Fundraising Asks and all External content (EXT-3) — the caps are the
       hard part of this item.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by AUTS-2 (approved): the ≥10-approval/<10%-edit/≥3-week promotion
+        threshold PROPOSES (never auto-applies) promotion; auto-demote on
+        spikes; permanent caps hold Fundraising Asks + External at TL1 (EXT-3).
+        P2 (rides the promotion mechanic). Realization pending code.
+      against: [AUTS-2@1]
 
   AUT-3:
     v: 1
@@ -42,3 +59,11 @@ items:
     statement: >-
       A global kill switch pauses all publishing instantly; per-channel pause
       too.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by AUTS-3 (approved): the global kill switch halts all publishing
+        instantly (a deterministic gate over PUBS-1; DM-5 scheduled->paused),
+        per-channel pause, always one gesture from the chrome (UXS-6, VAL-3),
+        instantly reversible. P0, active in P1b. Realization pending code.
+      against: [AUTS-3@1]

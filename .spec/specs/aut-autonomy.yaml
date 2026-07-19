@@ -1,0 +1,177 @@
+kind: spec
+prefix: AUTS
+title: Autonomy System — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single pass → r2 delta → r3 delta)
+  verdict: pass
+  record: .spec/specs/challenges/aut-autonomy-2026-07-19-r3.md
+  summary: >-
+    r1 FAILED on two highs: (1) DEC-26's claimed APRS reconciliation was unmet —
+    APRS-1 still encoded the rejected reading; and (2) the veto (approved->draft
+    recall) had no latch, so a vetoed post could silently re-auto-approve. A wider
+    sweep then found DEC-26's original hold-then-publish-only choice contradicted
+    the APPROVED spine (EXP-26), DS-5 veto card, glossary, and vision.md #8 (all
+    publish-then-takedown). Founder-operator resolved it: DEC-26 REVISED — the TL1
+    veto model is a founder setting, DEFAULT publish-then-takedown (the approved
+    design, no spine/DS/vision reversal), opt-in hold-then-publish. Fixes: AUTS-1
+    realizes both modes + a durable veto latch (vetoed item never re-auto-approved)
+    + a window-open timestamp anchor; APRS-1 -> v2 reconciled (coverage re-pinned);
+    PUBS-1 open-question RESOLVED; DM-5 pending-hold scoped to the opt-in model.
+    r2 FAILED on one straggler (the intent header still said hold-then-publish);
+    r3 verified the one-line fix and passed. GR-3/GR-8 backstops still override
+    autonomy at any level/model. P1b ships TL0 + kill switch only.
+intent: >-
+  Exact behavior of earned autonomy (register aut-autonomy.yaml): per-category
+  Trust Levels (AUT-1) with the TL1 veto model a founder-operator setting,
+  default publish-then-takedown (DEC-26); promotion offered never taken with
+  permanent caps (AUT-2); and the
+  always-on kill switch (AUT-3). P1b ships TL0 + kill switch; TL1/TL2 activation
+  and promotion (AUT-2) are P2, but the TL1 semantics are pinned NOW so PUB/APR/
+  DM-5 reconcile against a definite behavior. Autonomy governs what may publish
+  without founder approval; it NEVER short-circuits the guardrail chain.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-5, DM-9, PIPE-2, ARC-20, EXP-5]
+governed-by: [GR-3, GR-8]
+assurance: standard
+
+design: >-
+  The autonomy system is @backend/autonomy (ARC-20): it governs what publishing
+  may proceed WITHOUT founder approval, per content category (DM-9 TrustLevel,
+  one per GEN-1 taxonomy category — internal categories, external, overlays). It
+  sits ABOVE the publish path and NEVER short-circuits guardrails: every draft
+  still passes the PIPE-2 VAL chain first (GR-1..GR-6), and a sensitive-topic
+  (GR-3) or unconfident-taboo (GR-8) draft is HELD for the founder regardless of
+  Trust Level — the guardrail backstops override autonomy, they are not overridden
+  by it. TL1 VETO MODEL (DEC-26) is a FOUNDER-OPERATOR setting, default
+  PUBLISH-THEN-TAKEDOWN: (a) default — a clean draft auto-publishes at its optimal
+  slot and is PULLABLE for 24h (native delete for social; DM-5
+  published->unpublished for news), shown as the approved veto-window card
+  (EXP-26/DS-5); (b) opt-in hold-then-publish — the auto-approved draft is HELD in
+  the DM-5 pending phase for 24h and publishes only if unvetoed. A veto/pull in
+  either model hands the item to founder control and it is NEVER re-auto-approved
+  (the veto latch). The default needs no spine/DS/vision change (it IS the approved
+  design); the opt-in path adds no new DM-5 state (the pending phase is its hold).
+  The kill switch (AUT-3) is the always-on
+  revocability (VAL-3), one gesture in the chrome (UXS-6). P1b ACTIVE surface: TL0
+  (launch state) + the kill switch; TL1/TL2 + promotion (AUTS-2) are P2, semantics
+  pinned now. Surface: the earning-the-reins journey (EXP-5) — the offer moment,
+  veto-window cards, held-for-you, pause. LRN-20 split: Trust Levels, the 24h
+  hold, veto-recall, the promotion THRESHOLD counts, auto-demote, and the kill
+  switch are DETERMINISTIC state/counting rules; the classifiers that override
+  them (GR-3 sensitive, GR-8 taboo) are the probabilistic backstops owned by
+  MEM/pipeline (MEMS-3), not by this spec.
+
+data: >-
+  DM-9 TrustLevel — one per content category (the GEN-1 taxonomy), value in {TL0,
+  TL1, TL2}, plus the org's TL1 VETO MODEL (publish-then-takedown default |
+  hold-then-publish) — a founder-operator setting (DEC-26). DM-5 drives the
+  mechanics: TL1 auto-approval is an editorial draft->approved transition; under
+  the default model the veto window runs post-publish (native delete / news
+  published->unpublished); under the opt-in model it is the held pending phase; a
+  veto is the approved->draft recall (opt-in) or the pull/unpublish (default). The
+  24h elapse is computed from a WINDOW-OPEN ANCHOR timestamp on the item (reuse
+  the auto-approval/publish audit timestamp if present, else a windowOpenedAt
+  field) — no new entity or state enum. A vetoed item carries a durable
+  vetoed marker so it is not re-auto-approved.
+
+interfaces: >-
+  @backend/autonomy (ARC-20) exposes: trustLevel(org, category) -> TL0|TL1|TL2
+  [DM-9]; vetoModel(org) -> publish-then-takedown | hold-then-publish [DEC-26,
+  founder setting, default takedown]; canAutoPublish(org, draft) -> boolean [the
+  level gate; ALWAYS false when a GR-3/GR-8 hold fired OR the item was vetoed,
+  regardless of level]; vetoWindowFor(item) -> the 24h window from its open-anchor
+  timestamp [DEC-26]; veto(item) -> pull/unpublish (default) or recall
+  approved->draft (opt-in), marking the item vetoed (never re-auto-approved);
+  proposePromotion(org, category) -> an OFFER when the threshold is met [AUTS-2,
+  never auto-applied]; demote(org, category) -> automatic on an edit/rejection
+  spike; killSwitch() / pause(scope) -> halt publishing (AUTS-3). Exact tRPC/WS
+  signatures live in code.
+
+items:
+  AUTS-1:
+    v: 1
+    title: Per-category Trust Levels — TL1 veto model is founder-selectable
+    implements: [AUT-1]
+    statement: >-
+      Trust Level is PER content category (DM-9, the GEN-1 taxonomy — each
+      internal category, external, overlays): TL0 approve-everything (the launch
+      state — every draft requires founder approval via APR-1); TL1 auto-publish
+      with a 24h veto window; TL2 full autopilot. The TL1 VETO MODEL is a
+      FOUNDER-OPERATOR setting (DEC-26), DEFAULTING to PUBLISH-THEN-TAKEDOWN:
+      (a) DEFAULT publish-then-takedown — a clean draft is auto-approved (editorial
+      draft->approved, no founder tap) and PUBLISHES at its optimal slot (PUBS-1);
+      it appears as a veto-window card ("Published — you can stop it until <time>",
+      EXP-26/DS-5) and the founder may PULL it within 24h (native platform delete
+      for social; DM-5 published->unpublished for news).
+      (b) OPT-IN hold-then-publish — the auto-approved draft is HELD in the DM-5
+      pending phase for the 24h window (veto = the approved->draft recall during
+      pending) and publishes only if unvetoed; nothing is public within the window.
+      A VETO/PULL in EITHER model hands that item to FOUNDER CONTROL — it is
+      recorded as vetoed and NEVER re-auto-approved by a later run (canAutoPublish
+      returns false for a vetoed item; a re-evaluating/polling implementation must
+      not resurrect it), so the founder's veto is durable (VAL-3). The 24h elapse
+      is computed from a window-open anchor timestamp (see data), not inferred —
+      the hold/pull deadline is deterministic. Autonomy NEVER short-circuits
+      guardrails: a draft the VAL chain cannot clear — sensitive-topic (GR-3) or
+      unconfident-taboo (GR-8) — is HELD for the founder regardless of Trust Level
+      and veto model (the backstop overrides the level, MEMS-3/PIPE-2), so
+      publish-then-takedown never exposes a guardrail-violating post. The level
+      gate + veto model + veto latch are DETERMINISTIC (stored DM-9 value +
+      timestamp + state transitions); the overriding holds are the LLM-classifier
+      backstops owned by MEM/pipeline. P1b: only TL0 is active (launch); TL1/TL2
+      activation rides the AUTS-2 promotion (P2) — the model + semantics are pinned
+      now so PUB/APR/DM-5 reconcile against a definite behavior.
+      ACCEPTANCE: at TL0 every draft requires founder approval; at TL1 under the
+      default model a clean draft auto-publishes and is pullable for 24h, under the
+      opt-in model it is held in pending for 24h and only publishes if unvetoed; a
+      vetoed/pulled item is NEVER re-auto-approved by a later run; a GR-3/GR-8 hold
+      routes to the founder at ANY level and veto model; the level is resolved per
+      category, not globally.
+  AUTS-2:
+    v: 1
+    title: Promotion offered never taken — with permanent caps
+    implements: [AUT-2]
+    statement: >-
+      Promotion is OFFERED, never taken (VAL-3): when a category reaches ≥10
+      consecutive approvals with a <10% edit rate over ≥3 weeks, the system
+      PROPOSES TL1 for that category — the founder accepts; it is never
+      auto-applied. Demotion is the opposite: a rejection or edit-rate spike
+      AUTO-DEMOTES (safety direction only — promotion needs consent, demotion does
+      not). PERMANENT CAPS (the flexibility: hard part of AUT-2): Fundraising Asks
+      and ALL External content never exceed TL1 — they never reach full autopilot,
+      regardless of history (EXT-3, SEC-5). The promotion threshold and
+      auto-demote are DETERMINISTIC counting rules; the caps are hard invariants.
+      P2 (rides the promotion mechanic, not in the P1b slice).
+      ACCEPTANCE: hitting the threshold PROPOSES (never auto-applies) promotion; an
+      edit/rejection spike auto-demotes without asking; Fundraising Asks and
+      External content can never be promoted past TL1 regardless of approval
+      history.
+  AUTS-3:
+    v: 1
+    title: Kill switch — always-on revocability
+    implements: [AUT-3]
+    statement: >-
+      A GLOBAL kill switch pauses ALL publishing INSTANTLY (a deterministic single
+      gate that halts the publisher — PUBS-1); a per-channel pause halts one
+      channel. Both map to the DM-5 delivery scheduled->paused transition and
+      resume on un-pause (paused->scheduled). The kill switch is ALWAYS reachable
+      — one gesture in the chrome at every Trust Level (UXS-6, VAL-3) — the
+      always-available revocability that makes earned autonomy safe. Flexibility:
+      hard (AUT-3). P0 — active in P1b.
+      ACCEPTANCE: the kill switch halts all publishing instantly (no scheduled
+      variant posts while killed) and is instantly reversible; a per-channel pause
+      halts only that channel; the kill switch is reachable in one gesture from
+      the chrome at any Trust Level.
+
+open-questions:
+  - >-
+    TL1/TL2 ACTIVATION and the promotion UX (the offer moment, veto-window cards,
+    held-for-you) are P2 (EXP-5 is approved; AUTS-2 is the mechanic). This spec
+    pins the TL1 VETO MODEL (DEC-26: founder-selectable, default
+    publish-then-takedown) now. The DEFAULT veto-window card is already designed
+    (EXP-26/DS-5); the OPT-IN hold-then-publish founder-facing card (a "held —
+    publishes <time> unless you stop it" variant) is a deferred P2 experience
+    surface (method/ui.md on EXP-25..28) when TL1 ships. Not a P1b blocker (P1b
+    ships TL0 + kill switch only).

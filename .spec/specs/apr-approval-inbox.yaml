@@ -88,7 +88,7 @@ interfaces: >-
 
 items:
   APRS-1:
-    v: 1
+    v: 2
     title: Ready — the disposition spine
     implements: [APR-1]
     statement: >-
@@ -103,24 +103,30 @@ items:
       Memory, CHTS-2). BATCH approve ("approve all ready") is supported but
       DETERMINISTICALLY EXCLUDES pinned/blocked cards — held-for-taboo (GR-8),
       sensitive holds (GR-3), veto-window, and awaiting-picture (GENS-4) cards are
-      NEVER batch-cleared (the One-Home invariant, DEC-18). TRUST LEVEL (AUT-1,
-      DM-9): at TL0 Approve is required per card; at TL1 the category auto-publishes
-      WITHOUT the founder acting and opens a 24h VETO WINDOW (the veto window is the
-      consequence of TL1 auto-publish, not of the Approve tap); at TL2 it
-      autopilots. Approving advances to the next pending card. UNDO scope follows
-      the DM-5 lifecycle exactly (LRN-22): while a variant is still PENDING
-      (approved, not yet scheduled) the item recalls in place (DM-5 approved ->
-      draft); once a variant is SCHEDULED there is no approved -> draft recall (DM-5
-      invariant 2) — reversal is then the per-channel pause / global kill switch
-      (AUT-3) and, under TL1, the 24h veto window (AUT-1). Every disposition writes
-      to Memory (the learning loop, APRS-3).
+      NEVER batch-cleared (the One-Home invariant, DEC-18). TRUST LEVEL + VETO
+      MODEL (AUT-1, DM-9, DEC-26): at TL0 Approve is required per card; at TL1 a
+      clean draft auto-approves without the founder acting, under the org's
+      founder-selected veto model (DEFAULT publish-then-takedown — it publishes and
+      shows a veto-window card "Published — stop it until <time>", pullable for 24h
+      (EXP-26); OPT-IN hold-then-publish — held in pending 24h, publishes only if
+      unvetoed; AUTS-1); at TL2 it autopilots. A vetoed/pulled item is handed to
+      founder control and is NEVER re-auto-approved (AUTS-1). Approving advances to
+      the next pending card. UNDO scope follows the DM-5 lifecycle exactly
+      (LRN-22): while a variant is still PENDING (approved, not yet scheduled) the
+      item recalls in place (DM-5 approved -> draft — this is also the opt-in
+      hold-then-publish veto); once a variant is SCHEDULED there is no approved ->
+      draft recall (DM-5 invariant 2) — reversal is then per-channel pause / global
+      kill switch (AUT-3) or, once PUBLISHED under the default TL1 model, the 24h
+      pull (native delete / news unpublish). Every disposition writes to Memory
+      (the learning loop, APRS-3).
       ACCEPTANCE: a card shows each variant's fit verdict (GEN-5); one-tap Approve
       advances the item to approved; a still-PENDING approval recalls in place
       (approved -> draft), a SCHEDULED variant does NOT (its reversal is AUT-3
-      pause/kill or the TL1 veto); at TL1 the 24h veto window follows auto-publish,
-      not the Approve action; batch approve never clears a held / sensitive /
-      veto-window / awaiting-picture card; a skip offers an after-the-fact optional
-      reason that writes to Memory.
+      pause/kill or the TL1 veto); the TL1 veto model is founder-selected (default
+      publish-then-takedown, opt-in hold-then-publish — DEC-26/AUTS-1) and a
+      vetoed/pulled item is never re-auto-approved; batch approve never clears a
+      held / sensitive / veto-window / awaiting-picture card; a skip offers an
+      after-the-fact optional reason that writes to Memory.
   APRS-2:
     v: 1
     title: Founder-selected cadence
