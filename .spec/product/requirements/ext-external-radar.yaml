@@ -12,16 +12,17 @@ intent: >-
 
 items:
   EXT-1:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-23
     priority: P0
     source: A-3 (Gemini + Google Search grounding; upgrade path fixed there)
     title: Radar v0
     statement: >-
-      Recurring discovery runs per org, seeded by the org's cause profile from
-      Memory (topics, geography: local → county → state → national → global).
-      Output: candidate items (events, news, research) with source links and
-      relevance rationale.
+      Recurring discovery runs per org, driven by the editorial agenda — the
+      content topics and their per-topic research strategies (TOP-1, TOP-2) —
+      grounded in the org's cause profile and geography from Memory (local →
+      county → state → national → global). Output: candidate items (events,
+      news, research) with source links and relevance rationale.
 
   EXT-2:
     v: 1
@@ -46,15 +47,16 @@ items:
       autopilot (AUT-2).
 
   EXT-4:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-23
     priority: P1
     title: Source depth
     statement: >-
       Add Google News RSS + newsdata.io (news), GDELT (event streams), arXiv
       (research) as structured feeds; add Perplexity and/or Tavily/Exa as
-      discovery engines (order: Q-4). Per-org controls in Strategy section (a):
-      external topics welcomed/banned.
+      discovery engines (order: Q-4). Discovery runs against the editorial
+      agenda (TOP); founder-welcomed/banned topics are managed there and
+      reflected in Strategy section (a).
 
   EXT-5:
     v: 2

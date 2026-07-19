@@ -176,3 +176,14 @@ items:
       Org via an explicit account-linking handshake (SEC-9), so bot-ingested
       photos/facts route to the right org. Owned by Org; no third-party PII
       beyond the linked founder's own handle.
+
+  DM-13:
+    v: 1
+    kind: data-entity
+    title: Topic
+    body: |
+      A content topic / editorial theme (TOP, DEC-23). Fields: description,
+      why-it-fits, provenance (system-derived | founder-added), a research
+      strategy (TOP-2), and status (proposed | active | retired). The active
+      set is the editorial agenda (TOP-4). Owned by Org (DM-1); feeds Strategy
+      section (a) (STR-1) and the Radar (EXT-1).

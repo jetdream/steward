@@ -167,3 +167,15 @@ terms:
   Ops console: >-
     The internal operator dashboard: draft QA, failure queues, transcript
     review, radar precision review (OPS-1).
+  Content topic: >-
+    An editorial theme the system maintains for an org — what to talk about.
+    Structures internal content and drives external research; identified and
+    proposed proactively, and founder-editable (TOP, DEC-23).
+  Editorial agenda: >-
+    The active set of content topics — the org's living what-to-talk-about,
+    explicit and founder-owned; one shared source for internal content planning
+    and external discovery (TOP-4).
+  Research strategy: >-
+    Per content topic, how the system finds genuinely interesting and relevant
+    external content — query formulations, source/feed selection, and
+    relevance/engagement criteria (TOP-2).

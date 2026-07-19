@@ -1,0 +1,83 @@
+kind: requirements
+prefix: TOP
+title: Content Topics
+status: approved
+serves: [G-2, G-3, G-4]
+
+intent: >-
+  The system owns the EDITORIAL AGENDA, not just its execution. Small-nonprofit
+  founders rarely have the time or the marketer's instinct to decide what to
+  talk about — or how to find external content that is genuinely interesting
+  yet still relevant. So the system proactively identifies content topics,
+  holds a rich per-topic research strategy that drives external discovery, and
+  proposes topics gently and legibly (VIS-2 "owns the context, moves first";
+  VAL-6). Topics are the shared source that structures internal content and
+  drives external research. Boundary: engagement is pursued through real
+  stories and honest framing only — within GR-1 (no outcome promises), VAL-1
+  (sell the process, not leads), and VAL-4 (real over synthetic); external
+  content is cited (GR-5) and autonomy-capped (EXT-3). Established by DEC-23.
+
+items:
+  TOP-1:
+    v: 1
+    decided-by: DEC-23
+    priority: P0
+    depends: [MEM-1, EXT-1]
+    title: Topic identification
+    statement: >-
+      The system proactively derives and maintains a living set of CONTENT
+      TOPICS (editorial themes) for the org — grounded in the cause profile,
+      mission, programs, people, audience, calendar/season, and the external
+      landscape (Memory + Radar). Topics evolve as the org and its context
+      change; the founder never has to invent them (VAL-6). Each topic carries
+      a plain-language description of what it is and why it fits this org and
+      its audience.
+    acceptance: A new org has a non-empty, on-mission topic set without the founder authoring one.
+
+  TOP-2:
+    v: 1
+    decided-by: DEC-23
+    priority: P0
+    depends: [EXT-1, EXT-4]
+    title: Per-topic research strategy
+    statement: >-
+      Each topic carries a RESEARCH STRATEGY — how to find genuinely
+      interesting AND relevant external content for it: query formulations,
+      source/feed selection (EXT-4), recency + locality + credibility filters,
+      and relevance/engagement heuristics. Discovery (EXT-1) runs against these
+      strategies, not a static cause seed. The strategy is refined by
+      Discoveries triage feedback (EXT-5). Cited sources are mandatory (GR-5);
+      the sensitive-topic classifier (GR-3) and the external-autonomy cap
+      (EXT-3) always apply.
+    acceptance: Two orgs with the same cause but different topics get materially different, on-strategy discovery.
+
+  TOP-3:
+    v: 1
+    decided-by: DEC-23
+    priority: P0
+    depends: [MEM-1, TOP-1]
+    title: Topic proposals
+    statement: >-
+      The system gently and timely PROPOSES topics to the founder in
+      comprehensible form, each with a reason (VAL-5) — a proactive, rate-limited
+      push (never spammy — VAL-6, R-10), distinct from the strictly pull-only
+      Discoveries feed (EXT-5). The founder disposes: adopt (adds to the
+      agenda), adjust, or decline (teaches taste, written to Memory — MEM-1).
+      Proposals are grounded and never manipulative: engagement comes from real
+      stories and honest framing within GR-1, VAL-1, and VAL-4.
+    acceptance: A proposal names its reason and the org-specific evidence behind it; declining one durably stops its re-proposal (MEM-2).
+
+  TOP-4:
+    v: 1
+    decided-by: DEC-23
+    priority: P0
+    depends: [TOP-1, STR-1]
+    title: The editorial agenda — shared, transparent, founder-owned
+    statement: >-
+      The active topic set is the org's EDITORIAL AGENDA: one shared source that
+      (a) structures INTERNAL content planning — it feeds Strategy section (a)
+      and generation (STR-1, GEN-1) — and (b) drives EXTERNAL research (TOP-2,
+      EXT-1). It is explicit, visible, and founder-editable (VAL-3): add,
+      reshape, or retire topics, like the Strategy. Auto-drafted first — never a
+      blank page (VAL-6).
+    acceptance: The same topic edit changes both what internal content is planned and what external discovery looks for.

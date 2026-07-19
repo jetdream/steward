@@ -92,7 +92,11 @@ items:
         + CHT-2 v2 + APR-3 v2 (DEC-22 Memory-as-single-source taboo enforcement + the GR-8 backstop): a
         founder correction now binds immediately and is enforced at the VAL overlay gate — this
         strengthens the approval-rate path; no capability added or removed.
-      against: [APR-1@3, APR-2@1, APR-3@2, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@2, CHT-3@1, CHT-4@1, CHT-5@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@2, GEN-1@3, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@2]
+        Re-affirmed again 2026-07-19 for DEC-23: Content Topics (TOP-1..4) join the quality
+        path — the system now proactively sets the editorial agenda + per-topic research
+        strategy that feed generation and the radar (EXT-1/EXT-4/STR-1 → v2), sharpening
+        on-mission relevance and thus approval-without-edit.
+      against: [APR-1@3, APR-2@1, APR-3@2, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@2, CHT-3@1, CHT-4@1, CHT-5@1, EXT-1@2, EXT-2@1, EXT-3@1, EXT-4@2, EXT-5@2, GEN-1@3, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@2, STR-2@1, STR-3@1, STR-4@2, TOP-1@1, TOP-2@1, TOP-3@1, TOP-4@1]
     outcome:
       status: in-progress
       reasoning: >-
@@ -125,8 +129,10 @@ items:
         CHT-2 v2 + APR-3 v2 (DEC-22): redirects and learning-loop rules still write once, now to
         Memory as the single source (Strategy is a view) — the
         never-ask-twice/talk-instead-of-click effort path is unchanged; no capability added or
-        removed.
-      against: [APR-1@3, APR-2@1, APR-3@2, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@2, CHT-3@1, CHT-4@1, CHT-5@1, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@2, UX-2@2, UX-3@3, UX-4@1, UX-5@2, UX-6@1, UX-7@2, UX-8@2]
+        removed. Re-affirmed again for DEC-23: Content Topics (TOP-1..4) removes the founder's
+        topic-identification and research-criteria work — the exact thing the user cannot do
+        manually — a direct reduction on the effort path.
+      against: [APR-1@3, APR-2@1, APR-3@2, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@2, CHT-3@1, CHT-4@1, CHT-5@1, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@2, UX-2@2, UX-3@3, UX-4@1, UX-5@2, UX-6@1, UX-7@2, UX-8@2, TOP-1@1, TOP-2@1, TOP-3@1, TOP-4@1]
     outcome:
       status: in-progress
       reasoning: >-
@@ -154,8 +160,12 @@ items:
         that keeps the cadence without a manual step). ANTI-STALL — PRO-1 (requests the scarce
         pictures that block posts) + PRO-2 + PRO-3. DELIVERY — PUB-1..4. No capability gap. The
         80% target is a field outcome — see the `outcome` assertion; the top field threat is
-        the picture bottleneck (R-3).
-      against: [APR-1@3, AUT-1@2, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@2, GEN-1@3, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@2, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1]
+        the picture bottleneck (R-3). Re-affirmed 2026-07-19 for DEC-23: Content Topics
+        (TOP-1..4) added to the SUPPLY path — a proactively-maintained editorial agenda +
+        per-topic research strategy is what keeps a steady stream of on-topic internal and
+        external material, preventing the idea-drought cadence gaps that break a streak
+        (EXT-1/EXT-4 → v2).
+      against: [APR-1@3, AUT-1@2, EXT-1@2, EXT-2@1, EXT-3@1, EXT-4@2, EXT-5@2, GEN-1@3, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, NWS-1@2, NWS-2@1, NWS-3@1, NWS-4@1, NWS-5@1, NWS-6@2, PRO-1@1, PRO-2@1, PRO-3@1, PUB-1@2, PUB-2@1, PUB-3@1, PUB-4@1, STW-1@1, STW-2@1, TOP-1@1, TOP-2@1, TOP-3@1, TOP-4@1]
     outcome:
       status: in-progress
       reasoning: >-

@@ -11,16 +11,17 @@ intent: >-
 
 items:
   STR-1:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-23
     priority: P0
     title: The Strategy document
     statement: >-
       Every org has an explicit, versioned Posting Strategy with exactly these
-      sections: (a) what to post / what not to post; (b) tone of voice —
-      description and concrete examples; (c) restrictions / compliance /
-      guardrails; (d) specific standing instructions; (e) channel-specific
-      instructions (per FB / IG / Threads / X).
+      sections: (a) what to post / what not to post — drawn from the editorial
+      agenda (TOP-4, the system-maintained content topics), founder-editable;
+      (b) tone of voice — description and concrete examples; (c) restrictions /
+      compliance / guardrails; (d) specific standing instructions;
+      (e) channel-specific instructions (per FB / IG / Threads / X).
 
   STR-2:
     v: 1

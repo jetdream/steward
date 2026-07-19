@@ -31,6 +31,7 @@ prefixes:
   STR: product/requirements/str-posting-strategy.yaml
   GEN: product/requirements/gen-content-generation.yaml
   EXT: product/requirements/ext-external-radar.yaml
+  TOP: product/requirements/top-content-topics.yaml
   APR: product/requirements/apr-approval-inbox.yaml
   PUB: product/requirements/pub-publishing.yaml
   PRO: product/requirements/pro-proactive-manager.yaml
@@ -44,6 +45,7 @@ prefixes:
   BOT: product/requirements/bot-messenger-ingestion.yaml
   # specs (behavior) — one spec register per capability, prefix = <REQ>S
   MEMS: specs/mem-org-memory.yaml
+  STRS: specs/str-posting-strategy.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml

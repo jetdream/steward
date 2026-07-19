@@ -15,6 +15,35 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-23:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [TOP-1, TOP-2, TOP-3, TOP-4, DM-13, EXT-1, EXT-4, STR-1]
+    title: Content Topics — a first-class proactive editorial-agenda + research-strategy capability (P0)
+    statement: >-
+      Founders of small nonprofits rarely have the time or the marketer's
+      instinct to decide WHAT to talk about, or to define research criteria for
+      finding external content that is genuinely interesting yet still relevant.
+      Decision: the system owns the EDITORIAL AGENDA as a first-class capability
+      (Content Topics, TOP). It proactively identifies content topics (TOP-1),
+      holds a rich per-topic research strategy that drives external discovery
+      (TOP-2), and gently/timely proposes topics with a reason (TOP-3); the
+      active topic set is one shared, transparent, founder-editable source that
+      structures internal content AND drives external research (TOP-4). P0,
+      woven into the core loop: it reshapes EXT-1 (the Radar runs against the
+      agenda + research strategies, not a static cause seed), EXT-4 (topic
+      controls managed via the agenda), and STR-1 (section (a) draws from the
+      agenda). New entity DM-13 Topic. Boundaries: engagement via real stories
+      and honest framing only — within GR-1 (no outcome promises), VAL-1 (sell
+      the process, not leads), VAL-4 (real over synthetic); cited sources
+      (GR-5); external autonomy capped (EXT-3); proposals proactive-but-calm
+      (VAL-6, R-10) and distinct from the strictly pull-only Discoveries feed
+      (EXT-5). Aligns with VIS-2 (owns the context, moves first). Chosen over
+      enriching EXT/STR in place (no single owner) and a research-strategy-only
+      slice (which would leave proactive topic identification — the core of the
+      idea — unbuilt).
+
   DEC-22:
     v: 1
     date: 2026-07-19
