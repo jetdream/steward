@@ -142,3 +142,15 @@ items:
       RESOLVED (DEC-10): the URL stays reserved and served while the org's
       account is active; reservation is a benefit of an active account, not
       held indefinitely for inactive ones.
+
+  Q-13:
+    v: 1
+    status: open
+    title: X read access for onboarding style-harvest
+    statement: >-
+      The committed X integration (IG-2, A-2) is write-only. Onboarding style
+      ingestion (ONBS-2) therefore harvests the org's own timeline for voice from
+      website + Meta channels only; X variants lean on the shared cross-channel
+      style seed. Decide whether to budget X read scope so the org's X voice is
+      harvested directly — a paid-tier + budget question, not a blocker (surfaced
+      by the ONB r1 challenge).

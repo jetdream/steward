@@ -33,7 +33,7 @@ items:
         retrieval with no fact invention (MEMS-4) together cover MEM-1's critical
         path: every enriching action writes an attributed entry, and a stated
         correction binds every future draft. Realization is pending code.
-      against: [MEMS-1@1, MEMS-2@1, MEMS-3@1, MEMS-4@1]
+      against: [MEMS-1@2, MEMS-2@1, MEMS-3@1, MEMS-4@1]
 
   MEM-2:
     v: 1

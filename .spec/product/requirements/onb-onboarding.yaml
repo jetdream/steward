@@ -20,6 +20,14 @@ items:
       Org name + email is enough to start. EIN is optional; when provided (or
       confidently matched), the system verifies 501(c)(3) status and pulls
       registry data (IRS/ProPublica, A-4). Nothing blocks on completeness.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by ONBS-1 (approved, challenge r1 pass): non-blocking Org
+        creation from name+email, EIN optional, a name-derived match is a
+        founder-confirmed proposal (never silently bound — LRN-20), verification
+        status honest and never a gate. Realization pending code.
+      against: [ONBS-1@1]
 
   ONB-2:
     v: 1
@@ -32,6 +40,15 @@ items:
       (mission, programs, people, events) and style (tone of voice, vocabulary,
       post patterns, imagery style) into Memory (MEM-1). Style findings seed
       the Posting Strategy (STR-2).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by ONBS-2 (approved): website (IG-7) + Meta-account (IG-1)
+        harvest to Memory via MEMS-1, each entry source-pointed + assumed-marked
+        (grounded-guard + catch-rate, LRN-20), Strategy style seed (STR-2),
+        wrong-org purge (MEMS-2). X-timeline read is a surfaced gap (Q-13).
+        Realization pending code.
+      against: [ONBS-2@1]
 
   ONB-3:
     v: 1
@@ -42,6 +59,14 @@ items:
       The system shall compute what it's missing; the Interviewer (INT-1) fills
       gaps conversationally over time. No setup checklist is ever shown as
       homework — the product simply gets better as sources and answers arrive.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by ONBS-3 (approved): the gap model is the single source ONB-3
+        owns, INT consumes, and MEMS-6 keys (DEC-22 discipline); no onboarding
+        checklist/homework surface; progressive enrichment via INT-4.
+        Realization pending code.
+      against: [ONBS-3@1]
 
   ONB-4:
     v: 1
@@ -51,6 +76,15 @@ items:
     statement: >-
       OAuth flows for FB Page, Instagram, Threads, X — connectable in any
       order, any time; publishing to a channel activates when connected.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by ONBS-4 (approved): OAuth connect any order/time, never a gate;
+        ChannelConnection (DM-14) with encrypted credentials (SEC-10); a
+        deterministic health state machine; publishing activates on a healthy
+        connection (PUB-1/ARC-18); expiry surfaces as the EXP-13 needs-you card.
+        Realization pending code.
+      against: [ONBS-4@1]
 
   ONB-5:
     v: 1
@@ -60,6 +94,15 @@ items:
     statement: >-
       The founder sees the assembled profile and corrects it; corrections
       become permanent rules (MEM-1).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by ONBS-5 (approved): the assumed-marked profile is corrected
+        through the MEMS-1 write path (now an enumerated explicit correction
+        channel, MEMS-1 v2); a factual fix supersedes (MEMS-2), a prohibition
+        becomes a taboo enforced by the overlay (MEMS-3/GR-8); the same single
+        write path as CHT-2/APR-3. Realization pending code.
+      against: [ONBS-5@1]
 
   ONB-6:
     v: 1
@@ -71,3 +114,12 @@ items:
       First drafts are generated as soon as minimum viable context exists —
       target inside the first session (from sources alone, or from the first
       ten minutes of interview when sources are thin).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by ONBS-6 (approved): first drafts on an explicit deterministic
+        minimum-viable-context predicate (readyForFirstDrafts), decoupled from
+        connection; thin Memory yields honest cause-level drafts (MEMS-4/TOPS-1),
+        never fabricated impact; target first-session / 48h live (G-5).
+        Realization pending code.
+      against: [ONBS-6@1]

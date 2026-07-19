@@ -107,7 +107,7 @@ interfaces: >-
 
 items:
   MEMS-1:
-    v: 1
+    v: 2
     title: Write path and entry taxonomy
     implements: [MEM-1]
     statement: >-
@@ -117,7 +117,8 @@ items:
       approval / inline edit / skip-reason / rejection (APR-1, APR-3),
       interview answer (INT), chat remark or confirmed redirect (CHT-2),
       media upload and bot-sent fact/photo (GEN-3, BOT-1), ingestion finding
-      (ONB-2), and Discoveries triage marks (EXT-5).
+      (ONB-2), the onboarding "here's what I know" review correction (ONB-5),
+      and Discoveries triage marks (EXT-5).
       A BARE APPROVAL (approve with no edit or comment) has no natural entry
       type among the seven; at P1a it writes a lightweight REINFORCEMENT — a
       recency touch (a `reinforcedAt` bump) on the entries that grounded the
@@ -132,8 +133,9 @@ items:
       persists.
       ENTRY TYPES — exactly the seven of DM-2: fact, story, styleRule, taboo,
       person, program, event. Input arriving through an EXPLICIT correction
-      channel (an APR rejection / inline edit / skip-reason, or a CHT confirmed
-      redirect) that constrains future writing is recorded as a styleRule (a
+      channel (an APR rejection / inline edit / skip-reason, a CHT confirmed
+      redirect, or an onboarding "here's what I know" review correction — ONB-5)
+      that constrains future writing is recorded as a styleRule (a
       positive preference) or a taboo (a prohibition) — never as a bare fact.
       (Ambiguous input on FREE remark channels follows MEMS-5's narrower
       default.)

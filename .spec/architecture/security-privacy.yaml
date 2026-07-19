@@ -111,3 +111,18 @@ items:
       rules as in-app content (BIL-2). No third-party PII is solicited or
       stored (SEC-3); platform message-window and data-retention rules are
       respected per each provider's terms.
+
+  SEC-10:
+    v: 1
+    kind: posture
+    title: Channel credential storage
+    body: |
+      OAuth publishing credentials (DM-14 ChannelConnection: FB Page, Instagram,
+      Threads, X access/refresh tokens) are org secrets — encrypted at rest,
+      never logged, never sent to the client, and requested at the minimum
+      permission scope (A-1, GR-6). Revocation and expiry are first-class states,
+      not silent failures: an unusable connection surfaces as the EXP-13
+      needs-you card with its reason and is re-authorized by re-running the
+      ONB-4 connect flow. Hard-deleted with org data on a BIL-2 account deletion
+      (SEC-4). Distinct from founder auth (SEC-7, BetterAuth) — these are the
+      org's channel-publishing credentials, not the founder's login.

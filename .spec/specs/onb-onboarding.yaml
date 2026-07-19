@@ -1,0 +1,231 @@
+kind: spec
+prefix: ONBS
+title: Lazy Onboarding — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence / cheaper-alternative+hidden-assumptions / over-structure + LRN-19 sweep)
+  verdict: pass
+  record: .spec/specs/challenges/onb-onboarding-2026-07-19-r1.md
+  summary: >-
+    r1 passed with no surviving high; four LLM touch-points verified honestly
+    split (name→EIN match = confirmed proposal, extraction = grounded-guard +
+    catch-rate, minimum-viable-context = a deterministic boolean, channel health
+    = a real state machine — no LRN-20 overclaim), the gap-model single source
+    (ONB-3 owns / INT consumes / MEMS-6 keys) and DM-14/SEC-10 over-structure
+    (both referenced, right altitude) confirmed. Two mediums + one low applied in
+    this change: ONBS-2 X-harvest corrected to IG-1 Meta-only with the write-only
+    X integration (IG-2/A-2) read-gap surfaced as Q-13; the LRN-19 straggler
+    closed by naming the onboarding review as an enumerated write-trigger +
+    explicit correction channel in MEMS-1 (v2, additive-clarifying, reviewed
+    in-band by this challenge — MEM-1 coverage re-pinned MEMS-1@2); ONBS-3's
+    product-global acceptance negative scoped to onboarding surfaces (VAL-6 owns
+    the product-wide guarantee).
+intent: >-
+  Exact behavior of onboarding (register onb-onboarding.yaml): how an org starts
+  from name + email with nothing blocking (ONB-1), how public sources are
+  ingested into Memory and seed the Strategy (ONB-2), how the gap model drives
+  the interview (ONB-3), how channels connect on OAuth any time (ONB-4), how the
+  "here's what I know" review turns corrections into permanent rules (ONB-5), and
+  how first drafts land inside the first session on minimum viable context
+  (ONB-6). This spec covers the ENGINE beneath the ALREADY-APPROVED day-one
+  experience (journey EXP-1); NEW pixel-level UI detail is a separate method/ui.md
+  pass on those approved screens (named in open-questions).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-1, DM-2, DM-3, DM-14, PIPE-1, ARC-12, ARC-18, IG-1, IG-2, IG-6, IG-7, SEC-3, SEC-4, SEC-10]
+depends-on: [MEMS]
+governed-by: [GR-6]
+assurance: standard
+
+design: >-
+  Module @backend/onboarding (ARC-12) orchestrates signup, 501(c)(3)
+  verification, source ingestion, the gap model, and the channel-connect flow.
+  It is a THIN ORCHESTRATOR over shared services, not a second brain: Memory
+  (MEMS write/retrieve — the single source, DEC-22), the Strategy style seed
+  (STR-2 / STRS-2), the Interviewer (INT, which consumes the gap model), and the
+  integration adapters behind ports (ADR-0003) — ProPublica/IRS (IG-6), the
+  website scraper (IG-7), Meta (IG-1), X (IG-2). Extraction and org-name matching
+  are LLM steps in the shared pipeline (PIPE-1) via the ADR-0003 port, grounded
+  and source-pointed. ChannelConnection (DM-14) is the connect flow's output and
+  the Publisher's (ARC-18) input for PUB-1. The founder-facing surfaces are the
+  ALREADY-APPROVED day-one experience — journey EXP-1: doorstep (EXP-40) →
+  day-one home (EXP-38); flows arrival & watch it learn (EXP-11), the first
+  conversation + "here's what I know" (EXP-12), first drafts + connect-in-context
+  (EXP-13), meet the plan (EXP-14). This spec is the backend behavior beneath
+  them. Boundaries: reads public presence only, with signup consent (A-5, SEC-3);
+  no third-party PII (SEC-3); official platform APIs only (GR-6); no fabrication
+  (the LRN-20 grounded-guard + catch-rate pattern, applied per element).
+  NON-BLOCKING INVARIANT: every step — verification, ingestion, connect, review —
+  is skippable and resumable. The ONLY hard predecessor of first drafts (ONBS-6)
+  is the minimum-viable-context predicate, never the completion of any onboarding
+  step. This is what makes "no homework" (VAL-6, ONB-1) STRUCTURAL rather than
+  aspirational: there is no code path where an unfilled field gates the product.
+
+data: >-
+  DM-1 Org (created from name + email; carries verification status + pulled
+  registry data). DM-2 MemoryEntry (ingested facts/style, each source-pointed and
+  assumed-marked). DM-3 StrategyDoc (the ingestion style seed, STR-2). DM-14
+  ChannelConnection (one per authorized channel; credentials are encrypted org
+  secrets, SEC-10). The gap model is a DERIVED VIEW over Memory coverage (not a
+  separate entity), keyed into the MEMS-6 asked-set. Concrete field lists live in
+  @shared types at implementation.
+
+interfaces: >-
+  @backend/onboarding (ARC-12) exposes: startSignup(name, email) -> Org [creates
+  DM-1, non-blocking]; verifyNonprofit(org, ein?) -> status + registry data
+  [IG-6; a name-derived match returns a PROPOSAL for founder confirmation, never
+  auto-bound]; ingestSources(org, sources) -> writes facts+style to Memory, seeds
+  the Strategy [IG-1/IG-7 -> MEMS-1, STR-2]; purgeWrongOrg(org) -> clean delete
+  [MEMS-2]; computeGaps(org) -> the gap model [caller: INT]; connectChannel(org,
+  platform) / reconnectChannel(org, platform) -> ChannelConnection [DM-14; OAuth];
+  getProfileForReview(org) and applyCorrection(change) -> writes to Memory
+  [MEMS-1]; readyForFirstDrafts(org) -> boolean [the ONBS-6 predicate; caller:
+  GEN]. Exact tRPC/WS/OAuth-callback signatures live in code.
+
+items:
+  ONBS-1:
+    v: 1
+    title: Zero-homework signup and 501(c)(3) verification
+    implements: [ONB-1]
+    statement: >-
+      The Org (DM-1) is created from name + email alone; NOTHING downstream
+      blocks on missing fields (VAL-6, ONB-1) — verification and ingestion run
+      behind the already-working home (EXP-11). EIN is OPTIONAL. When the founder
+      provides an EIN, or the system CONFIDENTLY matches the org name to a single
+      registry record, it verifies 501(c)(3) status and pulls registry data via
+      ProPublica/IRS (IG-6, A-4). Org-name -> EIN matching is a fuzzy/LLM step
+      with a residual error rate (LRN-20): a system-DERIVED match is a PROPOSAL
+      the founder confirms before it is treated as the org's verified identity —
+      the system never silently binds a wrong EIN; a founder-PROVIDED EIN is
+      verified directly. Verification STATUS is a fact surfaced honestly
+      (verified | pending | unmatched | already-registered — EXP-11 states),
+      never a gate; a failed or blocked lookup degrades to "unverified" without
+      blocking and without fabricating registry data.
+      ACCEPTANCE: an org with only name + email reaches a working home and first
+      drafts (ONBS-6) with verification still pending; a name-matched EIN is never
+      persisted as identity without founder confirmation; a failed lookup yields
+      "unverified" with no fabricated data and no block.
+  ONBS-2:
+    v: 1
+    title: Source ingestion into Memory, seeding the Strategy
+    implements: [ONB-2]
+    statement: >-
+      When sources are connected or named, a pipeline SCRAPES the website (IG-7)
+      and HARVESTS the org's Meta accounts — FB / Instagram / Threads (IG-1) —
+      extracting FACTS
+      (mission, programs, people, events) and STYLE (tone, vocabulary, post
+      patterns, imagery style) and writing them to Memory through the MEM-1 write
+      path (MEMS-1). Every ingested entry is an INFERENCE, not ground truth: it
+      carries provenance pointing at the source artifact and is marked assumed
+      (DS-5 AssumedNote) for the ONBS-5 review. Extraction is an LLM step
+      (LRN-20): an entry with no resolvable source pointer is not written, and a
+      labeled catch-rate test on a fabricated-extraction set guards grounding — a
+      grounded-extraction guard + catch-rate, not an un-failable "never
+      hallucinates". Style findings SEED the Posting Strategy (STR-2)
+      one-directionally; the seed is founder-editable afterward (STRS-2) and is
+      not re-derived over the founder's edits. X style is NOT harvested at
+      launch: the committed X integration (IG-2) is write-only (A-2), so X voice
+      leans on the shared cross-channel style seed rather than the org's own X
+      timeline until read access is budgeted (Q-13) — a best-effort gap surfaced,
+      not a silent assumption. Only the org's PUBLIC presence is
+      read, under signup consent (A-5, SEC-3); no third-party PII is stored
+      (SEC-3). A "this isn't us" action triggers the deterministic wrong-org purge
+      (MEMS-2) — a clean hard-delete of the mis-ingested entries. Thin, slow, or
+      failed sources degrade honestly and non-blockingly (EXP-11); no sources at
+      all routes to the interview as the primary path (ONBS-3, EXP-12).
+      ACCEPTANCE: ingested facts/style land in Memory each with a source pointer
+      and an assumed mark; the Strategy shows a style seed derived from real
+      posts; "this isn't us" leaves no residual entries; ingestion failure never
+      blocks the home.
+  ONBS-3:
+    v: 1
+    title: The gap model driving the interview
+    implements: [ONB-3]
+    statement: >-
+      The system computes what it is MISSING as a structured GAP MODEL — the
+      enumerable set of unknowns (identity, programs, people, stories, style,
+      calendar) — recomputed as sources and answers arrive. This gap model is the
+      SINGLE source the Interviewer (INT-1/INT-2) draws its questions from AND the
+      same structured-unknown taxonomy the never-ask-twice asked-set keys against
+      (MEMS-6): ONB-3 OWNS the taxonomy, INT CONSUMES it, MEMS-6 KEYS it — one
+      source, no second copy (the DEC-22 discipline). No setup CHECKLIST is ever
+      shown as homework (VAL-6, R-10): gaps surface only as the colleague's
+      curiosity (INT) and the always-available, dismissible open-questions list
+      (INT-4), each tied to why it helps. The product simply improves as gaps
+      close; completeness is never presented as a task.
+      ACCEPTANCE: with sources thin the gap model is non-empty and the interview
+      is driven entirely by it; a filled gap stops being asked (MEMS-6); no
+      onboarding step presents a checklist/homework surface (the product-wide
+      no-empty-state guarantee is VAL-6).
+  ONBS-4:
+    v: 1
+    title: Channel connect — OAuth, any order, never a gate
+    implements: [ONB-4]
+    statement: >-
+      OAuth connect flows for FB Page, Instagram, Threads (IG-1, Meta) and X
+      (IG-2) are available in ANY order at ANY time and are NEVER a gate (VAL-6,
+      ONB-1). A successful connection persists a ChannelConnection (DM-14) owned
+      by the org, its credentials encrypted org secrets (SEC-10). A destination
+      ACTIVATES for publishing (PUB-1, read by the Publisher ARC-18) exactly when
+      a healthy ChannelConnection exists: zero connections means drafts still flow
+      and publishing waits (ONBS-6 is decoupled from connection); partial
+      connection is normal for week one. Connection health is a first-class,
+      DETERMINISTIC state machine (connected | expired | revoked | error): an
+      OAuth failure at connect time gets a plain-language retry; a LATER token
+      expiry or revocation becomes a pinned needs-you card with its reason
+      (EXP-13, SEC-10) — the founder never discovers a dead channel silently — and
+      re-auth reuses this same flow. Official platform APIs only (GR-6).
+      ACCEPTANCE: a channel connects independently of any other onboarding step
+      and of draft generation; an approved draft for an unconnected channel holds
+      (never errors) until connection; an expired token raises exactly one pinned
+      needs-you card and is cleared by reconnect.
+  ONBS-5:
+    v: 1
+    title: The "here's what I know" review — corrections become permanent rules
+    implements: [ONB-5]
+    statement: >-
+      The assembled profile (facts, tone, programs, people — from ONBS-2) is
+      presented for correction with every inference marked assumed (DS-5
+      AssumedNote, EXP-12). A founder correction is written through the MEM-1
+      write path (MEMS-1) as a PERMANENT rule: a factual fix SUPERSEDES the
+      inferred entry (MEMS-2 supersession — retained, not overwritten, VAL-3); a
+      correction phrased as a PROHIBITION becomes a taboo/styleRule enforced
+      everywhere Memory is (MEMS-3, the DEC-22 single source enforced by the GR-8
+      backstop). The review is NOT a gate: it is available and resumable, and an
+      un-reviewed profile still grounds drafts — its entries simply stay marked
+      assumed. This is the onboarding entry to the SAME correction path chat
+      (CHT-2) and approvals (APR-3) use — one write path, one source.
+      ACCEPTANCE: correcting an inferred fact supersedes it and the old form never
+      resurfaces in generation; a correction phrased as a prohibition is
+      thereafter enforced by the taboo overlay (MEMS-3); skipping the review does
+      not block drafts.
+  ONBS-6:
+    v: 1
+    title: First proof, lazily — minimum viable context
+    implements: [ONB-6]
+    statement: >-
+      First drafts generate as soon as MINIMUM VIABLE CONTEXT exists — a defined,
+      checkable predicate: enough grounded Memory to write on-mission (at least
+      the identity plus one program- or story-level fact) AND a seed Strategy
+      (STR-2, even the ingestion-seeded default). The trigger is met from sources
+      alone, or from the first ~ten minutes of interview when sources are thin.
+      The target is first drafts INSIDE the first session and a live post within
+      48 hours (G-5). It never blocks on completeness (ONB-1): with only
+      cause-level/thin Memory it still produces drafts, honestly grounded and
+      marked thin (MEMS-4 degradation, consistent with TOPS-1) rather than
+      fabricating specifics; drafts sharpen as Memory deepens. The predicate is
+      evaluated DETERMINISTICALLY (the gate is a checkable boolean —
+      readyForFirstDrafts); draft QUALITY is the LLM part downstream.
+      ACCEPTANCE: an org that provides only name + email and ten minutes of
+      interview receives first drafts in that session; the minimum-viable-context
+      predicate is explicit and deterministic; thin Memory yields honest
+      cause-level drafts, never fabricated impact.
+
+open-questions:
+  - >-
+    A UI-detail pass (method/ui.md) over the already-approved day-one screens
+    (doorstep EXP-40, day-one home EXP-38, flows EXP-11..14) — e.g. the exact
+    AssumedNote affordance on the "here's what I know" card (ONBS-5) and the
+    connect-in-context sheet (ONBS-4) — is separate from this backend spec, like
+    MEM-3's deferred Knowledge browser. Not a blocker: the day-one experience
+    spine (journey EXP-1) is already approved.

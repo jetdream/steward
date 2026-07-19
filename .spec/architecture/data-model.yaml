@@ -43,6 +43,7 @@ items:
         ORG ||--o{ EXTERNAL_ITEM : owns
         ORG ||--o{ TRUST_LEVEL : "per category"
         ORG ||--o{ MESSAGING_LINK : "linked bot senders"
+        ORG ||--o{ CHANNEL_CONNECTION : "authorized channels"
         ORG ||--|| SUBSCRIPTION : has
         CONTENT_ITEM ||--o{ CHANNEL_VARIANT : "adapts to"
         CONTENT_ITEM }o--o| MEDIA_ASSET : "carries picture"
@@ -197,3 +198,22 @@ items:
       only on the wrong-org purge (MEMS-2) or a BIL-2 account deletion (SEC-4).
       The active set is the editorial agenda (TOP-4). Owned by Org (DM-1); feeds
       Strategy section (a) (STR-1) and the Radar (EXT-1).
+
+  DM-14:
+    v: 1
+    kind: data-entity
+    title: ChannelConnection
+    body: |
+      An authorized publishing-channel connection (ONB-4). Fields: platform
+      (facebook_page | instagram | threads | x); the external account reference
+      (page/handle id); the OAuth credential (access + refresh tokens, expiry)
+      held as an ENCRYPTED SECRET (SEC-10), never surfaced to the client; status
+      (connected | expired | revoked | error); connectedAt / lastVerifiedAt.
+      Created by the ONB-4 connect flow (ARC-12, orchestrated during onboarding
+      but connectable any time) and READ by the Publisher (ARC-18) to activate a
+      destination for PUB-1 — zero connections means drafts still flow and
+      publishing waits (ONB-6 is decoupled from connection). A token expiry/
+      revocation is a first-class state that surfaces as the EXP-13 needs-you
+      card with its reason, never a silent dead channel. Hard-deleted with org
+      data on a BIL-2 account deletion (SEC-4). Owned by Org (DM-1). Concrete
+      field lists live in @shared types.
