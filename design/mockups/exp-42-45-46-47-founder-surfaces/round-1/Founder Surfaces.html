@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — How I write · Controls · Compose · Quick upload (round 3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--success:#008a05;--warn:#c47700;--danger:#c13515;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif;--r1:8px;--r2:14px;--r3:20px;--pill:9999px;--raised:rgba(0,0,0,.02) 0 0 0 1px,rgba(0,0,0,.04) 0 2px 6px 0,rgba(0,0,0,.1) 0 4px 8px 0}
+*{box-sizing:border-box}
+body{margin:0;background:#eceae4;color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.45;-webkit-font-smoothing:antialiased}
+.page{max-width:1500px;margin:0 auto;padding:34px 26px 90px;display:flex;flex-direction:column;gap:40px}
+.intro{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:27px;letter-spacing:-.02em;margin:0}
+.lede{color:var(--muted);font-size:14px;max-width:88ch;margin:0}
+.viewsec{display:flex;flex-direction:column;gap:12px}
+.slabel{display:flex;flex-direction:column;gap:3px}
+.slabel .t1{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--meta)}
+.slabel .t2{font-family:var(--fd);font-weight:650;font-size:18px;letter-spacing:-.01em}
+.slabel .t3{font-size:13px;color:var(--muted)}
+.duo{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.dcap{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--meta);margin:0 0 6px 4px}
+.pane{width:100%;max-width:760px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r3);box-shadow:var(--raised);overflow:hidden;flex:1 1 620px}
+.phone{width:390px;flex:none;background:var(--bg);border:1px solid var(--line);border-radius:26px;box-shadow:var(--raised);overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;border-bottom:1px solid var(--soft);background:var(--surface)}
+.ph .t{font-family:var(--fd);font-weight:650;font-size:15px;letter-spacing:-.01em}
+.back{font-size:12.5px;font-weight:600;color:var(--muted)}
+.pb{padding:15px 17px 17px;display:flex;flex-direction:column;gap:12px}
+.phone .pb{padding:12px 12px 14px;gap:9px}
+.note{font-size:12.5px;color:var(--muted)}
+.vhist{font-size:12px;color:var(--meta);display:flex;gap:10px;align-items:baseline}
+.vhist a{color:var(--muted)}
+.sect{border:1px solid var(--soft);border-radius:var(--r2);overflow:hidden;background:var(--surface)}
+.sh{display:flex;align-items:center;gap:8px;background:var(--warm);padding:9px 14px}
+.sh b{font-family:var(--fd);font-weight:650;font-size:13px}
+.sh .edit{margin-left:auto;width:28px;height:28px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:12px;background:var(--surface);cursor:pointer}
+.sh .chev{margin-left:auto;color:var(--meta)}
+.sb{padding:11px 14px;font-size:13.5px;line-height:1.55}
+.sb .origin{font-size:11.5px;color:var(--meta)}
+.row{display:flex;align-items:center;gap:11px;padding:11px 14px;border-top:1px solid var(--soft);font-size:13.5px}
+.row:first-of-type{border-top:none}
+.row .tt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.row .tt .sec{font-size:11.5px;color:var(--meta)}
+.row .chev{margin-left:auto;color:var(--meta)}
+.row .val{margin-left:auto;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.dot{width:9px;height:9px;border-radius:var(--pill);background:var(--success);display:inline-block}
+.dot.off{background:var(--meta)}
+.seg{display:flex;border:1px solid var(--line);border-radius:var(--pill);overflow:hidden}
+.seg span{font-size:11px;font-weight:600;padding:5px 10px;color:var(--muted)}
+.seg span.on{background:var(--warm);color:var(--fg)}
+.cap{font-size:10.5px;font-weight:700;color:var(--warn);background:color-mix(in srgb,var(--warn) 8%,transparent);border:1px solid color-mix(in srgb,var(--warn) 26%,var(--line));border-radius:var(--pill);padding:2px 8px}
+.btn{font:inherit;font-weight:600;border:none;cursor:pointer;border-radius:var(--r1);background:none;color:var(--muted);padding:8px 10px;font-size:12.5px}
+.btn:hover{background:var(--warm);color:var(--fg)}
+.btn.sec{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:var(--pill);padding:7px 14px}
+.btn.primary{background:var(--accent);color:#fff;padding:9px 17px;font-size:13px;border-radius:var(--r1)}
+.btn.danger{border:1px solid var(--danger);color:var(--danger);border-radius:var(--r1);padding:8px 13px;background:var(--surface)}
+.pausebar{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:var(--r2);padding:11px 14px;background:var(--surface)}
+.pausebar b{font-size:13.5px}
+.pausebar .d{font-size:12px;color:var(--muted)}
+.loss{border:1px solid var(--line);border-radius:var(--r2);background:var(--warm);padding:12px 14px;font-size:12.5px;color:var(--fg2);line-height:1.55}
+.field{border:1px solid var(--line);border-radius:var(--r1);padding:11px 13px;font-size:13.5px;color:var(--meta);background:var(--bg)}
+.field.big{min-height:88px}
+.thumbs{display:flex;gap:8px;align-items:center}
+.thumbs span{width:72px;height:54px;border-radius:8px;background:#d9cfc0}
+.thumbs span.add{background:var(--surface);border:2px dashed var(--line);display:grid;place-items:center;color:var(--meta);font-size:18px}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.fb2{font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:var(--pill);border:1px solid var(--line);color:var(--fg2);background:var(--surface)}
+.fb2.ok{color:var(--success);border-color:color-mix(in srgb,var(--success) 35%,var(--line));background:color-mix(in srgb,var(--success) 6%,var(--surface))}
+.fb2.skip{color:var(--muted);background:var(--warm);text-decoration:line-through}
+.reason{display:flex;gap:6px;color:var(--muted);font-size:12px}.reason::before{content:"↳";color:var(--meta)}
+.drop{border:2px dashed var(--line);border-radius:var(--r2);padding:26px 14px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;background:var(--surface)}
+.drop b{font-size:14px}
+.drop span{font-size:12px;color:var(--muted)}
+footer.check{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;max-width:90ch}
+footer.check b{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <div class="kick">Steward · round 3 · EXP-42 · EXP-45 · EXP-46 · EXP-47</div>
+    <h1>How I write · Controls · Compose · Quick upload</h1>
+    <p class="lede">The remaining founder surfaces at true breakpoints (DEC-20). How-I-write gets the round-2 hierarchy treatment; Controls carries the plain-language trust dials with caps stated, the pause family, and cancel-with-dignity; Compose is the one founder-authored path — a sheet, never a place; quick upload is the from-an-email photo drop.</p>
+  </div>
+
+  <!-- ───── HOW I WRITE ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">View · EXP-42 · STR-1/STR-2</span><span class="t2">How I write — the editorial contract</span><span class="t3">Versioned document · chat-made rules marked with origin · edits bind immediately</span></div>
+    <div class="duo">
+      <div style="flex:1 1 620px;max-width:760px"><p class="dcap">Desktop — pane beside the stream</p>
+      <div class="pane">
+        <div class="ph"><span class="t">How I speak for you</span><span class="back">‹ back to Steward</span></div>
+        <div class="pb">
+          <div class="vhist"><span>version 7 · changed 2 days ago</span><a href="#">see what changed</a><a href="#">history</a></div>
+          <div class="sect"><div class="sh"><b>What we post — and never post</b><span class="edit">✎</span></div><div class="sb">Impact stories, adoption days, volunteer spotlights, gratitude. <b>Never:</b> politics, graphic rescue conditions, donor amounts.</div></div>
+          <div class="sect"><div class="sh"><b>Tone of voice</b><span class="edit">✎</span></div><div class="sb">Warm, plain, hopeful — like a neighbor telling good news.<br/><span class="origin">"Meet Biscuit — she waited 214 days" · not "We are pleased to announce"</span></div></div>
+          <div class="sect"><div class="sh"><b>Restrictions</b><span class="edit">✎</span></div><div class="sb">No outcome promises. No tax or legal advice. Sensitive topics always come to you first.</div></div>
+          <div class="sect"><div class="sh"><b>Standing instructions</b><span class="edit">✎</span></div><div class="sb">Never name donors. <span class="origin">— from your redirect, Jul 12</span><br/>Warm over formal on impact stories. <span class="origin">— learned from your adjust, Jul 19</span><br/>Max 200 characters on X. <span class="origin">— proposed from your edits, accepted Jul 15</span></div></div>
+          <div class="sect"><div class="sh"><b>Per channel</b><span class="edit">✎</span></div><div class="sb">Facebook: full stories. Instagram: photo-first. Threads/X: short + article link when the story is on your news page.</div></div>
+          <div class="note" style="font-size:11.5px;color:var(--meta)">Everything here binds my next draft immediately — edit inline, or just tell me in chat and it lands here with its origin marked.</div>
+        </div>
+      </div></div>
+      <div><p class="dcap">Phone — 390px · sections as tappable rows</p>
+      <div class="phone">
+        <div class="ph"><span class="t" style="font-size:14px">How I write</span><span class="back">‹ Steward</span></div>
+        <div class="pb">
+          <div class="vhist"><span>v7 · 2 days ago</span><a href="#">changes</a></div>
+          <div class="sect"><div class="sh"><b>What we post — and never</b><span class="chev">›</span></div></div>
+          <div class="sect"><div class="sh"><b>Tone of voice</b><span class="chev">›</span></div><div class="sb" style="font-size:12.5px">Warm, plain, hopeful — a neighbor telling good news.</div></div>
+          <div class="sect"><div class="sh"><b>Restrictions</b><span class="chev">›</span></div></div>
+          <div class="sect"><div class="sh"><b>Standing instructions · 3</b><span class="chev">›</span></div></div>
+          <div class="sect"><div class="sh"><b>Per channel</b><span class="chev">›</span></div></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ───── CONTROLS ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">Tray · EXP-45 · UX-6 / AUT / BIL / NWS-6</span><span class="t2">Controls — configuring the colleague</span><span class="t3">Trust dials in plain labels with caps stated · pause family · cancel with dignity · news subdomain (P1)</span></div>
+    <div class="duo">
+      <div style="flex:1 1 620px;max-width:760px"><p class="dcap">Desktop</p>
+      <div class="pane">
+        <div class="ph"><span class="t">Controls</span><span class="back">‹ back to Steward</span></div>
+        <div class="pb">
+          <div class="pausebar"><b>⏸ Pause everything</b><span class="d">stops all publishing instantly — also always in the chrome</span><button class="btn danger" style="margin-left:auto">Pause</button></div>
+          <div class="sect">
+            <div class="sh"><b>How much I run on my own</b></div>
+            <div class="row"><div class="tt"><span>Impact stories</span><span class="sec">10 approved unchanged — eligible for more trust</span></div><span class="val"><span class="seg"><span>Ask me first</span><span class="on">Heads-up</span><span>On its own</span></span></span></div>
+            <div class="row"><div class="tt"><span>Volunteer &amp; people posts</span></div><span class="val"><span class="seg"><span class="on">Ask me first</span><span>Heads-up</span><span>On its own</span></span></span></div>
+            <div class="row"><div class="tt"><span>Fundraising asks</span><span class="sec">always needs at least a heads-up — permanent</span></div><span class="val"><span class="cap">capped at heads-up</span></span></div>
+            <div class="row"><div class="tt"><span>External (Discoveries) posts</span><span class="sec">cited, and always at least a heads-up — permanent</span></div><span class="val"><span class="cap">capped at heads-up</span></span></div>
+          </div>
+          <div class="sect">
+            <div class="sh"><b>Channels</b></div>
+            <div class="row"><div class="tt"><span><span class="dot"></span> Facebook · Instagram</span><span class="sec">connected · publishing</span></div><span class="val"><button class="btn">pause</button></span></div>
+            <div class="row"><div class="tt"><span><span class="dot off"></span> X</span><span class="sec">needs re-connect — also pinned in your home</span></div><span class="val"><button class="btn sec">Reconnect</button></span></div>
+            <div class="row"><div class="tt"><span>Your news page</span><span class="sec">news.steward.org/hopeandpaws · own subdomain available later</span></div><span class="val"><button class="btn">details</button></span></div>
+          </div>
+          <div class="sect">
+            <div class="sh"><b>Rhythm &amp; notifications</b></div>
+            <div class="row"><div class="tt"><span>Visit cadence</span></div><span class="val"><span class="seg"><span>Daily</span><span>2–3× week</span><span class="on">Weekly</span></span></span></div>
+            <div class="row"><div class="tt"><span>Email me when posts are ready</span></div><span class="val"><span class="dot"></span> on</span></div>
+          </div>
+          <div class="sect">
+            <div class="sh"><b>Plan &amp; billing</b></div>
+            <div class="row"><div class="tt"><span>$199/month · card ••4242</span><span class="sec">30-day guarantee · invoices</span></div><span class="val"><button class="btn">manage</button></span></div>
+          </div>
+          <div class="sect" style="border-color:var(--line)">
+            <div class="sh"><b>Leaving</b></div>
+            <div class="pb" style="padding:12px 14px;gap:9px">
+              <div class="loss">Cancel stops publishing. You'd keep your export (posts, photos, articles) — but your <b>news page and every social link pointing at it</b> go dark, and the memory and rhythm we built stop growing. Refund window: 12 days left.</div>
+              <div style="display:flex;gap:8px"><button class="btn sec">Export everything</button><button class="btn danger">Cancel — one question, no maze</button></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <div><p class="dcap">Phone — grouped rows, wholly tappable</p>
+      <div class="phone">
+        <div class="ph"><span class="t" style="font-size:14px">Controls</span><span class="back">‹ Steward</span></div>
+        <div class="pb">
+          <div class="pausebar" style="padding:10px 12px"><b style="font-size:13px">⏸ Pause everything</b><button class="btn danger" style="margin-left:auto;padding:7px 11px">Pause</button></div>
+          <div class="sect">
+            <div class="row"><div class="tt"><span>How much I run on my own</span><span class="sec">impact: heads-up · asks: capped</span></div><span class="chev">›</span></div>
+            <div class="row"><div class="tt"><span>Channels</span><span class="sec">2 connected · X needs re-connect</span></div><span class="chev">›</span></div>
+            <div class="row"><div class="tt"><span>Rhythm &amp; notifications</span><span class="sec">weekly · email on</span></div><span class="chev">›</span></div>
+            <div class="row"><div class="tt"><span>Plan &amp; billing</span><span class="sec">$199/mo · ••4242</span></div><span class="chev">›</span></div>
+            <div class="row"><div class="tt"><span>Leaving</span><span class="sec">export · cancel with dignity</span></div><span class="chev">›</span></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ───── COMPOSE + QUICK UPLOAD ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">Sheet · EXP-46 (APR-5, UX-7) — and · EXP-47 (PRO-1)</span><span class="t2">Compose — an action, never a place · Quick upload</span><span class="t3">Library-first picture · fit-gate pre-suggests channels · closing parks the draft honestly. Quick upload: the from-an-email photo drop.</span></div>
+    <div class="duo">
+      <div style="flex:1 1 620px;max-width:760px"><p class="dcap">Desktop — Compose sheet over the home</p>
+      <div class="pane">
+        <div class="ph"><span class="t">Write a post</span><span class="back">✕ close (drafts park, never lost)</span></div>
+        <div class="pb">
+          <div class="field big">What happened? Write it plainly — or just tell me in chat and I'll write it for you…</div>
+          <div><p class="dcap" style="margin:0 0 6px">Picture — library first</p>
+          <div class="thumbs"><span></span><span></span><span></span><span class="add">+</span></div></div>
+          <div><p class="dcap" style="margin:0 0 6px">Where it fits</p>
+          <div class="chips"><span class="fb2 ok">Facebook</span><span class="fb2 ok">Instagram</span><span class="fb2 skip">X</span></div>
+          <div class="reason" style="margin-top:6px">skipped X: "no long stories on X" — tap to override for this post.</div></div>
+          <div style="display:flex;gap:8px;align-items:center"><button class="btn primary">Preview the variants</button><span class="note" style="font-size:12px">then approve — nothing publishes before that</span></div>
+        </div>
+      </div></div>
+      <div><p class="dcap">Phone — quick upload (EXP-47), from the email link</p>
+      <div class="phone">
+        <div class="ph"><span class="t" style="font-size:14px">3 photos for Saturday's recap</span></div>
+        <div class="pb">
+          <div class="reason">Donors were promised day-of photos — these go straight into the recap draft.</div>
+          <div class="drop"><b>Add photos</b><span>camera or library · uploads resume if your signal drops</span></div>
+          <div class="thumbs"><span></span><span></span><span class="add">+</span></div>
+          <button class="btn primary" style="width:100%;padding:12px">Send to Steward</button>
+          <div class="note" style="font-size:11.5px;color:var(--meta)">Or just send them to the WhatsApp/Telegram bot — same place, same draft.</div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <footer class="check">
+    <div><b>What to check (EXP-42/45/46/47):</b> the trust dials read as plain sentences with the permanent caps stated in place; Pause is duplicated — chrome and Controls; the cancel section shows the honest loss summary (news page named) with no retention maze; Compose leads with "or just tell me"; the quick upload never requires "opening the app." Phone rows are wholly tappable; nothing renders between breakpoints.</div>
+  </footer>
+</div>
+</body>
+</html>

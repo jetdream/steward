@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — the public news pages (EXP-48/49, DS-8)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--org:#2f6b4e;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif;--r1:8px;--r2:14px;--pill:9999px;--raised:rgba(0,0,0,.02) 0 0 0 1px,rgba(0,0,0,.04) 0 2px 6px 0,rgba(0,0,0,.1) 0 4px 8px 0}
+*{box-sizing:border-box}
+body{margin:0;background:#eceae4;color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.5;-webkit-font-smoothing:antialiased}
+.page{max-width:1500px;margin:0 auto;padding:34px 26px 90px;display:flex;flex-direction:column;gap:40px}
+.intro{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:27px;letter-spacing:-.02em;margin:0}
+.lede{color:var(--muted);font-size:14px;max-width:88ch;margin:0}
+.viewsec{display:flex;flex-direction:column;gap:12px}
+.slabel{display:flex;flex-direction:column;gap:3px}
+.slabel .t1{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--meta)}
+.slabel .t2{font-family:var(--fd);font-weight:650;font-size:18px;letter-spacing:-.01em}
+.slabel .t3{font-size:13px;color:var(--muted)}
+.duo{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.dcap{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--meta);margin:0 0 6px 4px}
+.web{width:100%;max-width:860px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--raised);overflow:hidden;flex:1 1 640px}
+.phone{width:390px;flex:none;background:var(--surface);border:1px solid var(--line);border-radius:26px;box-shadow:var(--raised);overflow:hidden}
+.mast{display:flex;align-items:center;gap:11px;padding:16px 26px;border-bottom:1px solid var(--soft)}
+.mast .ologo{width:38px;height:38px;border-radius:10px;background:var(--org);color:#fff;display:grid;place-items:center;font-weight:800;font-family:var(--fb);font-size:15px}
+.mast .oname{font-family:var(--fd);font-weight:700;font-size:18px;letter-spacing:-.01em}
+.mast .sect2{margin-left:auto;font-size:12.5px;color:var(--muted)}
+.art{max-width:640px;margin:0 auto;padding:30px 26px 34px;display:flex;flex-direction:column;gap:16px}
+.tags{display:flex;gap:7px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;color:var(--org);background:color-mix(in srgb,var(--org) 8%,transparent);border:1px solid color-mix(in srgb,var(--org) 24%,var(--line));border-radius:var(--pill);padding:3px 10px}
+.hl{font-family:var(--fd);font-weight:700;font-size:31px;line-height:1.14;letter-spacing:-.02em;margin:0}
+.byline{font-size:12.5px;color:var(--meta)}
+.hero{border-radius:12px;overflow:hidden}.hero svg{display:block;width:100%;height:auto}
+.bodytxt{font-size:16.5px;line-height:1.65;color:var(--fg2);display:flex;flex-direction:column;gap:14px}
+.cite{border-left:3px solid color-mix(in srgb,var(--org) 45%,var(--line));background:var(--warm);border-radius:8px;padding:10px 14px;font-size:13px;display:flex;flex-direction:column;gap:2px}
+.cite .src{font-weight:600;color:var(--fg2)}
+.cite a{color:var(--org)}
+.pgfoot{border-top:1px solid var(--soft);padding:14px 26px;font-size:12px;color:var(--meta);display:flex;justify-content:space-between;align-items:center}
+.pgfoot a{color:var(--muted)}
+.fp{display:flex;gap:0}
+.rail{width:190px;flex:none;border-right:1px solid var(--soft);padding:22px 16px;display:flex;flex-direction:column;gap:3px}
+.rail .rh{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--meta);margin-bottom:5px}
+.rail a{font-size:13px;color:var(--fg2);text-decoration:none;padding:6px 9px;border-radius:8px}
+.rail a.on{background:color-mix(in srgb,var(--org) 8%,transparent);color:var(--org);font-weight:600}
+.list{flex:1;padding:22px 26px;display:flex;flex-direction:column;gap:0}
+.card2{display:flex;gap:16px;padding:16px 2px;border-bottom:1px solid var(--soft);align-items:center}
+.card2:last-child{border-bottom:none}
+.card2 .th{flex:none;width:130px;height:88px;border-radius:10px;background:#d9cfc0}
+.card2 .tt{display:flex;flex-direction:column;gap:5px;min-width:0}
+.card2 .t4{font-family:var(--fd);font-weight:650;font-size:17px;letter-spacing:-.01em;line-height:1.25}
+.card2 .sum{font-size:13px;color:var(--muted);line-height:1.45}
+.card2 .meta3{font-size:11.5px;color:var(--meta)}
+.nothere{padding:60px 26px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center}
+.nothere .oname2{font-family:var(--fd);font-weight:700;font-size:16px}
+.nothere p{margin:0;font-size:14px;color:var(--muted);max-width:44ch}
+.nothere a{color:var(--org);font-size:13.5px}
+footer.check{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;max-width:90ch}
+footer.check b{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <div class="kick">Steward · the donor reads · EXP-9 / EXP-36 / EXP-48 / EXP-49 · DS-8</div>
+    <h1>The public news pages — the org's face, not ours</h1>
+    <p class="lede">A different persona: a donor arriving from a social link on their phone with seconds of attention. The DS-8 template wears the ORG's slots — name, logo, accent (deep green here, deliberately NOT Steward terracotta; Q-10: no per-org typography) — with the steward type and layout underneath. Citations on external stories (GR-5), topic navigation (NWS-4), "published with Steward" as the quiet growth seam (NWS-3), server-rendered and canonical (NWS-2). No app chrome, no founder controls.</p>
+  </div>
+
+  <!-- ───── ARTICLE ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">Screen · EXP-48 · NWS-1/2/4/5 · GR-5</span><span class="t2">The article — where the social link lands</span></div>
+    <div class="duo">
+      <div style="flex:1 1 640px;max-width:860px"><p class="dcap">Desktop / shared-link view</p>
+      <div class="web">
+        <div class="mast"><span class="ologo">H</span><span class="oname">Hope &amp; Paws</span><span class="sect2">Stories</span></div>
+        <div class="art">
+          <div class="tags"><span class="tag">Impact</span><span class="tag">Adoptions</span></div>
+          <h2 class="hl">The senior dogs nobody expected to adopt — and the weekend that changed everything</h2>
+          <div class="byline">Hope &amp; Paws · July 19, 2026 · 3 min read</div>
+          <div class="hero"><svg viewBox="0 0 640 300" role="img" aria-label="Adoption day photo"><rect width="640" height="300" fill="#e7e0d8"/><circle cx="536" cy="76" r="34" fill="#f3ede4"/><path d="M0 240 L150 172 L300 226 L440 150 L640 246 L640 300 L0 300 Z" fill="#d5cabb"/><path d="M0 270 L217 216 L403 266 L537 226 L640 258 L640 300 L0 300 Z" fill="#c4b6a3"/></svg></div>
+          <div class="bodytxt">
+            <p>Two hundred and fourteen days. That's how long Biscuit — a nine-year-old beagle with gray around her muzzle — waited for a family. This Saturday, at our adoption day in Zilker Park, she climbed into a stranger's lap and stayed there.</p>
+            <p>She wasn't the only one. Four senior dogs found homes this weekend, part of a spring that has quietly broken every record our small rescue has kept.</p>
+            <div class="cite"><span class="src">County shelter network · spring adoption report, 2026</span><a href="#">chronicle.example.com/adoptions-2026</a></div>
+            <p>We think the reason is simple: people meet the animal, not the statistic. Every dog on this page has a name, a wait, and a story — and donors like you keep them fed and warm while they wait…</p>
+          </div>
+        </div>
+        <div class="pgfoot"><span>Published with <a href="#">Steward</a></span><span>news.steward.org/hopeandpaws · canonical</span></div>
+      </div></div>
+      <div><p class="dcap">Phone — where most donors actually read</p>
+      <div class="phone">
+        <div class="mast" style="padding:13px 15px"><span class="ologo" style="width:30px;height:30px;font-size:12px">H</span><span class="oname" style="font-size:15px">Hope &amp; Paws</span></div>
+        <div class="art" style="padding:18px 16px 22px;gap:12px">
+          <div class="tags"><span class="tag">Impact</span></div>
+          <h2 class="hl" style="font-size:23px">The senior dogs nobody expected to adopt</h2>
+          <div class="byline">July 19 · 3 min</div>
+          <div class="hero"><svg viewBox="0 0 640 300" role="img" aria-label="Adoption day photo"><rect width="640" height="300" fill="#e7e0d8"/><path d="M0 240 L150 172 L300 226 L440 150 L640 246 L640 300 L0 300 Z" fill="#d5cabb"/></svg></div>
+          <div class="bodytxt" style="font-size:15.5px">
+            <p>Two hundred and fourteen days. That's how long Biscuit waited for a family. This Saturday she climbed into a stranger's lap and stayed…</p>
+          </div>
+        </div>
+        <div class="pgfoot" style="padding:12px 15px"><span>Published with <a href="#">Steward</a></span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ───── FRONT PAGE ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">Screen · EXP-49 · NWS-4 topic rail</span><span class="t2">The front page — the org's living public record</span></div>
+    <div class="duo">
+      <div style="flex:1 1 640px;max-width:860px"><p class="dcap">Desktop — topic rail + list</p>
+      <div class="web">
+        <div class="mast"><span class="ologo">H</span><span class="oname">Hope &amp; Paws</span><span class="sect2">Stories</span></div>
+        <div class="fp">
+          <div class="rail">
+            <span class="rh">Topics</span>
+            <a class="on" href="#">All stories</a><a href="#">Impact</a><a href="#">Adoptions</a><a href="#">Our people</a><a href="#">Events</a><a href="#">From the field</a>
+          </div>
+          <div class="list">
+            <div class="card2"><span class="th"></span><div class="tt"><span class="t4">The senior dogs nobody expected to adopt — and the weekend that changed everything</span><span class="sum">Four senior dogs found homes this weekend, part of a record spring for our small rescue.</span><span class="meta3">Impact · July 19</span></div></div>
+            <div class="card2"><span class="th"></span><div class="tt"><span class="t4">Maria's 200th shift</span><span class="sum">Our longest-serving volunteer on what keeps her coming back every Saturday.</span><span class="meta3">Our people · July 17</span></div></div>
+            <div class="card2"><span class="th"></span><div class="tt"><span class="t4">The well in Kamuli is running</span><span class="sum">Three months after breaking ground, 400 families drew clean water for the first time.</span><span class="meta3">Impact · July 16</span></div></div>
+          </div>
+        </div>
+        <div class="pgfoot"><span>Published with <a href="#">Steward</a></span><span>news.steward.org/hopeandpaws</span></div>
+      </div></div>
+      <div style="display:flex;flex-direction:column;gap:18px"><div><p class="dcap">Phone — list first, topics as chips</p>
+      <div class="phone">
+        <div class="mast" style="padding:13px 15px"><span class="ologo" style="width:30px;height:30px;font-size:12px">H</span><span class="oname" style="font-size:15px">Hope &amp; Paws</span></div>
+        <div style="padding:12px 14px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--soft)"><span class="tag" style="background:color-mix(in srgb,var(--org) 12%,transparent)">All</span><span class="tag" style="color:var(--muted);border-color:var(--line);background:none">Impact</span><span class="tag" style="color:var(--muted);border-color:var(--line);background:none">Adoptions</span><span class="tag" style="color:var(--muted);border-color:var(--line);background:none">Events</span></div>
+        <div class="list" style="padding:6px 14px 16px">
+          <div class="card2" style="gap:12px;padding:13px 0"><span class="th" style="width:92px;height:66px"></span><div class="tt"><span class="t4" style="font-size:14.5px">The senior dogs nobody expected to adopt</span><span class="meta3">Impact · Jul 19</span></div></div>
+          <div class="card2" style="gap:12px;padding:13px 0"><span class="th" style="width:92px;height:66px"></span><div class="tt"><span class="t4" style="font-size:14.5px">Maria's 200th shift</span><span class="meta3">Our people · Jul 17</span></div></div>
+        </div>
+      </div></div>
+      <div><p class="dcap">The warm not-here page — a recalled article's URL</p>
+      <div class="phone">
+        <div class="mast" style="padding:13px 15px"><span class="ologo" style="width:30px;height:30px;font-size:12px">H</span><span class="oname" style="font-size:15px">Hope &amp; Paws</span></div>
+        <div class="nothere">
+          <span class="oname2">That story has moved on</span>
+          <p>The page you followed isn't here anymore — but Hope &amp; Paws' stories are.</p>
+          <a href="#">Read the latest →</a>
+        </div>
+        <div class="pgfoot" style="padding:12px 15px"><span>Published with <a href="#">Steward</a></span></div>
+      </div></div></div>
+    </div>
+  </section>
+
+  <footer class="check">
+    <div><b>What to check (EXP-48/49, DS-8, GR-7):</b> the page reads unmistakably as the ORG's (green accent slot, name, logo) while the type/layout stay the steward template — no per-org typography (Q-10); the citation block on the external claim (GR-5); topic navigation both as rail (desktop) and chips (phone); the recalled URL serves a warm org-branded not-here page, never a bare 404 (EXP-36); "published with Steward" stays quiet. Server-rendered, canonical URLs, OG correctness are acceptance criteria on the flow (NWS-2).</div>
+  </footer>
+</div>
+</body>
+</html>

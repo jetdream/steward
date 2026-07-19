@@ -771,6 +771,7 @@ items:
       per-channel rules. Versioned with visible diffs (STR-2); edits bind
       immediately; chat-made rules land here marked with their origin.
       Framed on first visit as "here's how I plan to speak for you."
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
 
   EXP-43:
     v: 2
@@ -835,6 +836,7 @@ items:
       (EXP-35, sibling of billing), and the org's news subdomain upgrade
       (NWS-6, P1 — deliberately a settings affordance with no journey of
       its own).
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
 
   EXP-46:
     v: 1
@@ -847,6 +849,7 @@ items:
       suggestions and visible skip reasons, adapted variants to confirm,
       schedule. Progressive disclosure; closing parks an unfinished draft
       honestly.
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
 
   EXP-47:
     v: 1
@@ -859,6 +862,7 @@ items:
       route to the requesting draft with a colleague-voice confirmation
       and payoff. Exists so sending photos never requires "opening the
       app" (G-3).
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
 
   EXP-48:
     v: 1
@@ -871,6 +875,7 @@ items:
       real photos, CitationBlock on external stories (GR-5), topic tags
       (NWS-4), "published with Steward" footer (NWS-3). No app chrome, no
       founder controls — this is the donor's surface.
+      Mockups: design/mockups/exp-48-49-news-public/round-1/ (founder-reviewed).
 
   EXP-49:
     v: 1
@@ -883,6 +888,7 @@ items:
       density — the org's living public record (G-4 made visible to
       donors). Empty state narrates honestly ("stories are on their way");
       canonical URLs throughout (NWS-2).
+      Mockups: design/mockups/exp-48-49-news-public/round-1/ (founder-reviewed).
 
   EXP-50:
     v: 1
