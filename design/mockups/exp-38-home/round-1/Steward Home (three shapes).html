@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — the Home (EXP-38), three shapes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--hov:#a8492a;--success:#008a05;--warn:#c47700;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif;--r1:8px;--r2:14px;--r3:20px;--pill:9999px}
+*{box-sizing:border-box}
+body{margin:0;background:#efece6;color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.43;-webkit-font-smoothing:antialiased}
+.page{max-width:1420px;margin:0 auto;padding:34px 24px 80px}
+.intro{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:26px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:27px;letter-spacing:-.02em;margin:0}
+.lede{color:var(--muted);font-size:14px;max-width:82ch;margin:0}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+@media(max-width:1180px){.tri{grid-template-columns:1fr;max-width:470px;margin:0 auto}}
+.col{display:flex;flex-direction:column;gap:10px}
+.shape-tag{display:flex;flex-direction:column;gap:2px;padding:0 4px}
+.shape-tag .t1{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--meta)}
+.shape-tag .t2{font-family:var(--fd);font-weight:650;font-size:16px;letter-spacing:-.01em}
+/* ---------- the frame = one home ---------- */
+.frame{background:var(--bg);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 34px -20px rgba(0,0,0,.28)}
+/* chrome — IDENTICAL in all three shapes */
+.chrome{background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(4px);border-bottom:1px solid var(--soft)}
+.c1{display:flex;align-items:center;gap:8px;padding:11px 13px 8px}
+.pause{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:var(--pill);padding:4px 10px;cursor:pointer;background:var(--surface)}
+.pause .sq{width:8px;height:8px;border:1.6px solid currentColor;border-radius:2px}
+.brand{display:flex;align-items:center;gap:7px;font-family:var(--fd);font-weight:700;font-size:14.5px;margin:0 auto}
+.brand .lg{width:22px;height:22px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;font-family:var(--fb)}
+.ic{width:30px;height:30px;border-radius:var(--r1);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:14px;background:var(--surface);cursor:pointer}
+.compose{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--fg2);border:1px solid var(--line);border-radius:var(--pill);padding:5px 11px;background:var(--surface);cursor:pointer}
+.c2{display:flex;gap:2px;padding:0 9px 9px;flex-wrap:wrap}
+.gw{font-size:11.5px;font-weight:600;color:var(--muted);padding:4px 8px;border-radius:var(--pill);cursor:pointer}
+.gw:hover{background:var(--warm);color:var(--fg)}
+.gw::before{content:"○";margin-right:5px;color:var(--meta);font-size:9px}
+/* stream */
+.stream{padding:14px 13px 16px;display:flex;flex-direction:column;gap:11px}
+.hgroup{display:flex;flex-direction:column;gap:7px;padding:2px 2px 0}
+.h2{font-family:var(--fd);font-weight:700;font-size:21px;letter-spacing:-.015em;margin:0;line-height:1.12}
+.sub{color:var(--muted);font-size:12.5px}
+.prog{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:12px}
+.track{flex:1;max-width:150px;height:5px;border-radius:var(--pill);background:var(--soft);overflow:hidden}.track i{display:block;height:100%;background:var(--accent)}
+.rhythm{font-weight:600;color:var(--fg2)}
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden}
+.cb{padding:12px 13px 0;display:flex;flex-direction:column;gap:9px}
+.crow{display:flex;align-items:center;gap:8px}
+.chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent)}
+.chip.ext{background:var(--warm);color:var(--fg2)}
+.chans{margin-left:auto;font-size:11px;color:var(--muted)}
+.photo{border-radius:var(--r1);overflow:hidden}.photo svg{display:block;width:100%;height:auto}
+.txt{font-size:14px;line-height:1.45}
+.prov{font-size:11px;color:var(--meta)}.prov a{color:var(--muted);text-decoration:underline dotted;text-underline-offset:2px}
+.reason{display:flex;gap:6px;color:var(--muted);font-size:12px;line-height:1.4}.reason::before{content:"↳";color:var(--meta)}
+.fit{display:flex;flex-wrap:wrap;gap:6px}
+.fb2{font-size:11px;font-weight:600;padding:3px 9px;border-radius:var(--pill);border:1px solid var(--line);color:var(--fg2);background:var(--surface)}
+.fb2.ok{color:var(--success);border-color:color-mix(in srgb,var(--success) 35%,var(--line));background:color-mix(in srgb,var(--success) 6%,var(--surface))}
+.fb2.skip{color:var(--muted);background:var(--warm);text-decoration:line-through}
+.acts{display:flex;align-items:center;gap:3px;padding:11px 10px 12px}
+.btn{font:inherit;font-weight:600;border:none;cursor:pointer;border-radius:var(--r1)}
+.primary{background:var(--accent);color:#fff;padding:8px 16px;font-size:13px}.primary:hover{background:var(--hov)}
+.primary[disabled]{background:var(--warm);color:var(--meta);cursor:default}
+.quiet{background:none;color:var(--muted);padding:8px 9px;font-size:12.5px}.quiet:hover{color:var(--fg);background:var(--warm)}
+/* steward voice rows */
+.say{display:flex;gap:8px;padding:2px 2px}
+.say .av{flex:none;width:24px;height:24px;border-radius:var(--pill);background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:11px;font-weight:700}
+.say .bd{display:flex;flex-direction:column;gap:3px;font-size:13.5px;line-height:1.45}
+.say .who{font-size:10.5px;font-weight:700;color:var(--meta);letter-spacing:.04em;text-transform:uppercase}
+.mine{align-self:flex-end;background:var(--warm);border-radius:var(--r2);padding:8px 13px;font-size:13.5px;max-width:85%}
+/* pinned & held */
+.pinned{display:flex;flex-direction:column;gap:8px}
+.pin-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--meta);padding:0 3px}
+.card.held{border-color:color-mix(in srgb,var(--accent) 42%,var(--line));box-shadow:inset 3px 0 0 var(--accent)}
+.hh{display:inline-flex;gap:6px;align-items:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.hh .d{width:6px;height:6px;border-radius:var(--pill);background:var(--accent)}
+/* veto + report */
+.card.veto{background:var(--warm)}
+.vh{display:inline-flex;gap:6px;align-items:center;font-size:11.5px;font-weight:600;color:var(--muted)}
+.vh .d{width:6px;height:6px;border-radius:var(--pill);background:var(--success)}
+.log{display:flex;flex-direction:column;gap:2px}
+.logrow{display:flex;gap:8px;align-items:baseline;font-size:12.5px;color:var(--muted);padding:5px 4px;border-bottom:1px dashed var(--soft)}
+.logrow:last-child{border-bottom:none}
+.logrow .ok{color:var(--success);font-weight:700}
+.logrow a{color:var(--muted);text-decoration:underline dotted;text-underline-offset:2px}
+/* awaiting picture */
+.slot{border:2px dashed color-mix(in srgb,var(--warn) 45%,var(--line));border-radius:var(--r1);display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;color:var(--muted);font-size:12px;background:color-mix(in srgb,var(--warn) 4%,var(--surface));text-align:center;padding:16px 10px}
+.slot b{color:var(--fg2);font-size:12.5px}
+.sugg{display:flex;gap:6px;align-items:center}.sugg span{width:52px;height:38px;border-radius:6px;background:#d9cfc0}
+.secbtn{background:var(--surface);border:1px solid var(--line);border-radius:var(--pill);padding:6px 12px;font:inherit;font-weight:600;font-size:12px;cursor:pointer;color:var(--fg)}
+/* assumed */
+.assume{display:flex;gap:7px;align-items:baseline;font-size:12.5px;padding:7px 10px;border-radius:var(--r1);border:1px solid color-mix(in srgb,var(--warn) 30%,var(--line));background:color-mix(in srgb,var(--warn) 5%,var(--surface))}
+.assume .tag{font-size:10px;font-weight:700;color:var(--warn);text-transform:lowercase}
+.assume a{color:var(--fg)}
+/* terminus */
+.done{background:var(--warm);border:1px solid var(--line);border-radius:var(--r2);padding:20px 15px;text-align:center;display:flex;flex-direction:column;gap:5px;align-items:center}
+.num{font-family:var(--fd);font-weight:700;font-size:48px;line-height:1;letter-spacing:-.03em;color:var(--accent)}
+.done .big{font-family:var(--fd);font-weight:600;font-size:15px}
+.done p{margin:0;color:var(--muted);font-size:12.5px;max-width:40ch}
+/* composer — never blank */
+.composer{border-top:1px solid var(--soft);background:var(--surface);padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.opens{display:flex;gap:6px;flex-wrap:wrap}
+.open{font-size:11.5px;font-weight:600;color:var(--fg2);border:1px solid var(--line);background:var(--bg);border-radius:var(--pill);padding:5px 11px;cursor:pointer}
+.open:hover{border-color:var(--fg2)}
+.inrow{display:flex;gap:8px;align-items:center}
+.input{flex:1;border:1px solid var(--line);border-radius:var(--pill);padding:9px 14px;font-size:12.5px;color:var(--meta);background:var(--bg)}
+.send{width:32px;height:32px;border-radius:var(--pill);background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:13px}
+footer.check{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;max-width:86ch;display:flex;flex-direction:column;gap:6px}
+footer.check b{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <div class="kick">Steward · the One-Home model · EXP-38</div>
+    <h1>One home, three shapes</h1>
+    <p class="lede">The same surface at three moments of the relationship. The chrome and region order never change — Pause · Steward · the four glass-wall views · Controls · Compose, then pinned → Ready → conversation → terminus. Only the density and content morph. The glass wall (Knowledge · How I write · Plan &amp; Published · Discoveries) is one click in every shape, never badged.</p>
+  </div>
+
+  <div class="tri">
+
+    <!-- ─────────── SHAPE 1: DAY ONE ─────────── -->
+    <div class="col">
+      <div class="shape-tag"><span class="t1">Shape 1 · day one</span><span class="t2">The handshake — it's already working</span></div>
+      <div class="frame">
+        <div class="chrome">
+          <div class="c1"><span class="pause"><span class="sq"></span>Pause</span><span class="brand"><span class="lg">S</span>Steward</span><span class="ic">⚙</span><span class="compose">＋ Compose</span></div>
+          <div class="c2"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></div>
+        </div>
+        <div class="stream">
+          <div class="hgroup"><h2 class="h2">Good to meet you, Maria</h2><span class="sub">I'm already at work — here's what's happening.</span></div>
+          <div class="say"><span class="av">S</span><div class="bd"><span class="who">Steward · now</span><div>I'm reading your website and your Instagram — I can already hear your voice. First drafts in about ten minutes.</div><div class="prov">reading: hopeandpaws.org · @hopeandpaws</div></div></div>
+          <div class="card"><div class="cb">
+            <div class="say" style="padding:0"><span class="av">S</span><div class="bd"><span class="who">While we wait</span><div>Your site mentions Biscuit — the senior beagle adopted last month. What happened when the family first met her? A sentence is plenty.</div></div></div>
+            <div class="reason">Stories like this become your best posts — I'll draft one from whatever you tell me.</div>
+          </div><div class="acts"><button class="btn quiet">Answer…</button><button class="btn quiet">Not now</button></div></div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Here's what I know so far</span></div>
+            <div class="txt" style="font-size:13px">Hope &amp; Paws · animal rescue · founded 2019 · 3 programs · adoption days every second Saturday.</div>
+            <div class="assume"><span class="tag">assumed</span><span>You serve Travis County — read off your website. <a href="#">Not right?</a></span></div>
+          </div><div class="acts"><button class="btn quiet">Fix anything</button><button class="btn quiet">Looks right</button></div></div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Your first draft</span><span class="chans">Facebook</span></div>
+            <div class="txt">Meet Biscuit — the senior beagle who waited 214 days for a family. This weekend, she found one.</div>
+            <div class="prov">Built from <a href="#">your website</a> · <a href="#">our chat just now</a></div>
+            <div class="reason">Approve it and I'll ask to connect Facebook — nothing publishes without you.</div>
+          </div><div class="acts"><button class="btn primary">Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Skip</button></div></div>
+        </div>
+        <div class="composer">
+          <div class="opens"><span class="open">What do you already know about us?</span><span class="open">We have an event this Saturday</span><span class="open">What happens next?</span></div>
+          <div class="inrow"><span class="input">Ask me anything — or tap a suggestion</span><span class="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── SHAPE 2: STEADY ─────────── -->
+    <div class="col">
+      <div class="shape-tag"><span class="t1">Shape 2 · steady</span><span class="t2">The weekly visit — finite, minutes</span></div>
+      <div class="frame">
+        <div class="chrome">
+          <div class="c1"><span class="pause"><span class="sq"></span>Pause</span><span class="brand"><span class="lg">S</span>Steward</span><span class="ic">⚙</span><span class="compose">＋ Compose</span></div>
+          <div class="c2"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></div>
+        </div>
+        <div class="stream">
+          <div class="hgroup">
+            <h2 class="h2">Ready for you</h2>
+            <div class="prog"><span class="track"><i style="width:50%"></i></span><span>2 of 4 · about five minutes</span><span class="rhythm">6 weeks steady</span></div>
+          </div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Impact story</span><span class="chans">Facebook · Instagram</span></div>
+            <div class="photo"><svg viewBox="0 0 640 230" role="img" aria-label="Org photo"><rect width="640" height="230" fill="#e7e0d8"/><circle cx="540" cy="58" r="27" fill="#f3ede4"/><path d="M0 184 L150 132 L300 173 L440 115 L640 189 L640 230 L0 230 Z" fill="#d5cabb"/><path d="M0 207 L210 165 L390 205 L520 173 L640 198 L640 230 L0 230 Z" fill="#c4b6a3"/></svg></div>
+            <div class="txt">The well in Kamuli is running. Three months ago you helped us break ground — this week, 400 families drew clean water for the first time.</div>
+            <div class="prov">Built from <a href="#">your update last Tuesday</a> · <a href="#">3 photos from Saturday</a></div>
+            <div class="reason">Your donors were promised a progress report when drilling started — this closes that loop.</div>
+            <div class="fit"><span class="fb2 ok">Facebook</span><span class="fb2 ok">Instagram</span><span class="fb2 skip">X</span><span style="font-size:11px;color:var(--muted)">"no long stories on X" — override?</span></div>
+          </div><div class="acts"><button class="btn primary">Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Skip</button><button class="btn quiet">Redirect…</button></div></div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Volunteer spotlight</span><span class="chans">Instagram</span></div>
+            <div class="slot"><b>Needs a photo before it can go out</b><span>the words are ready — add one and I'll schedule it</span></div>
+            <div class="crow"><div class="sugg"><span></span><span></span><span></span></div><button class="secbtn">Choose from library</button></div>
+            <div class="reason">These three from March look right for Dev's story.</div>
+          </div><div class="acts"><button class="btn primary" disabled>Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Skip</button></div></div>
+          <div class="mine">Make the well post warmer — they waited so long for this.</div>
+          <div class="say"><span class="av">S</span><div class="bd"><span class="who">Steward</span><div>Done — warmer, and it now leads with the wait. I'll remember "warm over formal" for stories like this. <a href="#" style="color:var(--muted)">Undo</a></div></div></div>
+          <div class="say" style="opacity:.75"><span class="av">S</span><div class="bd"><div style="font-size:12.5px;color:var(--muted)">2 more and you're caught up — the gratitude post and one discovery worth sharing.</div></div></div>
+        </div>
+        <div class="composer">
+          <div class="opens"><span class="open">What's going out this week?</span><span class="open">Why this post?</span><span class="open">We got new photos</span></div>
+          <div class="inrow"><span class="input">Ask me anything — or tap a suggestion</span><span class="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── SHAPE 3: QUIET ─────────── -->
+    <div class="col">
+      <div class="shape-tag"><span class="t1">Shape 3 · quiet</span><span class="t2">Autonomy earned — the home goes calm</span></div>
+      <div class="frame">
+        <div class="chrome">
+          <div class="c1"><span class="pause"><span class="sq"></span>Pause</span><span class="brand"><span class="lg">S</span>Steward</span><span class="ic">⚙</span><span class="compose">＋ Compose</span></div>
+          <div class="c2"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></div>
+        </div>
+        <div class="stream">
+          <div class="pinned">
+            <span class="pin-label">Needs you — stays here until you decide</span>
+            <div class="card held"><div class="cb">
+              <span class="hh"><span class="d"></span>Held for your approval</span>
+              <div class="txt">A note on the flooding at the county shelter — how we're helping the displaced animals, and how neighbors can pitch in.</div>
+              <div class="reason">This touches a sensitive topic, so I'm not publishing it myself — whatever your trust settings.</div>
+            </div><div class="acts"><button class="btn primary">Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Redirect…</button></div></div>
+          </div>
+          <div class="hgroup"><h2 class="h2">Nothing else needs you</h2><span class="sub">5 posts went out on their own this week.</span></div>
+          <div class="card veto"><div class="cb">
+            <span class="vh"><span class="d"></span>Published · you can stop it until Thu 6 pm</span>
+            <div class="txt" style="font-size:13.5px">Volunteer spotlight: Maria's 200th shift — out to Facebook and Instagram this morning.</div>
+            <div class="reason">You've approved 10 of these unchanged, so I published on your behalf.</div>
+          </div><div class="acts"><button class="btn quiet">Veto &amp; pull it</button><button class="btn quiet">See what went out</button></div></div>
+          <div class="log">
+            <div class="logrow"><span class="ok">✓</span><span>Tue — Impact story → Facebook · Instagram</span><a href="#" style="margin-left:auto">view</a></div>
+            <div class="logrow"><span class="ok">✓</span><span>Wed — Gratitude post → Facebook</span><a href="#" style="margin-left:auto">view</a></div>
+            <div class="logrow"><span class="ok">✓</span><span>Thu — Discovery share (cited) → Threads</span><a href="#" style="margin-left:auto">view</a></div>
+          </div>
+          <div class="done"><div class="num">8</div><div class="big">weeks of steady presence</div><p>Next from me: your GivingTuesday plan — one approval, I'll handle the rest.</p></div>
+        </div>
+        <div class="composer">
+          <div class="opens"><span class="open">What went out this month?</span><span class="open">Plan something for the gala</span><span class="open">How are we doing?</span></div>
+          <div class="inrow"><span class="input">Ask me anything — or tap a suggestion</span><span class="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="check">
+    <div><b>What to check against the spec (EXP-38):</b> the chrome and region order are pixel-identical across all three shapes — only density and content change. The held card is pinned above everything and is excluded from batch actions. The glass wall (four labeled views) is visible and one click in every shape. The composer is never blank — suggested openings change with context. The terminus speaks rhythm ("steady presence"), never streaks.</div>
+    <div style="font-size:12px;color:var(--meta)">Tokens + type from AI-S-DS (terracotta · warm neutrals · Bricolage Grotesque / Source Sans 3). The earlier screens/inbox.html is the pre-DEC-18 six-destination model, kept as reference.</div>
+  </footer>
+</div>
+</body>
+</html>

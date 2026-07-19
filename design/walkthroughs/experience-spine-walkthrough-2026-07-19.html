@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — the One-Home spine, walkthrough (2026-07-19)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--success:#008a05;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:44px 28px 90px;display:flex;flex-direction:column;gap:38px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:32px;letter-spacing:-.02em;margin:6px 0 0;max-width:24ch;line-height:1.1}
+.lede{color:var(--muted);font-size:15px;max-width:76ch;margin:8px 0 0}
+.sect-head{display:flex;flex-direction:column;gap:2px;border-top:1px solid var(--line);padding-top:26px}
+.sect-head .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--meta);font-weight:700}
+h2{font-family:var(--fd);font-weight:700;font-size:22px;letter-spacing:-.015em;margin:2px 0 0}
+p{margin:0;font-size:14.5px}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:flex;flex-direction:column;gap:5px}
+.pill b{font-family:var(--fd);font-weight:650;font-size:14.5px;letter-spacing:-.01em}
+.pill span{font-size:13px;color:var(--muted)}
+.home{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:16px;display:flex;flex-direction:column;gap:10px;max-width:640px}
+.hrow{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--fg2);display:flex;justify-content:space-between;align-items:baseline}
+.hrow .lab{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--meta)}
+.hrow.chrome2{background:var(--warm);border-style:solid}
+.hrow.pinned{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:inset 3px 0 0 var(--accent)}
+.shapes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+.shape{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.shape b{font-family:var(--fd);font-weight:650;font-size:14px}
+.shape p{font-size:12.5px;color:var(--muted);margin-top:4px}
+.jgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;margin-top:14px}
+.j{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.j .jt{display:flex;justify-content:space-between;align-items:baseline}
+.j b{font-family:var(--fd);font-weight:650;font-size:14.5px;letter-spacing:-.01em}
+.j .id{font-size:10.5px;color:var(--meta);font-weight:700}
+.j .fl{font-size:12.5px;color:var(--muted);line-height:1.55}
+.j .fl i{color:var(--meta);font-style:normal;font-size:11px}
+.gw{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:14px}
+.g{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.g b{font-size:13.5px;font-family:var(--fd);font-weight:650}
+.g p{font-size:12px;color:var(--muted);margin-top:3px}
+.rules{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.rules li{font-size:13.5px;padding-left:20px;position:relative}
+.rules li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+.delta{background:var(--warm);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:14px;font-size:13.5px;display:flex;flex-direction:column;gap:8px}
+.next{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:14px}
+.nx{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface)}
+.nx b{font-size:12.5px;font-family:var(--fd);font-weight:650}
+.nx p{font-size:12px;color:var(--muted);margin-top:3px}
+.foot{border-top:1px solid var(--line);padding-top:18px;font-size:12px;color:var(--meta)}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kick">Steward · experience walkthrough · 2026-07-19</div>
+    <h1>The One-Home spine, on one page</h1>
+    <p class="lede">The experience was reconceived from first principles (DEC-18): two independent drafts, authored blind to the old spine, converged on one adaptive home — and you chose full replace. This is the current governed truth: <code>experience/spine.yaml</code>, EXP-1..56, challenger-passed (r1), with your mobile-first and desktop-beside decisions recorded (DEC-19). The old ten-journey walkthrough (2026-07-16) documents the superseded spine.</p>
+  </header>
+
+  <section>
+    <div class="sect-head"><span class="k">01 · The soul</span><h2>Five principles</h2></div>
+    <div class="pillars">
+      <div class="pill"><b>One home, no navigation tax</b><span>The founder lives in a single surface and summons everything else. There are no destinations to learn.</span></div>
+      <div class="pill"><b>The colleague speaks first</b><span>The home is a conversation the system leads (CHT-5). The founder answers and disposes — never authors from blank.</span></div>
+      <div class="pill"><b>The home morphs with trust</b><span>Dense and conversational early; sparse and report-like at earned autonomy. One invariant skeleton — density changes, layout never does.</span></div>
+      <div class="pill"><b>Finite by design</b><span>The stream always reaches an honest "caught up". Holds and failures pin — never batch-cleared, never scrolled away. Safe at the ~1 item/day cadence ceiling.</span></div>
+      <div class="pill"><b>The glass wall is always open</b><span>Knowledge · How I write · Plan &amp; Published · Discoveries — one click, plain labels, pull-only, never gated behind chat (VAL-3).</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sect-head"><span class="k">02 · The surface</span><h2>The home (EXP-38) and its three shapes</h2></div>
+    <div class="home">
+      <div class="hrow chrome2"><span>⏸ Pause &nbsp;·&nbsp; <b style="font-family:var(--fd)">Steward</b> &nbsp;·&nbsp; Knowledge · How I write · Plan &amp; Published · Discoveries &nbsp;·&nbsp; ⚙ &nbsp;·&nbsp; ＋ Compose</span><span class="lab">chrome — never changes</span></div>
+      <div class="hrow pinned"><span>Held for your approval (GR-3) · publish failures · re-auth</span><span class="lab">pinned — can't scroll away</span></div>
+      <div class="hrow"><span>"Ready for you · 3 of 5 · about six minutes" — the finite stack</span><span class="lab">Ready spine</span></div>
+      <div class="hrow"><span>Recent exchanges + a composer that always suggests openings</span><span class="lab">conversation</span></div>
+      <div class="hrow"><span>"Caught up — 6 weeks of steady presence. Next from me…"</span><span class="lab">terminus</span></div>
+    </div>
+    <div class="shapes">
+      <div class="shape"><b>Day one — the handshake</b><p>Narrated ingestion, interview cards, "here's what I know", the first draft with in-context channel connect. First post live inside 48h (G-5).</p></div>
+      <div class="shape"><b>Steady — the weekly visit</b><p>The digest lands at the top of Ready; approve / adjust / skip / redirect; done in minutes; quiet pride at the terminus.</p></div>
+      <div class="shape"><b>Quiet — autonomy earned</b><p>"Nothing needs you — 5 went out on their own." Veto-window cards, the log, the rhythm. Only holds and failures interrupt.</p></div>
+    </div>
+    <p style="margin-top:12px;font-size:13px;color:var(--muted)">Mobile-first (UX-1 v2): the phone is the floor — everything one-handed. Desktop buys simultaneity (DEC-19): a summoned surface opens <b>beside</b> the home; the stream stays present. Renders: <i>screens/home.html</i>, <i>screens/home-desktop.html</i>, <i>screens/day-one.html</i>, <i>screens/glass-wall.html</i> (AI-S-SC; exported under design/mockups/ as rounds stabilize).</p>
+  </section>
+
+  <section>
+    <div class="sect-head"><span class="k">03 · The map</span><h2>Ten journeys — the trust arc and its satellites</h2></div>
+    <div class="jgrid">
+      <div class="j"><div class="jt"><b>Day one — the handshake</b><span class="id">EXP-1</span></div><div class="fl">arrival &amp; watch it learn <i>EXP-11</i> → the first conversation <i>EXP-12</i> → first drafts, first yes <i>EXP-13</i> → meet the plan <i>EXP-14</i></div></div>
+      <div class="j"><div class="jt"><b>The weekly visit</b><span class="id">EXP-2</span></div><div class="fl">the visit arrives <i>EXP-15</i> → work the stack <i>EXP-16</i> → caught up <i>EXP-17</i> · missed-week grace built in</div></div>
+      <div class="j"><div class="jt"><b>Just talk</b><span class="id">EXP-3</span></div><div class="fl">ask anything, led <i>EXP-18</i> → redirect &amp; adjust <i>EXP-19</i> → teach it by disposing <i>EXP-20</i> → do it by chat <i>EXP-21 · P1</i></div></div>
+      <div class="j"><div class="jt"><b>The colleague moves first</b><span class="id">EXP-4</span></div><div class="fl">send me three photos <i>EXP-22</i> → the bot pipe <i>EXP-23</i> → approve once — campaigns <i>EXP-24</i></div></div>
+      <div class="j"><div class="jt"><b>Earning the reins</b><span class="id">EXP-5</span></div><div class="fl">the offer <i>EXP-25</i> → published, veto open <i>EXP-26</i> → held for you <i>EXP-27</i> → pause &amp; pull back <i>EXP-28</i></div></div>
+      <div class="j"><div class="jt"><b>Looking inside</b><span class="id">EXP-6</span></div><div class="fl">steer how it writes <i>EXP-29</i> → what it knows <i>EXP-30</i> → plan &amp; published <i>EXP-31</i> → wander discoveries <i>EXP-32</i></div></div>
+      <div class="j"><div class="jt"><b>Make something now</b><span class="id">EXP-7</span></div><div class="fl">compose <i>EXP-33</i> — an action in the chrome, never a place</div></div>
+      <div class="j"><div class="jt"><b>Fair account and exit</b><span class="id">EXP-8</span></div><div class="fl">plan &amp; billing <i>EXP-34</i> → cancel with dignity <i>EXP-35</i> — in Controls</div></div>
+      <div class="j"><div class="jt"><b>The donor reads</b><span class="id">EXP-9</span></div><div class="fl">arrive from a link and read <i>EXP-36</i> — article + front page on the org-branded template</div></div>
+      <div class="j"><div class="jt"><b>Operators behind the glass</b><span class="id">EXP-10</span></div><div class="fl">silent QA pass <i>EXP-37</i> — internal, deliberately thin</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sect-head"><span class="k">04 · The glass wall</span><h2>Transparency without a dashboard</h2></div>
+    <div class="gw">
+      <div class="g"><b>Knowledge</b><p>Facts, stories, people, rules — provenance on tap, AssumedNotes on inferences, edit/delete in place. Hosts the "help me understand you" open questions (INT-4).</p></div>
+      <div class="g"><b>How I write</b><p>The five-section editorial contract, versioned with diffs. Chat-made rules land here, marked with their origin. Binds immediately.</p></div>
+      <div class="g"><b>Plan &amp; Published</b><p>The rolling four-week calendar over the publish log — one log, everywhere. Recall scheduled items; unpublish news articles.</p></div>
+      <div class="g"><b>Discoveries</b><p>The reading room: what the radar found, why your audience might care, one-tap taste-teaching. No counts, no tasks, ever.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sect-head"><span class="k">05 · The guarantees</span><h2>Disciplines that keep the model honest</h2></div>
+    <ul class="rules">
+      <li>The stream always reaches an honest <b>"caught up"</b> — a fused home is safe only because it stays finite (~1 item/day ceiling, DEC-18).</li>
+      <li><b>Holds and failures pin.</b> A GR-3 sensitive-topic draft interrupts at every trust level — counted, unmissable, never batch-approved.</li>
+      <li><b>One skeleton.</b> The chrome and region order are identical across all shapes — the home never "changes on" the founder.</li>
+      <li><b>The glass wall never hides.</b> Four labeled views, one click, in every shape; trust offers arrive with the evidence attached.</li>
+      <li><b>Never a blank box.</b> The composer always suggests specific, non-trivial openings (CHT-5); disposals invite one optional "why" (the enrichment loop).</li>
+      <li><b>Rhythm, never streaks.</b> "6 weeks of steady presence" — grace over guilt, one nudge maximum, warm welcome-backs (DEC-16).</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sect-head"><span class="k">06 · What changed</span><h2>From six destinations to one home</h2></div>
+    <div class="delta">
+      <span><b>Replaced:</b> the six-destination shell (Ready · Calendar · Chat · Discoveries · Organization · Settings) with a docked chat companion — superseded whole (ui.yaml retained as history; DEC-18).</span>
+      <span><b>Kept, verified by the challenger:</b> every requirement served (plus CHT-5 and INT-4, newly covered); every vetted edge case re-absorbed — the held/veto card distinction, article take-down, approve-undo, thin-source onboarding floor, missed-week grace, cancel-with-dignity, all bot states, citations and article links.</span>
+      <span><b>Carried over untouched:</b> the AI-S-DS design system (terracotta + warm neutrals, Bricolage Grotesque / Source Sans 3, 21 components) and the DEC-16 vocabulary (Ready, Discoveries, plain trust labels).</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sect-head"><span class="k">07 · Next</span><h2>Where the canvas goes from here</h2></div>
+    <div class="next">
+      <div class="nx"><b>1 · Review the new renders</b><p>Glass-wall views and the day-one storyboard are on the canvas awaiting your eyes.</p></div>
+      <div class="nx"><b>2 · Remaining surfaces</b><p>Controls, Compose sheet, quick upload, the public news pages — each on the same system.</p></div>
+      <div class="nx"><b>3 · Specs on approved screens</b><p>The design gate is live: buildable specs cite EXP screens via constrained-by; code follows specs.</p></div>
+    </div>
+  </section>
+
+  <footer class="foot">Steward experience spine v2 · One-Home model · DEC-18/DEC-19 · challenge record specs/challenges/experience-spine-2026-07-19-r1.md · rendered in the steward theme (terracotta #B5502E · Bricolage Grotesque / Source Sans 3) · supersedes the 2026-07-16 walkthrough</footer>
+</div>
+</body>
+</html>

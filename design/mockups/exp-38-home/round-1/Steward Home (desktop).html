@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — the Home on desktop (EXP-38/39)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--hov:#a8492a;--success:#008a05;--warn:#c47700;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif;--r1:8px;--r2:14px;--r3:20px;--pill:9999px;--raised:rgba(0,0,0,.02) 0 0 0 1px,rgba(0,0,0,.04) 0 2px 6px 0,rgba(0,0,0,.1) 0 4px 8px 0}
+*{box-sizing:border-box}
+body{margin:0;background:#eceae4;color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.43;-webkit-font-smoothing:antialiased}
+.page{max-width:1500px;margin:0 auto;padding:34px 26px 90px;display:flex;flex-direction:column;gap:34px}
+.intro{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:27px;letter-spacing:-.02em;margin:0}
+.lede{color:var(--muted);font-size:14px;max-width:88ch;margin:0}
+.f-label{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.f-label .t1{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--meta)}
+.f-label .t2{font-family:var(--fd);font-weight:650;font-size:17px;letter-spacing:-.01em}
+/* desktop frame */
+.frame{background:var(--bg);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05),0 16px 40px -22px rgba(0,0,0,.3)}
+.chrome{display:flex;align-items:center;gap:18px;padding:12px 26px;border-bottom:1px solid var(--soft);background:color-mix(in srgb,var(--bg) 90%,transparent)}
+.pause{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:var(--pill);padding:5px 12px;background:var(--surface)}
+.pause .sq{width:8px;height:8px;border:1.6px solid currentColor;border-radius:2px}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-weight:700;font-size:15.5px}
+.brand .lg{width:24px;height:24px;border-radius:7px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;font-family:var(--fb)}
+.gwrow{display:flex;gap:4px;margin:0 auto}
+.gw{font-size:12.5px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:var(--pill);cursor:pointer}
+.gw:hover{background:var(--warm);color:var(--fg)}
+.gw.open{background:var(--warm);color:var(--fg)}
+.gw::before{content:"○";margin-right:6px;color:var(--meta);font-size:9px}
+.ic{width:32px;height:32px;border-radius:var(--r1);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:14px;background:var(--surface)}
+.compose{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--fg2);border:1px solid var(--line);border-radius:var(--pill);padding:6px 14px;background:var(--surface)}
+/* layouts */
+.canvas{display:flex;justify-content:center;padding:28px 26px 34px;gap:26px;min-height:640px}
+.stream{width:100%;max-width:690px;display:flex;flex-direction:column;gap:13px}
+.canvas.split{justify-content:flex-start}
+.canvas.split .stream{max-width:600px;flex:0 1 600px}
+.pane{flex:1 1 640px;max-width:760px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r3);box-shadow:var(--raised);align-self:flex-start;position:sticky;top:20px;overflow:hidden}
+.dim{opacity:.55}
+/* stream bits (as in the triptych, wider) */
+.hgroup{display:flex;flex-direction:column;gap:8px}
+.h2{font-family:var(--fd);font-weight:700;font-size:24px;letter-spacing:-.015em;margin:0;line-height:1.1}
+.prog{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.track{flex:0 1 190px;height:5px;border-radius:var(--pill);background:var(--soft);overflow:hidden}.track i{display:block;height:100%;background:var(--accent)}
+.rhythm{font-weight:600;color:var(--fg2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden}
+.card.sel{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 25%,transparent)}
+.cb{padding:14px 15px 0;display:flex;flex-direction:column;gap:10px}
+.crow{display:flex;align-items:center;gap:9px}
+.chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent)}
+.chans{margin-left:auto;font-size:12px;color:var(--muted)}
+.photo{border-radius:var(--r1);overflow:hidden}.photo svg{display:block;width:100%;height:auto}
+.txt{font-size:15px;line-height:1.46}
+.prov{font-size:12px;color:var(--meta)}.prov a{color:var(--muted);text-decoration:underline dotted;text-underline-offset:2px}
+.reason{display:flex;gap:7px;color:var(--muted);font-size:13px}.reason::before{content:"↳";color:var(--meta)}
+.fit{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.fb2{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:var(--pill);border:1px solid var(--line);color:var(--fg2);background:var(--surface)}
+.fb2.ok{color:var(--success);border-color:color-mix(in srgb,var(--success) 35%,var(--line));background:color-mix(in srgb,var(--success) 6%,var(--surface))}
+.fb2.skip{color:var(--muted);background:var(--warm);text-decoration:line-through}
+.fb2.link{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 32%,var(--line));background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+.acts{display:flex;align-items:center;gap:4px;padding:12px 12px 13px}
+.btn{font:inherit;font-weight:600;border:none;cursor:pointer;border-radius:var(--r1)}
+.primary{background:var(--accent);color:#fff;padding:9px 18px;font-size:13.5px}.primary:hover{background:var(--hov)}
+.quiet{background:none;color:var(--muted);padding:9px 10px;font-size:13px}.quiet:hover{color:var(--fg);background:var(--warm)}
+.say{display:flex;gap:9px}
+.say .av{flex:none;width:26px;height:26px;border-radius:var(--pill);background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:11px;font-weight:700}
+.say .bd{display:flex;flex-direction:column;gap:3px;font-size:14px}
+.say .who{font-size:11px;font-weight:700;color:var(--meta);letter-spacing:.04em;text-transform:uppercase}
+.mine{align-self:flex-end;background:var(--warm);border-radius:var(--r2);padding:9px 14px;font-size:14px;max-width:78%}
+.composer{border-top:1px solid var(--soft);background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);padding:11px 13px;display:flex;flex-direction:column;gap:9px}
+.opens{display:flex;gap:7px;flex-wrap:wrap}
+.open{font-size:12px;font-weight:600;color:var(--fg2);border:1px solid var(--line);background:var(--bg);border-radius:var(--pill);padding:6px 12px;cursor:pointer}
+.inrow{display:flex;gap:9px;align-items:center}
+.input{flex:1;border:1px solid var(--line);border-radius:var(--pill);padding:10px 15px;font-size:13px;color:var(--meta);background:var(--bg)}
+.send{width:34px;height:34px;border-radius:var(--pill);background:var(--fg);color:var(--bg);display:grid;place-items:center}
+/* opened draft pane (EXP-39) */
+.pane .ph{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--soft)}
+.pane .ph .t{font-family:var(--fd);font-weight:650;font-size:15px;letter-spacing:-.01em}
+.back{font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.pbody{padding:16px 18px 0;display:flex;flex-direction:column;gap:12px;max-height:520px;overflow:hidden}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--soft)}
+.tab{font-size:12.5px;font-weight:600;color:var(--muted);padding:8px 13px;border-radius:8px 8px 0 0;cursor:pointer;border-bottom:2px solid transparent}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab.skip{text-decoration:line-through;opacity:.65}
+.sched{display:flex;flex-direction:column}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:9px 2px;border-bottom:1px solid var(--soft);font-size:13px}
+.srow:last-child{border-bottom:none}
+.srow .dot{width:9px;height:9px;border-radius:var(--pill);background:var(--success);display:inline-block;margin-right:8px}
+.srow .dot.off{background:var(--meta)}
+.srow .when{color:var(--muted);font-size:12.5px}
+.pfoot{border-top:1px solid var(--soft);background:var(--bg);padding:13px 18px;display:flex;align-items:center;gap:6px}
+.undo{font-size:12px;color:var(--meta);margin-left:auto}
+footer.check{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:13px;max-width:90ch;display:flex;flex-direction:column;gap:6px}
+footer.check b{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <div class="kick">Steward · the One-Home model on desktop · EXP-38 / EXP-39</div>
+    <h1>Desktop: the width buys simultaneity, not density</h1>
+    <p class="lede">The stream stays a readable decision column — calm, capped, never a dashboard (the workspace rule). What a large screen adds: a summoned surface opens BESIDE the home, so the founder reviews the opened draft — or holds a glass-wall view — without ever leaving the conversation. The chrome spreads into one slim bar with the glass wall always visible; on the phone the same chrome collapses to a top bar and views become full-screen takeovers.</p>
+  </div>
+
+  <!-- ───── FRAME 1: idle desktop ───── -->
+  <div>
+    <div class="f-label"><span class="t1">Frame 1 · desktop · steady shape · nothing summoned</span><span class="t2">The home, centered — a calm column with room to breathe</span></div>
+    <div class="frame">
+      <div class="chrome">
+        <span class="pause"><span class="sq"></span>Pause</span>
+        <span class="brand"><span class="lg">S</span>Steward</span>
+        <span class="gwrow"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></span>
+        <span class="ic">⚙</span><span class="compose">＋ Compose</span>
+      </div>
+      <div class="canvas">
+        <div class="stream">
+          <div class="hgroup">
+            <h2 class="h2">Ready for you</h2>
+            <div class="prog"><span class="track"><i style="width:50%"></i></span><span>2 of 4 · about five minutes</span><span class="rhythm">6 weeks steady</span></div>
+          </div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Impact story</span><span class="chans">Facebook · Instagram · news page</span></div>
+            <div class="photo"><svg viewBox="0 0 660 240" role="img" aria-label="Org photo"><rect width="660" height="240" fill="#e7e0d8"/><circle cx="556" cy="60" r="28" fill="#f3ede4"/><path d="M0 192 L155 138 L310 180 L455 120 L660 197 L660 240 L0 240 Z" fill="#d5cabb"/><path d="M0 216 L217 172 L403 214 L537 180 L660 207 L660 240 L0 240 Z" fill="#c4b6a3"/></svg></div>
+            <div class="txt">The well in Kamuli is running. Three months ago you helped us break ground — this week, 400 families drew clean water for the first time.</div>
+            <div class="prov">Built from <a href="#">your update last Tuesday</a> · <a href="#">3 photos from Saturday</a></div>
+            <div class="reason">Your donors were promised a progress report when drilling started — this closes that loop.</div>
+            <div class="fit"><span class="fb2 ok">Facebook</span><span class="fb2 ok">Instagram</span><span class="fb2 link">X · links to your article</span></div>
+          </div><div class="acts"><button class="btn primary">Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Skip</button><button class="btn quiet">Redirect…</button><span class="undo" style="margin-left:auto">opens for deep review →</span></div></div>
+          <div class="mine">Make it warmer — they waited so long for this.</div>
+          <div class="say"><span class="av">S</span><div class="bd"><span class="who">Steward</span><div>Done — warmer, and it now leads with the wait. I'll remember "warm over formal" for stories like this.</div></div></div>
+          <div class="composer">
+            <div class="opens"><span class="open">What's going out this week?</span><span class="open">Why this post?</span><span class="open">We got new photos</span></div>
+            <div class="inrow"><span class="input">Ask me anything — or tap a suggestion</span><span class="send">↑</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───── FRAME 2: split — draft opened ───── -->
+  <div>
+    <div class="f-label"><span class="t1">Frame 2 · desktop · a draft opened (EXP-39 summoned)</span><span class="t2">The desktop advantage: deep review beside the stream — never leaving home</span></div>
+    <div class="frame">
+      <div class="chrome">
+        <span class="pause"><span class="sq"></span>Pause</span>
+        <span class="brand"><span class="lg">S</span>Steward</span>
+        <span class="gwrow"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></span>
+        <span class="ic">⚙</span><span class="compose">＋ Compose</span>
+      </div>
+      <div class="canvas split">
+        <div class="stream dim">
+          <div class="hgroup">
+            <h2 class="h2" style="font-size:21px">Ready for you</h2>
+            <div class="prog"><span class="track"><i style="width:50%"></i></span><span>2 of 4</span></div>
+          </div>
+          <div class="card sel"><div class="cb">
+            <div class="crow"><span class="chip">Impact story</span><span class="chans">reviewing →</span></div>
+            <div class="txt" style="font-size:14px">The well in Kamuli is running. Three months ago you helped us break ground…</div>
+          </div><div class="acts"><span style="font-size:12px;color:var(--meta);padding:0 4px 2px">open in the review pane</span></div></div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Volunteer spotlight</span><span class="chans">Instagram</span></div>
+            <div class="txt" style="font-size:14px">Dev's 200th shift — written, waiting on a photo.</div>
+          </div><div class="acts"><button class="btn quiet">next ↓</button></div></div>
+          <div class="say"><span class="av">S</span><div class="bd"><div style="font-size:13px;color:var(--muted)">2 more and you're caught up.</div></div></div>
+        </div>
+        <div class="pane">
+          <div class="ph"><span class="t">Impact story — deep review</span><span class="back">‹ back to Steward</span></div>
+          <div class="pbody">
+            <div class="photo"><svg viewBox="0 0 720 210" role="img" aria-label="Org photo large"><rect width="720" height="210" fill="#e7e0d8"/><circle cx="600" cy="54" r="26" fill="#f3ede4"/><path d="M0 168 L170 121 L338 158 L497 105 L720 172 L720 210 L0 210 Z" fill="#d5cabb"/><path d="M0 189 L237 150 L440 187 L586 158 L720 181 L720 210 L0 210 Z" fill="#c4b6a3"/></svg></div>
+            <div class="tabs"><span class="tab on">Facebook</span><span class="tab">Instagram</span><span class="tab">Threads</span><span class="tab skip">X</span><span class="tab">News page · article</span></div>
+            <div class="txt" style="font-size:14.5px">The well in Kamuli is running. Three months ago you helped us break ground — this week, 400 families drew clean water for the first time. Here's what your support built, and the faces that will never haul water at dawn again.</div>
+            <div class="prov">Built from <a href="#">your update last Tuesday</a> · <a href="#">3 photos from Saturday</a> · tone: <a href="#">"warm over formal"</a></div>
+            <div class="fit"><span class="fb2 ok">fits Facebook</span><span class="fb2 link">X variant links to your article</span></div>
+            <div class="sched">
+              <div class="srow"><span><span class="dot"></span>Facebook</span><span class="when">Tue 9:05 am — when your followers are around</span></div>
+              <div class="srow"><span><span class="dot"></span>Instagram</span><span class="when">Tue 12:30 pm</span></div>
+              <div class="srow"><span><span class="dot off"></span>X — skipped: "no long stories on X"</span><span class="when"><a href="#" style="color:var(--muted)">override</a></span></div>
+            </div>
+          </div>
+          <div class="pfoot"><button class="btn primary">Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Edit</button><button class="btn quiet">Skip</button><button class="btn quiet">Redirect…</button><span class="undo">undoable until it publishes</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="check">
+    <div><b>The desktop contract:</b> the stream never stretches into a dashboard — it stays a decision column. Width is spent on the summoned pane (deep review here; any glass-wall view works the same — open "Plan &amp; Published" and it appears in this pane while the stream stays). Chrome is one slim bar; the glass wall stays one visible click; the pinned zone (not shown — nothing held this week) would sit above "Ready for you" in both frames, never dimmed.</div>
+    <div style="font-size:12px;color:var(--meta)">Phone rendering: see screens/home.html (the three-shapes triptych) — same chrome collapsed, summons become full-screen takeovers.</div>
+  </footer>
+</div>
+</body>
+</html>
