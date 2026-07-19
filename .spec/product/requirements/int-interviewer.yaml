@@ -21,6 +21,14 @@ items:
       follow-ups that pursue what will later fuel content and ideation ("You
       mentioned the first family you helped — what happened next? That's the
       kind of story donors remember").
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by INTS-1 (approved, challenge r1 pass): the curious
+        thinking-partner skill grounded in Memory (MEMS-4) + the gap model
+        (ONBS-3); conversational quality honestly framed as an LLM behavior held
+        by heuristic + acceptance (LRN-20). Realization pending code.
+      against: [INTS-1@1]
 
   INT-2:
     v: 1
@@ -33,6 +41,14 @@ items:
       driven by ONB-3's gap model; every answer written to Memory (MEM-1);
       never re-asks (MEM-2); explicitly connects answers to value ("I'll turn
       this into a founder-story post — you'll see it in your next digest").
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by INTS-2 (approved): resumable (DM-6/7), few-at-a-time rate cap,
+        driven by the single ONBS-3 gap model, answers via the MEMS-1 free-remark
+        path (MEMS-5 narrower default), never re-asks via the MEMS-6 asked-set,
+        value-connecting. Realization pending code.
+      against: [INTS-2@1]
 
   INT-3:
     v: 1
@@ -43,6 +59,14 @@ items:
       After launch weeks, the Interviewer occasionally (rate-limited) probes
       for fresh material tied to the calendar ("your beach cleanup is Saturday
       — want me to prep a before/after pair of posts?").
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by INTS-3 (approved): rate-limited calendar-tied proactive
+        probes with a distinct per-org aggregate cadence budget (mirrors TOPS-3),
+        consulting the MEMS-6 asked-set / MEMS-5 shouldAsk; PRO-1 boundary noted.
+        Realization pending code.
+      against: [INTS-3@1]
 
   INT-4:
     v: 1
@@ -64,3 +88,11 @@ items:
       A founder who provided minimal onboarding still receives drafts; an
       always-available "help me understand you" list holds a few specific open
       questions; answering one is reflected in later drafts.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by INTS-4 (approved): the always-available open-questions list is
+        a filtered VIEW of the ONBS-3 gap model (asked-set + shouldAsk), surfaced
+        in the Knowledge view (UX-5) + chat; disposition-triggered enrichment via
+        CHT-5; never-blocking, dismissible. Realization pending code.
+      against: [INTS-4@1]

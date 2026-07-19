@@ -48,6 +48,7 @@ prefixes:
   STRS: specs/str-posting-strategy.yaml
   TOPS: specs/top-content-topics.yaml
   ONBS: specs/onb-onboarding.yaml
+  INTS: specs/int-interviewer.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml

@@ -1,0 +1,173 @@
+kind: spec
+prefix: INTS
+title: Interviewer — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence / cheaper-alternative+hidden-assumptions + LRN-19/LRN-20 sweep)
+  verdict: pass
+  record: .spec/specs/challenges/int-interviewer-2026-07-19-r1.md
+  summary: >-
+    r1 passed with no surviving high. The no-governed-by claim verified honest (no
+    hard guardrail binds a question-asking, Memory-writing skill), and INTS-1's
+    probabilistic-quality framing confirmed as the correct LRN-20 split (not a
+    dodge). All four single-source checks held against live text (one gap model,
+    free-remark path vs MEMS-5, filtered-view open-questions list, INT/CHT-5
+    skill-vs-surface). One medium applied in this change — INTS-3 gained an
+    aggregate probe-cadence acceptance mirroring TOPS-3 (the LRN-19 straggler) and
+    a PRO-1 boundary note. Two lows: INTS-1 eval left review-falsifiable by design
+    (non-safety quality property); the cross-capability proactive-cadence budget
+    (INT-3/PRO-1/TOP-3) recorded as a future PRO-spec reconciliation.
+intent: >-
+  Exact behavior of the Interviewer (register int-interviewer.yaml): the chat
+  skill that fills Memory gaps as a curious thinking partner (INT-1), its
+  resumable, never-re-asking, value-connecting mechanics (INT-2), its periodic
+  calendar-tied curiosity (INT-3), and progressive enrichment via an
+  always-available open-questions list + the disposition-triggered loop (INT-4).
+  The interviewer is a SKILL, not a surface: it runs in the shared conversation
+  (CHT) and reads/writes ONLY through Memory (MEMS) and the single gap model
+  (ONBS-3). This spec is the engine; pixel-level UI for the enrichment list is a
+  method/ui.md pass on the approved Knowledge view (named in open-questions).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-2, DM-6, DM-7, PIPE-1, ARC-13]
+depends-on: [MEMS, ONBS]
+assurance: standard
+
+design: >-
+  The interviewer is part of @backend/interviewer within the Chat + Interviewer
+  module (ARC-13), sharing the Memory read/write layer. It is an LLM SKILL in the
+  shared pipeline (PIPE-1) via the ADR-0003 port, grounded in Memory (MEMS
+  retrieveContext — MEMS-4) and driven by the single gap model (ONBS-3). It has
+  NO side channel: every answer is written through the MEM-1 write path (MEMS-1)
+  and every candidate question is gated by the asked-set (MEMS-6) and the
+  interrupt-or-assume classifier (MEMS-5) — the interviewer is a FREE remark
+  channel, so ambiguous rule-vs-fact input follows MEMS-5's narrower default with
+  a correctable AssumedNote, never a manufactured binding rule. It surfaces in the
+  home stream: the day-one first conversation (EXP-12, ONBS-3), the just-talk
+  journey for ongoing curiosity and enrichment (EXP-3; INT-3/INT-4), and the
+  always-available open-questions list in the Knowledge view (EXP-30 / UX-5) and
+  chat. The enrichment loop (learn-by-disposing) is SHARED with chat (CHT-5): an
+  information-bearing disposition invites one deeper optional question. SKILL vs
+  SURFACE: INT is the questioning skill; CHT is the conversational surface; they
+  co-live in ARC-13 and share CHT-5 — this spec owns the questioning behavior,
+  not the chat surface. LRN-20 honesty: the DETERMINISTIC parts are question
+  GATING (gap model + asked-set + shouldAsk), resumability (DM-6 session state),
+  and the few-at-a-time rate cap; the PROBABILISTIC part is conversational QUALITY
+  (open, story-seeking questions; good follow-ups), held by the content-value
+  heuristic + an acceptance/eval, not a deterministic guarantee. Boundaries: never
+  re-asks (MEMS-6), never nags (rate-limited), never blocks (VAL-6, R-10); every
+  system-initiated question carries its reason and its content payoff (VAL-5).
+
+data: >-
+  DM-6 ChatSession + DM-7 ChatMessage host the resumable interview transcript;
+  answers become MemoryEntry (DM-2) via MEMS-1. The gap model (ONBS-3) and the
+  asked-set (MEMS-6) are DERIVED VIEWS over Memory, not new entities; the INT-4
+  open-questions list is a filtered view of the gap model, not a separately
+  stored list (single source). Concrete field lists live in @shared types.
+
+interfaces: >-
+  @backend/interviewer (ARC-13) exposes: nextQuestions(org, session) -> a few
+  gap-driven questions [consults the ONBS-3 gap model + MEMS-6 asked-set + MEMS-5
+  shouldAsk; rate-capped]; recordAnswer(org, session, answer) -> writes to Memory
+  [MEMS-1, free-remark path]; openQuestions(org) -> the always-available
+  enrichment list [INT-4; a filtered view of the gap model]; periodicProbe(org)
+  -> at most one rate-limited calendar-tied probe [INT-3]. The disposition entry
+  to the enrichment loop is CHT-5. Exact tRPC/WS signatures live in code.
+
+items:
+  INTS-1:
+    v: 1
+    title: The Interviewer skill — a curious thinking partner
+    implements: [INT-1]
+    statement: >-
+      The interviewer conducts initial and ongoing info-gathering as a CURIOUS
+      interviewer and thinking partner, never a form in disguise: a friendly,
+      inviting tone; OPEN questions; and DEEPENING follow-ups that pursue what
+      will later fuel content — the content-value heuristic, STORIES over
+      adjectives ("you mentioned the first family you helped — what happened
+      next? that's the kind of story donors remember"). Questions are grounded in
+      Memory (MEMS-4) and the gap model (ONBS-3), so the interviewer asks about
+      what THIS org is missing, not a generic script. Conversational quality is
+      an LLM behavior (LRN-20): it is steered by the content-value heuristic and
+      the VAL-5 colleague voice and held by an acceptance/eval, NOT claimed as a
+      deterministic guarantee.
+      ACCEPTANCE: given a thin profile, the interviewer asks open, story-seeking
+      questions rather than a checklist; a story answer triggers a deepening
+      follow-up on that thread, not an unrelated topic switch; questions read as
+      a colleague's curiosity, not a form.
+  INTS-2:
+    v: 1
+    title: Interview mechanics — resumable, never re-asking, value-connecting
+    implements: [INT-2]
+    statement: >-
+      The interview is SESSION-RESUMABLE (DM-6/DM-7): it can pause and continue
+      across sessions without losing place. It surfaces a FEW questions at a time,
+      never an interrogation — a deterministic per-turn count/rate cap. It is
+      DRIVEN by the single gap model (ONB-3 / ONBS-3) — the one source of what is
+      unknown; there is no second question list. Every answer is WRITTEN to Memory
+      through the MEM-1 write path (MEMS-1); as a FREE remark channel, ambiguous
+      rule-vs-fact input follows MEMS-5's narrower default with a correctable
+      AssumedNote (never a manufactured binding rule). It NEVER re-asks: every
+      candidate question consults the MEMS-6 asked-set first — structured gaps are
+      keyed deterministically (zero false-suppression), so a resolved gap cannot
+      be re-asked; residual free-form dedup is MEMS-6 bias-to-ask. Each answer is
+      explicitly connected to the value it will produce (VAL-5: "I'll turn this
+      into a founder-story post — you'll see it in your next digest").
+      ACCEPTANCE: an interview resumed in a later session does not re-ask a
+      resolved gap (MEMS-6); every answer appears in Memory attributed to the
+      interview with source + timestamp; the interviewer surfaces at most the
+      capped number of questions per turn.
+  INTS-3:
+    v: 1
+    title: Periodic curiosity — rate-limited, calendar-tied
+    implements: [INT-3]
+    statement: >-
+      After the launch weeks, the interviewer OCCASIONALLY probes for fresh
+      material tied to the calendar/season — upcoming events drawn from Memory
+      ("your beach cleanup is Saturday — want me to prep a before/after pair of
+      posts?"). It is a PROACTIVE push (distinct from pull-only surfaces, and
+      distinct from PRO-1 material requests — which ask for a specific scarce
+      asset like a photo; INT-3 probes for story/content material, and the two
+      share the MEMS-6 asked-set to avoid double-asking) but
+      RATE-LIMITED and dismissible (never spammy — VAL-6, R-10), and it consults
+      the asked-set (MEMS-6) and shouldAsk (MEMS-5) so it never re-asks and never
+      raises what can be sensibly defaulted. Each probe names a concrete content
+      payoff (VAL-5). The probe cadence is a DISTINCT deterministic budget (a
+      per-org rate over time), NOT the INTS-2 per-turn question cap: an org with
+      many upcoming events does not get one probe per event — the aggregate rate
+      limit holds (VAL-6, R-10), mirroring TOPS-3's proposal-cadence discipline.
+      ACCEPTANCE: after launch, a calendar event in Memory can trigger at most one
+      rate-limited probe tied to it; the probe is dismissible and, once dismissed
+      or answered, is not raised again (MEMS-6); AND probe cadence stays within the
+      per-org rate limit even when many candidate events exist (no per-event
+      spam).
+  INTS-4:
+    v: 1
+    title: Progressive enrichment — the always-available open-questions list
+    implements: [INT-4]
+    statement: >-
+      Onboarding gathers what it can and never blocks on gaps (ONB-1); the rest
+      fills PROGRESSIVELY, on the founder's time. The interviewer maintains a
+      gentle, always-available set of OPEN QUESTIONS — a few specific items
+      surfaced in the Knowledge view (UX-5 / EXP-30) and via chat, each tied to
+      why it helps ("a founder-story detail would sharpen next week's posts"). The
+      list is a FILTERED VIEW of the gap model (ONBS-3) after the asked-set
+      (MEMS-6) and shouldAsk (MEMS-5) — not a separately stored list (single
+      source, mirroring the ONBS-3 discipline). Answers flow to Memory (MEMS-1)
+      and improve future drafts. It complements INT-3's calendar curiosity with
+      DISPOSITION-triggered asks — the enrichment loop (CHT-5): a Skip/reject or
+      Adjust invites one deeper optional question. Rate-limited and dismissible,
+      NEVER blocking (VAL-6, R-10).
+      ACCEPTANCE: a minimally-onboarded founder still receives drafts AND an
+      always-available "help me understand you" list holding a few specific open
+      questions; answering one is reflected in later drafts; the list never blocks
+      and is dismissible; it shows nothing already resolved (MEMS-6).
+
+open-questions:
+  - >-
+    Pixel-level UI for the INT-4 open-questions list is a method/ui.md pass on
+    the already-approved Knowledge view (EXP-30 / UX-5) and the day-one first
+    conversation (EXP-12) — the affordance for the "help me understand you" list
+    and the in-stream question cards — separate from this backend spec, like
+    MEM-3's deferred Knowledge browser. Not a blocker: journeys EXP-1/EXP-3 are
+    approved.
