@@ -22,6 +22,15 @@ items:
     acceptance: >-
       "What's going out this week and where?" answered correctly; "what do you
       know about our volunteer program?" answered from Memory with sources.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by CHTS-1 (approved, challenge r2 pass): grounded answers from
+        Memory (MEMS-4) + Strategy + ContentItem schedule with sources, honest
+        "I don't know" -> INT-4 gap, and the GR-2 legal/tax decline gate (the
+        answer surface bypasses PIPE-2 VAL) held by catch-rate + fail-safe.
+        Realization pending code.
+      against: [CHTS-1@1]
 
   CHT-2:
     v: 2
@@ -34,6 +43,15 @@ items:
       write it to Memory — the single source for founder rules/taboos (MEM-1,
       MEMS-1); the Strategy's org-rules section projects it (DEC-22) — binding
       future drafts immediately.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by CHTS-2 (approved): confirm-back-before-bind (a deterministic
+        gate), write via the MEMS-1 explicit-correction path (styleRule/taboo,
+        never a bare fact), Strategy §c projects it (STRS-1 view, DEC-22), binds
+        the next draft (MEMS-3), rule-contradiction surfaced. Realization pending
+        code.
+      against: [CHTS-2@1]
 
   CHT-3:
     v: 1
@@ -44,6 +62,14 @@ items:
       Create a draft, edit a scheduled post, reschedule, pause a channel,
       trigger a campaign — each executed through the same pipelines as the UI,
       with confirmation for destructive actions.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by CHTS-3 (approved): actions run the identical GEN/PUB/AUT
+        pipelines (never a parallel path, guardrails inherited downstream),
+        destructive/outward actions confirm-back, permission/autonomy-scoped
+        (AUT). P1 — outside the P1a thin slice (R-1). Realization pending code.
+      against: [CHTS-3@1]
 
   CHT-4:
     v: 1
@@ -53,6 +79,14 @@ items:
     statement: >-
       Colleague, never software; every system-initiated message carries a
       reason. Governed by VAL-5.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by CHTS-4 (approved): the reason is a REQUIRED field on any
+        proactive message (a deterministic gate — no reason, not sent); colleague
+        tone is an LLM quality held by review/eval (honest LRN-20 split); binds
+        all system-initiated chat surfaces. Realization pending code.
+      against: [CHTS-4@1]
 
   CHT-5:
     v: 1
@@ -76,3 +110,11 @@ items:
       Opening chat with no prior context shows suggested, specific openings
       (never an empty box); skipping a draft offers a one-line "why?" that,
       answered, writes a rule/fact to Memory.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by CHTS-5 (approved): never-blank suggested openings (VAL-6,
+        DS-6), the guided Adjust as the default alternative to APR-1 raw edit, and
+        the single enrichment loop (DEC-17) shared with INT-4 (post-completion
+        OptionalReason -> Memory). Realization pending code.
+      against: [CHTS-5@1]

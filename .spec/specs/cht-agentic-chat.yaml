@@ -1,0 +1,213 @@
+kind: spec
+prefix: CHTS
+title: Agentic Chat — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single 4-lens pass → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/cht-agentic-chat-2026-07-19-r2.md
+  summary: >-
+    r1 FAILED on one high — the chat ANSWER surface (CHTS-1) is the product's only
+    user-facing LLM output that never passes the PIPE-2 VAL chain, so GR-2 (no
+    legal/tax advice) was ungated: a founder asking the knows-everything chat a
+    compliance question could get advice with no gate, no acceptance, invisible in
+    review. Fixed: governed-by [GR-2] declared; CHTS-1 gained an explicit
+    decline-legal/tax-advice gate (both GR-2 clauses reflected) framed as an LLM
+    classifier held by a catch-rate with a fail-safe decline-when-uncertain
+    (LRN-20 honest, decline-on-detection not an un-failable "never"); acceptance
+    made failable (a legal/tax question is DECLINED, not answered). The r1 medium
+    (the "never fabricates" absolute) reframed to a catch-rate on labeled sets
+    (mirroring MEMS-3/MEMS-4/INTS-1). r2 delta verified both fixes close, GR-8
+    analogy accurate, no new high; the fail-safe low applied in this change. All
+    r1 cross-reconciliation checks (MEMS-1 v2 CHT channel, STRS-1 §c view, single
+    enrichment loop, same-pipeline guardrail inheritance, SKILL/SURFACE split)
+    held.
+intent: >-
+  Exact behavior of the conversational surface (register cht-agentic-chat.yaml):
+  full grounded context awareness (CHT-1), redirects confirmed back and written
+  to the single Memory source (CHT-2), command actions reusing the UI pipelines
+  (CHT-3, P1), the colleague voice with a reason on every proactive message
+  (CHT-4), and the proactive, never-blank leading chat that hosts the guided
+  Adjust and the enrichment loop (CHT-5). CHT is the SURFACE; it HOSTS the
+  Interviewer skill (INTS) and shares one enrichment loop with it. The chat UI is
+  the already-approved One-Home stream (UX-2, DEC-18); only the P1 command
+  affordances are out of the P1a thin slice (named in open-questions).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-2, DM-3, DM-5, DM-6, DM-7, PIPE-1, ARC-13]
+depends-on: [MEMS, INTS]
+governed-by: [GR-2]
+assurance: standard
+
+design: >-
+  The chat surface is the home's MEDIUM, not a separate destination (UX-2,
+  DEC-18 One-Home); behavior runs in the Chat + Interviewer module (ARC-13),
+  sharing the Memory read/write layer. Answers are GROUNDED via MEMS-4
+  retrieveContext plus reads of the Strategy (STR / DM-3) and the ContentItem
+  schedule + per-variant delivery state (DM-5); writes go through the single
+  MEM-1 path (MEMS-1) — CHT-2 is one of MEMS-1's enumerated EXPLICIT correction
+  channels. It HOSTS the interviewer (INTS) and shares ONE enrichment loop with
+  INT-4 (the interviewer consumes the same disposition signal — not a second
+  loop). Command actions (CHTS-3, P1) reuse the UI pipelines (GEN / PUB / AUT),
+  never a parallel code path. Surfaces: the just-talk journey (EXP-3) — ask
+  anything led (EXP-18), redirect & adjust (EXP-19), teach by disposing (EXP-20),
+  do it by chat (EXP-21, P1); the enrichment open-questions list lives in the
+  Knowledge view (EXP-41 / UX-5, INT-4). SKILL vs SURFACE: CHT is the
+  conversational SURFACE; INT is the questioning SKILL it hosts; the guided Adjust
+  and the enrichment loop are chat-surface behaviors that Memory/INT consume.
+  LRN-20 split: grounding/retrieval, confirm-back-BEFORE-bind (CHTS-2), the
+  reason-field requirement (CHTS-4), and same-pipeline reuse (CHTS-3) are
+  DETERMINISTIC; conversational tone, answer synthesis, and Adjust option
+  selection are LLM qualities held by acceptance/eval, not claimed deterministic.
+  Boundaries: no fabrication — grounded answers or an honest "I don't know"
+  (VAL-4); colleague voice with a reason on every proactive message (VAL-5); never
+  a blank prompt (VAL-6, DS-6, R-10). GR-2 (no legal/tax advice) is enforced ON
+  the answer surface (CHTS-1), because chat answers are a direct LLM output to the
+  founder that bypasses the PIPE-2 VAL chain — a distinct decline gate, held by a
+  catch-rate (analogous to how GR-8 gives the taboo overlay its own VAL gate for
+  the publish path). CHTS-3 command actions inherit GR-1/GR-3/GR-5/GR-6 downstream
+  because they run the same GEN/PUB/AUT pipelines (guardrails at VAL, PIPE-1) — so
+  the ONE user-facing surface needing a guardrail at the chat layer is the answer
+  path.
+
+data: >-
+  DM-6 ChatSession + DM-7 ChatMessage host the conversation. Chat READS
+  MemoryEntry (DM-2, via MEMS-4 retrieveContext), StrategyDoc (DM-3), and
+  ContentItem / ChannelVariant (DM-5, schedule + delivery state) for grounded
+  answers; it WRITES only through MEMS-1. No new entity — the enrichment loop and
+  suggested openings are computed views over Memory + Strategy + content state.
+
+interfaces: >-
+  @backend chat (ARC-13) exposes: answer(org, session, question) -> a grounded
+  answer with sources [MEMS-4 + Strategy/content reads; honest "I don't know" ->
+  an INT-4 gap]; suggestOpenings(org, session) -> a few non-blank, context
+  openings [CHTS-5]; recordRedirect(org, redirect) -> confirm-back THEN write
+  [CHTS-2 -> MEMS-1]; guidedAdjust(org, draft, choice) -> a redraft in place
+  [CHTS-5]; enrichFromDisposition(org, disposition) -> one optional deeper
+  question [CHTS-5, shared with INTS-4]; command(org, action) -> execute via the
+  identical UI pipeline, confirming destructive/outward actions [CHTS-3, P1].
+  Exact tRPC/WS signatures live in code.
+
+items:
+  CHTS-1:
+    v: 1
+    title: Full context awareness — grounded answers
+    implements: [CHT-1]
+    statement: >-
+      One chat surface answers with awareness of Org Memory (via MEMS-4
+      retrieveContext), the Posting Strategy (STR / DM-3), all past and scheduled
+      posts across all channels (DM-5 ContentItem + per-variant delivery state),
+      and current requests. Answers about the org are GROUNDED: facts come from
+      Memory WITH their sources, the plan/schedule from ContentItem state. A
+      question it cannot answer from grounded context is answered HONESTLY ("I
+      don't know — want me to note it as a gap?" -> the gap lands in the INT-4
+      open-questions, EXP-18), NEVER bluffed (VAL-4). Retrieval/assembly is
+      deterministic; answer synthesis is an LLM step whose GROUNDING (a claim
+      without retrievable backing is not asserted as fact, mirroring MEMS-4) is
+      held by a catch-rate target on a labeled set — the honest LRN-20 split, NOT
+      an un-failable "never fabricates".
+      GR-2 ENFORCEMENT — the chat ANSWER surface is a direct LLM output to the
+      founder that never enters the publish queue, so it does NOT pass the PIPE-2
+      VAL guardrail chain; GR-2 (no legal/tax advice) must therefore be enforced
+      HERE. A legal or tax question is DECLINED, not answered ("I can't advise on
+      legal or tax matters — that's for your accountant or lawyer; keeping your
+      charitable-solicitation registration current stays your org's
+      responsibility"). Detecting a legal/tax question is an LLM classifier (like
+      GR-3's sensitive-topic check) with a residual miss rate held by a catch-rate
+      on a labeled set — the discipline is decline-on-detection, honestly NOT an
+      un-failable "never advises" (LRN-20). FAIL-SAFE: when the classifier cannot
+      confidently clear a question as non-legal/tax, it DECLINES (the
+      direct-to-founder analogue of GR-8's cannot-confidently-clear posture).
+      ACCEPTANCE: "what's going out this week and where?" is answered from the
+      ContentItem schedule; "what do you know about our volunteer program?" is
+      answered from Memory with sources; an unknown is surfaced as an honest gap;
+      a legal/tax question ("can we deduct this?", "how do we register to solicit
+      in State X?") is DECLINED with a redirect (GR-2), not answered; the
+      grounding and decline properties are measured by catch-rate on labeled sets,
+      not asserted as absolutes.
+  CHTS-2:
+    v: 1
+    title: Redirects via chat — confirm-back to the single source
+    implements: [CHT-2]
+    statement: >-
+      Plain-language feedback ("less formal", "never name donors", "on X be
+      punchier") is an EXPLICIT correction channel (MEMS-1): the system CONFIRMS
+      its interpretation back to the founder BEFORE binding — a deterministic gate,
+      no write without confirmation — then writes it to Memory, the single source
+      for founder rules/taboos (MEMS-1; a constraint is stored as a styleRule or
+      taboo, NEVER a bare fact). The Strategy's org-rules section PROJECTS the
+      Memory rule (DEC-22, STRS-1 §c is a view) — there is no second copy. The
+      write binds future drafts IMMEDIATELY (the next generation reads the updated
+      active overlay, MEMS-3). A redirect that CONTRADICTS a standing rule is
+      NAMED and the founder chooses (EXP-19), never silently overwritten.
+      ACCEPTANCE: a redirect is confirmed back before it binds; once confirmed it
+      is written to Memory as a styleRule/taboo (never a bare fact) and the next
+      draft reflects it; a redirect contradicting a standing rule surfaces the
+      conflict for the founder to resolve rather than silently flipping it.
+  CHTS-3:
+    v: 1
+    title: Command actions via chat — the same pipelines, confirmed
+    implements: [CHT-3]
+    statement: >-
+      Chat can execute create-a-draft, edit-a-scheduled-post, reschedule,
+      pause-a-channel, and trigger-a-campaign — each through the SAME pipelines
+      as the UI (GEN, PUB, AUT), NEVER a parallel code path (one source of truth
+      for the action logic and its guardrails). DESTRUCTIVE or outward-facing
+      actions (reschedule, pause, publish, campaign) CONFIRM back what they will
+      do before executing and report what they did after (EXP-21). Actions are
+      permission/autonomy-scoped (AUT): a command beyond the current Trust Level
+      is offered, not taken, with the scope named. P1 — NOT in the P1a thin slice
+      (R-1), which is interviewer + context Q&A + redirects only.
+      ACCEPTANCE: a chat command runs the identical pipeline the UI button runs
+      (no divergent logic or bypassed guardrail); a destructive command confirms
+      before acting and reports the result; a command beyond permission scope is
+      refused with the scope named.
+  CHTS-4:
+    v: 1
+    title: Voice — colleague, every system message carries a reason
+    implements: [CHT-4]
+    statement: >-
+      Every system-INITIATED message carries a structured REASON (VAL-5): the
+      reason is a REQUIRED field on any proactive message — a message generated
+      without a reason is not sent (a deterministic, checkable gate). The
+      colleague TONE ("I drafted next week's posts", never "Generation complete")
+      is an LLM output quality steered by VAL-5 and held by review/eval, NOT a
+      deterministic guarantee (the honest LRN-20 split: the reason field is
+      structural, the tone is probabilistic). This voice binds ALL of chat's
+      system-initiated surfaces — suggested openings, questions, confirmations,
+      and enrichment prompts.
+      ACCEPTANCE: no system-initiated chat message ships without a reason
+      (structural check); a tone review of proactive messages finds colleague
+      voice, not software voice.
+  CHTS-5:
+    v: 1
+    title: Proactive, leading chat — never blank, guided Adjust, enrichment loop
+    implements: [CHT-5]
+    statement: >-
+      The composer is NEVER blank (VAL-6, DS-6 applied to chat): when idle it
+      offers a few non-trivial, context-relevant suggested openings — computed
+      from Memory + Strategy + what changed since the last visit — never an empty
+      box (EXP-18); it LEADS so the founder mostly ANSWERS questions they already
+      know. It HOSTS the GUIDED ADJUST — the default alternative to APR-1's raw
+      inline edit: instead of a text editor, the conversation asks WHAT to change
+      and offers the most relevant options given the full context (Memory +
+      Strategy + this draft — "warmer? shorter? lead with the kids? different
+      photo?"); the redraft lands in place, and raw inline edit remains for power
+      moments (APR-1). It is the home of the ENRICHMENT LOOP (learn-by-disposing,
+      DEC-17): an information-bearing disposition — a Skip/reject (OptionalReason
+      asked AFTER the action completes — answering is a gift, never a toll,
+      EXP-20) or an Adjust — becomes a short, optional conversation that deepens
+      Memory (MEMS-1). This is ONE loop shared with INT-4 (the interviewer
+      consumes the same disposition signal), not a second loop.
+      ACCEPTANCE: opening chat with no prior context shows suggested, specific
+      openings (never an empty box); skipping a draft offers a one-line "why?"
+      AFTER completion that, answered, writes a rule/fact to Memory; the guided
+      Adjust redraws a draft from a chosen option without a raw editor.
+
+open-questions:
+  - >-
+    The chat SURFACE is the already-approved One-Home stream (UX-2, DEC-18; the
+    EXP-3 flows EXP-18/19/20 are approved) — not deferred. The only UI follow is
+    the CHT-3 command-action affordances (P1, EXP-21) with their destructive
+    confirm, which sit OUTSIDE the P1a thin slice (R-1); their UI-detail pass
+    (method/ui.md) waits on the P1 command work.
