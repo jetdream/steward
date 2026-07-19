@@ -42,7 +42,8 @@ spoken as "steady presence", never a streak score (DEC-16).
 ## The One-Home guarantees (DEC-18)
 
 - The home always reaches an honest **"caught up"** (EXP-17) — finite by
-  design at the ~1-item/day cadence ceiling.
+  design at the typical ~1-item/day cadence (typical, not a cap — DEC-20;
+  campaign bursts compress to one package card).
 - **Holds and failures pin** (EXP-27, EXP-38) — never batch-cleared, never
   scrolled away; GR-3 keeps a face at every trust level.
 - The morphing home keeps **one invariant skeleton** (EXP-38) — density

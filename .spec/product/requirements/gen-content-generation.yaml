@@ -11,11 +11,11 @@ intent: >-
 
 items:
   GEN-1:
-    v: 2
-    decided-by: DEC-13
+    v: 3
+    decided-by: DEC-20
     priority: P0
     serves: [G-1, G-2, G-4, G-5]
-    depends: [MEM-1, STR-1, EXT-1]
+    depends: [MEM-1, STR-1, EXT-1, EXT-5]
     title: Rolling 4-week calendar
     statement: |
       Per-org calendar drawing from the content taxonomy:
@@ -23,7 +23,12 @@ items:
         Case studies (people/orgs benefited) · Own events, virtual and
         physical · People (employees & volunteers).
       - External: Related events (local → worldwide) · Related news · Related
-        research/articles — supplied by the External Radar (EXT-1).
+        research/articles — supplied by the External Radar (EXT-1), plus the
+        founder's SAVED POOL (EXT-5 v2, DEC-20) as the reserve: when a week
+        has no fresher material, the planner drafts from saved items —
+        preferring fresh over stale, never auto-drafting a passed event-tied
+        save, and crediting the save in the draft's ReasonLine ("you saved
+        this two weeks ago").
       - Overlays woven through the mix: Impact/Gratitude (stewardship rhythm,
         ≥1 per 4 weeks — north star, STW-1), Fundraising Asks (≤25% of mix,
         include donation URL when provided — scope.md boundary case),

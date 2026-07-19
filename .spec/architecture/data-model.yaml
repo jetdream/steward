@@ -131,14 +131,20 @@ items:
       transcript, INT-2).
 
   DM-8:
-    v: 1
+    v: 2
     kind: data-entity
     title: ExternalItem
     body: |
-      source, URL, relevance rationale, disposition (EXT-1). Every discovered
-      candidate is retained and browsable as the radar feed (EXT-5); the
-      disposition holds the founder's one-tap relevant/not-relevant mark,
-      written back to Memory to tune future discovery.
+      source, URL, relevance rationale, summary, disposition, event date
+      (EXT-1). Every discovered candidate is retained and readable in the
+      Discoveries feed (EXT-5 v2, DEC-20); the disposition holds the
+      founder's post-read triage — worth-a-post / saved-for-later /
+      not-for-us — written back to Memory to tune future discovery. A
+      saved-for-later item joins the SAVED POOL the planner queries to fill
+      open calendar slots (GEN-1); an event-tied item carries its event
+      date, drives the time-sensitive flag while upcoming, and annotates as
+      passed afterward (never silently drafted stale). (v2: DEC-20 replaced
+      the two-value relevant/not-relevant mark.)
 
   DM-9:
     v: 1

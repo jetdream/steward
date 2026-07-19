@@ -57,16 +57,23 @@ items:
       external topics welcomed/banned.
 
   EXT-5:
-    v: 1
-    decided-by: DEC-9
+    v: 2
+    decided-by: DEC-20
     priority: P1
     depends: [EXT-1, MEM-1]
-    title: Radar feed
+    title: Discoveries feed — read-first triage
     statement: >-
-      Every discovered candidate (EXT-1) is stored and browsable as the
-      org's personalized feed (surfaced on UX-8): one-tap
-      relevant/not-relevant marks write to Memory (MEM-1) and tune future
-      discovery — an effortless alignment channel and a news aggregator for
-      the org itself. Strictly a PULL surface: never badged, counted, or
-      nudged (VAL-6); browsing time is treated like voluntary chat time
-      under G-3.
+      Every discovered candidate (EXT-1) is stored and READABLE as the org's
+      personalized feed (surfaced on UX-8). Each item leads with content
+      worth reading — headline, source, a short summary — before any ask:
+      the founder reads first, then disposes. Three one-tap dispositions,
+      each writing to Memory (MEM-1) and tuning future discovery:
+      "worth a post" (hands to drafting, EXT-2; items tied to ongoing or
+      imminent events are flagged time-sensitive and prioritized),
+      "save for later" (a kept pool the planner may draw from to fill open
+      calendar slots when no fresher material exists — the external well's
+      reserve), and "not for us" (teaches taste). An effortless alignment
+      channel and the org's own news feed. Strictly a PULL surface: never
+      badged, counted, or nudged (VAL-6); browsing time is treated like
+      voluntary chat time under G-3. (v2, DEC-20: read-first framing, the
+      save-for-later pool, event-tied prioritization; pull-only unchanged.)

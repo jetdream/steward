@@ -338,6 +338,8 @@ items:
     title: Radar UI
     parent: ARC-2
     body: |
-      Client surface for the radar feed (UX-8, EXT-5) — the org's personalized
-      feed of discovered external items, marked relevant/not-relevant.
-      Pull-only: never badged or counted (VAL-6, G-3).
+      Client surface for the Discoveries feed (UX-8, EXT-5 v2) — the org's
+      personalized, read-first feed of discovered external items with the
+      post-read triage dispositions (worth-a-post / save-for-later /
+      not-for-us, DEC-20) and the saved shelf. Pull-only: never badged or
+      counted (VAL-6, G-3).

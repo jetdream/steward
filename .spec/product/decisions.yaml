@@ -15,6 +15,37 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-20:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [EXT-5, GEN-1, DM-8, EXP-32, EXP-43, EXP-44, DEC-19]
+    title: Design round-2 refinements — true breakpoints, informative calendar, Discoveries as a triage feed
+    statement: >-
+      Founder feedback on the first glass-wall/day-one renders, taken as four
+      decisions. (1) TRUE BREAKPOINTS: mockups render at real phone width and real
+      desktop width — nothing in between; on phone, single-action rows are wholly
+      tappable with icon affordances (text micro-actions like "edit" collapse to
+      icons; ≥44px targets, DS-4). Design-language rule, recorded in DESIGN.md.
+      (2) Knowledge needs real visual hierarchy (design-level; no spec change).
+      (3) CALENDAR IS INFORMATIVE AND INTERACTIVE (EXP-43 v2): day cells carry
+      content hints (title snippet + type + TIME), a day can hold several items
+      (stacked chronologically — the ~1/day cadence is typical, not a cap;
+      campaign/event days exceed it), mobile renders as an agenda list and desktop
+      as the four-week grid; selecting any planned or published item opens its
+      preview/interaction IN THE SAME SUMMONED PANE, one level deep with
+      "back to Plan & Published" — confirming the founder's expectation that the
+      right pane is where item interaction lives (DEC-19 summon-beside; the
+      pane may swap its content one level, the stream never leaves).
+      (4) DISCOVERIES IS A READ-FIRST TRIAGE FEED, not a passive reading room
+      (EXT-5 v2, EXP-32/EXP-44 v2): each item leads with content worth reading
+      (headline, source, short summary); after reading, three dispositions —
+      "worth a post" (event-tied items flagged time-sensitive and prioritized),
+      "save for later" (a kept pool the planner draws from to fill open calendar
+      slots when no fresher material exists), "not for us" (teaches taste). The
+      pull-only guard is UNCHANGED: never badged, counted, or nudged. Spine
+      deltas re-challenged in the r2 round of this date.
+
   DEC-19:
     v: 1
     date: 2026-07-19

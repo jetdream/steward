@@ -153,6 +153,9 @@
   /* ─── Layout — inherited 1280px content cap; Steward is a workspace,
    * not a marketplace — there is no ultra-wide grid mode. */
   --container-max: 1280px;
+  /* Layout-mode boundary (DEC-19/DEC-20): below = phone mode (takeover
+   * summons), at/above = desktop mode (summon-beside). Exactly two modes. */
+  --breakpoint-desktop: 900px;
   --container-gutter-desktop: 40px;
   --container-gutter-tablet: 24px;
   --container-gutter-phone: 16px;

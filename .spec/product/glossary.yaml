@@ -144,6 +144,11 @@ terms:
     filled progressively (INT-4) — never a gate. "Zero-homework" is literal for
     orgs with an ingestable presence; thin-source orgs get a gentle
     interview-first path (INT-1/INT-2), not a blocker. Owned by ONB/INT.
+  Saved pool: >-
+    (DEC-20) Discoveries the founder marked "save for later" (EXT-5): the
+    planner's reserve for thin weeks — drafted only when nothing fresher
+    exists, never after an event-tied save's date passes, always credited
+    in the draft's ReasonLine. Held on the Discoveries saved shelf.
   Enrichment loop: >-
     (learn-by-disposing — DEC-17) Every information-bearing disposition — a
     Skip/reject "why?", an Adjust request — becomes a short optional

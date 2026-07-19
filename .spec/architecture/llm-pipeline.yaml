@@ -25,8 +25,9 @@ items:
       - One brain, several skills: chat, interviewer, generation, and the
         messenger bots (BOT-2, P1) share the same Memory read/write layer — a
         redirect in chat (CHT-2), a Ready edit (APR-3), a bot-sent fact, and a
-        radar-feed relevant/not mark (EXT-5) all land in the same store the
-        planner reads.
+        Discoveries triage disposition (worth-a-post / save / not-for-us,
+        EXT-5 v2) all land in the same store the planner reads — including
+        the saved pool it draws from in thin weeks (DEC-20).
       - Guardrails before queues: Strategy validation (STR-3) + platform
         guardrails (GR-1..GR-6, sensitive-topic classifier GR-3) run before
         anything enters any queue.

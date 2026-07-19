@@ -125,5 +125,16 @@ home, never a sibling destination. Mobile-first (UX-1 v2): the phone is
 the floor — everything is one-handed there; desktop adds simultaneity
 (home + one pane), never density — the stream never stretches into a
 dashboard. Mobile: the same chrome as a compact top bar; views as
-sheets. Light theme only in v1; dark mode is a future sibling of
-`tokens.css`, never a component fork.
+sheets. Within an open pane, selecting an item swaps the pane's content
+one level deep (with "back to <view>"); the stream never leaves
+(DEC-20). Focus contract for the one-level swap (DEC-20): on swap,
+focus moves to the swapped content's heading with the back control
+announced; on back, focus returns to the invoking row. Layout modes
+(DEC-20): exactly TWO — phone (takeover summons) and desktop
+(summon-beside, DEC-19); every viewport width resolves to one of them at
+the `--breakpoint-desktop` token (tokens.css) — a live surface never
+renders an in-between hybrid, and MOCKUPS render only at real device
+widths. Mobile micro-pattern (DEC-20): on phone, a single-action row is
+wholly tappable with an icon affordance (text micro-actions like "edit"
+collapse to icons), targets stay ≥44px (DS-4). Light theme only in v1; dark mode is a future sibling
+of `tokens.css`, never a component fork.
