@@ -1,0 +1,161 @@
+kind: spec
+prefix: PUBS
+title: Publishing — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence / cheaper-alternative+hidden-assumptions + LRN-19/22 sweep)
+  verdict: pass
+  record: .spec/specs/challenges/pub-publishing-2026-07-19-r1.md
+  summary: >-
+    r1 passed with no surviving high. The AUT-1 veto-window deferral was verified
+    HONEST cross-spec scoping (AUT has no spec; PUB only ever acts on
+    already-approved+scheduled variants, so it cannot auto-post during a veto
+    window unless AUT approves+schedules it); the news-destination asymmetry, DM-5
+    delivery recital, GR-6-as-sole-guardrail, and the LRN-20 split all held. Three
+    fixes applied in this change: the connection gate reframed POSITIVELY to "posts
+    only when a HEALTHY (connected) ChannelConnection exists" — closing the DM-14
+    `error`-state omission (the LRN-19 straggler); the scheduler named as the
+    PUB-2 rate-limit consumer; and a news-takedown ownership open-question added
+    (NWS-spec reconciliation — DM-5 published->unpublished / EXP-31 / SEC-8).
+intent: >-
+  Exact behavior of publishing (register pub-publishing.yaml): approved variants
+  reach the four launch channels through official APIs at engagement-optimal
+  times, with failures handled by operators and the founder bothered only when
+  action is needed (PUB-1); the per-channel technical profiles that keep
+  adaptation correct (PUB-2); the publish log (PUB-3); and LinkedIn evaluation
+  (PUB-4, P2). Publishing is downstream of approval (APR) — it posts what is
+  approved and scheduled — and it honors the autonomy controls (AUT-1 veto,
+  AUT-3 pause/kill).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-5, DM-14, IG-1, IG-2, ARC-18, ARC-23, EXP-31]
+governed-by: [GR-6]
+assurance: standard
+
+design: >-
+  The Publisher is @backend/publishing (ARC-18): per-platform channel adapters
+  behind a shared channel-profile configuration (PUB-2), isolated so one
+  platform's change never blocks the others (R-6). Adapters reach platforms
+  through OFFICIAL APIs only (GR-6, via ADR-0003 ports) — Meta (IG-1: FB Pages,
+  Instagram, Threads), X (IG-2). Publishing reads the channel's ChannelConnection
+  (DM-14) for credentials + health and drives the per-variant delivery lifecycle
+  (DM-5: pending -> scheduled -> published; paused via AUT-3). The org NEWS PAGE
+  is an additional, ASYMMETRIC destination (NWS-1, renderer ARC-23, ADR-0004):
+  "publishing" there sets the article's publish-state and purges the renderer
+  cache tag — not an outbound third-party API call (ARC-18). Failures retry with
+  backoff and alert OPERATORS via failure queues (OPS-1); the founder is bothered
+  ONLY when action is needed (MEM-2, PUB-1 acceptance). The publish log (PUBS-3)
+  is the VAL-3 "everything auto-done is logged and visible" record, surfaced in
+  Calendar/Published (UX-4 / EXP-31). Delivery honors the AUT-3 kill switch /
+  per-channel pause and the AUT-1 TL1 veto window — the veto-window hold/takedown
+  mechanics and their DM-5 interaction are the (future) AUT spec's to define,
+  referenced here, not restated (a cross-spec reconciliation noted in
+  open-questions). LRN-20 split: official-API-only routing, the ±5 min scheduling
+  tolerance, the connection/pause gates, and the log are DETERMINISTIC;
+  engagement-optimal TIME selection is a heuristic/model input, not a determinism
+  claim.
+
+data: >-
+  DM-5 ChannelVariant delivery lifecycle (pending -> scheduled -> published;
+  paused) — one per destination, incl. the news page. DM-14 ChannelConnection
+  (credentials + health, read at publish time). The publish-log entries are part
+  of the ContentItem/ChannelVariant history (DM-5), not a new entity. Media is
+  uploaded to each platform via its API; public news images are served from blob
+  storage (IG-10) by the renderer (ARC-23).
+
+interfaces: >-
+  @backend/publishing (ARC-18) exposes: schedule(variant) -> assigns an
+  engagement-optimal slot [DM-5 pending -> scheduled]; publish(variant) -> posts
+  via the official channel adapter [IG-1 / IG-2; reads DM-14; DM-5 -> published;
+  writes the PUBS-3 log]; pause(scope) / killSwitch() -> halt delivery [AUT-3];
+  publishLog(org) -> the record [UX-4 / EXP-31]. News-destination publish sets the
+  article publish-state + purges the renderer cache tag (ARC-23, ADR-0004) rather
+  than calling an outbound API. Exact adapter/tRPC signatures live in code.
+
+items:
+  PUBS-1:
+    v: 1
+    title: Channels at launch — official APIs, scheduled delivery
+    implements: [PUB-1]
+    statement: >-
+      Approved ChannelVariants publish to the four launch channels — Facebook
+      Pages, Instagram feed, Threads (IG-1, Meta) and X (IG-2) — through OFFICIAL
+      platform APIs ONLY (GR-6; no scraping or policy-violating paths). Each
+      variant posts at an ENGAGEMENT-OPTIMAL time (per-channel scheduling), within
+      ±5 min of its scheduled slot, respecting each channel's rate limits (PUB-2 —
+      the scheduler is the rate-limit consumer). Publishing reads the channel's
+      ChannelConnection (DM-14) and posts ONLY when a HEALTHY (connected)
+      ChannelConnection exists (ONBS-4): a variant whose connection is in ANY
+      non-healthy state — unconnected, expired, revoked, or error (the full DM-14
+      status enum) — does NOT post; its connection state surfaces the needs-you
+      card (ONBS-4, SEC-10), never a silent failure. Delivery is per-variant (DM-5: pending -> scheduled
+      -> published; paused via the AUT-3 kill switch / per-channel pause). FAILURES
+      retry with backoff and alert OPERATORS via failure queues (OPS-1); the
+      founder is alerted ONLY when action is needed (MEM-2). The org news page is
+      an additional, asymmetric destination (NWS-1, ARC-23): publishing there sets
+      publish-state + purges the renderer cache (not an outbound API call, ARC-18).
+      Delivery also honors the AUT-1 TL1 veto window (its hold/takedown mechanics
+      are AUT-1's to define — open-questions). Flexibility: HARD (PUB-1) —
+      official-API-only and the pause/kill gate are non-negotiable.
+      ACCEPTANCE: an approved variant posts to its channel via the official API
+      within ±5 min of its slot; a failure retries and alerts operators (not the
+      founder unless action is needed); a variant for an unconnected channel does
+      not post (surfaces the needs-you card); the kill switch halts all posting
+      instantly (AUT-3).
+  PUBS-2:
+    v: 1
+    title: Per-channel technical profiles
+    implements: [PUB-2]
+    statement: >-
+      The per-channel technical profile is CONFIGURATION, not code: character
+      limits, media requirements, link behavior, and rate limits, per channel. It
+      is the SINGLE source consumed by GENS-2 (adaptation) and GENS-5 (technical
+      fit), so adaptation and gating stay correct as platforms change by editing
+      config — never a code change (R-6). Profiles are per-channel and isolated: a
+      change to one channel's profile never affects another (the isolated-adapter
+      posture, ARC-18).
+      ACCEPTANCE: a channel's limits live as config read by GEN-2 / GEN-5; changing
+      a limit (e.g. X's character count) updates adaptation + fit with no code
+      change; a change to one channel's profile does not affect the others.
+  PUBS-3:
+    v: 1
+    title: Publish log
+    implements: [PUB-3]
+    statement: >-
+      Every published ChannelVariant produces a log entry: what went out, where,
+      when, with the live link and the exact variant text sent (DM-5 published
+      state). The log is APPEND-ONLY and VISIBLE in the Calendar/Published view
+      (UX-4 / EXP-31) — the VAL-3 "everything auto-done is logged and visible"
+      guarantee. For the news destination, "published" is the article publish-state
+      (ADR-0004).
+      ACCEPTANCE: every published variant produces a log entry with destination,
+      timestamp, live link, and the exact text sent; the log is visible in
+      Calendar/Published (UX-4); an auto-published (TL1/TL2) post is logged exactly
+      like an approved one (nothing hidden).
+  PUBS-4:
+    v: 1
+    title: LinkedIn evaluation
+    implements: [PUB-4]
+    statement: >-
+      Evaluate LinkedIn as a fifth channel. P2 — NOT in P1a scope; no runtime
+      behavior is committed now beyond the evaluation. The binding constraint if
+      adopted: LinkedIn reuses the same ARC-18 adapter-behind-a-port pattern + a
+      PUB-2 channel profile — never a bespoke publishing path (GR-6, R-6).
+      ACCEPTANCE (deferred): LinkedIn viability is assessed; if adopted it ships as
+      an ARC-18 adapter + a PUB-2 profile with no publishing logic outside that
+      pattern.
+
+open-questions:
+  - >-
+    The AUT-1 TL1 veto-window mechanics — whether a scheduled variant is HELD
+    until the 24h window closes or auto-published then TAKEN DOWN on veto — and
+    how that maps onto the DM-5 delivery lifecycle (is there a veto-hold state, or
+    is it the AUT-3 pause during the window?) belong to the future AUT spec. PUBS-1
+    honors the window but does not define it; settle the DM-5 interaction when the
+    AUT spec is authored (a cross-spec reconciliation, not a PUB defect).
+  - >-
+    News-page UNPUBLISH/takedown (DM-5 published -> unpublished, news-only; a P0
+    affordance in EXP-31; mechanically an ARC-18 publisher cache-purge per
+    SEC-8/ADR-0004) is not exposed here — most likely the (unwritten) NWS spec's
+    to own. Settle the takedown-operation ownership (NWS vs PUB) when the NWS spec
+    is authored; the cache-purge mechanism itself lives in the publisher.

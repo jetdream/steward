@@ -24,6 +24,15 @@ items:
       An approved variant publishes at its scheduled time ±5 min; failures
       retry and alert operators (OPS-1); the founder is alerted only if action
       is needed.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PUBS-1 (approved, challenge r1 pass): official-API-only
+        delivery (GR-6) at engagement-optimal ±5 min, posts only on a HEALTHY
+        ChannelConnection (DM-14/ONBS-4), retry+operator alert (OPS-1),
+        founder-only-when-needed (MEM-2), AUT-3 kill/pause + AUT-1 veto honored;
+        asymmetric news destination. Realization pending code.
+      against: [PUBS-1@1]
 
   PUB-2:
     v: 1
@@ -34,6 +43,14 @@ items:
       Maintained as configuration: length limits, media requirements, link
       behavior, rate limits — consumed by GEN-2/GEN-5 so adaptation and gating
       stay correct as platforms change.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PUBS-2 (approved): per-channel technical profile as config (the
+        single source read by GENS-2/GENS-5), swappable per channel without code
+        (R-6), isolated so one channel's change never affects others; the scheduler
+        also consumes rate limits. Realization pending code.
+      against: [PUBS-2@1]
 
   PUB-3:
     v: 1
@@ -43,6 +60,14 @@ items:
     statement: >-
       What went out, where, when, with links and the variant text; visible in
       Calendar/Published (UX-4).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PUBS-3 (approved): an append-only per-variant log (destination,
+        timestamp, live link, exact text) visible in Calendar/Published (UX-4 /
+        EXP-31) — the VAL-3 nothing-hidden guarantee; auto-published posts logged
+        like approved ones. Realization pending code.
+      against: [PUBS-3@1]
 
   PUB-4:
     v: 1
@@ -50,3 +75,11 @@ items:
     priority: P2
     title: LinkedIn evaluation
     statement: Evaluate LinkedIn as a fifth channel.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PUBS-4 (approved): P2 deferral with the binding constraint that
+        LinkedIn, if adopted, reuses the ARC-18 adapter-behind-a-port + PUB-2
+        profile pattern — no bespoke publishing path (GR-6, R-6). Realization
+        pending code.
+      against: [PUBS-4@1]
