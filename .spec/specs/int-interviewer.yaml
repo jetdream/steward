@@ -118,7 +118,7 @@ items:
       interview with source + timestamp; the interviewer surfaces at most the
       capped number of questions per turn.
   INTS-3:
-    v: 1
+    v: 2
     title: Periodic curiosity — rate-limited, calendar-tied
     implements: [INT-3]
     statement: >-
@@ -136,6 +136,10 @@ items:
       per-org rate over time), NOT the INTS-2 per-turn question cap: an org with
       many upcoming events does not get one probe per event — the aggregate rate
       limit holds (VAL-6, R-10), mirroring TOPS-3's proposal-cadence discipline.
+      That aggregate cadence is realized via the SHARED PRO-4 proactive-interruption
+      budget (DEC-24, LOW/deferrable tier — curiosity yields to time-sensitive
+      photo/campaign asks): INT-3 draws from the ONE per-org ceiling, not an
+      independent limit (PROS-4).
       ACCEPTANCE: after launch, a calendar event in Memory can trigger at most one
       rate-limited probe tied to it; the probe is dismissible and, once dismissed
       or answered, is not raised again (MEMS-6); AND probe cadence stays within the

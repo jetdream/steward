@@ -1,0 +1,172 @@
+kind: spec
+prefix: PROS
+title: Proactive Manager — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence / cheaper-alternative + LRN-19/20/22 sweep)
+  verdict: pass
+  record: .spec/specs/challenges/pro-proactive-manager-2026-07-19-r1.md
+  summary: >-
+    r1 passed with no surviving high. The shared PRO-4 budget (DEC-24) verified
+    single-source-owned by PRO with INTS-3 v2 / TOPS-3 v2 correctly deferring to
+    it; the deterministic tier claim honest (manager derives tier from event-date,
+    not an LLM guess); the EXT-5 pull-only exemption consistent. Six one-line
+    fixes applied in-change: APRS-2 reconciled as VOLUME-vs-TIMING orthogonal
+    (budget bounds volume, APRS-2 bounds off-cadence timing); budget clarified to
+    BE the hard ceiling (HIGH preempts LOW, no overflow) with acceptance;
+    PRO-3 ask-hygiene added as a LOW consumer (enumeration + depends + DEC-24
+    binds); the DM-8 external-tier clause dropped (Discoveries are exempt, tier
+    derives from DM-2 Memory events); admit() derives the tier (LRN-13, no
+    caller-passed priority); a GR-3/GR-8-never-budget-gated safety carve-out added.
+intent: >-
+  Exact behavior of the system moving first (register pro-proactive-manager.yaml):
+  reasoned material (photo) requests (PRO-1), pre-drafted campaign proposals
+  (PRO-2), ask-hygiene (PRO-3, P1), and the shared proactive-interruption BUDGET
+  with priority tiers that keeps all proactive pushes calm (PRO-4, DEC-24). The
+  budget is the load-bearing new piece: every proactive push — here plus INT-3
+  curiosity and TOP-3 proposals — draws from ONE per-org ceiling so limits cannot
+  stack into a spammy week (R-10). Pull-only surfaces are exempt.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-2, DM-4, PIPE-1, ARC-19, EXP-4]
+depends-on: [MEMS, GENS]
+governed-by: [GR-1]
+assurance: standard
+
+design: >-
+  The Proactive Manager is @backend/proactive (ARC-19): it initiates — reasoned
+  material requests, campaign proposals, ask-hygiene — always with a REASON
+  (VAL-5) and grounded in Memory (MEMS-4). It OWNS the shared proactive-interruption
+  BUDGET (PROS-4, DEC-24): a single per-org ceiling every proactive push draws
+  from, with priority tiers (high time-sensitive preempts low deferrable). All
+  proactive pushes consult the budget AND the never-ask-twice asked-set (MEMS-6)
+  and the interrupt-or-assume classifier (MEMS-5) before surfacing — a photo
+  request is a MEMS-5 class-(a) field-only material ask. Material requests tie to
+  GEN-4 (a pictureless draft triggers a request) and land photos in the media
+  library (DM-4) + drafts. Campaign/ask content is authored through the content
+  engine (GENS) and passes the PIPE-2 VAL guardrail chain — asks never promise
+  outcomes (GR-1), include the donation URL only when the org provided one
+  (scope). Surfaces: the colleague-moves-first journey (EXP-4 — photo requests
+  EXP-22, campaigns EXP-24); proactive pushes are distinct from the pull-only
+  Discoveries feed (EXT-5), which is exempt from the budget. LRN-20 split: the
+  budget ceiling, the priority ordering (high preempts low), the pull-only
+  exemption, the asked-set consult, and the event-date time-sensitivity flag are
+  DETERMINISTIC; the phrasing/timing quality of a request and whether a topic is
+  "worth proposing" are LLM judgments held by acceptance + VAL-5.
+
+data: >-
+  DM-4 MediaAsset — photos from a PRO-1 request land here (tagged by Memory).
+  Proactive pushes and their dispositions write MemoryEntry (DM-2) via MEMS-1; a
+  declined push is recorded in the MEMS-6 asked-set. The interruption budget is a
+  per-org counter over a rolling window (a derived accounting over the push log,
+  not a new entity); "time-sensitive" is derived from the push's Memory event date
+  (DM-2 events / calendar-season) — external Discoveries are pull-only/exempt and
+  generate no budgeted push, so no DM-8 signal is involved. No new entity.
+
+interfaces: >-
+  @backend/proactive (ARC-19) exposes: requestPhotos(org, event) -> a reasoned
+  material request [PRO-1; consults budget/asked-set; drops to library
+  suggestions first, GEN-4]; proposeCampaign(org, season) -> a pre-drafted
+  campaign set approved once [PRO-2 -> GENS]; askHygiene(org) -> flags
+  asking-without-reporting, proposes the missing impact post [PRO-3, P1, STW-1];
+  budget(org) -> the shared proactive-interruption budget + tier check [PRO-4;
+  callers: PRO-1/PRO-2/PRO-3 here, INT-3 (INTS-3), TOP-3 (TOPS-3)]; admit(push) ->
+  boolean [the budget gate all proactive pushes call before surfacing; the manager
+  DERIVES the push's tier from its type + event-date signal, not a caller-passed
+  priority]. Exact tRPC/WS signatures live in code.
+
+items:
+  PROS-1:
+    v: 1
+    title: Material requests with a reason
+    implements: [PRO-1]
+    statement: >-
+      The system requests the scarcest raw material — real PHOTOS above all
+      (generation is off, GR-4; R-3) — tied to a REAL event from Memory ("the well
+      drilling starts Monday — send 3 photos and one line; I'll turn it into the
+      impact story your donors were promised"). Every request carries its reason
+      (VAL-5) and is a MEMS-5 class-(a) field-only material ask (the system cannot
+      obtain the photo itself). It consults the MEMS-6 asked-set (never re-ask) and
+      the PROS-4 BUDGET before surfacing — an event-tied request is HIGH priority
+      (time-sensitive) but still bounded by the per-org ceiling. A pictureless
+      draft (GEN-4) triggers a request only after library suggestions fail
+      (GENS-4). Request -> simple upload flow -> the media library (DM-4) + drafts.
+      ACCEPTANCE: a material request names its reason and the org-specific event
+      behind it (VAL-5); it is not sent if the gap is already in the asked-set
+      (MEMS-6) or the budget is exhausted by higher-priority pushes; an
+      event-tied request is treated as high priority; uploaded photos land in the
+      library and flow to the awaiting-picture draft (GEN-4).
+  PROS-2:
+    v: 1
+    title: Campaign initiation
+    implements: [PRO-2]
+    statement: >-
+      Seasonal packages (GivingTuesday, year-end) are proposed PRE-DRAFTED — a set
+      of drafts the founder approves ONCE, not one at a time (EXP-24). Campaign
+      content is authored through the content engine (GENS) and passes the PIPE-2
+      VAL chain: asks never promise outcomes (GR-1), include the donation URL only
+      when the org provided one (scope), external items cited (GR-5). A campaign
+      proposal is a HIGH-priority proactive push (its seasonal window is
+      time-sensitive) and draws from the PROS-4 budget. Approving the set schedules
+      its drafts; declining teaches taste (MEMS-1).
+      ACCEPTANCE: a seasonal campaign arrives pre-drafted as a set approved with
+      one action; no ask in it promises an outcome (GR-1); the proposal draws from
+      the shared budget and is high-priority within its season.
+  PROS-3:
+    v: 1
+    title: Ask-hygiene
+    implements: [PRO-3]
+    statement: >-
+      The system SPACES fundraising asks and keeps them honest: it flags
+      ASKING-WITHOUT-REPORTING (a fundraising ask with no recent impact/gratitude
+      post) and proposes the missing impact post (STW-1) — the stewardship rhythm.
+      This is a proactive push (draws from the PROS-4 budget) surfaced as an
+      ask-hygiene card (EXP-16). P1 — not in the P1b slice. Bounds interact with
+      the GEN-1 mix quota (asks <=25%, impact >=1/4wk); ask-hygiene is the
+      proactive nudge that keeps the realized rhythm honest when the founder's
+      dispositions drift.
+      ACCEPTANCE: a fundraising ask not preceded by a recent impact/gratitude post
+      raises exactly one ask-hygiene card proposing the missing impact post
+      (STW-1); the card draws from the shared budget; spacing is measured against
+      the GEN-1 mix.
+  PROS-4:
+    v: 1
+    title: Proactive interruption budget — one ceiling, priority tiers
+    implements: [PRO-4]
+    statement: >-
+      A SINGLE per-org BUDGET bounds ALL proactive pushes over a rolling window;
+      every push calls admit(push, priority) before surfacing and is suppressed or
+      deferred when the budget is spent. The Proactive Manager OWNS and enforces
+      it; its consumers are PRO-1 material requests (high when event-tied), PRO-2
+      campaigns (high in-season), PRO-3 ask-hygiene (low), INT-3 interviewer
+      curiosity (INTS-3, low), and TOP-3 topic proposals (TOPS-3, low) — one
+      ceiling, so their per-capability limits cannot STACK into a spammy week
+      (R-10, VAL-6). PRIORITY TIERS (deterministic): HIGH (time-sensitive — a photo
+      request tied to an imminent event, a campaign window) PREEMPTS LOW
+      (deferrable — proposals, curiosity, ask-hygiene). The budget IS the hard
+      CEILING: when it is tight, HIGH pushes PREEMPT LOW (which DEFER) so a
+      time-sensitive ask still gets through, but total interruptions NEVER exceed
+      the ceiling (no overflow above it). PULL-ONLY surfaces (the Discoveries feed,
+      EXT-5) are NOT interruptions and are EXEMPT — they never consume the budget.
+      The budget bounds VOLUME; APRS-2's event-driven "always-allowed" items bound
+      TIMING (off-cadence delivery, orthogonal to volume) — the sole edge is a
+      budget-deferred HIGH item, which yields to the ceiling. GR-3/GR-8 mandatory
+      holds/escalations to the founder are NOT proactive pushes and are NEVER
+      budget-gated — safety always surfaces. The ceiling, the tier ordering, and
+      the pull-only exemption are DETERMINISTIC; the manager DERIVES a push's tier
+      from its type + event-date signal (not a caller-passed value, LRN-13), so no
+      LLM guess sets priority.
+      ACCEPTANCE: in a week with many candidate pushes across PRO-1/PRO-2/PRO-3/
+      INT-3/TOP-3, total interruptions stay within (never exceed) the per-org
+      budget/ceiling (they do not sum the per-capability limits); a time-sensitive
+      photo request preempts a deferrable topic proposal or ask-hygiene card when
+      the budget is tight; the Discoveries feed generates zero interruptions
+      regardless of activity; a GR-3/GR-8 mandatory escalation surfaces even when
+      the budget is spent.
+
+open-questions:
+  - >-
+    The founder-facing PRO surfaces are in the approved colleague-moves-first
+    journey (EXP-4 — photo request EXP-22, campaign card EXP-24); the exact budget
+    is a per-org tuning value (a constraint/config, set from cohort-1 data), not a
+    spec constant. Pixel-level card affordances are a method/ui.md pass on EXP-4.

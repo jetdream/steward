@@ -77,6 +77,31 @@ items:
       Extends DEC-13. (Corrects this decision's initial hold-then-publish-only
       framing, which conflicted with the approved publish-then-takedown design.)
 
+  DEC-24:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [PRO-1, PRO-2, PRO-3, PRO-4, INT-3, TOP-3]
+    title: Shared proactive-interruption budget with priority tiers, owned by the Proactive Manager
+    statement: >-
+      The founder faces multiple INDEPENDENT proactive pushes — PRO-1 photo
+      requests, PRO-2 campaigns, INT-3 interviewer curiosity, TOP-3 topic
+      proposals — each self-rate-limited but with NO shared ceiling, so three or
+      four per-capability limits can STACK into a spammy week (R-10, the exact
+      risk the INT challenger flagged). Decision: a SINGLE per-org
+      proactive-interruption BUDGET, owned and enforced by the Proactive Manager
+      (PRO — new requirement PRO-4), that ALL proactive pushes draw from, with
+      PRIORITY TIERS: HIGH (time-sensitive — a PRO-1 photo request tied to an
+      imminent event, a PRO-2 campaign window) preempts LOW (deferrable — TOP-3
+      topic proposals, INT-3 curiosity). When the budget is spent, low-priority
+      pushes WAIT; a high-priority time-sensitive ask may still fire within a hard
+      per-org ceiling. Serves G-3 (calm, <15 min/week), VAL-6 (moves first but
+      calmly), R-10 (a technical/overwhelming action surface is a churn risk).
+      Pull-only surfaces (the EXT-5 Discoveries feed) are NOT interruptions and are
+      exempt. Chosen over per-capability limits only (they stack) and a single
+      budget without tiers (low-value proposals could crowd out a time-sensitive
+      photo request). PRO-4 owns the budget; INT-3/TOP-3/PRO-1/PRO-2 draw from it.
+
   DEC-22:
     v: 1
     date: 2026-07-19

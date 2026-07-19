@@ -21,6 +21,15 @@ items:
       tied to real events from Memory ("The well drilling starts Monday — send
       3 photos and one line; I'll turn it into the impact story your donors
       were promised"). Request → simple upload flow → library + drafts.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PROS-1 (approved, challenge r1 pass): reasoned photo requests
+        (VAL-5) tied to Memory events, a MEMS-5 class-(a) field-only ask consulting
+        the MEMS-6 asked-set + the PROS-4 budget (high when event-tied); GEN-4
+        trigger after library suggestions; upload → library + drafts. Realization
+        pending code.
+      against: [PROS-1@1]
 
   PRO-2:
     v: 1
@@ -30,6 +39,14 @@ items:
     statement: >-
       Seasonal packages (GivingTuesday, year-end) proposed pre-drafted; the
       founder approves once.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PROS-2 (approved): pre-drafted seasonal sets approved once
+        (EXP-24), authored through GENS + VAL (GR-1 no outcome promise), a
+        high-priority in-season push drawing from the PROS-4 budget. Realization
+        pending code.
+      against: [PROS-2@1]
 
   PRO-3:
     v: 1
@@ -39,3 +56,42 @@ items:
     statement: >-
       Spaces fundraising asks; flags asking-without-reporting and proposes the
       missing impact post (STW-1).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PROS-3 (approved): flags asking-without-reporting and proposes
+        the missing impact post (STW-1), a low-tier push drawing from the PROS-4
+        budget, measured against the GEN-1 mix quota. P1. Realization pending code.
+      against: [PROS-3@1]
+
+  PRO-4:
+    v: 1
+    decided-by: DEC-24
+    priority: P0
+    serves: [G-3]
+    depends: [PRO-1, PRO-2, PRO-3, INT-3, TOP-3]
+    title: Proactive interruption budget
+    statement: >-
+      A single per-org BUDGET bounds ALL proactive pushes — photo requests
+      (PRO-1), campaigns (PRO-2), interviewer curiosity (INT-3), and topic
+      proposals (TOP-3) — so per-capability limits cannot STACK into a spammy week
+      (R-10, VAL-6). Owned and enforced by the Proactive Manager. PRIORITY TIERS:
+      HIGH (time-sensitive — a photo request tied to an imminent event, a campaign
+      window) preempts LOW (deferrable — topic proposals, curiosity); when the
+      budget is spent, low-priority pushes WAIT, a high-priority time-sensitive ask
+      may still fire within a hard per-org ceiling. Pull-only surfaces (the
+      Discoveries feed, EXT-5) are NOT interruptions and are exempt.
+    acceptance: >-
+      In a week with many candidate pushes across PRO-1/PRO-2/INT-3/TOP-3, total
+      interruptions stay within the per-org budget; a time-sensitive photo request
+      preempts a deferrable topic proposal; the Discoveries feed generates no
+      interruptions.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by PROS-4 (approved, challenge r1 pass): the single per-org budget
+        that IS the hard ceiling, priority tiers (high preempts low, no overflow),
+        consumers PRO-1/2/3 + INT-3/TOP-3, pull-only exemption, GR-3/GR-8 never
+        budget-gated; volume-vs-timing reconciled with APRS-2. Realization pending
+        code.
+      against: [PROS-4@1]

@@ -66,7 +66,7 @@ items:
         probes with a distinct per-org aggregate cadence budget (mirrors TOPS-3),
         consulting the MEMS-6 asked-set / MEMS-5 shouldAsk; PRO-1 boundary noted.
         Realization pending code.
-      against: [INTS-3@1]
+      against: [INTS-3@2]
 
   INT-4:
     v: 1

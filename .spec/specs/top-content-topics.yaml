@@ -119,13 +119,16 @@ items:
       on-strategy discovery for the same cause; a "not-for-us" triage verifiably
       shifts that topic's subsequent discovery away from the rejected vein.
   TOPS-3:
-    v: 1
+    v: 2
     title: Topic proposals — proactive, calm, honest
     implements: [TOP-3]
     statement: >-
       The engine proposes topics as a PROACTIVE push in the colleague-moves-first
       journey (EXP-4), never in the pull-only Discoveries feed (EXT-5). Each
-      proposal is RATE-LIMITED and calm (never spammy — VAL-6, R-10) and carries
+      proposal is RATE-LIMITED and calm (never spammy — VAL-6, R-10; the rate
+      limit is realized via the SHARED PRO-4 proactive-interruption budget —
+      DEC-24, LOW/deferrable tier, so proposals yield to time-sensitive
+      photo/campaign asks, PROS-4) and carries
       a REASON (VAL-5) naming the org-specific evidence behind it ("you run three
       after-school programs but haven't posted about outcomes — a 'student wins'
       theme would…"). The founder DISPOSES: adopt (topic → active agenda),
