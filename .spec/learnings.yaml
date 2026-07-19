@@ -354,3 +354,27 @@ items:
       untouched. Worktree isolation does not help (a fresh worktree lacks the
       uncommitted spec under review); post-challenge verification is the
       mitigation.
+
+  LRN-22:
+    v: 1
+    type: pattern
+    scope: [spec-authoring, architecture]
+    source: GENS-2/GENS-5 flow-ordering challenge (2026-07-19)
+    title: When a spec's flow ordering conflicts with an approved architecture artifact, the data-model shape is the tiebreaker
+    statement: >-
+      The GEN spec ordered the channel-fit gate BEFORE per-channel adaptation (a
+      COGS-minimizing instinct: don't adapt channels you'll skip). The challenger
+      flagged it as inverting PIPE-2's approved sequence (GEN master+variants → VAL
+      → FIT). The escalation ladder offers two resolutions — change the
+      architecture (invert PIPE-2) or conform the spec — and the RIGHT one was
+      decided by the DATA MODEL: DM-5 already carried "per-variant fit verdicts"
+      and a delivery lifecycle keyed on "variant fit-passed, item approved", i.e.
+      the model presumes a variant EXISTS for every channel before it is
+      fit-scored — which only adapt-then-fit produces, and which the founder
+      preview/override UX (GEN-5) actually needs (you can't preview a skipped
+      channel's variant that was never generated). Lesson: a spec-vs-architecture
+      ordering conflict is not a free choice — check whether the data model already
+      encodes the intended order (entity fields/state machines are the quiet
+      authority), and conform the spec to it rather than reflexively "optimizing"
+      the flow. Only invert the architecture when the model is genuinely wrong, and
+      then via the design pass (re-approve + cascade), never silently in a spec.

@@ -1,0 +1,244 @@
+kind: spec
+prefix: GENS
+title: Planning & Content Generation — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single 4-lens pass → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/gen-content-generation-2026-07-19-r2.md
+  summary: >-
+    r1 FAILED on one high — GENS-2/GENS-5 ordered the channel-fit gate BEFORE
+    adaptation, inverting the approved PIPE-2 sequence (GEN master+variants → VAL
+    → FIT) and DM-5's per-variant fit verdicts. Resolved by CONFORMING the spec to
+    the architecture (adapt → VAL → fit), not inverting the pipeline — design-correct
+    because the founder preview/override UX (GEN-5) needs the skipped channel's
+    variant to exist, which fit-before-adapt would not produce; skipped variants
+    are retained with their verdict on DM-5. r1 mediums/lows also fixed: mix-quota
+    determinism honestly re-pinned to PLAN-TIME slot designations (overlays are a
+    reservation the quota counts; prose realization is a soft VAL/fit — LRN-20
+    trap closed); the ≥1-impact quota pinned to a trailing 28-day sliding window
+    seeded from scheduled history (no cross-regeneration gap); EXP-2/EXP-16 added
+    to constrained-by; GR-2 added to governed-by; GENS-5 deterministic skip scoped
+    to technical/structural (semantic §e is LLM); the picture gate reworded to the
+    DM-5 awaiting_picture→approved editorial boundary. r2 delta verified all fixes
+    against live text and passed; the sole new low (a sparse-startup ask-ratio
+    carve-out) applied in this change.
+intent: >-
+  Exact behavior of the content engine (register gen-content-generation.yaml) —
+  the hub that turns Memory + Strategy + the editorial agenda + the Radar into a
+  steady, on-mission publishing rhythm: the rolling 4-week planner (GEN-1),
+  per-channel adaptation (GEN-2), the every-post-has-a-picture invariant (GEN-3)
+  and its awaiting-picture state (GEN-4), the channel-fit gate (GEN-5), and
+  performance feedback (GEN-6, P1). The engine's INVARIANTS are mostly
+  deterministic (mix quotas, the no-picture scheduling gate, technical limits);
+  the creative pairing/writing is the LLM part, grounded and guardrail-gated
+  (PIPE-1/PIPE-2). Generation produces drafts; approval is APR, publishing is PUB.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, ARC-15, EXP-2, EXP-16]
+depends-on: [MEMS, STRS, TOPS]
+governed-by: [GR-1, GR-2, GR-3, GR-4, GR-5, GR-8]
+assurance: standard
+
+design: >-
+  The content engine is @backend/content within the Content Engine module
+  (ARC-15), the central hub: it consumes Memory (MEMS-4 retrieveContext + the
+  always-on rule/taboo overlay), the Strategy (STRS — the 5-section doc, incl.
+  section (e) channel instructions and the section-(a) topics READ-THROUGH from
+  the agenda), the editorial agenda (TOPS-4 — WHAT to talk about), and the Radar
+  (EXT-1 candidates + the EXT-5 saved pool) and produces ContentItem drafts (DM-5,
+  master + ChannelVariant[]). All writing is grounded, not vibes (PIPE-1): every
+  draft is grounded in Memory + Strategy via retrieval PLUS the deterministic
+  active overlay; nothing is fabricated. Every draft flows through the VAL stage
+  BEFORE any queue (PIPE-2): Strategy validation (STRS-3) + platform guardrails
+  (GR-1..GR-6, sensitive-topic GR-3) + the Memory taboo overlay gate (GR-8) — a
+  draft VAL cannot confidently clear against an active taboo escalates to the
+  founder (GR-8). All model calls logged per org (PIPE-1, OPS-1); target COGS
+  <$25/org/month. LRN-20 split — the ENGINE'S INVARIANTS are genuinely
+  DETERMINISTIC and enforced at plan/schedule time, not left to the LLM to
+  "try": the mix quotas (≥1 impact/gratitude per rolling 4 weeks — STW-1; asks
+  ≤25% of mix), the no-picture editorial-approval GATE (GEN-3 hard flexibility, GENS-4),
+  the per-channel technical limits (PUB-2), and the external freshness rules
+  (prefer fresh, never auto-draft a passed event-tied save — DEC-20). The
+  PROBABILISTIC parts — the type↔subject pairing, the prose, per-channel
+  adaptation, and soft content-type/tone fit — are grounded LLM steps held by
+  acceptance + the VAL guardrail chain, never claimed deterministic. FLOW ORDER
+  (conforms to PIPE-2, does not invert it): the generator produces the master + a
+  per-channel variant for every CONNECTED channel (GEN-2), VAL validates every
+  variant, THEN the fit gate assigns per-channel verdicts (GEN-5) — adapt -> VAL
+  -> fit; a skipped variant is RETAINED with its verdict on the ContentItem (DM-5
+  per-variant fit verdicts) so the founder can preview and override. The
+  every-post-a-picture rule is the DM-5 editorial-gate invariant: a ContentItem
+  cannot leave awaiting_picture toward APPROVED without a MediaAsset (GEN-3/GEN-4),
+  and no variant schedules while the item is not approved (DM-5). Surfaces: the
+  weekly-visit Ready spine (EXP-2/EXP-16) receives drafts; awaiting-picture and
+  channel-skip states render there. Boundaries: real pictures only, AI visuals
+  disabled (GR-4); external content cited (GR-5); asks never promise outcomes
+  (GR-1); no fabricated events or impact (VAL-4).
+
+data: >-
+  DM-5 ContentItem (master + ChannelVariant[]; per-variant fit verdicts and
+  delivery state) is the engine's output. It READS MemoryEntry (DM-2, via
+  MEMS-4), StrategyDoc (DM-3), Topic/agenda (TOPS-4), ExternalItem (DM-8, radar +
+  saved pool), and MediaAsset (DM-4, the library); GEN-6 reads PostMetric (DM-10,
+  P1). A ChannelVariant is produced only for a CONNECTED channel (DM-14
+  ChannelConnection). Concrete field lists live in @shared types.
+
+interfaces: >-
+  @backend/content (ARC-15) exposes: planCalendar(org) -> the rolling 4-week plan
+  [scheduled; pairs taxonomy TYPE with agenda SUBJECT, enforces the mix quotas];
+  generateDraft(org, slot) -> ContentItem via PIPE-2 [grounded + VAL-gated];
+  adaptForChannels(item) -> ChannelVariant[] for ALL connected channels [PUB-2 +
+  STR-1 §e; adapt precedes fit, PIPE-2]; fitGate(item, channel) -> keep |
+  skip(reason) [GEN-5; runs AFTER adapt + VAL; verdict retained per DM-5];
+  canApprove(item) -> boolean [the GEN-3/DM-5 picture gate: an item cannot leave
+  awaiting_picture toward approved without a MediaAsset]; requestPicture(item) ->
+  PRO-1 with library suggestions [GEN-4]. Exact tRPC/WS
+  signatures live in code.
+
+items:
+  GENS-1:
+    v: 1
+    title: The rolling 4-week planner — agenda subject x taxonomy type, quota-enforced
+    implements: [GEN-1]
+    statement: >-
+      A per-org rolling 4-week calendar. Each slot pairs a content TYPE (from the
+      taxonomy — internal: mission / founder story / case study / own event /
+      people; external: related event / news / research) with a SUBJECT from the
+      editorial agenda (TOPS-4, the system-maintained topics): the agenda supplies
+      WHAT to talk about, the taxonomy HOW to frame it (DEC-23). The
+      type↔subject pairing and the draft are grounded LLM steps (PIPE-1); the
+      subject always traces to a TOPS-4 agenda topic (itself grounded in Memory,
+      TOPS-1) — no fabricated themes or events (VAL-4). MIX QUOTAS: Impact/Gratitude
+      and Fundraising Asks are OVERLAYS (GEN-1 v4 / STW-1), not base taxonomy
+      types — so the quota is DETERMINISTIC only because the planner assigns the
+      overlay as a PLAN-TIME SLOT DESIGNATION (a structured attribute on the slot),
+      and the quota counts those designations, a deterministic reservation, NOT a
+      post-hoc LLM classification of realized prose. Whether the generated prose
+      FAITHFULLY realizes its designated overlay is a soft VAL/fit check (LLM), not
+      part of the deterministic count (the honest LRN-20 split). Quotas: Impact/
+      Gratitude ≥1 per any TRAILING 28-day sliding window — seeded from
+      already-scheduled/published history, not counted per isolated plan block, so
+      an ~8-week gap across two plan regenerations cannot hide (STW-1, the
+      north-star stewardship rhythm); Fundraising Asks ≤25% of designated slots in
+      the same trailing window (a scope boundary; an ask includes the donation URL
+      when the org provided one, and never promises an outcome — GR-1). External
+      slots draw from fresh Radar material
+      (EXT-1); the EXT-5 SAVED POOL is the reserve — a deterministic freshness
+      rule: prefer fresh over stale, NEVER auto-draft a passed event-tied save,
+      and credit a used save in the draft's ReasonLine ("you saved this two weeks
+      ago"). A thin week with no fresh external material falls back to internal
+      types or the saved pool — never a blank slot (VAL-6).
+      ACCEPTANCE: any trailing 28-day window (over scheduled + planned slots)
+      carries ≥1 slot DESIGNATED impact/gratitude; the ≤25% designated-ask cap is
+      evaluated over a FULL window (once the calendar has ramped past a small
+      minimum slot count — a sparse first-week window of 1-2 slots is held only to
+      the impact-rhythm guarantee, not the ratio) — both are deterministic counts
+      over plan-time designations, not a post-hoc LLM classification; every slot's
+      subject resolves to a TOPS-4 agenda topic and
+      its type to the taxonomy; a week with no fresh external material yields a
+      non-blank plan drawn from the saved pool or internal types, never a
+      fabricated event.
+  GENS-2:
+    v: 1
+    title: Per-channel adaptation
+    implements: [GEN-2]
+    statement: >-
+      One master story becomes per-channel VARIANTS (DM-5 master +
+      ChannelVariant[]) for every CONNECTED channel (DM-14) — the generator
+      produces all connected-channel variants, which VAL then validates and the
+      fit gate (GENS-5) then scores (adapt -> VAL -> fit, per PIPE-2; NOT
+      fit-before-adapt). Each variant is adapted for (i) the channel's TECHNICAL
+      profile — character limits, image requirements, link handling (PUB-2) — and
+      (ii) the Strategy's channel-specific instructions (STR-1 section (e)).
+      Adaptation is a grounded LLM step; the TECHNICAL constraints are
+      DETERMINISTICALLY validated after generation — a variant that exceeds a hard
+      limit is regenerated or flagged, never shipped over-limit (the LRN-20 split:
+      creative adaptation is LLM, limit-conformance is a deterministic check
+      against PUB-2). An unconnected channel yields NO variant (consistent with
+      ONBS-4: publishing waits on connection).
+      ACCEPTANCE: a story on 3 connected channels yields 3 variants, each within
+      that channel's PUB-2 technical profile; a channel's section-(e) instruction
+      is reflected in its variant; an unconnected channel yields no variant; a
+      fit-SKIPPED channel still HAS a variant (retained with its skip verdict,
+      GENS-5/DM-5) so the founder can preview and override.
+  GENS-3:
+    v: 1
+    title: Every post carries a picture
+    implements: [GEN-3]
+    statement: >-
+      A HARD invariant (GEN-3 flexibility: hard): a ContentItem cannot leave
+      awaiting_picture toward APPROVED without an assigned picture (the DM-5
+      editorial-gate invariant), and no variant schedules while the item is not
+      approved (DM-5) — enforced as a deterministic gate (GENS-4), not an LLM hope.
+      Picture sources at launch: founder upload
+      (per-post or batch) and the media library (DM-4 — harvested at ingestion
+      ONBS-2 and uploaded, tagged by Memory for suggestion). AI image generation
+      is DISABLED behind a feature flag (GR-4; enabling is Q-3): with the flag off
+      the pipeline never calls image generation, and if ever enabled it produces
+      branded graphics only, never photorealistic beneficiaries/impact (GR-4,
+      VAL-4).
+      ACCEPTANCE: no ContentItem leaves awaiting_picture toward approved without a
+      linked MediaAsset, and no variant schedules while unapproved (a deterministic
+      gate, DM-5); with the AI-visual flag off, no image is generated; library
+      suggestions are ranked from Memory tags.
+  GENS-4:
+    v: 1
+    title: Awaiting-picture state — complete but blocked
+    implements: [GEN-4]
+    statement: >-
+      A draft with no assigned picture is FULLY WRITTEN and visible but CANNOT
+      advance from awaiting_picture to APPROVED — the deterministic editorial gate
+      (DM-5 invariant 1) that realizes GEN-3's hard rule; and no variant schedules
+      while the item is not approved (DM-5 invariant 2). It
+      is a complete-but-blocked state, NEVER an error (EXP-16 awaiting-picture:
+      dashed warn slot, disabled Approve until resolved). It triggers a picture
+      request (PRO-1) with suggestions from the library ranked by Memory tags, and
+      offers one-tap attach from the library in the Ready surface (APR-1); no
+      library match hands off to a photo request (PRO-1, EXP-22).
+      ACCEPTANCE: a pictureless draft is visible and editable but its
+      schedule/approve action is disabled until a picture attaches; attaching from
+      library or upload clears the block; the state reads as awaiting-picture, not
+      an error.
+  GENS-5:
+    v: 1
+    title: Channel-fit gate — skip with a visible reason
+    implements: [GEN-5]
+    statement: >-
+      After adaptation and VAL (adapt -> VAL -> fit, per PIPE-2), each per-channel
+      variant gets a FIT VERDICT (GEN-5) stored on the ContentItem (DM-5
+      per-variant fit verdicts) — should this go here at all? — combining Strategy
+      fit (STRS-3), content-type fit, and technical fit (PUB-2). A channel that
+      does not fit is SKIPPED with a VISIBLE, specific reason ("skipped X: over
+      policy 'no long stories on X'"), NEVER silently dropped (VAL-3); the skipped
+      variant + its verdict are RETAINED so the founder can preview and OVERRIDE
+      per post. Only fit-passed variants enter the delivery lifecycle (pending) on
+      approval (DM-5). LRN-20 split: the TECHNICAL fit (PUB-2 hard limits) and a
+      STRUCTURAL prohibition (an explicit channel/format ban) are DETERMINISTIC
+      skips; a SEMANTIC Strategy prohibition (a section-(e) rule, STRS-3) is an LLM
+      classification like the taboo overlay — still surfaced with a reason, but NOT
+      claimed deterministic.
+      ACCEPTANCE: a draft unfit for a channel by a technical limit (PUB-2) or a
+      structural prohibition is skipped with the specific reason shown; a semantic
+      section-(e) skip also shows its reason (and is an LLM judgment, not claimed
+      deterministic); the skipped variant is retained and the founder can override
+      per post; no channel is ever silently dropped.
+  GENS-6:
+    v: 1
+    title: Performance feedback
+    implements: [GEN-6]
+    statement: >-
+      Per-post metrics (DM-10 PostMetric) are READ-ONLY insights fed back to the
+      planner (GENS-1) to weight future slot choices. Metrics NEVER trigger an
+      autonomous action on their own — no auto-boost, no auto-repost — the planner
+      only uses them as one weighting input the founder still disposes (VAL-3,
+      VAL-5). P1 — NOT in the P1a thin slice.
+      ACCEPTANCE: post metrics measurably inform planner weighting; no metric
+      value alone causes a publish/schedule action without founder disposition.
+
+open-questions:
+  - >-
+    Pixel-level UI for the awaiting-picture slot (GENS-4) and the channel-skip
+    reason (GENS-5) is a method/ui.md pass on the already-approved Ready-spine
+    card states (EXP-16) — separate from this backend spec. Not a blocker: the
+    weekly-visit journey (EXP-2) and its card states are approved.

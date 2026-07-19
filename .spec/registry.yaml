@@ -50,6 +50,7 @@ prefixes:
   ONBS: specs/onb-onboarding.yaml
   INTS: specs/int-interviewer.yaml
   CHTS: specs/cht-agentic-chat.yaml
+  GENS: specs/gen-content-generation.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml

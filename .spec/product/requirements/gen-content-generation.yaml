@@ -37,6 +37,15 @@ items:
         include donation URL when provided — scope.md boundary case),
         Seasonal/Campaign hooks (GivingTuesday, year-end, cause awareness
         days).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by GENS-1 (approved, challenge r2 pass): the rolling planner pairs
+        a taxonomy TYPE with a TOPS-4 agenda SUBJECT; mix quotas (≥1
+        impact/gratitude, ≤25% asks) are deterministic counts over PLAN-TIME slot
+        designations on a trailing 28-day window; saved-pool freshness rules
+        (DEC-20). Realization pending code.
+      against: [GENS-1@1]
 
   GEN-2:
     v: 1
@@ -49,6 +58,13 @@ items:
       for (i) technical requirements — character limits, image requirements,
       link handling (PUB-2) — and (ii) the Strategy's channel-specific
       instructions (STR-1 section e).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by GENS-2 (approved): a variant per CONNECTED channel (DM-14),
+        adapted for PUB-2 technical + STR-1 §e, technical limits deterministically
+        validated; adapt -> VAL -> fit per PIPE-2. Realization pending code.
+      against: [GENS-2@1]
 
   GEN-3:
     v: 1
@@ -60,6 +76,14 @@ items:
       Sources at launch: founder upload (per-post or batch) and the media
       library (harvested + uploaded, tagged by Memory). AI image generation
       ships disabled behind a feature flag; enabling is Q-3, governed by GR-4.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by GENS-3 (approved): the hard picture invariant as the DM-5
+        awaiting_picture->approved editorial gate (deterministic); AI visuals
+        disabled behind the GR-4 flag; library sources tagged by Memory.
+        Realization pending code.
+      against: [GENS-3@1]
 
   GEN-4:
     v: 1
@@ -72,6 +96,14 @@ items:
       cannot be scheduled; it triggers a picture request (PRO-1) with
       suggestions from the library. One-tap attach from library in the Inbox
       (APR-1).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by GENS-4 (approved): the complete-but-blocked awaiting-picture
+        state (never an error, EXP-16), the DM-5 approval gate, picture request
+        (PRO-1) with Memory-ranked library suggestions, one-tap attach (APR-1).
+        Realization pending code.
+      against: [GENS-4@1]
 
   GEN-5:
     v: 1
@@ -84,6 +116,14 @@ items:
       all (Strategy fit + content-type fit + technical fit). Unfit channels are
       skipped with a visible reason ("skipped X: over policy 'no long stories
       on X'"). Founder can override per post.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by GENS-5 (approved): per-variant fit verdicts after adapt+VAL
+        (PIPE-2/DM-5), visible skip reason, retained variant for founder
+        preview/override; deterministic skip scoped to technical/structural,
+        semantic §e is an LLM classification (STRS-3). Realization pending code.
+      against: [GENS-5@1]
 
   GEN-6:
     v: 1
@@ -91,3 +131,10 @@ items:
     priority: P1
     title: Performance feedback
     statement: Per-post metrics (read-only insights) feed the Planner.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by GENS-6 (approved): PostMetric (DM-10) as read-only planner
+        weighting; no metric alone triggers an autonomous action (VAL-3). P1 —
+        outside the P1a thin slice. Realization pending code.
+      against: [GENS-6@1]
