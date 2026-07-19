@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — day one, the handshake (EXP-1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--hov:#a8492a;--success:#008a05;--warn:#c47700;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif;--r1:8px;--r2:14px;--pill:9999px}
+*{box-sizing:border-box}
+body{margin:0;background:#eceae4;color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.44;-webkit-font-smoothing:antialiased}
+.page{max-width:1330px;margin:0 auto;padding:34px 24px 90px}
+.intro{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:24px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:27px;letter-spacing:-.02em;margin:0}
+.lede{color:var(--muted);font-size:14px;max-width:84ch;margin:0}
+.tri{display:grid;grid-template-columns:repeat(3,390px);gap:22px;justify-content:center;align-items:start}
+@media(max-width:1290px){.tri{grid-template-columns:390px;justify-content:center}}
+.col{display:flex;flex-direction:column;gap:9px}
+.slabel{display:flex;flex-direction:column;gap:2px;padding:0 4px}
+.slabel .t1{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--meta)}
+.slabel .t2{font-family:var(--fd);font-weight:650;font-size:15.5px;letter-spacing:-.01em}
+.frame{background:var(--bg);border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 34px -20px rgba(0,0,0,.28)}
+.chrome{border-bottom:1px solid var(--soft);background:color-mix(in srgb,var(--bg) 92%,transparent)}
+.c1{display:flex;align-items:center;gap:8px;padding:11px 13px 8px}
+.pause{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:var(--pill);padding:4px 9px;background:var(--surface)}
+.pause .sq{width:7px;height:7px;border:1.5px solid currentColor;border-radius:2px}
+.brand{display:flex;align-items:center;gap:7px;font-family:var(--fd);font-weight:700;font-size:14px;margin:0 auto}
+.brand .lg{width:21px;height:21px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800;font-family:var(--fb)}
+.ic{width:28px;height:28px;border-radius:var(--r1);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:13px;background:var(--surface)}
+.c2{display:flex;gap:2px;padding:0 9px 8px;flex-wrap:wrap}
+.gw{font-size:11px;font-weight:600;color:var(--muted);padding:3px 7px;border-radius:var(--pill)}
+.gw::before{content:"○";margin-right:4px;color:var(--meta);font-size:8px}
+.stream{padding:13px 12px 15px;display:flex;flex-direction:column;gap:10px}
+.h2{font-family:var(--fd);font-weight:700;font-size:19px;letter-spacing:-.015em;margin:0;line-height:1.14}
+.sub{color:var(--muted);font-size:12px}
+.say{display:flex;gap:8px}
+.say .av{flex:none;width:23px;height:23px;border-radius:var(--pill);background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:10px;font-weight:700}
+.say .bd{display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.45}
+.say .who{font-size:10px;font-weight:700;color:var(--meta);letter-spacing:.04em;text-transform:uppercase}
+.mine{align-self:flex-end;background:var(--warm);border-radius:var(--r2);padding:8px 12px;font-size:13px;max-width:88%}
+.finding{display:flex;gap:7px;align-items:baseline;font-size:12px;color:var(--muted);padding:6px 10px;border:1px dashed var(--soft);border-radius:var(--r1);background:var(--surface)}
+.finding .fk{font-size:10px;font-weight:700;color:var(--success);letter-spacing:.05em;text-transform:uppercase;flex:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);overflow:hidden}
+.cb{padding:12px 13px 0;display:flex;flex-direction:column;gap:8px}
+.crow{display:flex;align-items:center;gap:8px}
+.chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:color-mix(in srgb,var(--accent) 11%,transparent);color:var(--accent)}
+.chans{margin-left:auto;font-size:11px;color:var(--muted)}
+.txt{font-size:13.5px;line-height:1.45}
+.prov{font-size:11px;color:var(--meta)}.prov a{color:var(--muted);text-decoration:underline dotted;text-underline-offset:2px}
+.reason{display:flex;gap:6px;color:var(--muted);font-size:12px}.reason::before{content:"↳";color:var(--meta)}
+.assume{display:flex;gap:7px;align-items:baseline;font-size:12px;padding:7px 10px;border-radius:var(--r1);border:1px solid color-mix(in srgb,var(--warn) 30%,var(--line));background:color-mix(in srgb,var(--warn) 5%,var(--surface))}
+.assume .tag{font-size:9.5px;font-weight:700;color:var(--warn);text-transform:lowercase}
+.acts{display:flex;align-items:center;gap:3px;padding:10px 10px 12px}
+.btn{font:inherit;font-weight:600;border:none;cursor:pointer;border-radius:var(--r1)}
+.primary{background:var(--accent);color:#fff;padding:9px 15px;font-size:12.5px;min-height:38px}
+.quiet{background:none;color:var(--muted);padding:9px 9px;font-size:12px;min-height:38px}
+.connect{border:1px solid color-mix(in srgb,var(--success) 30%,var(--line));background:color-mix(in srgb,var(--success) 5%,var(--surface));border-radius:var(--r2);padding:11px 13px;display:flex;flex-direction:column;gap:6px}
+.connect .t{font-size:13px;font-weight:600}
+.connect .d{font-size:12px;color:var(--muted)}
+.composer{border-top:1px solid var(--soft);background:var(--surface);padding:9px 11px 11px;display:flex;flex-direction:column;gap:7px}
+.opens{display:flex;gap:5px;flex-wrap:wrap}
+.open{font-size:11px;font-weight:600;color:var(--fg2);border:1px solid var(--line);background:var(--bg);border-radius:var(--pill);padding:6px 11px;min-height:32px;display:inline-flex;align-items:center}
+.inrow{display:flex;gap:7px;align-items:center}
+.input{flex:1;border:1px solid var(--line);border-radius:var(--pill);padding:9px 13px;font-size:12px;color:var(--meta);background:var(--bg)}
+.send{width:34px;height:34px;border-radius:var(--pill);background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:12px}
+footer.check{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;max-width:88ch}
+footer.check b{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <div class="kick">Steward · day one · EXP-1 (flows EXP-11 → EXP-12 → EXP-13) · true 390px frames (DEC-20)</div>
+    <h1>The handshake — one session, three moments</h1>
+    <p class="lede">The same home, minutes apart, at real phone width (mobile-first, UX-1 v2). No wizard, no form, no gate: Steward is working before the founder does anything, the interview is a conversation, and the first draft — with its first approval and in-context channel connect — lands inside the session (G-5: first post live within 48 hours).</p>
+  </div>
+
+  <div class="tri">
+
+    <!-- MOMENT 1 -->
+    <div class="col">
+      <div class="slabel"><span class="t1">Minute 0 · EXP-11</span><span class="t2">Arrival — it's already working</span></div>
+      <div class="frame">
+        <div class="chrome">
+          <div class="c1"><span class="pause"><span class="sq"></span>Pause</span><span class="brand"><span class="lg">S</span>Steward</span><span class="ic">⚙</span></div>
+          <div class="c2"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></div>
+        </div>
+        <div class="stream">
+          <div><h2 class="h2">Good to meet you, Maria</h2><span class="sub">Hope &amp; Paws · 501(c)(3) verification pending — nothing waits on it</span></div>
+          <div class="say"><span class="av">S</span><div class="bd"><span class="who">Steward · just now</span><div>I'm reading your website and your Instagram now — learning your voice, your programs, your people. First drafts in about ten minutes.</div><div class="prov">with your permission · hopeandpaws.org · @hopeandpaws</div></div></div>
+          <div class="finding"><span class="fk">found</span><span>Adoption days — every second Saturday, Zilker Park</span></div>
+          <div class="finding"><span class="fk">found</span><span>Biscuit's adoption story · 3 usable photos saved to your library</span></div>
+          <div class="finding"><span class="fk">reading</span><span>your Instagram — 34 posts to learn from…</span></div>
+          <div class="say"><span class="av">S</span><div class="bd"><div style="font-size:12.5px;color:var(--muted)">While I read — want to tell me something no website says?</div></div></div>
+        </div>
+        <div class="composer">
+          <div class="opens"><span class="open">What do you know so far?</span><span class="open">We have an event Saturday</span><span class="open">Just keep working</span></div>
+          <div class="inrow"><span class="input">Ask or tell me anything…</span><span class="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOMENT 2 -->
+    <div class="col">
+      <div class="slabel"><span class="t1">Minute 5 · EXP-12</span><span class="t2">The first conversation — correct, don't produce</span></div>
+      <div class="frame">
+        <div class="chrome">
+          <div class="c1"><span class="pause"><span class="sq"></span>Pause</span><span class="brand"><span class="lg">S</span>Steward</span><span class="ic">⚙</span></div>
+          <div class="c2"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></div>
+        </div>
+        <div class="stream">
+          <div class="say"><span class="av">S</span><div class="bd"><span class="who">Steward</span><div>Your site mentions Biscuit — the senior beagle adopted last month. What happened when the family first met her? A sentence is plenty.</div></div></div>
+          <div class="mine">They sat on the floor and she just climbed into the dad's lap. Everyone cried, including me.</div>
+          <div class="say"><span class="av">S</span><div class="bd"><span class="who">Steward</span><div>That's the story — filed. I'll draft your first post from it right now.</div></div></div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Here's what I know so far</span></div>
+            <div class="txt" style="font-size:12.5px">Animal rescue · founded 2019 · adoption days 2nd Saturdays · 3 programs · warm, plain voice</div>
+            <div class="assume"><span class="tag">assumed</span><span>You serve Travis County — from your website. <a href="#">Not right?</a></span></div>
+            <div class="reason">Fix anything — a correction here is a rule I never break again.</div>
+          </div><div class="acts"><button class="btn quiet">Fix something</button><button class="btn quiet">Looks right</button></div></div>
+        </div>
+        <div class="composer">
+          <div class="opens"><span class="open">Not Travis County — fix it</span><span class="open">Tell you about our programs</span><span class="open">I have 2 minutes — pause</span></div>
+          <div class="inrow"><span class="input">Answer, correct, or just talk…</span><span class="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOMENT 3 -->
+    <div class="col">
+      <div class="slabel"><span class="t1">Minute 12 · EXP-13</span><span class="t2">First draft, first yes — connect in context</span></div>
+      <div class="frame">
+        <div class="chrome">
+          <div class="c1"><span class="pause"><span class="sq"></span>Pause</span><span class="brand"><span class="lg">S</span>Steward</span><span class="ic">⚙</span></div>
+          <div class="c2"><span class="gw">Knowledge</span><span class="gw">How I write</span><span class="gw">Plan &amp; Published</span><span class="gw">Discoveries</span></div>
+        </div>
+        <div class="stream">
+          <div><h2 class="h2">Your first draft is ready</h2><span class="sub">built from your website, your photos, and our chat</span></div>
+          <div class="card"><div class="cb">
+            <div class="crow"><span class="chip">Impact story</span><span class="chans">Facebook</span></div>
+            <div class="txt">Meet Biscuit — the senior beagle who waited 214 days for a family. On adoption day she climbed straight into her new dad's lap, and the whole room cried with them.</div>
+            <div class="prov">Built from <a href="#">your website</a> · <a href="#">our chat, minute 5</a> · <a href="#">your library</a></div>
+            <div class="reason">Nothing publishes without your yes — this one's yours to approve, change, or skip.</div>
+          </div><div class="acts"><button class="btn primary">Approve</button><button class="btn quiet">Adjust</button><button class="btn quiet">Skip</button></div></div>
+          <div class="connect"><span class="t">Approved ✓ — now, where should it go?</span><span class="d">Connect Facebook and I'll schedule it for Tuesday 9:05 am, when your followers are around. Drafts keep flowing either way — connect any channel, any time.</span><div style="display:flex;gap:6px;margin-top:2px"><button class="btn primary" style="font-size:12px;padding:8px 13px">Connect Facebook</button><button class="btn quiet">Later</button></div></div>
+          <div class="say"><span class="av">S</span><div class="bd"><div style="font-size:12.5px;color:var(--muted)">Next from me: two more drafts tonight, and your posting plan to review whenever you like — it binds either way, and it's one tap away under "How I write".</div></div></div>
+        </div>
+        <div class="composer">
+          <div class="opens"><span class="open">What will you post next?</span><span class="open">Show me how you write</span><span class="open">Done for today</span></div>
+          <div class="inrow"><span class="input">Ask or tell me anything…</span><span class="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="check">
+    <div><b>What to check (EXP-1, G-5):</b> frames are true 390px phone width (DEC-20); no wizard — the same home, filling in; the founder only answers and corrects, never produces; the verification-pending line blocks nothing; findings stream in as they land; the AssumedNote invites a correction that becomes a permanent rule; channel connect appears only at the moment it's needed, after the first yes; "what happens next" is always stated. Thin-source orgs get the same arc with the interview leading (honest floor, DEC-17).</div>
+  </footer>
+</div>
+</body>
+</html>

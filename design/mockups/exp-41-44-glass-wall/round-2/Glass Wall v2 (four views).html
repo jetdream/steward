@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Steward — the glass wall v2 (true breakpoints)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf8;--surface:#fff;--warm:#f5f2ec;--fg:#26221f;--fg2:#423c36;--muted:#6e655c;--meta:#978c81;--line:#e6e0d7;--soft:#f0ebe3;--accent:#b5502e;--success:#008a05;--warn:#c47700;--fd:'Bricolage Grotesque',system-ui,sans-serif;--fb:'Source Sans 3',system-ui,sans-serif;--r1:8px;--r2:14px;--r3:20px;--pill:9999px;--raised:rgba(0,0,0,.02) 0 0 0 1px,rgba(0,0,0,.04) 0 2px 6px 0,rgba(0,0,0,.1) 0 4px 8px 0}
+*{box-sizing:border-box}
+body{margin:0;background:#eceae4;color:var(--fg);font-family:var(--fb);font-weight:500;line-height:1.45;-webkit-font-smoothing:antialiased}
+.page{max-width:1500px;margin:0 auto;padding:34px 26px 90px;display:flex;flex-direction:column;gap:40px}
+.intro{display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding-bottom:18px}
+.kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--fd);font-weight:700;font-size:27px;letter-spacing:-.02em;margin:0}
+.lede{color:var(--muted);font-size:14px;max-width:88ch;margin:0}
+.viewsec{display:flex;flex-direction:column;gap:12px}
+.slabel{display:flex;flex-direction:column;gap:3px}
+.slabel .t1{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--meta)}
+.slabel .t2{font-family:var(--fd);font-weight:650;font-size:18px;letter-spacing:-.01em}
+.slabel .t3{font-size:13px;color:var(--muted)}
+.duo{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.dcap{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--meta);margin:0 0 6px 4px}
+.pane{width:100%;max-width:780px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r3);box-shadow:var(--raised);overflow:hidden;flex:1 1 640px}
+.phone{width:390px;flex:none;background:var(--bg);border:1px solid var(--line);border-radius:26px;box-shadow:var(--raised);overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;border-bottom:1px solid var(--soft);background:var(--surface)}
+.ph .t{font-family:var(--fd);font-weight:650;font-size:15px;letter-spacing:-.01em}
+.back{font-size:12.5px;font-weight:600;color:var(--muted)}
+.pb{padding:15px 17px 17px;display:flex;flex-direction:column;gap:12px}
+.phone .pb{padding:13px 13px 15px;gap:10px}
+.note{font-size:12.5px;color:var(--muted)}
+.stats{display:flex;gap:7px;flex-wrap:wrap}
+.stat{display:flex;align-items:baseline;gap:5px;border:1px solid var(--line);background:var(--bg);border-radius:var(--pill);padding:5px 12px}
+.stat b{font-family:var(--fd);font-weight:700;font-size:14px}
+.stat span{font-size:11.5px;color:var(--muted)}
+.gsec{border:1px solid var(--soft);border-radius:var(--r2);overflow:hidden;background:var(--surface)}
+.gsh{display:flex;align-items:center;gap:8px;background:var(--warm);padding:9px 14px}
+.gsh b{font-family:var(--fd);font-weight:650;font-size:13px;letter-spacing:.01em}
+.gsh .cnt{font-size:11px;color:var(--meta);font-weight:600}
+.gsh .all{margin-left:auto;font-size:11.5px;color:var(--muted);font-weight:600}
+.item{display:flex;align-items:center;gap:11px;padding:10px 14px;border-top:1px solid var(--soft);font-size:13.5px}
+.item:first-of-type{border-top:none}
+.item .glyph{flex:none;width:26px;height:26px;border-radius:8px;background:var(--warm);display:grid;place-items:center;font-size:12px;color:var(--fg2)}
+.item .tt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.item .tt .pri{font-weight:600}
+.item .tt .sec{font-size:11.5px;color:var(--meta)}
+.item .edit{margin-left:auto;flex:none;width:28px;height:28px;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:12px;cursor:pointer;background:var(--surface)}
+.item .chev{margin-left:auto;flex:none;color:var(--meta);font-size:16px}
+.item.warnrow .glyph{background:color-mix(in srgb,var(--warn) 10%,var(--surface));color:var(--warn)}
+.q{border:1px solid color-mix(in srgb,var(--accent) 26%,var(--line));background:color-mix(in srgb,var(--accent) 4%,var(--surface));border-radius:var(--r2);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.q .qq{font-size:13.5px;font-weight:600}
+.q .why{display:flex;gap:6px;color:var(--muted);font-size:12px}.q .why::before{content:"↳";color:var(--meta)}
+.q .acts2{display:flex;gap:6px;align-items:center}
+.btn{font:inherit;font-weight:600;border:none;cursor:pointer;border-radius:var(--r1);background:none;color:var(--muted);padding:7px 10px;font-size:12.5px}
+.btn:hover{background:var(--warm);color:var(--fg)}
+.btn.sec{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:var(--pill);padding:7px 14px}
+.btn.x{margin-left:auto;width:28px;height:28px;padding:0;display:grid;place-items:center;border-radius:8px}
+.cal{display:flex;flex-direction:column;gap:5px}
+.dow{display:grid;grid-template-columns:58px repeat(7,1fr);gap:5px;font-size:9.5px;color:var(--meta);font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:0 1px}
+.wk{display:grid;grid-template-columns:58px repeat(7,1fr);gap:5px;align-items:stretch}
+.wl{font-size:10.5px;color:var(--meta);display:flex;align-items:center}
+.day{min-height:52px;border:1px solid var(--soft);border-radius:8px;background:var(--bg);padding:3px;display:flex;flex-direction:column;gap:3px}
+.ev{border-radius:5px;padding:3px 6px;font-size:9.5px;font-weight:700;line-height:1.25;background:color-mix(in srgb,var(--accent) 13%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));color:var(--accent);cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ev small{display:block;font-weight:600;color:color-mix(in srgb,var(--accent) 70%,var(--muted));font-size:8.5px}
+.ev.done{background:color-mix(in srgb,var(--success) 8%,var(--surface));border-color:color-mix(in srgb,var(--success) 26%,var(--line));color:var(--success)}
+.ev.sel{outline:2px solid var(--accent);outline-offset:1px}
+.opened{border:1px solid color-mix(in srgb,var(--accent) 30%,var(--line));border-radius:var(--r2);padding:12px 14px;display:flex;gap:12px;align-items:center;background:var(--bg)}
+.opened .th{flex:none;width:74px;height:52px;border-radius:8px;background:#d9cfc0}
+.opened .tt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.opened .tt b{font-size:13.5px}
+.opened .tt span{font-size:11.5px;color:var(--muted)}
+.opened .acts2{margin-left:auto;display:flex;gap:2px;flex:none}
+.agrow{display:flex;align-items:center;gap:10px;padding:10px 13px;border-top:1px solid var(--soft);font-size:13px}
+.agrow:first-of-type{border-top:none}
+.agrow .time{flex:none;width:64px;font-weight:700;font-family:var(--fd);font-size:12.5px}
+.agrow .tt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.agrow .tt .sec{font-size:11px;color:var(--meta)}
+.agrow .chev{margin-left:auto;color:var(--meta)}
+.dayhead{background:var(--warm);padding:6px 13px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg2)}
+.disc{border:1px solid var(--line);border-radius:var(--r2);padding:14px 15px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.disc .hl{font-family:var(--fd);font-weight:650;font-size:16.5px;letter-spacing:-.01em;line-height:1.25}
+.disc .meta2{display:flex;gap:8px;align-items:baseline;font-size:11.5px;color:var(--meta)}
+.tsb{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent) 28%,var(--line));border-radius:var(--pill);padding:2px 8px}
+.disc .sum{font-size:13.5px;color:var(--fg2);line-height:1.5}
+.disc .more{font-size:12px;color:var(--muted);text-decoration:underline dotted;text-underline-offset:2px;cursor:pointer}
+.disc .why{display:flex;gap:6px;color:var(--muted);font-size:12px}.disc .why::before{content:"↳";color:var(--meta)}
+.disc .acts2{display:flex;gap:6px;flex-wrap:wrap;padding-top:2px}
+.mark{font-size:11.5px;font-weight:700;color:var(--success)}
+.shelf{border:1px dashed var(--line);border-radius:var(--r2);padding:11px 13px;display:flex;flex-direction:column;gap:8px;background:var(--warm)}
+.shelf .sh2{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.shelf .srow2{display:flex;gap:8px;flex-wrap:wrap}
+.saved{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 11px;font-size:12px;display:flex;flex-direction:column;gap:1px;max-width:240px}
+.saved b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.saved span{font-size:10.5px;color:var(--meta)}
+footer.check{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:13px;max-width:90ch}
+footer.check b{color:var(--fg)}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="intro">
+    <div class="kick">Steward · the glass wall · round 2 · DEC-20</div>
+    <h1>Four views at true breakpoints</h1>
+    <p class="lede">Round-2 per your feedback: each view rendered at real desktop width AND real phone width (390px) — nothing in between. Knowledge gets real hierarchy; the calendar carries content hints, times, and multi-post days, and opens items in the same pane; Discoveries becomes a read-first triage feed (worth a post now · save for later · not for us). Phone rows are wholly tappable with icon affordances — no text "edit" links.</p>
+  </div>
+
+  <!-- ───── KNOWLEDGE ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">View 1 · EXP-41 · MEM-3 + INT-4</span><span class="t2">Knowledge — now with hierarchy</span><span class="t3">Summary up top · "needs a look" surfaced · grouped sections with counts · provenance quiet · questions visually distinct</span></div>
+    <div class="duo">
+      <div style="flex:1 1 640px;max-width:780px"><p class="dcap">Desktop — pane beside the stream</p>
+      <div class="pane">
+        <div class="ph"><span class="t">What I know about Hope &amp; Paws</span><span class="back">‹ back to Steward</span></div>
+        <div class="pb">
+          <div class="stats"><span class="stat"><b>23</b><span>facts</span></span><span class="stat"><b>8</b><span>stories</span></span><span class="stat"><b>12</b><span>people</span></span><span class="stat"><b>6</b><span>rules</span></span></div>
+          <div class="gsec">
+            <div class="gsh"><b>Needs a look</b><span class="cnt">1</span></div>
+            <div class="item warnrow"><span class="glyph">?</span><div class="tt"><span class="pri">Service area: Travis County <span style="font-size:10px;font-weight:700;color:var(--warn);text-transform:lowercase">· assumed</span></span><span class="sec">read off your website — confirm or fix and I'll never get it wrong</span></div><span class="edit">✎</span></div>
+          </div>
+          <div class="gsec">
+            <div class="gsh"><b>Facts</b><span class="cnt">23</span><span class="all">see all</span></div>
+            <div class="item"><span class="glyph">▪</span><div class="tt"><span class="pri">Founded 2019 · animal rescue · 3 programs</span><span class="sec">your website</span></div><span class="edit">✎</span></div>
+            <div class="item"><span class="glyph">▪</span><div class="tt"><span class="pri">Adoption days every second Saturday, Zilker Park</span><span class="sec">your Instagram</span></div><span class="edit">✎</span></div>
+          </div>
+          <div class="gsec">
+            <div class="gsh"><b>Stories</b><span class="cnt">8</span><span class="all">see all</span></div>
+            <div class="item"><span class="glyph">◆</span><div class="tt"><span class="pri">Biscuit — 214 days, then the lap</span><span class="sec">our chat · Jul 18 · used in 1 post</span></div><span class="edit">✎</span></div>
+          </div>
+          <div class="gsec">
+            <div class="gsh"><b>Rules I follow</b><span class="cnt">6</span><span class="all">see all</span></div>
+            <div class="item"><span class="glyph">▸</span><div class="tt"><span class="pri">Never name donors</span><span class="sec">your redirect · Jul 12</span></div><span class="edit">✎</span></div>
+            <div class="item"><span class="glyph">▸</span><div class="tt"><span class="pri">Warm over formal on impact stories</span><span class="sec">learned from your adjust · Jul 19</span></div><span class="edit">✎</span></div>
+          </div>
+          <div class="gsec" style="border-color:color-mix(in srgb,var(--accent) 22%,var(--line))">
+            <div class="gsh" style="background:color-mix(in srgb,var(--accent) 6%,var(--surface))"><b>Help me understand you</b><span class="cnt">2 open</span></div>
+            <div class="pb" style="padding:12px 13px;gap:9px">
+              <div class="q"><span class="qq">What happened to the first family you ever helped?</span><span class="why">Full-circle stories are the posts donors remember — I'd draft one from your answer.</span><div class="acts2"><button class="btn sec">Answer…</button><button class="btn x">✕</button></div></div>
+              <div class="q"><span class="qq">Who takes your event photos?</span><span class="why">Photos are my scarcest material — knowing the source unblocks whole weeks.</span><div class="acts2"><button class="btn sec">Answer…</button><button class="btn x">✕</button></div></div>
+              <span class="note" style="font-size:11.5px;color:var(--meta)">Never required — these just sharpen future drafts (INT-4).</span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <div><p class="dcap">Phone — 390px · rows wholly tappable</p>
+      <div class="phone">
+        <div class="ph"><span class="t" style="font-size:14px">What I know</span><span class="back">‹ Steward</span></div>
+        <div class="pb">
+          <div class="stats"><span class="stat" style="padding:4px 10px"><b style="font-size:12.5px">23</b><span>facts</span></span><span class="stat" style="padding:4px 10px"><b style="font-size:12.5px">8</b><span>stories</span></span><span class="stat" style="padding:4px 10px"><b style="font-size:12.5px">6</b><span>rules</span></span></div>
+          <div class="gsec">
+            <div class="gsh"><b>Needs a look</b><span class="cnt">1</span></div>
+            <div class="item warnrow"><span class="glyph">?</span><div class="tt"><span class="pri" style="font-size:13px">Travis County — assumed</span><span class="sec">tap to confirm or fix</span></div><span class="chev">›</span></div>
+          </div>
+          <div class="gsec">
+            <div class="gsh"><b>Facts</b><span class="cnt">23</span></div>
+            <div class="item"><span class="glyph">▪</span><div class="tt"><span class="pri" style="font-size:13px">Founded 2019 · 3 programs</span></div><span class="chev">›</span></div>
+            <div class="item"><span class="glyph">▪</span><div class="tt"><span class="pri" style="font-size:13px">Adoption days · 2nd Saturdays</span></div><span class="chev">›</span></div>
+          </div>
+          <div class="gsec">
+            <div class="gsh"><b>Stories</b><span class="cnt">8</span></div>
+            <div class="item"><span class="glyph">◆</span><div class="tt"><span class="pri" style="font-size:13px">Biscuit — 214 days, then the lap</span></div><span class="chev">›</span></div>
+          </div>
+          <div class="q"><span class="qq" style="font-size:13px">What happened to the first family you helped?</span><div class="acts2"><button class="btn sec" style="padding:8px 14px">Answer…</button><button class="btn x">✕</button></div></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ───── PLAN & PUBLISHED ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">View 2 · EXP-43 v2 · GEN-1 + PUB-3</span><span class="t2">Plan &amp; Published — informative, interactive</span><span class="t3">Every entry: time + type + title hint · multi-post days stack · tap an item → it opens in this same pane (‹ back returns) · phone = agenda list</span></div>
+    <div class="duo">
+      <div style="flex:1 1 640px;max-width:780px"><p class="dcap">Desktop — four-week grid; an item opened one level deep</p>
+      <div class="pane">
+        <div class="ph"><span class="t">What's planned · what went out</span><span class="back">‹ back to Steward</span></div>
+        <div class="pb">
+          <div class="cal">
+            <div class="dow"><span></span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+            <div class="wk"><span class="wl">this wk</span><div class="day"></div><div class="day"><span class="ev done">✓ 9:05 Impact · Kamuli well</span></div><div class="day"><span class="ev done">✓ 12:30 Article · news page</span></div><div class="day"></div><div class="day"><span class="ev sel">9:05 Gratitude · donors<small>opened below</small></span></div><div class="day"><span class="ev">10:00 Event · adoption day</span><span class="ev">17:30 Recap · photos</span></div><div class="day"></div></div>
+            <div class="wk"><span class="wl">next</span><div class="day"></div><div class="day"><span class="ev">9:05 Impact · planned</span></div><div class="day"></div><div class="day"><span class="ev">12:00 Spotlight · Dev</span></div><div class="day"></div><div class="day"></div><div class="day"><span class="ev">9:30 Story · saved discovery</span></div></div>
+            <div class="wk"><span class="wl">wk 3</span><div class="day"></div><div class="day"></div><div class="day"><span class="ev">9:05 Impact · planned</span></div><div class="day"></div><div class="day"><span class="ev">15:00 GivingTuesday · campaign</span></div><div class="day"></div><div class="day"></div></div>
+          </div>
+          <div class="opened">
+            <span class="th"></span>
+            <div class="tt"><b>Gratitude · "Because of you"</b><span>Thu 9:05 am — when your followers are around · Facebook · Instagram</span></div>
+            <div class="acts2"><button class="btn sec">Open draft</button><button class="btn">Reschedule</button><button class="btn">Recall</button></div>
+          </div>
+          <div class="note" style="font-size:11.5px;color:var(--meta)">‹ back to Plan &amp; Published · published items open the same way (view what went out · unpublish articles). One log — the home's quiet report lines render this same record.</div>
+        </div>
+      </div></div>
+      <div><p class="dcap">Phone — agenda list; a two-post day stacks</p>
+      <div class="phone">
+        <div class="ph"><span class="t" style="font-size:14px">Plan &amp; Published</span><span class="back">‹ Steward</span></div>
+        <div class="pb" style="padding:0 0 13px">
+          <div class="dayhead">Thu · tomorrow</div>
+          <div class="agrow"><span class="time">9:05</span><div class="tt"><span>Gratitude · "Because of you"</span><span class="sec">Facebook · Instagram · scheduled</span></div><span class="chev">›</span></div>
+          <div class="dayhead">Sat · adoption day</div>
+          <div class="agrow"><span class="time">10:00</span><div class="tt"><span>Event · "Come meet them"</span><span class="sec">Facebook · scheduled</span></div><span class="chev">›</span></div>
+          <div class="agrow"><span class="time">17:30</span><div class="tt"><span>Recap · day-of photos</span><span class="sec">Instagram · awaiting photos</span></div><span class="chev">›</span></div>
+          <div class="dayhead">Went out</div>
+          <div class="agrow"><span class="time" style="color:var(--success)">✓ Tue</span><div class="tt"><span>Impact · Kamuli well</span><span class="sec">Facebook · Instagram · 9:05</span></div><span class="chev">›</span></div>
+          <div class="agrow"><span class="time" style="color:var(--success)">✓ Wed</span><div class="tt"><span>Article · news page + X link</span><span class="sec">12:30 · tap to view or unpublish</span></div><span class="chev">›</span></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ───── DISCOVERIES ───── -->
+  <section class="viewsec">
+    <div class="slabel"><span class="t1">View 3 · EXP-44 v2 · EXT-5 v2</span><span class="t2">Discoveries — read first, then decide</span><span class="t3">Content leads · read-more expands · then: worth a post (event-tied = time-sensitive) · save for later (fills quiet weeks) · not for us · still pull-only, never badged</span></div>
+    <div class="duo">
+      <div style="flex:1 1 640px;max-width:780px"><p class="dcap">Desktop</p>
+      <div class="pane">
+        <div class="ph"><span class="t">Out in the world, worth reading</span><span class="back">‹ back to Steward</span></div>
+        <div class="pb">
+          <div class="disc">
+            <div class="meta2"><span>Austin Chronicle · Tue</span><span class="tsb">adoption day Sat · time-sensitive</span></div>
+            <div class="hl">County shelter network reports record adoptions this spring</div>
+            <div class="sum">Placements are up 22% across the county network, driven by senior-pet campaigns and weekend meet-and-greets. Shelters that told individual animals' stories saw the biggest jump… <span class="more">read the full piece</span></div>
+            <div class="why">Pairs with your own numbers — and Saturday's adoption day makes it timely.</div>
+            <div class="acts2"><button class="btn sec">Worth a post</button><button class="btn">Save for later</button><button class="btn">Not for us</button></div>
+          </div>
+          <div class="disc">
+            <div class="meta2"><span>HSUS research · Mon</span><span class="mark">✓ drafted — in your Ready stack</span></div>
+            <div class="hl">Senior-dog adoptions rose 30% where shelters told wait-time stories</div>
+            <div class="sum">A 40-shelter study found that naming the wait — "214 days" — outperformed generic appeals on every metric that matters… <span class="more">read the full piece</span></div>
+          </div>
+          <div class="disc">
+            <div class="meta2"><span>givingtuesday.org · Sun</span></div>
+            <div class="hl">GivingTuesday early-bird toolkit for small nonprofits</div>
+            <div class="sum">Templates, timelines, and matching-gift prompts for orgs with no marketing staff. Five weeks out is the sweet spot to start… <span class="more">read the full piece</span></div>
+            <div class="why">Relevant to the campaign I'm preparing for you.</div>
+            <div class="acts2"><button class="btn sec">Worth a post</button><button class="btn">Save for later</button><button class="btn">Not for us</button></div>
+          </div>
+          <div class="shelf">
+            <span class="sh2">Saved for later · fills a quiet week</span>
+            <div class="srow2">
+              <span class="saved"><b>Wetlands filter a city's water for free</b><span>saved Jul 12 · County Wildlife Report</span></span>
+              <span class="saved"><b>Volunteer hours = $33.49/hr value</b><span>saved Jul 8 · Independent Sector</span></span>
+            </div>
+            <span class="note" style="font-size:11px;color:var(--meta)">When a week has no fresh material, I'll draft from these — the draft's reason line will credit your save.</span>
+          </div>
+        </div>
+      </div></div>
+      <div><p class="dcap">Phone — one item expanded in place</p>
+      <div class="phone">
+        <div class="ph"><span class="t" style="font-size:14px">Discoveries</span><span class="back">‹ Steward</span></div>
+        <div class="pb">
+          <div class="disc" style="padding:12px 13px">
+            <div class="meta2"><span>Austin Chronicle</span><span class="tsb" style="font-size:9px">Sat · time-sensitive</span></div>
+            <div class="hl" style="font-size:15px">County shelter network reports record adoptions</div>
+            <div class="sum" style="font-size:13px">Placements are up 22% across the county network, driven by senior-pet campaigns and weekend meet-and-greets. Shelters that told individual animals' stories saw the biggest jump. The report singles out story-led feeds — exactly the approach your page already takes…</div>
+            <div class="why" style="font-size:11.5px">Pairs with your numbers; Saturday makes it timely.</div>
+            <div class="acts2"><button class="btn sec" style="flex:1;text-align:center">Worth a post</button><button class="btn" style="flex:1">Save</button><button class="btn" style="flex:1">Not for us</button></div>
+          </div>
+          <div class="disc" style="padding:12px 13px">
+            <div class="meta2"><span>givingtuesday.org</span></div>
+            <div class="hl" style="font-size:15px">GivingTuesday early-bird toolkit</div>
+            <div class="sum" style="font-size:13px">Templates and timelines for orgs with no marketing staff… <span class="more">read more</span></div>
+          </div>
+          <div class="shelf" style="padding:10px 12px">
+            <span class="sh2">Saved · 2</span>
+            <span class="saved" style="max-width:100%"><b>Wetlands filter a city's water for free</b><span>saved Jul 12</span></span>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <footer class="check">
+    <div><b>What to check (DEC-20):</b> both breakpoints feel native — nothing in-between; Knowledge scans in one glance (summary → needs-a-look → groups → questions); every calendar entry says what/when, a two-post day stacks, and the opened-item strip shows the in-pane interaction; Discoveries makes you want to READ first — the dispositions only appear where reading ends; the saved shelf reads as reserve, not homework. How-I-write returns in round 3 with the same treatment.</div>
+  </footer>
+</div>
+</body>
+</html>
