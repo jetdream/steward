@@ -1,0 +1,183 @@
+kind: spec
+prefix: EXTS
+title: External Content Radar — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single 4-lens pass → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/ext-external-radar-2026-07-19-r2.md
+  summary: >-
+    r1 FAILED on one high — PIPE-3 (the approved External Drafts pipeline stage)
+    still read "forced human approval routing (EXT-3)", stale since EXT-3 became
+    the permanent TL1 cap (AUT-2) and DEC-26 pinned TL1 to publish-then-takedown;
+    EXTS also omitted PIPE-2/PIPE-3 from constrained-by (LRN-22/LRN-19). Fixed:
+    PIPE-3 -> v2 (external drafts via GENS -> PIPE-2 VAL with GR-5/GR-3, TL1-capped,
+    publish per DEC-26); constrained-by += PIPE-2, PIPE-3. Medium: EXTS-1's source
+    guard tightened to grounding-provenance + dereferenceability (drop
+    hallucinated/dead URLs before the GR-5 citation — the R-4 hole). Lows: EXTS-4
+    references EXT-4's enumeration; depends-on += GENS, AUTS. r2 delta verified all
+    fixes against live text and passed; only a non-blocking code-time seam note
+    (worth-a-post immediate handoff vs GENS-1 scheduled planner) remains.
+intent: >-
+  Exact behavior of the second content well (register ext-external-radar.yaml):
+  recurring agenda-driven discovery runs (EXT-1), turning worth-a-post candidates
+  into cited drafts in the org's voice (EXT-2), the permanent autonomy cap (EXT-3),
+  source depth (EXT-4, P1), and the read-first Discoveries feed (EXT-5). Highest
+  reputation-risk surface (R-4): citations mandatory (GR-5), sensitive-topic gated
+  (GR-3), autonomy permanently capped. Discovery is driven by the editorial agenda
+  (TOPS) and grounded in Memory; drafting is done by the content engine (GENS).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-8, PIPE-1, PIPE-2, PIPE-3, ARC-16, IG-3, EXP-6, EXP-44]
+depends-on: [MEMS, TOPS, GENS, AUTS]
+governed-by: [GR-3, GR-5]
+assurance: standard
+
+design: >-
+  The Radar is @backend/radar (ARC-16): recurring per-org discovery runs DRIVEN by
+  the editorial agenda (TOPS — the content topics TOP-1 and their per-topic
+  research strategies TOP-2/TOPS-2), grounded in the org's cause profile and
+  geography from Memory (MEMS-4; local -> county -> state -> national -> global),
+  via the Gemini + Google-Search-grounding engine (IG-3, A-3) behind the ADR-0003
+  search/LLM port. Candidates are ExternalItems (DM-8). External DRAFTS (EXTS-2)
+  are produced by the CONTENT ENGINE (GENS, LRN-22 ownership — the Radar hands a
+  worth-a-post candidate to the engine, which drafts it as an external-type slot,
+  GEN-1); GR-5 mandatory citation + GR-3 sensitive-topic are enforced at the
+  PIPE-2 VAL stage, and external content is permanently TL1-capped (EXTS-3 /
+  AUTS-2 permanent caps). The Discoveries feed (EXTS-5) is the PULL-ONLY,
+  read-first surface (UX-8 / EXP-44); each disposition writes to Memory (MEMS-1),
+  feeds the saved pool the planner draws from (GENS-1), and refines the research
+  strategies (TOPS-2). Highest reputation-risk surface (R-4): the radar-precision
+  review lives in ops (OPS-1). Cold start: a brand-new org's cause-level topics
+  (TOPS-1 bootstrap) seed the first run before the agenda deepens. LRN-20 split:
+  run scheduling, the grounding inputs (agenda + geography), the TL1 cap, and the
+  pull-only-no-badge rule are DETERMINISTIC; candidate relevance/selection is the
+  LLM/search step held by relevance rationale + the R-4 precision review, not a
+  determinism claim — but every candidate carries a resolvable source for the GR-5
+  citation downstream.
+
+data: >-
+  DM-8 ExternalItem — source, URL, relevance rationale, summary, disposition
+  (worth-a-post | saved-for-later | not-for-us), event date (drives the
+  time-sensitive flag while upcoming, annotates as passed afterward). A
+  saved-for-later item joins the SAVED POOL the planner queries (GENS-1). Triage
+  dispositions write MemoryEntry (MEMS-1) to tune future discovery. No new entity.
+
+interfaces: >-
+  @backend/radar (ARC-16) exposes: discoverRun(org) -> ExternalItem[] [scheduled;
+  agenda-driven (TOPS getAgenda + strategyFor), grounded (MEMS-4), each candidate
+  cited + rationale'd]; triage(item, disposition) -> writes Memory + tunes future
+  discovery [EXTS-5 -> MEMS-1 / TOPS-2]; savedPool(org) -> saved items for the
+  planner [GENS-1]; toDraft(item) -> hands a worth-a-post candidate to the content
+  engine for an external-type draft [EXTS-2 -> GENS]. Exact tRPC/WS signatures
+  live in code.
+
+items:
+  EXTS-1:
+    v: 1
+    title: Radar v0 — agenda-driven, grounded discovery runs
+    implements: [EXT-1]
+    statement: >-
+      Recurring per-org discovery runs, DRIVEN by the editorial agenda (TOP-1
+      topics + their TOP-2/TOPS-2 research strategies) and grounded in the org's
+      cause profile + geography from Memory (MEMS-4; local -> county -> state ->
+      national -> global). The v0 engine is Gemini + Google-Search grounding
+      (IG-3, A-3) behind the ADR-0003 port. Output: candidate ExternalItems (DM-8)
+      — events, news, research — each with a source LINK, a relevance RATIONALE,
+      and (if event-tied) an event date. Discovery runs AGAINST the per-topic
+      research strategies, never a single static cause seed (the TOPS-2
+      reconciliation). Cold start: a brand-new org's cause-level topics (TOPS-1
+      bootstrap) seed the first run before the agenda deepens. LRN-20: the run
+      scheduling + grounding inputs are deterministic; candidate selection is the
+      LLM/search step, held by the rationale + the R-4 precision review (OPS-1),
+      not claimed deterministic. GR-5/R-4 source guard: a candidate is emitted only
+      with a source bound to the search-grounding PROVENANCE (the grounded
+      retrieval's cited document) and verified DEREFERENCEABLE — a candidate whose
+      URL is absent, dead, or not backed by grounding provenance (a hallucinated
+      link) is DROPPED, never passed into the mandatory GR-5 citation. "Resolvable"
+      means provenance-bound + dereferenceable, not merely "a URL field is present".
+      ACCEPTANCE: a run produces candidate ExternalItems each carrying a
+      provenance-bound, dereferenceable source, a relevance rationale, and an event
+      date when event-tied; two orgs with different agendas get materially
+      different discovery for the same cause (reconciles TOPS-2); a candidate with
+      a dead/hallucinated source is dropped, never cited.
+  EXTS-2:
+    v: 1
+    title: External drafts — cited, org-voice, sensitive-gated
+    implements: [EXT-2]
+    statement: >-
+      A worth-a-post candidate (EXTS-5 triage) becomes a DRAFT in the org's voice
+      via the CONTENT ENGINE (GENS — an external-type slot, GEN-1; the Radar does
+      not draft, LRN-22 ownership), sourced from its ExternalItem (DM-8 <-> DM-5
+      "sourced from"). MANDATORY source citation (GR-5) and clear COMMENTARY
+      framing — the org's PERSPECTIVE, not rehashed news (GR-5) — are enforced at
+      the PIPE-2 VAL stage; the sensitive-topic classifier (GR-3) always applies
+      and HOLDS a sensitive draft for the founder regardless of Trust Level. The
+      external autonomy cap (EXTS-3) governs how far such a draft can auto-publish.
+      ACCEPTANCE: a worth-a-post candidate yields a draft carrying its source
+      citation (GR-5) and org-perspective commentary (not rehashed); a sensitive
+      candidate's draft is held for the founder (GR-3); the draft links back to its
+      ExternalItem source; no external draft publishes without a citation.
+  EXTS-3:
+    v: 1
+    title: Autonomy cap — external is permanently TL1
+    implements: [EXT-3]
+    statement: >-
+      External-content posts are PERMANENTLY capped at TL1 — never full autopilot
+      (TL2), regardless of approval history (AUTS-2 permanent caps, SEC-5). A hard
+      deterministic invariant, not a heuristic: the autonomy system refuses to
+      promote the external category past TL1. This is the same cap AUTS-2 enforces
+      from the autonomy side — stated here as the external-content requirement it
+      realizes. Flexibility: hard (EXT-3).
+      ACCEPTANCE: external content can never be promoted past TL1 regardless of
+      history (identical to AUTS-2's cap); the cap is enforced deterministically;
+      an attempt to auto-publish external content beyond TL1 is impossible by
+      construction.
+  EXTS-4:
+    v: 1
+    title: Source depth
+    implements: [EXT-4]
+    statement: >-
+      Beyond the v0 Gemini engine (EXTS-1), deepen sources with the structured
+      feeds and discovery engines enumerated in EXT-4 (news/event/research feeds +
+      Perplexity/Tavily/Exa; upgrade order Q-4, OPEN). The load-bearing invariant:
+      each new feed/engine runs behind the SAME ADR-0003 port and the SAME
+      agenda-driven query model — never a bespoke path. Discovery runs against the
+      editorial agenda (TOP); founder-welcomed/banned topics are managed there
+      (TOP-4) and reflected in Strategy section (a) (STRS-1) — a banned topic
+      suppresses its discovery. P1 — the v0 is Gemini-only; this deepens sources.
+      ACCEPTANCE (partly deferred, P1): added feeds/engines run against the agenda
+      through the shared port with no bespoke logic; a banned agenda topic
+      suppresses its discovery; the engine/feed upgrade ORDER is the open Q-4.
+  EXTS-5:
+    v: 1
+    title: Discoveries feed — read-first, pull-only triage
+    implements: [EXT-5]
+    statement: >-
+      Every candidate (EXTS-1) is stored and READABLE as the org's personalized
+      feed (DM-8; surfaced on UX-8 / EXP-44). READ-FIRST: each item leads with
+      headline + source + a short summary BEFORE any ask — the founder reads, then
+      disposes. Three one-tap dispositions, each writing to Memory (MEMS-1) and
+      tuning future discovery: "worth a post" (hands to drafting, EXTS-2;
+      event-tied items flagged time-sensitive and prioritized), "save for later"
+      (joins the SAVED POOL the planner draws from to fill open slots when no
+      fresher material exists, GENS-1), and "not for us" (teaches taste, shifting
+      future discovery away from that vein — refines TOPS-2). STRICTLY PULL-ONLY:
+      never badged, counted, or nudged (VAL-6, UXS-8); browsing time is voluntary
+      under G-3. P1 (the surface, UX-8); the read-first triage BEHAVIOR is
+      specified here because GENS-1 / TOPS-2 already depend on it.
+      ACCEPTANCE: every candidate is readable in the pull-only feed with headline/
+      source/summary; each disposition writes to Memory and tunes discovery; a
+      saved item joins the pool GENS-1 draws from; a "not for us" verifiably shifts
+      subsequent discovery away from the rejected vein; the feed never badges,
+      counts, or nudges.
+
+open-questions:
+  - >-
+    Q-4 (the source/engine upgrade ORDER for EXTS-4 — Perplexity vs Tavily/Exa;
+    which structured feeds first) is OPEN and P1; the v0 (EXTS-1) is Gemini-only,
+    so it does not block P1b.
+  - >-
+    The Discoveries UI surface (UX-8 / EXP-44) is P2; the read-first triage
+    BEHAVIOR (EXTS-5) is specified now (GENS-1 / TOPS-2 depend on it), the pixel
+    surface is a method/ui.md pass on the approved EXP-44 screen when it ships.

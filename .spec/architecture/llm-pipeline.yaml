@@ -75,10 +75,17 @@ items:
         FIT->>INB: draft with variants + verdicts (or awaiting_picture)
 
   PIPE-3:
-    v: 1
+    v: 2
     kind: pipeline-stage
     title: External Drafts
     parent: PIPE-1
     body: |
-      External drafts (EXT-2) enter the same chain with mandatory citation
-      (GR-5) and forced human approval routing (EXT-3).
+      External drafts (EXT-2) enter the SAME chain as internal content: a
+      worth-a-post candidate is drafted by the content engine (GENS) and passes
+      the PIPE-2 VAL stage with MANDATORY source citation (GR-5) and
+      sensitive-topic gating (GR-3, which holds a sensitive draft for the founder
+      at any Trust Level). External content is PERMANENTLY TL1-capped (EXT-3,
+      AUTS-2) — never full autopilot; within that cap it publishes per the DEC-26
+      TL1 veto model (default publish-then-takedown, opt-in hold-then-publish).
+      (v2: DEC-26 + AUT-2 replaced the v1 "forced human approval routing" — external
+      is TL1-capped auto-publish under the veto model, not forced approval.)

@@ -23,6 +23,15 @@ items:
       grounded in the org's cause profile and geography from Memory (local →
       county → state → national → global). Output: candidate items (events,
       news, research) with source links and relevance rationale.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by EXTS-1 (approved, challenge r2 pass): recurring agenda-driven
+        (TOPS-1/2) runs grounded in Memory geography (MEMS-4) via Gemini+Search
+        (IG-3); candidates with a provenance-bound, dereferenceable source (R-4/
+        GR-5 guard) + rationale + event date; cold-start bootstrap. Realization
+        pending code.
+      against: [EXTS-1@1]
 
   EXT-2:
     v: 1
@@ -35,6 +44,14 @@ items:
       source citation (GR-5) and clear commentary framing (the org's
       perspective, not rehashed news). Always subject to the sensitive-topic
       classifier (GR-3).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by EXTS-2 (approved): worth-a-post candidates drafted by the
+        content engine (GENS, LRN-22), mandatory GR-5 citation + org-perspective
+        commentary + GR-3 sensitive gating at PIPE-2 VAL (PIPE-3 v2); sourced from
+        the ExternalItem (DM-8<->DM-5). Realization pending code.
+      against: [EXTS-2@1]
 
   EXT-3:
     v: 1
@@ -45,6 +62,13 @@ items:
     statement: >-
       External-content posts are permanently capped at TL1 — never full
       autopilot (AUT-2).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by EXTS-3 (approved): the permanent TL1 cap as a hard
+        deterministic invariant, enforced from the autonomy side by AUTS-2
+        (no double-ownership). Realization pending code.
+      against: [EXTS-3@1]
 
   EXT-4:
     v: 2
@@ -57,6 +81,13 @@ items:
       discovery engines (order: Q-4). Discovery runs against the editorial
       agenda (TOP); founder-welcomed/banned topics are managed there and
       reflected in Strategy section (a).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by EXTS-4 (approved): structured feeds + engines behind the same
+        ADR-0003 port and agenda-driven query model (no bespoke path); banned
+        agenda topics suppress discovery. P1; upgrade order is the open Q-4.
+      against: [EXTS-4@1]
 
   EXT-5:
     v: 2
@@ -79,3 +110,11 @@ items:
       badged, counted, or nudged (VAL-6); browsing time is treated like
       voluntary chat time under G-3. (v2, DEC-20: read-first framing, the
       save-for-later pool, event-tied prioritization; pull-only unchanged.)
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by EXTS-5 (approved): read-first pull-only feed (DM-8, UX-8/
+        EXP-44); three dispositions writing to Memory (MEMS-1) + tuning discovery;
+        saved pool feeds the planner (GENS-1); not-for-us refines TOPS-2; never
+        badged/nudged. Surface P2, behavior specified. Realization pending code.
+      against: [EXTS-5@1]

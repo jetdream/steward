@@ -55,6 +55,7 @@ prefixes:
   PUBS: specs/pub-publishing.yaml
   UXS: specs/ux-app-shell.yaml
   AUTS: specs/aut-autonomy.yaml
+  EXTS: specs/ext-external-radar.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml
