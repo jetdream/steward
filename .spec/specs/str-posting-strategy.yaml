@@ -1,0 +1,175 @@
+kind: spec
+prefix: STRS
+title: Posting Strategy — behavior
+status: approved
+intent: >-
+  Exact behavior of the Posting Strategy (register str-posting-strategy.yaml):
+  the five-section editorial contract (STR-1), how it is auto-drafted and stays
+  founder-owned (STR-2), how every draft is validated against it before any
+  queue (STR-3), and the two-layer platform/org guardrail model (STR-4). Builds
+  on the Memory spec: section (c) is a rendered view of the Memory rule/taboo
+  overlay, enforced at the VAL stage (DEC-22, MEMS-3) — this spec does not
+  re-home that; it formalizes the rest of the contract.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-1, DM-3, DM-2, PIPE-1, PIPE-2, ARC-14, EXP-42]
+depends-on: [MEMS]
+governed-by: [GR-1, GR-2, GR-3, GR-4, GR-5, GR-6, GR-8]
+assurance: standard
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single 3-lens pass → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/str-posting-strategy-2026-07-19-r2.md
+  summary: >-
+    r1 (single thorough challenger, three lenses — the cross-cutting enforcement
+    was already reconciled by MEM) found 1 HIGH — DM-3 (StrategyDoc) still stored
+    section (c), a DEC-22 dual-home straggler expressed as a data-entity
+    definition — plus four mediums/lows. Resolved: DM-3 → v2 ((c) is a derived
+    view; added to DEC-22 binds), semantic (not positional) prohibition routing,
+    tighten-only pinned on the deterministic enforcement-time platform GR check
+    with write-time detection best-effort, governed-by widened to GR-1..GR-6, the
+    How-I-write diff reconciled, and STRS-1 integrated with the TOP-4 editorial
+    agenda. r2 (delta) verified every fix with a clean exhaustive dual-home sweep
+    and passed with four one-line precision notes applied in the same change.
+
+design: >-
+  Module: @backend/strategy (ARC-14) — produces the StrategyDoc (DM-3) that
+  grounds generation. The doc PERSISTS sections (a) what-to-post/not, (b) tone
+  of voice, (d) standing instructions, (e) channel-specific — versioned with
+  diffs (STR-2). Section (c) restrictions/compliance/guardrails is NOT persisted
+  in the doc: it is a computed VIEW over the platform guardrails (GR-1..GR-6,
+  read-only) plus the active Memory rule/taboo overlay (MEM-1, MEMS-3) — DEC-22.
+  Auto-drafting of (a/b/d/e) uses the shared LLM pipeline via the ADR-0003 port
+  (PIPE-1), grounded in ONB-2 style findings + interview answers (never invented
+  — VAL-4). Enforcement is at the PIPE-2 VAL stage: sections (a/b/d) are
+  injected into generation as steering and judged as a soft fit; section (e) is
+  a HARD channel-fit gate (GEN-5) also consumed by GEN-2 adaptations; section
+  (c) is the deterministic Memory overlay gate (MEMS-3), co-located with — not
+  performed by — this strategy check. Founder edits bind immediately (no
+  approval): (a/b/d/e) → a StrategyDoc version + visible diff; (c) → a Memory
+  write (supersession, MEMS-2). Founder surface: How I write (EXP-42, UX-5) and
+  chat (CHT-2).
+
+data: >-
+  DM-3 StrategyDoc — sections (a/b/d/e) versioned with diffs — owned by DM-1
+  Org. Section (c) is a DERIVED view over GR-1..GR-6 + the active Memory overlay
+  (DM-2 / MEMS-3), never persisted as StrategyDoc rows. Concrete field lists
+  live in @shared types at implementation.
+
+interfaces: >-
+  @backend/strategy (ARC-14) exposes to sibling backend modules:
+  getStrategy(org) -> the five-section contract (a/b/d/e persisted + c rendered
+  live); autoDraft(org) -> drafts (a/b/d/e) from ONB-2 + interview [callers:
+  ONB, INT]; editSection(section, change) -> a StrategyDoc version for a/b/d/e,
+  or a Memory write for c [callers: the How-I-write view, CHT]; validateDraft(
+  draft) -> the strategy-fit verdict consumed at the PIPE-2 VAL stage [caller:
+  the pipeline]. tRPC/WS procedures for EXP-42 (read + inline edit + diffs) live
+  in code. Edits emit light WS events so open How-I-write / home surfaces
+  refresh (ARC-1).
+
+items:
+  STRS-1:
+    v: 1
+    title: The five-section Strategy document
+    implements: [STR-1]
+    statement: >-
+      Every org has one explicit, versioned Posting Strategy with exactly the
+      five STR-1 sections: (a) what to post / what not to post — soft editorial
+      preferences drawn from the editorial agenda (TOP-4, the system-maintained
+      content topics), founder-editable, not a second copy of the topic list;
+      (b) tone of voice (description + concrete examples);
+      (c) restrictions / compliance /
+      guardrails; (d) specific standing instructions; (e) channel-specific
+      instructions (per FB / IG / Threads / X).
+      STORAGE SPLIT — sections (a), (b), (d), (e) are PERSISTED in the
+      StrategyDoc (DM-3) and versioned with diffs. Section (c) is NOT persisted
+      in the doc: it is a live VIEW composed of the platform guardrails
+      (GR-1..GR-6, read-only) and the active Memory rule/taboo overlay
+      (MEM-1, MEMS-3) — so a founder rule is never stored twice (DEC-22).
+      ACCEPTANCE: getStrategy returns all five sections; section (c) always
+      reflects the CURRENT Memory overlay + platform guardrails and is never
+      persisted as StrategyDoc rows; the doc is per-org and versioned.
+  STRS-2:
+    v: 1
+    title: Auto-drafted, founder-owned, immediate-binding
+    implements: [STR-2]
+    statement: >-
+      AUTO-DRAFT — sections (a/b/d/e) are auto-drafted by the shared LLM
+      pipeline (PIPE-1, ADR-0003 port) grounded in ONB-2 style findings +
+      interview answers (INT); nothing is invented (VAL-4). The draft is
+      presented for founder review at first run (EXP-42) — never a blank page
+      (VAL-6).
+      FOUNDER-OWNED EDITS — editable in the How-I-write view (EXP-42, UX-5) and
+      via chat (CHT-2). An edit to (a/b/d/e) creates a new StrategyDoc version
+      with a visible diff; an edit to (c) — an org rule — routes through the
+      Memory write path as a founder-stated rule (MEMS-1, the same funnel as a
+      confirmed redirect; supersession, MEMS-2), not a doc diff (STR-4). Routing is by rule
+      SEMANTICS, not by which box: a hard PROHIBITION, wherever it is typed
+      (including the section-(a) "what not to post" box), is classified (MEMS-1)
+      and written to Memory as a taboo enforced via the (c) overlay (MEMS-3) —
+      it can never earn soft-only enforcement by placement. Section (a) holds
+      only soft editorial preferences, drawn from the agenda (TOP-4). The
+      How-I-write view (EXP-42) surfaces (c)'s Memory-supersession history as its
+      visible diff, so "versioned with visible diffs" holds uniformly across all
+      five sections.
+      IMMEDIATE BINDING — an accepted edit takes effect on the NEXT generation
+      with no approval step and no queue delay (consistent with a redirect
+      binding immediately, CHT-2). Every version is retained (VAL-3).
+      ACCEPTANCE: a soft editorial edit yields a new StrategyDoc version + diff
+      and changes the next draft; an org-rule / prohibition edit (whichever box
+      it is typed in) writes to Memory and binds via the overlay; neither
+      requires approval; prior versions stay queryable.
+  STRS-3:
+    v: 1
+    title: Enforcement at the VAL stage
+    implements: [STR-3]
+    statement: >-
+      Every draft SHALL be validated against the Strategy at the PIPE-2 VAL
+      stage BEFORE entering any queue (Ready or publish) — STR-3 is
+      flexibility: hard.
+      SOFT vs HARD — sections (a) what-to-post/not, (b) tone, (d) standing
+      instructions are injected into generation as steering AND judged as a
+      SOFT fit at VAL (a poor fit regenerates, it is not a silent pass);
+      section (e) channel-specific is a HARD gate at the channel-fit stage
+      (GEN-5) and is consumed by GEN-2 channel adaptations (length/format
+      limits are hard, not steering); section (c) is enforced by the
+      deterministic Memory overlay gate (MEMS-3), co-located with — not
+      performed by — this strategy-fit check, and never short-circuited by it. A
+      founder-entered prohibition is enforced as a (c) taboo, not soft
+      section-(a) fit (STRS-2) — it cannot earn soft-only enforcement by where
+      it was typed.
+      A draft that fails validation is regenerated or escalated (PIPE-2),
+      never queued.
+      ACCEPTANCE: no draft reaches a queue without passing strategy validation;
+      a draft breaking a hard section-(e) channel limit is blocked at the fit
+      gate; a topic section (a) says "don't post" is not generated.
+  STRS-4:
+    v: 1
+    title: Two-layer guardrails — platform + org, tighten-only
+    implements: [STR-4]
+    statement: >-
+      PLATFORM LAYER — GR-1..GR-6 are non-negotiable and always enforced as the
+      separate GR checks at VAL (PIPE-2); section (c) renders them read-only.
+      ORG LAYER — founder-stated taboos/styleRules live in Memory (MEM-1),
+      render in section (c), and are enforced via the MEMS-3 overlay gate (GR-8).
+      TIGHTEN-ONLY — an org rule may only TIGHTEN a platform rule, never loosen
+      it. An org rule that would loosen or contradict a platform guardrail (e.g.
+      "it's fine to promise outcomes" against GR-1) never takes effect — the
+      platform guardrail still fires; the conflict is surfaced to the founder,
+      never silently honored. The LOAD-BEARING guarantee is the ENFORCEMENT-time
+      platform GR check (GR-1..GR-6 run as separate VAL checks, PIPE-2): its
+      INDEPENDENCE is deterministic — the org overlay never gates the GR-1..GR-6
+      checks — so whatever a platform check catches on its own is still caught
+      regardless of any org rule. (The content-violation DETECTION inside each GR
+      check is itself a probabilistic classifier, GR-3/MEMS-3 class; the
+      tighten-only guarantee is about routing independence, not detection
+      completeness — LRN-20.) Write-time detection that an org rule would loosen
+      a platform guardrail is BEST-EFFORT (probabilistic); when it fires it
+      surfaces the rejected-rule notice, but it never weakens the independence
+      guarantee.
+      ACCEPTANCE: a draft a platform guardrail (e.g. GR-1) would catch WITHOUT an
+      org rule is still caught with the loosening org rule present — the org
+      overlay cannot suppress the platform check; when write-time detection
+      catches the loosen attempt, the founder is told why the rule cannot apply.
+
+open-questions: []

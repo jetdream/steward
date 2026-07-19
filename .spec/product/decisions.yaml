@@ -48,7 +48,7 @@ items:
     v: 1
     date: 2026-07-19
     by: founder (shpin.p@diffco.us)
-    binds: [STR-4, CHT-2, APR-3, PIPE-1, PIPE-2, GR-8, MEMS-3, MEMS-4]
+    binds: [STR-4, CHT-2, APR-3, DM-3, PIPE-1, PIPE-2, GR-8, MEMS-3, MEMS-4]
     title: Memory is the single source of truth for founder rules/taboos; Strategy projects it; the overlay is enforced at the VAL stage
     statement: >-
       A founder rule like "never name donors" had two candidate homes in the

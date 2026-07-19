@@ -57,11 +57,15 @@ items:
       timestamps (MEM-1). Embedded for retrieval (pgvector).
 
   DM-3:
-    v: 1
+    v: 2
     kind: data-entity
     title: StrategyDoc
     body: |
-      sections (a)–(e) per STR-1, versioned with diffs (STR-2).
+      Persists Strategy sections (a), (b), (d), (e) per STR-1 — versioned with
+      diffs (STR-2). Section (c) restrictions/compliance is NOT stored here: it
+      is a derived VIEW over the platform guardrails (GR-1..GR-6) + the active
+      Memory rule/taboo overlay (MEMS-3), never persisted or doc-versioned
+      (DEC-22). Owned by Org (DM-1).
 
   DM-4:
     v: 1
