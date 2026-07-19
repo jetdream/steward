@@ -53,6 +53,7 @@ prefixes:
   GENS: specs/gen-content-generation.yaml
   APRS: specs/apr-approval-inbox.yaml
   PUBS: specs/pub-publishing.yaml
+  UXS: specs/ux-app-shell.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml
