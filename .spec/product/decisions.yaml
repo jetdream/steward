@@ -15,6 +15,46 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-18:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [EXP-1, EXP-38, UX-2, UX-3, UX-5, UX-7, UX-8, ARC-5, ARC-7, DEC-14, DEC-16, DEC-17]
+    title: Full experience-spine replacement — the One-Home model (EXP register)
+    statement: >-
+      The founder directed a from-scratch reevaluation of the entire experience
+      philosophy to break tunnel vision. Two independent first-principles drafts
+      (conversation-first; one-adaptive-surface), authored blind to the existing spine,
+      CONVERGED on rejecting the six-destination shell for one adaptive home — and the
+      founder chose FULL REPLACE over selective migration. Decisions taken in the same
+      round (all founder): (a) the home is a FUSED conversational stream — the Ready
+      spine and the ambient leading conversation in one surface — justified by the
+      stated cadence ceiling (~1 content item/day, a few posts a week), which removes
+      the inbox-decay risk DEC-16 fled, and by the trust arc (dense and conversational
+      early, sparse and report-like at earned autonomy); (b) four disciplines are
+      structural, not stylistic: the stream always reaches an honest "caught up"; GR-3
+      holds and failures are PINNED, never batch-cleared, never scroll away; the
+      morphing home keeps ONE invariant skeleton (chrome and region order never
+      change); trust-promotion offers proactively glimpse the glass wall; (c) the
+      TRANSPARENCY GUARANTEE, at the founder's insistence: four plain-labeled,
+      one-click, pull-only views — Knowledge, How I write, Plan & Published,
+      Discoveries — permanently visible in the home chrome, never badged, never gated
+      behind asking in chat (VAL-3); (d) supersession mechanics: the new register
+      experience/spine.yaml owns EXP-*; the old experience/ui.yaml (UI-*) flips to
+      superseded and is RETAINED on disk so every historical reference (DEC-8/9/14/16,
+      INC-3, challenge records r1-r3) still resolves; nothing vetted is silently lost —
+      the old spine's challenged edge cases are re-absorbed into the new structure
+      (GR-3 hold semantics, veto/held non-confusability, article take-down, approve-
+      undo/recall, thin-source onboarding floor, missed-week grace, cancel-with-dignity
+      loss summary, bot states, citations/ArticleLink, channel re-auth honesty), and
+      DEC-14's activity center DISSOLVES into the home's pinned needs-you zone + the
+      Plan & Published log (its intent — VAL-3 logging + actionable alerts — preserved,
+      its dedicated surface dropped); (e) UX-2/UX-3/UX-5/UX-7/UX-8 and ARC-5/ARC-7 are
+      amended to the one-home model in the same change; the AI-S-DS design system and
+      DEC-16 vocabulary carry over unchanged (every stream card resolves from the DS-5
+      inventory). The register reaches approved after the Product-Designer challenger
+      pass of this round.
+
   DEC-17:
     v: 1
     date: 2026-07-18

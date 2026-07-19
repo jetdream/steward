@@ -39,5 +39,5 @@ items:
     priority: P1
     title: Memory browser
     statement: >-
-      Inside the Organization page (UX-5): view, edit, delete what the system
+      In the Knowledge view (UX-5): view, edit, delete what the system
       knows.

@@ -43,7 +43,8 @@ prefixes:
   NWS: product/requirements/nws-news-site.yaml
   BOT: product/requirements/bot-messenger-ingestion.yaml
   ARC: architecture/overview.yaml
-  UI: experience/ui.yaml
+  UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
+  EXP: experience/spine.yaml
   DM: architecture/data-model.yaml
   IG: architecture/integrations.yaml
   PIPE: architecture/llm-pipeline.yaml

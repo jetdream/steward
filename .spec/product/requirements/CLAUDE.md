@@ -13,7 +13,7 @@ Register shape and item grammar are defined once in [../../CLAUDE.md](../../CLAU
 | STR | [Posting Strategy](str-posting-strategy.yaml) | approved |
 | GEN | [Content generation](gen-content-generation.yaml) | approved |
 | EXT | [External radar](ext-external-radar.yaml) | approved |
-| APR | [Approval inbox & composer](apr-approval-inbox.yaml) | approved |
+| APR | [Approval surface (Ready) & composer](apr-approval-inbox.yaml) | approved |
 | PUB | [Publishing](pub-publishing.yaml) | approved |
 | PRO | [Proactive manager](pro-proactive-manager.yaml) | approved |
 | STW | [Stewardship loop](stw-stewardship.yaml) | approved |

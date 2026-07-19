@@ -64,10 +64,24 @@ terms:
     (short: Library) The org's tagged picture store: harvested at ingestion
     plus founder uploads.
   Ready: >-
-    (formerly "Inbox" — DEC-16) The approval surface: the finite home stack
-    where the founder reviews finished drafts (per-channel variants, fit
-    indicators) and gives the one verb, Approve. Founder-facing header reads
-    "Ready for you". Owned by APR requirements.
+    (formerly "Inbox" — DEC-16) The approval surface: the finite, clearable
+    spine of the Home where the founder reviews finished drafts (per-channel
+    variants, fit indicators) and gives the one verb, Approve. Founder-facing
+    header reads "Ready for you". Owned by APR requirements.
+  Home: >-
+    (DEC-18) The single founder surface: a fused, finite stream — the pinned
+    needs-you zone, the Ready spine, and the ambient leading conversation —
+    that morphs with the trust arc (day-one / steady / quiet shapes) over one
+    invariant skeleton. Everything else is summoned from its chrome.
+  Glass wall: >-
+    (DEC-18; VAL-3 experienced) The four plain-labeled, one-click, pull-only
+    inspection views — Knowledge, How I write, Plan & Published, Discoveries —
+    permanently visible in the Home chrome, never badged, never gated behind
+    asking in chat.
+  Controls: >-
+    (DEC-18) The summoned tray for configuring the colleague: cadence,
+    notifications, plain-language trust dials, channels, pause / kill switch,
+    plan & billing, and cancel.
   Digest: >-
     A batch of ready-to-review drafts delivered at the founder's chosen
     cadence.
@@ -92,7 +106,7 @@ terms:
     The org's hosted, SEO-first public news surface (NWS-1..6) on the DS-8
     org-branded template — one templated surface per org, not website
     building (scope.md boundary case). Read by the audience-reader persona
-    (users.md), journey UI-58.
+    (users.md), journey EXP-9.
   Channel profile: >-
     Per-channel technical configuration: length limits, media requirements,
     link behavior, rate limits (PUB-2).

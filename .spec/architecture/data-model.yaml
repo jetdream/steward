@@ -93,7 +93,7 @@ items:
         draft --> awaiting_picture : no picture assigned (GEN-4)
         awaiting_picture --> draft : picture attached
         draft --> approved : founder approves / TL permits (AUT-1)
-        approved --> draft : recalled before any variant is scheduled (VAL-3; UI-42)
+        approved --> draft : recalled before any variant is scheduled (VAL-3; EXP-31)
         draft --> skipped : founder skips
 
       Delivery lifecycle (per ChannelVariant — one per destination, incl. the

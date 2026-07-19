@@ -47,12 +47,12 @@ items:
 
       graph TD
         subgraph client [client SPA]
-          SHELL[app-shell — UX-1..8]
-          CCHAT[chat UI]
-          CINBOX[inbox UI]
-          CCAL[calendar UI]
-          CRADAR[radar UI — UX-8, EXT-5]
-          CORG[organization UI]
+          SHELL[app-shell — one-home chrome, UX-1..8]
+          CCHAT[conversation UI — in-home]
+          CINBOX[home UI — pinned zone + Ready spine]
+          CCAL[plan & published view]
+          CRADAR[discoveries view — UX-8, EXT-5]
+          CORG[knowledge & how-i-write views]
         end
         subgraph backend
           AUTH[auth — BetterAuth]
@@ -62,7 +62,7 @@ items:
           STRB[strategy — STR]
           GENB[content engine — GEN, STW]
           EXTB[radar — EXT]
-          APRB[inbox/approvals — APR]
+          APRB[Ready/approvals — APR]
           PUBB[publisher + channel & news adapters — PUB, NWS]
           BOTB[messenger bots — BOT, P1]
           PROB[proactive — PRO]
@@ -128,13 +128,17 @@ items:
       embeddings for retrieval-grounded generation.
 
   ARC-5:
-    v: 1
+    v: 2
     kind: c4-component
     title: App Shell
     parent: ARC-2
     body: |
-      The application shell / navigation frame (app-shell). Implements the UX
-      capability (UX-1..8), including the sixth Radar nav surface (UX-8).
+      The application shell (app-shell) under the One-Home model (DEC-18):
+      the invariant home chrome — Pause (AUT-3), the Look-inside cluster
+      (four glass-wall views), Controls, + Compose — and the summoned-view
+      routing. Implements the UX capability (UX-1..8); there is no
+      multi-destination navigation. (v2: DEC-18 replaced the six-surface
+      nav frame.)
 
   ARC-6:
     v: 1
@@ -142,16 +146,20 @@ items:
     title: Chat UI
     parent: ARC-2
     body: |
-      Client surface for the agentic chat and interviewer conversations.
+      Client module for the conversational medium — the in-home stream
+      composer and exchanges (CHT, fused into the home per DEC-18),
+      including the interviewer conversations.
 
   ARC-7:
-    v: 1
+    v: 2
     kind: c4-component
-    title: Inbox UI
+    title: Home UI
     parent: ARC-2
     body: |
-      Client surface for the approval inbox — reviewing drafts, edits, and
-      verdicts.
+      Client module for the home stream: the pinned needs-you zone, the
+      finite Ready spine (APR — reviewing drafts, edits, and verdicts in
+      place), stream cards, and the caught-up terminus. (v2: DEC-18 —
+      formerly "Inbox UI", one destination among six; now the one home.)
 
   ARC-8:
     v: 1
@@ -159,7 +167,8 @@ items:
     title: Calendar UI
     parent: ARC-2
     body: |
-      Client surface for the posting calendar / scheduled slots.
+      Client module for the Plan & Published summoned view — the posting
+      calendar / scheduled slots and the publish log.
 
   ARC-9:
     v: 1
@@ -167,7 +176,9 @@ items:
     title: Organization UI
     parent: ARC-2
     body: |
-      Client surface for organization profile, memory, and settings.
+      Client module for the Knowledge and How-I-write summoned views
+      (organization profile, memory, strategy) and the Controls tray
+      (settings).
 
   ARC-10:
     v: 1
@@ -221,7 +232,7 @@ items:
     body: |
       Content generation + stewardship module (GEN, STW). Central hub: consumes
       Memory, Strategy, and Radar context and produces drafts for the approval
-      inbox (see the llm-pipeline register).
+      Ready surface (see the llm-pipeline register).
 
   ARC-16:
     v: 1
@@ -235,11 +246,12 @@ items:
   ARC-17:
     v: 1
     kind: c4-component
-    title: Inbox / Approvals
+    title: Ready / Approvals
     parent: ARC-3
     body: |
-      Approval-inbox module (APR); receives drafts and records edits/verdicts
-      before publishing.
+      Approval module (APR, the Ready pipeline); receives drafts and records
+      edits/verdicts before publishing. (Label renamed Inbox→Ready per
+      DEC-16.)
 
   ARC-18:
     v: 1
@@ -302,7 +314,7 @@ items:
     body: |
       A separate SEO-first SSR/SSG deployable (Astro + React islands, ADR-0004)
       serving the org news site (NWS-1..6) to the public reader persona
-      (journey UI-58). Reads published article/topic data from the backend
+      (journey EXP-9). Reads published article/topic data from the backend
       read-API and images via the Blob port (ADR-0003); renders the DS-8
       org-branded template. Isolated from the authenticated SPA so its
       caching/SEO/rate-limit posture (SEC-8) is independent. Resolves the

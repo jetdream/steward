@@ -24,7 +24,7 @@ items:
         retrieval (pgvector over MemoryEntry embeddings). Cite VAL-2, VAL-4.
       - One brain, several skills: chat, interviewer, generation, and the
         messenger bots (BOT-2, P1) share the same Memory read/write layer — a
-        redirect in chat (CHT-2), an inbox edit (APR-3), a bot-sent fact, and a
+        redirect in chat (CHT-2), a Ready edit (APR-3), a bot-sent fact, and a
         radar-feed relevant/not mark (EXT-5) all land in the same store the
         planner reads.
       - Guardrails before queues: Strategy validation (STR-3) + platform
@@ -45,7 +45,7 @@ items:
         participant GEN as Generator
         participant VAL as Guardrail chain (STR-3, GR checks)
         participant FIT as Fit gate (GEN-5)
-        participant INB as Inbox (APR-1)
+        participant INB as Ready (APR-1)
         PL->>RET: slot context (category, calendar, org profile)
         RET-->>GEN: grounded context package
         GEN->>GEN: master + per-channel variants (GEN-2)

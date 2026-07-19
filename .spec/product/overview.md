@@ -12,7 +12,7 @@ Scope discipline: **content in, content out** — no engagement handling, leads,
 
 ## The core loop
 
-**Org Memory** (facts, stories, media, rules) and the **Posting Strategy** (explicit editorial contract) feed the **Planner/Content Engine**, which drafts from two wells — *internal* org content and the *external radar* — producing per-channel adapted variants. Drafts flow to the **Approval Inbox** (or originate in the **Composer**), then to the **Publisher** (fit-gated). The **Agentic Chat** sits across everything — it hosts the **Interviewer**, answers questions, takes redirects, and (Phase 2) executes commands. The **Proactive Manager** requests material and proposes campaigns; the **Autonomy System** governs what may publish without approval. Every founder action enriches Memory, so the loop compounds.
+**Org Memory** (facts, stories, media, rules) and the **Posting Strategy** (explicit editorial contract) feed the **Planner/Content Engine**, which drafts from two wells — *internal* org content and the *external radar* — producing per-channel adapted variants. Drafts flow to the **Ready** (the approval surface) (or originate in the **Composer**), then to the **Publisher** (fit-gated). The **Agentic Chat** sits across everything — it hosts the **Interviewer**, answers questions, takes redirects, and (Phase 2) executes commands. The **Proactive Manager** requests material and proposes campaigns; the **Autonomy System** governs what may publish without approval. Every founder action enriches Memory, so the loop compounds.
 
 ```mermaid
 graph LR
@@ -27,7 +27,7 @@ graph LR
   end
   CHAT[Agentic Chat]
   ENGINE[Planner / Content Engine]
-  INBOX[Approval Inbox]
+  INBOX[Ready — approvals]
   COMP[Composer]
   PUBLISH[Publisher: FB / IG / Threads / X]
   PROMGR[Proactive Manager]

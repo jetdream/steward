@@ -13,5 +13,5 @@ Technical design that spans capabilities, as pure-YAML docs (representation rule
 | [security-privacy.yaml](security-privacy.yaml) | Compliance, privacy, safety posture |
 
 The UX structure moved to the parallel **experience spine** —
-[../experience/](../experience/CLAUDE.md) (`UI-*`, cortex v0.14 experience
+[../experience/](../experience/CLAUDE.md) (`EXP-*`, cortex v0.14 experience
 layer); this folder owns only the technical (built-HOW) design-elements.

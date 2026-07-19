@@ -1,13 +1,16 @@
 kind: experience
 prefix: UI
-title: Steward Experience Spine — Journeys, Flows, Screens, Touchpoints
-status: approved
-# Sign-off: DEC-8 (founding round); Product-Designer challenger pass recorded
-# at specs/challenges/experience-ui-2026-07-16-r1.md (findings applied in the
-# same change per the convergence rule). DEC-9 delta challenged at
-# experience-ui-2026-07-17-r2.md. DEC-14 reconciliation round (GR-3
-# held-for-approval card, TL2 inbox, activity center UI-67/68, UI-45 screen
-# node) challenged at experience-ui-2026-07-18-r3.md.
+title: Steward Experience Spine — Journeys, Flows, Screens, Touchpoints (superseded)
+status: superseded
+# SUPERSEDED by experience/spine.yaml (EXP-*, the One-Home model) — DEC-18,
+# 2026-07-19, after a founder-directed from-scratch reevaluation. Retained on
+# disk so historical references (DEC-8/9/14/16, INC-3, challenge records
+# r1-r3, design mockup provenance) keep resolving; do not extend or edit
+# items here — the successor register is the living spine.
+# Original sign-off history: DEC-8 (founding round); Product-Designer
+# challenger pass at specs/challenges/experience-ui-2026-07-16-r1.md
+# (convergence rule). DEC-9 delta challenged at experience-ui-2026-07-17-r2.md.
+# DEC-14 reconciliation round challenged at experience-ui-2026-07-18-r3.md.
 
 intent: >-
   The experienced-HOW of Steward (method/ui.md, v0.14 experience layer):

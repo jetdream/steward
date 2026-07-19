@@ -30,7 +30,7 @@ items:
     title: Auto-drafted, founder-owned
     statement: >-
       Auto-drafted from ingestion (ONB-2 style findings) + interview answers;
-      presented for founder review; editable in the Strategy page (UX-5) and
+      presented for founder review; editable in the How-I-write view (UX-5) and
       via chat (CHT-2). Edits bind immediately and are versioned with diffs.
 
   STR-3:

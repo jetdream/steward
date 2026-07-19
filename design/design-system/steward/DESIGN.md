@@ -5,9 +5,9 @@
 
 > Read `../airbnb/DESIGN.md` first — it is the substrate and this document
 > deliberately does not repeat it (single source of truth). This file holds
-> only what Steward **changes, forbids, or adds**. Governance: DEC-6/DEC-7,
-> ADR-0001, DS-1..7; the screens applying this language are UI-1..13 in
-> `.spec/experience/ui.yaml`.
+> only what Steward **changes, forbids, or adds**. Governance:
+> DEC-6/DEC-7/DEC-15/DEC-18, ADR-0001, DS-1..8; the elements applying this
+> language are EXP-* in `.spec/experience/spine.yaml` (the One-Home model).
 
 ## Who this is for
 
@@ -38,16 +38,19 @@ optimizes *finishing a few items with confidence*. Consequences:
 - **No discovery patterns.** No search hero, no infinite grids, no 6-column
   reflow. Content lives in a single calm column (or a 2-column
   detail + sticky-panel layout) inside `--container-max`.
-- **Finite stacks.** The Inbox is a digest with a visible end ("3 of 5") —
-  progress and doneness are the reward, not endless choice. The completion
-  state is Steward's signature moment: the stewardship-streak numeral at
-  `--text-3xl/4xl` (our analog of the substrate's rating lockup).
+- **Finite stacks.** Ready is a finite spine with a visible end ("3 of 5")
+  — progress and doneness are the reward, not endless choice. The
+  caught-up terminus is Steward's signature moment: the steady-presence
+  numeral at `--text-3xl/4xl` (our analog of the substrate's rating
+  lockup; "rhythm", never "streak" — DEC-16).
 - **One accent use = one decision.** The terracotta accent marks the
-  screen's primary action (almost always Approve) and the active nav item.
-  If a third accent element appears in a viewport, neutralize one.
+  screen's primary action (almost always Approve). The One-Home shell has
+  no nav rail (DEC-18), so there is no active-nav accent; at most one
+  focal element per viewport stands beyond the primary action (DS-2).
 - **The sticky panel approves instead of reserving.** The substrate's
   booking panel (three-layer `--elev-raised`, right rail on desktop,
-  bottom bar on mobile) becomes the approve panel on post review.
+  bottom bar on mobile) becomes the approve panel on the opened draft
+  (EXP-39).
 - **Photography stays the hero** — but it is the *org's own* photos (real
   over synthetic, VAL-4). Post cards use the substrate's card anatomy:
   4:3 image at `--radius-md`, tight metadata block below, flat on canvas.
@@ -78,9 +81,15 @@ are first-class, reused everywhere, and carry the "nothing hidden" identity:
 - **OptionalReason** — the one-tap, dismissible reason affordance ("not
   now" / "not our style" / tell me why) shared by Skip and veto; feeds
   Memory, never blocks the primary action.
-- **Veto-window card** — TL1's "published on my own — you can veto until
-  Thu" card class: its own quiet visual register, excluded from progress
-  counts and batch actions, never confusable with needs-approval.
+- **Veto-window card** — the heads-up level's "published on my own — you
+  can veto until Thu" card class: its own quiet visual register, excluded
+  from progress counts and batch actions, never confusable with
+  needs-approval.
+- **HeldForApproval card** — GR-3's face and the veto-window card's
+  deliberate inverse (DEC-14, DS-5 v4): a sensitive-topic draft held for
+  the founder at every trust level — pinned in the home's needs-you zone,
+  counted in Ready, always actionable, never batch-approvable, its
+  ReasonLine naming the hold.
 - **CitationBlock** — GR-5's visual form: source, link, and the org's
   commentary framing as one treatment, shared by inbox external cards and
   public news articles (DEC-9).
@@ -99,11 +108,18 @@ are first-class, reused everywhere, and carry the "nothing hidden" identity:
 - Never guilt, never spam: nudges are single and gentle; status/semantic
   color stays under five percent of any page.
 
-## Shell (DEC-7)
+## Shell (DEC-18 — the One-Home model)
 
-Inbox-first: the founder lands on the digest stack. Desktop: quiet left
-rail (Inbox · Calendar · Chat · Organization · Settings + the Compose
-action), chat companion summonable as a docked right panel on every
-surface. Mobile: bottom tab bar, chat as a slide-up sheet. Light theme only
-in v1; dark mode is a future sibling of `tokens.css`, never a component
-fork.
+One home, no destinations. The invariant chrome: **Pause** (kill switch,
+one gesture) · wordmark in ink · the **Look-inside cluster** — Knowledge ·
+How I write · Plan & Published · Discoveries, each one click, pull-only,
+never badged (VAL-3) · **Controls** · **+ Compose** (an action, never a
+place). The home stream's regions keep one fixed order: pinned needs-you
+zone → the Ready spine → the conversation (composer never blank, CHT-5) →
+the caught-up terminus. Summoned views open as focused panels OVER the
+home on desktop and full-screen takeovers on phone — the chrome persists,
+one "back to Steward" gesture returns, focus is trapped while open and
+restored on dismiss; a summoned view is a mode of the home, never a
+sibling destination. Mobile: the same chrome as a compact top bar; views
+as sheets. Light theme only in v1; dark mode is a future sibling of
+`tokens.css`, never a component fork.

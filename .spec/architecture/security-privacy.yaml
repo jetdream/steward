@@ -93,7 +93,7 @@ items:
       URL/slug reservation (a small record, not the whole Org) follows the
       account-active rule (Q-11, DEC-10): while active/tombstoned an
       unpublished-or-recalled route serves the warm org-branded "not here"
-      page (UI-59); after a BIL-2 hard deletion (org data + branding removed,
+      page (EXP-36); after a BIL-2 hard deletion (org data + branding removed,
       SEC-4) the slug returns a GENERIC 410 gone page, never a stale
       org-branded one. The "published with Steward" footer is the only
       cross-org element.
