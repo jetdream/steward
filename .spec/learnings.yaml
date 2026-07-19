@@ -265,3 +265,71 @@ items:
       prose fully free, programmatic consumption by hooks) was considered
       and deferred, not rejected — revisit when hooks or CI need per-error
       dispatch, with new information.
+
+  LRN-18:
+    v: 1
+    type: gotcha
+    scope: [spec-authoring, docs-format]
+    source: first buildable spec (MEMS, 2026-07-19)
+    title: The spec format is a register of spec-elements (items), not a flat behavior map
+    statement: >-
+      The repo's TEMPLATE.yaml and specs/CLAUDE.md described a pre-items spec
+      layout (top-level implements/purpose + a behavior: map + acceptance/
+      edge-cases/non-goals). The cortex toolchain (v0.20.1) enforces a different
+      SPEC_SCHEMA: a spec is a REGISTER with its OWN prefix (the requirement
+      prefix + "S" — MEM to MEMS — registered in registry.yaml), file-level keys
+      kind/prefix/title/status/intent/design-scope/constrained-by/depends-on/
+      governed-by/assurance/challenge/design/data/interfaces/open-questions, and
+      an items: map of spec-elements (each v/title/implements[req-ids]/optional
+      constrained-by/statement/optional assurance/optional realization). Behavior,
+      edge cases, and an inline acceptance fold into each element's statement;
+      governed-by is guardrails-only; constrained-by is design-element IDs + ADR
+      IDs (never file paths). The drift was latent because no spec had been
+      authored since the toolchain bump. Fix: authored MEMS to the real schema and
+      rewrote TEMPLATE.yaml + specs/CLAUDE.md + the .spec/CLAUDE.md references.
+      Lesson: the engine's SPEC_SCHEMA (the docs-check schema errors) is the
+      authority — verify a template against the linter, and note TEMPLATE.yaml is
+      itself NOT linted, so it can silently rot.
+
+  LRN-19:
+    v: 1
+    type: pattern
+    scope: [change-request, cascade, process]
+    source: MEMS challenge convergence r2/r3 (DEC-22 dual-home reconciliation, 2026-07-19)
+    title: After a reconciliation decision, sweep ALL phrasing variants and ALL registers before challenging
+    statement: >-
+      DEC-22 collapsed a dual home ("founder rules live in Memory OR Strategy")
+      to a single source. The contradiction sweep (SDLC Phase B step 5) updated
+      the obvious citers (CHT-2, STR-4, goal coverage) but missed stragglers in
+      OTHER registers and OTHER phrasings: the glossary Redirect term and the
+      experience flow EXP-19 said "Memory or Strategy" (word form), and APR-3 said
+      "Strategy/Memory rules" (SLASH form) — the latter invisible to a regex
+      matching only the word form. Two challenge rounds were spent finding these
+      one at a time. Lesson: when a decision reconciles a CONCEPT, before
+      (re)challenging run an exhaustive ripgrep covering every phrasing variant
+      (word / slash / "and" / "to-the-X-as-a-store") across ALL live registers —
+      glossary, experience spine, and requirements, not just the directly-cited
+      IDs. The lint cannot read block-scalar prose for meaning, so a green graph
+      is not evidence a concept is single-homed; a stale glossary definition
+      (which agents read first) is a real dual home, not cosmetics.
+
+  LRN-20:
+    v: 1
+    type: pattern
+    scope: [spec-authoring, llm, guardrails]
+    source: MEMS-3 taboo-enforcement challenge (DEC-21/GR-8, 2026-07-19)
+    title: A P0 never-or-always invariant enforced by an LLM classifier needs a deterministic backstop + a catch-rate acceptance
+    statement: >-
+      MEM-1's "a stated correction is never violated" was first specified as a
+      "deterministic" taboo block at the VAL stage. But semantic detection ("does
+      this draft name a donor?") is an LLM check with a residual false-negative
+      rate — so "deterministic … never" was an overclaim, and at auto-publish (no
+      human) a miss ships. Two moves fix this class of hard invariant: (1) split
+      deterministic from probabilistic honestly — loading/injecting/routing the
+      rule set IS deterministic, DETECTION is not — and say so in the spec; (2)
+      pair the probabilistic check with a DETERMINISTIC backstop — when the check
+      cannot confidently clear, escalate to a human regardless of autonomy level
+      (GR-8, modelled on GR-3). Then write the acceptance as a labeled adversarial
+      CATCH-RATE test plus the backstop firing, never an un-failable absolute
+      ("NO variant ever …"). Applies to every P0 hard invariant enforced by a
+      model — sensitive-topic, mandatory citation, taboo, on-mission.

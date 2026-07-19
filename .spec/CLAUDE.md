@@ -44,7 +44,7 @@ graph TD
 | What has this project learned the hard way? | [learnings.yaml](learnings.yaml) | `LRN-*` |
 | What does each domain term mean? | [product/glossary.yaml](product/glossary.yaml) | — |
 | WHAT must each capability do? | [product/requirements/](product/requirements/) `*.yaml` | capability prefixes |
-| EXACTLY how must it behave? | [specs/](specs/) `*.yaml` | `behavior:` keyed by requirement IDs |
+| EXACTLY how must it behave? | [specs/](specs/) `*.yaml` | `items:` spec-elements (`<REQ>S-*`), each `implements:` requirement IDs |
 | Cross-cutting technical truth | [architecture/](architecture/) `*.yaml` | — |
 | Why this technical choice? | [adr/](adr/) | `ADR-*` |
 | Where is X implemented? | each `src` module's `CLAUDE.md` + code headers | — |
@@ -79,7 +79,7 @@ items:
     acceptance: Optional testable criterion.
 ```
 
-`Q-*`/`INC-*` items carry `status: open | resolved` instead of `priority`. Spec files reference requirement IDs as keys of a `behavior:` map (no `v` there — the definition lives in the register); pin a version inside text as `STR-3 v1` when it matters.
+`Q-*`/`INC-*` items carry `status: open | resolved` instead of `priority`. Spec-element items (in a spec register's `items:` map) reference requirement IDs via `implements:` (no `v` there — the definition lives in the register); pin a version inside text as `STR-3 v1` when it matters.
 
 ## Versioning and immutability
 

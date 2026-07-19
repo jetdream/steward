@@ -35,15 +35,16 @@ items:
       may arrive anytime.
 
   APR-3:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-22
     priority: P0
     depends: [MEM-1]
     title: Learning loop
     statement: >-
-      Every edit is diffed; recurring edit patterns are proposed as
-      Strategy/Memory rules ("You've shortened 4 X posts in a row — set 'max
-      200 chars on X' as a rule?").
+      Every edit is diffed; recurring edit patterns are proposed as Memory
+      styleRules/taboos (surfaced in the Strategy's org-rules view — DEC-22,
+      MEMS-1) ("You've shortened 4 X posts in a row — set 'max 200 chars on X'
+      as a rule?").
 
   APR-4:
     v: 1

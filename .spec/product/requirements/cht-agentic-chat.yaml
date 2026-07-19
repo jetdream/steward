@@ -24,14 +24,16 @@ items:
       know about our volunteer program?" answered from Memory with sources.
 
   CHT-2:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-22
     priority: P0
     title: Redirects via chat
     statement: >-
       When the founder gives plain-language feedback ("less formal," "never
       name donors," "on X be punchier"), the system shall confirm it back and
-      write it to Memory or Strategy, binding future drafts immediately.
+      write it to Memory — the single source for founder rules/taboos (MEM-1,
+      MEMS-1); the Strategy's org-rules section projects it (DEC-22) — binding
+      future drafts immediately.
 
   CHT-3:
     v: 1

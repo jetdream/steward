@@ -88,8 +88,11 @@ items:
         AUT-3. QUALITY FLOOR: OPS-1. No capability gap on the approval-rate path. Weakly-serving
         inherited edges (APR-2/APR-4/APR-6, CHT-3, BOT-2/BOT-3 primarily serve effort, G-3)
         noted, left uncorrected as defensible (DEC-11). The 70% target is a field outcome — see
-        the `outcome` assertion; R-5 is the quality dial.
-      against: [APR-1@3, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, CHT-5@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@2, GEN-1@3, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@1]
+        the `outcome` assertion; R-5 is the quality dial. Re-affirmed 2026-07-19 against STR-4 v2
+        + CHT-2 v2 + APR-3 v2 (DEC-22 Memory-as-single-source taboo enforcement + the GR-8 backstop): a
+        founder correction now binds immediately and is enforced at the VAL overlay gate — this
+        strengthens the approval-rate path; no capability added or removed.
+      against: [APR-1@3, APR-2@1, APR-3@2, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@2, CHT-3@1, CHT-4@1, CHT-5@1, EXT-1@1, EXT-2@1, EXT-3@1, EXT-4@1, EXT-5@2, GEN-1@3, GEN-2@1, GEN-3@1, GEN-4@1, GEN-5@1, GEN-6@1, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, OPS-1@1, STR-1@1, STR-2@1, STR-3@1, STR-4@2]
     outcome:
       status: in-progress
       reasoning: >-
@@ -118,8 +121,12 @@ items:
         phone), CHT-1..5 (talk instead of click), INT-1..4 (a few questions at a time). No
         capability gap on the effort path. The <15-min target is a field outcome — see the
         `outcome` assertion; it leans downstream on AUT auto-publish firing and on high draft
-        quality (G-2) so edits — the biggest time sink — are rare.
-      against: [APR-1@3, APR-2@1, APR-3@1, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@1, CHT-3@1, CHT-4@1, CHT-5@1, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@2, UX-2@2, UX-3@3, UX-4@1, UX-5@2, UX-6@1, UX-7@2, UX-8@2]
+        quality (G-2) so edits — the biggest time sink — are rare. Re-affirmed 2026-07-19 against
+        CHT-2 v2 + APR-3 v2 (DEC-22): redirects and learning-loop rules still write once, now to
+        Memory as the single source (Strategy is a view) — the
+        never-ask-twice/talk-instead-of-click effort path is unchanged; no capability added or
+        removed.
+      against: [APR-1@3, APR-2@1, APR-3@2, APR-4@1, APR-5@1, APR-6@1, AUT-1@2, AUT-2@1, AUT-3@1, BOT-1@1, BOT-2@1, BOT-3@1, CHT-1@1, CHT-2@2, CHT-3@1, CHT-4@1, CHT-5@1, DS-1@1, DS-2@1, DS-3@2, DS-4@1, DS-5@4, DS-6@1, DS-7@1, DS-8@2, INT-1@1, INT-2@1, INT-3@1, INT-4@1, MEM-1@1, MEM-2@1, MEM-3@1, ONB-1@1, ONB-2@1, ONB-3@1, ONB-4@1, ONB-5@1, PRO-1@1, PRO-2@1, PRO-3@1, UX-1@2, UX-2@2, UX-3@3, UX-4@1, UX-5@2, UX-6@1, UX-7@2, UX-8@2]
     outcome:
       status: in-progress
       reasoning: >-

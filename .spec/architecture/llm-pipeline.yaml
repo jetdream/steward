@@ -4,6 +4,9 @@ title: LLM Pipeline
 status: approved
 # Approved 2026-07-18 (architecture-approval pass). Challenger pass:
 # specs/challenges/architecture-2026-07-18-r1.md. Model selection ADR deferred.
+# PIPE-1/PIPE-2 → v2 (2026-07-19, DEC-21/DEC-22): the Memory rule/taboo overlay
+# is modelled as an explicit VAL-stage input with a GR-8 escalation — surfaced
+# by the MEM spec's challenger panel (specs/challenges/mem-org-memory-*).
 
 intent: >-
   From PRD §9. Vercel AI SDK — its provider abstraction is an instance of the
@@ -14,14 +17,17 @@ intent: >-
 
 items:
   PIPE-1:
-    v: 1
+    v: 2
     kind: pipeline
     title: Steward LLM Pipeline
     body: |
       Principles governing every stage:
 
       - Grounded, not vibes: all generation is grounded in Memory + Strategy via
-        retrieval (pgvector over MemoryEntry embeddings). Cite VAL-2, VAL-4.
+        retrieval (pgvector over MemoryEntry embeddings) PLUS the always-on
+        active rule/taboo overlay — the full set of founder-stated styleRules
+        and taboos, fetched deterministically and never similarity-gated (MEM-1,
+        MEMS-3/MEMS-4). Cite VAL-2, VAL-4.
       - One brain, several skills: chat, interviewer, generation, and the
         messenger bots (BOT-2, P1) share the same Memory read/write layer — a
         redirect in chat (CHT-2), a Ready edit (APR-3), a bot-sent fact, and a
@@ -29,29 +35,42 @@ items:
         EXT-5 v2) all land in the same store the planner reads — including
         the saved pool it draws from in thin weeks (DEC-20).
       - Guardrails before queues: Strategy validation (STR-3) + platform
-        guardrails (GR-1..GR-6, sensitive-topic classifier GR-3) run before
-        anything enters any queue.
+        guardrails (GR-1..GR-6, sensitive-topic classifier GR-3) + the Memory
+        rule/taboo overlay gate (GR-8) run at the VAL stage before anything
+        enters any queue. Founder rules/taboos live in Memory — the single
+        source (MEM-1); the Strategy's org-rules section is a rendered VIEW of
+        that overlay, not a second store (DEC-22). A draft VAL cannot
+        CONFIDENTLY clear against an active taboo escalates to the founder
+        regardless of Trust Level (GR-8) — semantic taboo detection is an LLM
+        check with a residual miss rate, so the escalation is the MEM-1 "never
+        violated" backstop once auto-publish is on.
       - Everything logged: all model calls logged per org for ops QA (OPS-1) and
         cost tracking. Target COGS (LLM + search + APIs) <$25/org/month.
 
   PIPE-2:
-    v: 1
+    v: 2
     kind: pipeline-stage
     title: Draft Generation Flow
     parent: PIPE-1
     body: |
+      v2 (DEC-21, DEC-22): the Memory active rule/taboo overlay is an explicit
+      VAL input (routed to VAL, not only GEN); VAL blocks/regenerates on a taboo
+      violation and escalates to the founder when it cannot confidently clear a
+      draft against an active taboo (GR-8), regardless of Trust Level.
+
       sequenceDiagram
         participant PL as Planner (GEN-1)
         participant RET as Retrieval (Memory+Strategy)
         participant GEN as Generator
-        participant VAL as Guardrail chain (STR-3, GR checks)
+        participant VAL as Guardrail chain (STR-3, GR checks, Memory taboo overlay)
         participant FIT as Fit gate (GEN-5)
         participant INB as Ready (APR-1)
         PL->>RET: slot context (category, calendar, org profile)
         RET-->>GEN: grounded context package
+        RET-->>VAL: active rule/taboo overlay (full set, deterministic — GR-8)
         GEN->>GEN: master + per-channel variants (GEN-2)
         GEN->>VAL: validate every variant
-        VAL-->>GEN: pass / regenerate / escalate (GR-3)
+        VAL-->>GEN: pass / regenerate / escalate (GR-3 sensitive-topic; GR-8 taboo-unconfident)
         VAL->>FIT: per-channel fit verdicts
         FIT->>INB: draft with variants + verdicts (or awaiting_picture)
 

@@ -22,6 +22,18 @@ items:
       remark shall write to Memory (entry types: fact / story / styleRule /
       taboo / person / program / event, each with source + timestamp).
     acceptance: A stated correction is never violated in subsequent drafts.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by the approved MEMS spec (challenge r1-r4 pass, 2026-07-19). The
+        write path + seven-type taxonomy (MEMS-1), supersession / dedup / conflict
+        precedence (MEMS-2), the binding invariant — the deterministic rule/taboo
+        overlay enforced at the VAL stage with the GR-8 human-approval backstop,
+        which delivers the "never violated" acceptance (MEMS-3) — and grounded
+        retrieval with no fact invention (MEMS-4) together cover MEM-1's critical
+        path: every enriching action writes an attributed entry, and a stated
+        correction binds every future draft. Realization is pending code.
+      against: [MEMS-1@1, MEMS-2@1, MEMS-3@1, MEMS-4@1]
 
   MEM-2:
     v: 1
@@ -32,6 +44,16 @@ items:
       The system may interrupt the founder only for (a) field-only raw
       material, (b) genuinely founder-owned decisions, (c) blocking unknowns.
       All else defaults sensibly with a visible "assumed" note (VAL-3).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by the approved MEMS spec (challenge r1-r4 pass, 2026-07-19). The
+        interrupt-or-assume decision — three allowed classes, else default with a
+        correctable AssumedNote, silent guessing forbidden (MEMS-5) — and the
+        per-org asked-set with deterministic keying + bias-to-ask on uncertainty
+        (MEMS-6) together cover MEM-2's critical path: the system asks only when it
+        must, and never twice. Realization is pending code.
+      against: [MEMS-5@1, MEMS-6@1]
 
   MEM-3:
     v: 1

@@ -1,63 +1,77 @@
-# Spec template. Copy to <prefix>-<slug>.yaml (slug pairs with the
-# requirements register). Delete guidance comments after filling in.
+# Spec template. Copy to <prefix>-<slug>.yaml (slug pairs with the requirements
+# register). Delete guidance comments after filling in. A spec is a REGISTER of
+# spec-elements (its own items:), NOT a flat behavior map — the engine's
+# SPEC_SCHEMA is the authority (docs-check enforces the field-set below).
+#
+# WORKED EXAMPLE: mem-org-memory.yaml (MEMS-1..6) — read it alongside this.
 kind: spec
-prefix: XXX
-title: Capability Name
-status: draft            # draft | approved | implemented | superseded
-implements: []           # requirement IDs covered, e.g. [STR-1, STR-2]
-governed-by: []          # principles/guardrails cited instead of restated
-depends-on: []           # capability prefixes whose specs constrain this one
-design-scope: cross-cutting  # cross-cutting (must cite designs) | local
-constrained-by: []       # ADR IDs (must be accepted) and/or architecture doc
-                         # paths (must be approved), e.g.
-                         # [ADR-0001, .spec/architecture/data-model.yaml]
-modules: []              # src modules, filled as implementation lands
-# challenge:             # REQUIRED before status: approved — record of the
-#   date: YYYY-MM-DD     # mandatory Architect Challenger run
-#   by: architect-challenger
-#   verdict: pass        # a fail keeps the spec in draft
+prefix: XXXS               # the spec's OWN prefix = <requirement-prefix> + "S"
+                           # (MEM→MEMS, STR→STRS). Register it in registry.yaml
+                           # first. NEVER reuse the requirement prefix (it is
+                           # owned by the requirements register — DCX-2).
+title: Capability Name — behavior
+status: draft              # draft | approved | implemented | superseded
+intent: >-                 # (NOT `purpose`) 2–3 sentences; name the requirements
+                           # register. Reference requirement IDs; never restate
+                           # their text. Note what is out of this spec's scope.
+design-scope: cross-cutting  # cross-cutting (MUST cite designs in constrained-by)
+                             # | local (an explicit, greppable claim — never an
+                             # omission)
+constrained-by: []         # design-element IDs (architecture OR experience) and
+                           # /or ADR IDs — NOT file paths. Architecture elements'
+                           # files must be `approved`, ADRs `accepted`. e.g.
+                           # [ADR-0002, DM-2, PIPE-2, EXP-41]
+depends-on: []             # capability spec prefixes whose specs constrain this
+governed-by: []            # GUARDRAIL IDs only (GR-*). Values (VAL-*) are cited
+                           # in prose, never here (DCX-18).
+assurance: standard        # register default: standard | verified
+                           # (verified additionally requires an @verifies test)
+# challenge:               # REQUIRED before status: approved — the recorded
+#   date: YYYY-MM-DD       # Architect Challenger pass (panel for a first
+#   by: architect-challenger   # cross-cutting/P0 spec). Points at the evidence
+#   verdict: pass          # record in challenges/. A fail keeps status: draft.
 #   summary: >-
 #     Findings and how they were resolved.
-
-purpose: >-
-  2–3 sentences; name the requirements register. Do not restate requirement
-  text — reference IDs.
-
-# One entry per implemented requirement ID. These are REFERENCES to the
-# register definitions (no `v` here — pin with "STR-3 v1" inside text when a
-# specific version matters). Spec only what a reasonable implementation could
-# get wrong (altitude rule, .spec/specs/CLAUDE.md).
-behavior:
-  XXX-1:
-    rules: >-
-      Given/when/then, invariants, ordering, failure handling. Mermaid as raw
-      text where a diagram says it better.
 
 design: >-
   REQUIRED for approval. Capability-local design: module placement, data
   touched, jobs/flows, integration points — derived from (and citing) the
-  constrained-by set. Design altitude rule: anything affecting more than this
-  capability belongs in an ADR + architecture doc, not here.
+  constrained-by set. Also the home for surfaced ASSUMPTIONS and
+  defaults-where-requirements-are-silent (there is no defaults-and-assumptions
+  field). Design altitude rule: anything affecting more than this capability
+  belongs in an ADR + architecture doc, not here.
 
 data: >-
-  Entities touched; link architecture/data-model.yaml. Field lists live in
-  @shared types once they exist — never duplicated here.
+  Entities touched; link architecture/data-model.yaml (DM-*). Field lists live
+  in @shared types once they exist — never duplicated here.
 
 interfaces: >-
   Which tRPC procedures / WebSocket events exist and their behavioral
   contracts. Signatures live in code.
 
-edge-cases: >-
-  ...
+# One spec-element per buildable unit of behavior. Spec an element only if a
+# reasonable implementation could plausibly get it wrong (altitude rule); if any
+# reasonable implementation is acceptable, cite the governing principle instead.
+# behavior / edge-cases / acceptance all fold into each element's `statement`
+# (there are no separate top-level fields for them). Priorities live on
+# requirements, never here.
+items:
+  XXXS-1:
+    v: 1
+    title: Short buildable-unit name
+    implements: [XXX-1]    # >=1 requirement ID this element covers (DCX-17)
+    # constrained-by: [PIPE-2]   # optional element-granular design pin
+    # assurance: verified        # optional per-element override of the default
+    statement: >-
+      Given/when/then, invariants, ordering, failure handling, the edge cases,
+      and an inline ACCEPTANCE clause (testable, tagged to the requirement IDs).
+      Mermaid as raw text where a diagram says it better. Cite values/guardrails
+      by ID in prose where they bind the behavior.
+    # realization:               # ADDED when code lands (the roll-up assertion):
+    #   status: implemented      # claims completion → needs reasoning + against
+    #   reasoning: >-            #   + evidence (an @implements XXXS-1 marker in a
+    #     ...                     #   code-paths file, or evidence: [path]) — GRP-4
+    #   against: [XXX-1@1]
+    #   evidence: [src/...]
 
-acceptance: >-
-  Testable, tagged with the requirement IDs they verify.
-
-defaults-and-assumptions: >-
-  Choices made where requirements are silent, each citing the principle it
-  derives from.
-
-non-goals: >-
-  ...
-
-open-questions: []
+open-questions: []         # genuinely-deferred, decidable-later items only

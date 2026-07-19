@@ -15,6 +15,52 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-22:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [STR-4, CHT-2, APR-3, PIPE-1, PIPE-2, GR-8, MEMS-3, MEMS-4]
+    title: Memory is the single source of truth for founder rules/taboos; Strategy projects it; the overlay is enforced at the VAL stage
+    statement: >-
+      A founder rule like "never name donors" had two candidate homes in the
+      specs: Strategy section (c) (STR-4, enforced via STR-3) and a Memory
+      taboo overlay (MEMS-3); CHT-2 wrote such feedback to "Memory or Strategy".
+      Decision: MEMORY is the single source of truth for founder-stated
+      rules/taboos — it is the core asset every subsystem reads (MEM-1). The
+      Strategy's org-rules section (c) becomes a rendered VIEW of the active
+      Memory rule/taboo overlay, not a second store. Enforcement routes the
+      active overlay to the pipeline validation (VAL) stage as a distinct
+      deterministic gate CO-LOCATED with STR-3 (in PIPE-2) — not performed by
+      STR-3. A correction therefore binds immediately, with no Strategy-sync
+      step. Reconciles STR-4 (→v2), CHT-2 (→v2), and PIPE-1/PIPE-2 (→v2).
+      Rejected: Strategy-as-enforcement-home (a correction would bind only
+      after propagating into the Strategy — slower, and splits the core asset)
+      and dual-store-with-precedence (least DRY; preserves CHT-2's ambiguity).
+      Surfaced by the MEM spec's 3-lens challenger panel (2026-07-19,
+      specs/challenges/mem-org-memory-*).
+
+  DEC-21:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [GR-8, PIPE-2, MEMS-3]
+    title: Founder-taboo enforcement backstop — an unconfident check forces human approval regardless of Trust Level
+    statement: >-
+      MEM-1 requires that a stated correction is NEVER violated in subsequent
+      drafts — but detecting a semantic taboo (e.g. "never name donors") in
+      generated prose is an LLM check with a residual false-negative rate. At
+      Trust Level 0 the human approver catches misses; once the system
+      auto-publishes (TL1/TL2) that check is the SOLE enforcement, so a miss is
+      a published MEM-1 violation. Decision: a draft the guardrail chain cannot
+      CONFIDENTLY clear against an active founder-stated taboo forces human
+      approval regardless of Trust Level — a new guardrail GR-8, analogous to
+      GR-3. Confident-clean drafts still auto-publish, so G-2 near-autonomy is
+      preserved; only the ambiguous residual is held. Rejected: a blanket cap
+      on all taboo-bearing content at TL1 (would gut autonomy, since most orgs
+      state at least one taboo) and monitor-only (would weaken MEM-1's P0/hard
+      "never" to "almost never"). Surfaced by the MEM spec's 3-lens challenger
+      panel (2026-07-19).
+
   DEC-20:
     v: 1
     date: 2026-07-19

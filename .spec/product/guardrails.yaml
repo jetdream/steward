@@ -66,3 +66,17 @@ items:
       governed violation, not a matter of taste. UI specs cite this
       guardrail via governed-by (method/ui.md §5). (v2: inventory pointer
       widened to DS-8 — DEC-9; the rule itself is unchanged.)
+  GR-8:
+    v: 1
+    decided-by: DEC-21
+    title: Stated-correction enforcement
+    rule: >-
+      A draft the guardrail chain cannot CONFIDENTLY clear against an active
+      founder-stated taboo (a Memory taboo/rule, MEM-1) forces human approval
+      regardless of Trust Level — the backstop that makes "a stated correction
+      is never violated" hold once auto-publish is on. Detecting a semantic
+      taboo in generated prose is an LLM check with a residual miss rate; the
+      overlay is a distinct deterministic gate at the pipeline VAL stage
+      (PIPE-2), and VAL-uncertainty escalates to the founder, never
+      auto-publishes. Analogous to GR-3 (which escalates on sensitive topics);
+      additive to the chain — it never short-circuits the GR-1..GR-6 checks.

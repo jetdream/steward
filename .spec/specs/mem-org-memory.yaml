@@ -1,0 +1,288 @@
+kind: spec
+prefix: MEMS
+title: Org Memory — behavior
+status: approved
+intent: >-
+  Exact behavior of Org Memory (register mem-org-memory.yaml): what writes an
+  entry, how the seven entry types are attributed and superseded, how a stated
+  correction becomes a rule that binds every future draft (the MEM-1
+  acceptance), and the interrupt-vs-assume decision that keeps the system from
+  asking twice (MEM-2). This is the shared read/write layer every other
+  capability consumes (PIPE-1, "one brain, several skills"). MEM-3 (the
+  Knowledge browser) is P1 and out of this P1a pass — covered by a later spec
+  against EXP-41.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-1, DM-2, PIPE-1, PIPE-2, ARC-11, SEC-4]
+depends-on: []
+governed-by: [GR-8]
+assurance: standard
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 3-lens panel → r2/r3/r4 delta convergence)
+  verdict: pass
+  record: .spec/specs/challenges/mem-org-memory-2026-07-19-r4.md
+  summary: >-
+    First challenge was a 3-lens panel (design-conformance / implementation-
+    divergence / cheaper-alternative + hidden-assumptions): 2 fail. It surfaced
+    a real architecture gap — the LLM pipeline modelled no taboo enforcement —
+    plus a determinism overclaim and an embedding false-match risk. Resolved
+    with the founder via DEC-21 (GR-8: an unconfident taboo check forces human
+    approval regardless of Trust Level) and DEC-22 (Memory is the single source
+    for founder rules/taboos; the Strategy projects them; the overlay is
+    enforced at the VAL stage): PIPE-1/PIPE-2 v2, STR-4/CHT-2 v2, ARC-11 v2, and
+    the spec rewrite. Delta rounds r2/r3 caught incomplete DEC-22 propagation
+    across phrasing variants (glossary Redirect + EXP-19, then APR-3 slash-form);
+    r4 verified closure with a clean exhaustive multi-variant sweep and no new
+    high. Full records: specs/challenges/mem-org-memory-2026-07-19-r1..r4.md.
+
+design: >-
+  Module: @backend/memory (ARC-11) — the shared read/write layer; @client's
+  Knowledge view (MEM-3, P1) is a later consumer, not part of this spec.
+  Storage: MemoryEntry rows in Postgres (DM-2) owned by Org (DM-1), with a
+  pgvector embedding column for retrieval (ADR-0002). All LLM/embedding calls
+  go through the ADR-0003 LLM port (a Vercel AI SDK provider), never a vendor
+  SDK directly; extraction and classification are the shared pipeline (PIPE-1).
+  The module exposes three internal surfaces to its sibling backend modules:
+  (1) a WRITE path (classify -> dedup/supersede -> persist -> embed), invoked
+  by every enriching capability; (2) a RETRIEVE path returning a grounded
+  context package = embedding-retrieved facts/stories/people/programs/events
+  PLUS the full active styleRule+taboo overlay, which it also routes to the
+  VAL gate (a cheap indexed query, never similarity-gated — PIPE-2 v2, DEC-22);
+  (3) a SHOULD-ASK path implementing the MEM-2 classifier and the asked-set
+  lookup. The active-rule overlay and the asked-set are Memory-derived indexed
+  views over MemoryEntry, not new top-level entities. Every model call is
+  logged per org (PIPE-1, OPS-1).
+
+  ENFORCEMENT HOME (DEC-22): Memory is the single source of truth for
+  founder-stated rules/taboos; the Strategy's org-rules section (STR-4 v2) is a
+  rendered view. Enforcement is a distinct deterministic gate at the pipeline
+  VAL stage (PIPE-2 v2), co-located with — not performed by — STR-3.
+
+  SURFACED ASSUMPTIONS (the challenger panel made these explicit rather than
+  leaving them as prose invariants):
+  (a) Semantic-detection residual — LOADING and INJECTING the taboo overlay is
+  deterministic, but DETECTING a semantic violation ("never name donors") in
+  arbitrary prose at VAL is an LLM check with a residual false-negative rate.
+  The MEM-1 "never violated" guarantee on a PUBLISHED draft therefore rests on
+  two things together: the VAL catch-rate AND the GR-8 backstop (a draft VAL
+  cannot confidently clear escalates to a human regardless of Trust Level).
+  The escalation confidence threshold is a tuning parameter, calibrated against
+  a labeled adversarial catch-rate test (MEMS-3 acceptance).
+  (b) Small-active-set — the overlay loads the FULL active rule/taboo set every
+  generation (a similarity cap would reintroduce the exact low-similarity miss
+  MEM-1 forbids, so it is deliberately uncapped). This assumes the active set
+  stays small enough that injecting and checking all of it does not degrade
+  instruction-following or per-item recall. Revisit trigger: monitor the
+  active-taboo count per org; introduce salience ordering / a staged re-check
+  if it grows large.
+  (c) Deterministic identity for structured unknowns — the asked-set (MEMS-6)
+  and dedup (MEMS-2) key STRUCTURED gaps by a deterministic canonical-subject
+  string (type + normalized subject), NOT by embedding proximity; embedding
+  similarity is reserved for residual free-form unknowns and is biased to
+  ask / keep-separate on uncertainty, because a false ask is a mild
+  self-correcting MEM-2 nit while a false suppression or false merge is a
+  silent correctness failure.
+
+data: >-
+  DM-2 MemoryEntry (the seven types; source; createdAt; supersededAt /
+  supersededBy; an `assumed` marker; a `reinforcedAt` touch; embedding) owned by
+  DM-1 Org. Concrete field lists live in @shared types at implementation —
+  never duplicated here. The asked-set and the active styleRule/taboo overlay
+  are derived indexes over MemoryEntry, not separate entities; the grounding set
+  that produced a draft is the retrieveContext result carried through
+  generation (MEMS-1 reinforcement), not a stored entity. Confidential
+  org-provided content (SEC-4) is exported and hard-deleted on a BIL-2 account
+  deletion (see MEMS-2).
+
+interfaces: >-
+  @backend/memory (ARC-11) exposes to sibling backend modules:
+  write(rawInput, context) [callers: ONB, INT, CHT, APR, GEN, EXT, BOT];
+  retrieveContext(slot) -> grounded package (facts/stories by embedding + the
+  full active rule/taboo overlay, also routed to VAL) [callers: GEN, CHT];
+  shouldAsk(unknown) -> ask(class) | assume(default, note)
+  [callers: ONB, INT, GEN, PRO]. Exact tRPC/procedure signatures live in code;
+  the Knowledge-view read/edit procedures are MEM-3 (P1), out of scope here.
+  Writes emit light WebSocket events so open surfaces (the home, the Knowledge
+  view) refresh (ARC-1 realtime principle).
+
+items:
+  MEMS-1:
+    v: 1
+    title: Write path and entry taxonomy
+    implements: [MEM-1]
+    statement: >-
+      WRITE TRIGGERS — each of these events produces one or more MemoryEntry
+      writes (DM-2), every write carrying its entry type, source (the
+      triggering event, referenceable for provenance), and timestamp:
+      approval / inline edit / skip-reason / rejection (APR-1, APR-3),
+      interview answer (INT), chat remark or confirmed redirect (CHT-2),
+      media upload and bot-sent fact/photo (GEN-3, BOT-1), ingestion finding
+      (ONB-2), and Discoveries triage marks (EXT-5).
+      A BARE APPROVAL (approve with no edit or comment) has no natural entry
+      type among the seven; at P1a it writes a lightweight REINFORCEMENT — a
+      recency touch (a `reinforcedAt` bump) on the entries that grounded the
+      approved draft, identified from the retrieveContext set (MEMS-4) that
+      produced it — not a new typed row, so "every approval writes" holds
+      without inventing an eighth type. (Richer performance weighting is GEN-6,
+      P1.)
+      SINGLE PATH — write() is the ONLY code path that mutates Memory; there is
+      no side channel. Extraction (turning a free-text remark into a typed
+      entry) is an LLM step inside write() via the shared pipeline (PIPE-1):
+      the caller passes raw input + context, the layer classifies type and
+      persists.
+      ENTRY TYPES — exactly the seven of DM-2: fact, story, styleRule, taboo,
+      person, program, event. Input arriving through an EXPLICIT correction
+      channel (an APR rejection / inline edit / skip-reason, or a CHT confirmed
+      redirect) that constrains future writing is recorded as a styleRule (a
+      positive preference) or a taboo (a prohibition) — never as a bare fact.
+      (Ambiguous input on FREE remark channels follows MEMS-5's narrower
+      default.)
+      ACCEPTANCE: a founder action of each trigger kind produces at least one
+      attributed record; no write lacks source or timestamp; a stated
+      correction on a correction channel is stored as a styleRule/taboo, never
+      a bare fact.
+  MEMS-2:
+    v: 1
+    title: Supersession, dedup, and conflict precedence
+    implements: [MEM-1]
+    statement: >-
+      NEVER OVERWRITE — a correction SUPERSEDES the entry it corrects: the
+      prior version is retained with supersededAt/supersededBy and its
+      provenance intact (VAL-3, "everything logged and visible"); the active
+      entry is the current one. Deletion is soft (supersession), never a hard
+      row delete, EXCEPT explicit purges: the ONB "this isn't us" wrong-org
+      escape, and a BIL-2 account deletion (which hard-deletes the org's
+      confidential Memory data, SEC-4) — both remove the asked-set too.
+      MERGE, DON'T STACK — a repeat write of the SAME entry merges into the
+      active entry rather than duplicating. Sameness is a DETERMINISTIC key, NOT
+      embedding proximity: for a structured entry (person / program / event) the
+      key is (type + canonical subject); for a free-form fact / story the key is
+      the full NORMALIZED ASSERTION (the whole claim), so two different claims
+      about the same subject — "our founder is Jane" vs. "our founder is
+      retiring" — never collapse. A merge happens only on an identical key;
+      anything else is kept SEPARATE (bias-to-not-merge) — a false merge
+      silently destroys a distinct fact, a worse failure than a harmless
+      duplicate. Embedding similarity may surface merge CANDIDATES for review
+      but never auto-merges across distinct keys.
+      CONFLICT PRECEDENCE — when a taboo contradicts a standing styleRule the
+      taboo (a prohibition) wins over the styleRule (a preference); the
+      conflict is surfaced for founder awareness, never silently reconciled.
+      ACCEPTANCE: correcting a fact yields exactly one active entry plus a
+      retained superseded predecessor queryable with its source and timestamp;
+      two DIFFERENT claims about the same subject (same type — e.g. "founder is
+      Jane" vs. "founder is retiring") do NOT merge; a BIL-2 deletion leaves no
+      MemoryEntry for the org.
+  MEMS-3:
+    v: 1
+    title: The binding invariant — deterministic overlay + enforced-at-VAL
+    implements: [MEM-1]
+    constrained-by: [PIPE-2]
+    statement: >-
+      THE MEM-1 ACCEPTANCE ("a stated correction is never violated in
+      subsequent drafts") is delivered here — precisely scoped.
+      DETERMINISTIC by construction: LOADING the overlay (the FULL active
+      styleRule+taboo set for the org, by an indexed query — never a top-k
+      similarity slice, so nothing is missed for scoring low on similarity),
+      INJECTING it into the grounded context, and ROUTING it to the VAL gate
+      (PIPE-2 v2, DEC-22) are all deterministic. DETECTION is not: judging
+      whether a given draft violates a semantic taboo ("never name donors") is
+      an LLM check at VAL with a residual false-negative rate — the spec does
+      not claim otherwise.
+      ENFORCEMENT: the overlay is a distinct gate at the VAL stage, co-located
+      with STR-3 (not performed by it). A draft that fails the taboo check is
+      blocked/regenerated, not merely down-weighted. Positive styleRules that
+      are HARD-CHECKABLE (e.g. "max 200 chars on X", APR-3) are block-enforced
+      at the VAL/GEN-5 fit gate; SOFT styleRules (subjective voice/tone) are
+      injected as strong steering, best-effort. The taboo gate is ADDITIVE to
+      the guardrail chain — it never short-circuits GR-1..GR-6 or GR-3's
+      sensitive-topic escalation.
+      THE BACKSTOP (GR-8): because detection is probabilistic, a draft VAL
+      cannot CONFIDENTLY clear against an active taboo forces human approval
+      regardless of Trust Level — so the residual never auto-publishes. At TL0
+      the human approver already sees every draft; GR-8 extends that guarantee
+      to TL1/TL2.
+      ACCEPTANCE (testable, not an untestable absolute): (a) a labeled
+      adversarial set of taboo-violating drafts is caught by the VAL gate at or
+      above the target catch rate; (b) any draft the check does not confidently
+      clear is escalated to a human and never auto-published (GR-8); (c) a
+      hard-checkable positive styleRule ("max 200 chars") is never violated in
+      a passed draft. (Assurance raised to `verified` with an @verifies test
+      when this element's code lands.)
+  MEMS-4:
+    v: 1
+    title: Grounded retrieval and empty-memory behavior
+    implements: [MEM-1]
+    statement: >-
+      retrieveContext(slot) returns a grounded package: embedding-retrieved
+      facts / stories / people / programs / events relevant to the slot, PLUS
+      the full active rule/taboo overlay from MEMS-3 (never similarity-gated),
+      which is also routed to the VAL gate (PIPE-2 v2). Retrieval is grounding,
+      not invention: generation draws only from returned entries plus the
+      interview, and never fabricates org facts (VAL-4).
+      EMPTY MEMORY (brand-new org) — retrieveContext returns the minimal
+      cause-profile and signals thinness so callers lean on the interview (INT)
+      rather than inventing facts.
+      ACCEPTANCE: with an empty Memory, retrieveContext returns no fabricated
+      facts and flags thinness; with a populated Memory, the returned package
+      always contains the full active rule/taboo overlay regardless of the
+      slot's embedding neighbors.
+  MEMS-5:
+    v: 1
+    title: Interrupt-or-assume decision
+    implements: [MEM-2]
+    statement: >-
+      Before surfacing ANY question to the founder, shouldAsk(unknown)
+      classifies it into exactly one of the three MEM-2 interrupt-allowed
+      classes, and only these justify an ask:
+      (a) FIELD-ONLY raw material the system cannot obtain itself (a real
+          photo, an on-the-ground fact) -> ask, as a reasoned material request
+          (PRO-1);
+      (b) GENUINELY FOUNDER-OWNED decision (a value / strategy / autonomy call
+          only the founder can make) -> ask;
+      (c) BLOCKING unknown (generation cannot proceed and no sensible default
+          exists) -> ask.
+      EVERYTHING ELSE -> DEFAULT SENSIBLY and record the default as a
+      MemoryEntry bearing the `assumed` marker, surfaced to the founder as a
+      correctable AssumedNote (DS-5; e.g. EXP-12, EXP-24) whose correction
+      writes back through MEMS-1. A silent guess — a default with no `assumed`
+      marker and no surfaced note — is forbidden (VAL-3).
+      EXTRACTION AMBIGUITY (rule vs. one-off fact) — applies ONLY to FREE
+      remark channels (chat asides, interview answers); explicit correction
+      channels honor MEMS-1's "never a bare fact". On a free channel, when it
+      is unclear whether input is a one-off fact or a standing rule, default to
+      the NARROWER reading (a fact) AND emit an `assumed`-marked AssumedNote
+      ("recorded as a one-off — tap if this should always apply") so the
+      downgrade is visible and correctable. Never manufacture a binding rule
+      from ambiguous input, and never silently drop a possible rule.
+      ACCEPTANCE: a gap the system can reasonably default is never surfaced as
+      a question — it appears as a correctable AssumedNote instead; an
+      ambiguous free-remark correction is stored as a fact with a visible
+      "recorded as a one-off" note, not silently as a binding rule nor silently
+      discarded.
+  MEMS-6:
+    v: 1
+    title: Never-ask-twice — the asked-set
+    implements: [MEM-2]
+    statement: >-
+      The system maintains, per org, the set of already-resolved unknowns
+      (answered, declined, or assumed); an unknown already in that set is never
+      re-asked — it is resolved from Memory or from its recorded assumption.
+      INT-2's "never re-asks" and PRO-1 material requests both consult this set
+      before asking.
+      KEYING — STRUCTURED unknowns (the enumerable gaps that drive INT-2/INT-4,
+      derived from ONB-3's gap model) are keyed by a DETERMINISTIC
+      canonical-subject string (gap type + normalized subject), which has zero
+      false-match: two genuinely different unknowns can never collapse onto one
+      another. Only RESIDUAL free-form unknowns use fuzzy/embedding matching,
+      and there the tie is broken by BIAS-TO-ASK: when a candidate match is not
+      confident, the question is asked, not suppressed — because a false ask is
+      a mild, self-correcting MEM-2 nit, whereas a false suppression silently
+      resolves from the WRONG prior assumption (a correctness failure invisible
+      in review). The asked-set survives across sessions (a derived index over
+      MemoryEntry, not session state) and is cleared only by the wrong-org or
+      BIL-2 purge (MEMS-2).
+      ACCEPTANCE: an unknown answered, declined, or assumed once is not asked
+      again in a later session; two distinct but embedding-near unknowns are
+      BOTH asked (neither is silently suppressed by a false match).
+
+open-questions: []

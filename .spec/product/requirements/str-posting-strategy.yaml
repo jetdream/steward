@@ -45,12 +45,18 @@ items:
       consume section (e).
 
   STR-4:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-22
     priority: P0
     flexibility: hard
     title: Two-layer guardrails
     statement: >-
-      Platform-level rules (non-negotiable: GR-1..GR-6) + org-level rules
-      (editable, section c). Org rules can only tighten, never loosen,
-      platform rules.
+      Platform-level rules (non-negotiable: GR-1..GR-6) + org-level rules.
+      Org-level rules are founder-stated taboos/styleRules that live in Memory —
+      the single source (MEM-1); the Strategy's section (c) is a rendered VIEW
+      of that active overlay, not a second store (DEC-22), and they are enforced
+      by the Memory rule/taboo overlay gate at the VAL stage (GR-8, PIPE-2),
+      co-located with — not performed by — STR-3. A direct edit to section (c)
+      — adding or changing an org rule, via the How-I-write view or chat —
+      routes to a Memory write (supersession, MEMS-2), not a StrategyDoc diff.
+      Org rules can only tighten, never loosen, platform rules.

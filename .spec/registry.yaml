@@ -42,6 +42,8 @@ prefixes:
   DS: product/requirements/ds-design-system.yaml
   NWS: product/requirements/nws-news-site.yaml
   BOT: product/requirements/bot-messenger-ingestion.yaml
+  # specs (behavior) — one spec register per capability, prefix = <REQ>S
+  MEMS: specs/mem-org-memory.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml

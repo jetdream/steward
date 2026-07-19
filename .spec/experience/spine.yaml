@@ -344,14 +344,15 @@ items:
       questions, never a bluff).
 
   EXP-19:
-    v: 1
+    v: 2
     kind: flow
     parent: EXP-3
     title: "Flow: redirect & adjust"
     body: |
       Plain-language feedback ("less formal", "never name donors") is
-      confirmed back before it binds (CHT-2) and written to Memory or
-      Strategy, versioned, undoable. The guided ADJUST (CHT-5) is the
+      confirmed back before it binds (CHT-2) and written to Memory — the
+      single source (MEM-1); the Strategy's org-rules section projects it
+      (DEC-22) — versioned, undoable. The guided ADJUST (CHT-5) is the
       default alternative to raw editing: the conversation asks what to
       change and offers the most relevant options given Memory + Strategy +
       this draft ("warmer? shorter? lead with the kids? different

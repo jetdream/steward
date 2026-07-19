@@ -190,13 +190,16 @@ items:
       email-only login).
 
   ARC-11:
-    v: 1
+    v: 2
     kind: c4-component
     title: Memory
     parent: ARC-3
     body: |
-      Org-memory module (MEM). Owns MemoryEntry read/write and pgvector
-      retrieval; feeds the content engine.
+      Org-memory module (MEM) — the shared read/write layer (PIPE-1 one-brain).
+      Owns MemoryEntry read/write and pgvector retrieval PLUS the always-on
+      active rule/taboo overlay it routes to the VAL gate (MEMS-3/MEMS-4,
+      PIPE-2); feeds the content engine. Also owns the MEM-2 interrupt-or-assume
+      decision and the per-org asked-set — never-ask-twice (MEMS-5/MEMS-6).
 
   ARC-12:
     v: 1
