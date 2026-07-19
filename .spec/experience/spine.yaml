@@ -652,7 +652,7 @@ items:
   # ───────────────────────── Screens ─────────────────────────
 
   EXP-38:
-    v: 1
+    v: 2
     kind: screen
     parent: EXP-16
     title: "Screen: the home"
@@ -664,13 +664,18 @@ items:
       Look-inside cluster — Knowledge / How I write / Plan & Published /
       Discoveries, each one click, never badged (P5) · Controls · +
       Compose. Mobile: same chrome collapsed to a top bar + sheet.
-      SUMMON MECHANICS (all views and trays, EXP-41..46): a summoned
-      surface opens as a focused panel OVER the home on desktop and a
-      full-screen takeover on phone — the chrome persists, one "back to
-      Steward" gesture returns, focus is trapped while open and restored
-      on dismiss. A summoned view is a mode of the home, never a sibling
+      SUMMON MECHANICS (all views and trays, EXP-41..46; v2 — DEC-19): a
+      summoned surface opens BESIDE the home on desktop — the stream stays
+      present (dimmed, place kept; the pinned zone is never dimmed) while
+      the elevated pane occupies the added width — and as a full-screen
+      takeover on phone. The chrome persists, one "back to Steward"
+      gesture returns, focus is trapped while open and restored on
+      dismiss. A summoned view is a mode of the home, never a sibling
       destination — a router-of-destinations implementation would rebuild
-      the shell DEC-18 abolished.
+      the shell DEC-18 abolished. MOBILE-FIRST (UX-1 v2, DEC-19): the
+      phone is the floor — every action here is one-handed on a phone;
+      desktop adds simultaneity (home + one pane), never density — the
+      stream never stretches into a dashboard.
       REGIONS (never reorder): (1) the PINNED zone — held-for-approval
       cards (GR-3), publish failures, channel re-auth; cannot scroll away,
       never batch-cleared; (2) the READY SPINE — the finite, ordered stack
@@ -697,14 +702,14 @@ items:
       is navigable, not a moving feed.
 
   EXP-39:
-    v: 1
+    v: 2
     kind: screen
     parent: EXP-16
     title: "Screen: the draft, opened"
     body: |
-      A Ready card expanded for deep review — a focused panel over the home
-      on desktop, a full-screen takeover on phone, one "back to Steward"
-      gesture. Master text and photo large; per-channel variant tabs (FB /
+      A Ready card expanded for deep review — a focused pane BESIDE the
+      home on desktop (the stream stays present, place kept — v2, DEC-19),
+      a full-screen takeover on phone, one "back to Steward" gesture. Master text and photo large; per-channel variant tabs (FB /
       IG / Threads / X) each with technical fit; the NEWS variant is the
       long-form article — headline, hero, Medium-length body — reviewed
       here with its donor-visible topic tags editable before publish

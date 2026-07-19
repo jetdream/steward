@@ -15,6 +15,29 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-19:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [UX-1, EXP-38, EXP-39]
+    title: Mobile-first priority + desktop summon-beside (simultaneity model)
+    statement: >-
+      Two decisions taken on review of the One-Home desktop rendering (AI-S-SC).
+      (1) MOBILE-FIRST is a recorded priority, not an assumption: the phone is the
+      FLOOR — every founder action is available one-handed in a phone browser; desktop
+      adds capability in the form of SIMULTANEITY, never exclusive features (UX-1 v2).
+      (2) DESKTOP SUMMON-BESIDE: on desktop a summoned surface (the opened draft, any
+      glass-wall view, Controls) opens BESIDE the home — the stream stays present
+      (dimmed, place kept, pinned zone never dimmed) while the elevated pane occupies
+      the added width; on phone the same summon is a full-screen takeover. The stream
+      itself never stretches into a dashboard: it stays a readable decision column, and
+      width is spent on the pane (the "simultaneity, not density" contract). This
+      REFINES the challenged r1 mechanics ("a summoned view is a mode of the home,
+      never a sibling destination" — beside-with-stream-present strengthens exactly
+      that guarantee); no new elements, serves edges, or states — recorded as a
+      clarifying v2 of EXP-38/EXP-39 without a new challenge round (conscious call,
+      altitude rule).
+
   DEC-18:
     v: 1
     date: 2026-07-19

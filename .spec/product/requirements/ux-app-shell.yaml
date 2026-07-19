@@ -14,11 +14,16 @@ intent: >-
 
 items:
   UX-1:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-19
     priority: P0
-    title: Responsive web
-    statement: Desktop + phone browser. No native mobile apps (scope.md).
+    title: Mobile-first responsive web
+    statement: >-
+      Mobile-first: the phone is the FLOOR — every founder action is
+      available one-handed in a phone browser. Desktop adds SIMULTANEITY
+      (a summoned pane beside the home, DEC-19), never exclusive
+      capability; the home column never stretches into a dashboard. No
+      native mobile apps (scope.md).
 
   UX-2:
     v: 2

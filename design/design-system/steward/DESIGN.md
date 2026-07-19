@@ -116,10 +116,14 @@ How I write · Plan & Published · Discoveries, each one click, pull-only,
 never badged (VAL-3) · **Controls** · **+ Compose** (an action, never a
 place). The home stream's regions keep one fixed order: pinned needs-you
 zone → the Ready spine → the conversation (composer never blank, CHT-5) →
-the caught-up terminus. Summoned views open as focused panels OVER the
-home on desktop and full-screen takeovers on phone — the chrome persists,
-one "back to Steward" gesture returns, focus is trapped while open and
-restored on dismiss; a summoned view is a mode of the home, never a
-sibling destination. Mobile: the same chrome as a compact top bar; views
-as sheets. Light theme only in v1; dark mode is a future sibling of
+the caught-up terminus. Summoned views open BESIDE the home on desktop
+(DEC-19) — the stream stays present, dimmed with its place kept, the
+pinned zone never dimmed — and as full-screen takeovers on phone; the
+chrome persists, one "back to Steward" gesture returns, focus is trapped
+while open and restored on dismiss; a summoned view is a mode of the
+home, never a sibling destination. Mobile-first (UX-1 v2): the phone is
+the floor — everything is one-handed there; desktop adds simultaneity
+(home + one pane), never density — the stream never stretches into a
+dashboard. Mobile: the same chrome as a compact top bar; views as
+sheets. Light theme only in v1; dark mode is a future sibling of
 `tokens.css`, never a component fork.
