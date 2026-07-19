@@ -33,6 +33,14 @@ items:
       a plain-language description of what it is and why it fits this org and
       its audience.
     acceptance: A new org has a non-empty, on-mission topic set without the founder authoring one.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by TOPS-1 (approved, challenge r1-r2 pass): grounded proactive
+        identification with a deterministic evidence-pointer guard + catch-rate,
+        thin-Memory graceful degradation (MEMS-4), DM-13 v2 evolution retention.
+        Realization pending code.
+      against: [TOPS-1@1]
 
   TOP-2:
     v: 1
@@ -50,6 +58,14 @@ items:
       the sensitive-topic classifier (GR-3) and the external-autonomy cap
       (EXT-3) always apply.
     acceptance: Two orgs with the same cause but different topics get materially different, on-strategy discovery.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by TOPS-2 (approved): the structured research-strategy package
+        driving EXT-1 discovery per topic, refined by EXT-5 triage; citation
+        (GR-5) / sensitive (GR-3) / cap (EXT-3) apply downstream. Realization
+        pending code.
+      against: [TOPS-2@1]
 
   TOP-3:
     v: 1
@@ -66,6 +82,14 @@ items:
       Proposals are grounded and never manipulative: engagement comes from real
       stories and honest framing within GR-1, VAL-1, and VAL-4.
     acceptance: A proposal names its reason and the org-specific evidence behind it; declining one durably stops its re-proposal (MEM-2).
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by TOPS-3 (approved): proactive, rate-limited, honest proposals
+        (GR-1/VAL-1/VAL-4) with deterministic declined-topic suppression; the
+        founder-facing card is a fast-follow experience surface (TOPS
+        open-question). Realization pending code.
+      against: [TOPS-3@1]
 
   TOP-4:
     v: 1
@@ -81,3 +105,11 @@ items:
       reshape, or retire topics, like the Strategy. Auto-drafted first — never a
       blank page (VAL-6).
     acceptance: The same topic edit changes both what internal content is planned and what external discovery looks for.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by TOPS-4 (approved): the single-source agenda read by Strategy
+        section (a) (STRS-1) + the planner (GEN-1 v4) + external research
+        (TOPS-2/EXT-1), founder-editable; the agenda view is a fast-follow
+        surface (TOPS open-question). Realization pending code.
+      against: [TOPS-4@1]

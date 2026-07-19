@@ -4,6 +4,8 @@ title: Data Model
 status: approved
 # Approved 2026-07-18 (architecture-approval pass). Challenger pass:
 # specs/challenges/architecture-2026-07-18-r1.md (F3 state-machine split applied).
+# Amended 2026-07-19: DM-3 → v2 (DEC-22, section (c) is a view) and DM-13 Topic
+# added then → v2 (DEC-23), reviewed via the STR + TOP spec challenges.
 
 intent: >-
   Entity semantics and relationships, seeded from PRD §9. Once @shared types
@@ -182,12 +184,16 @@ items:
       beyond the linked founder's own handle.
 
   DM-13:
-    v: 1
+    v: 2
     kind: data-entity
     title: Topic
     body: |
-      A content topic / editorial theme (TOP, DEC-23). Fields: description,
-      why-it-fits, provenance (system-derived | founder-added), a research
-      strategy (TOP-2), and status (proposed | active | retired). The active
-      set is the editorial agenda (TOP-4). Owned by Org (DM-1); feeds Strategy
-      section (a) (STR-1) and the Radar (EXT-1).
+      A content topic / editorial theme (TOP, DEC-23). Fields: description;
+      why-it-fits + a resolvable Memory/Radar evidence pointer (TOPS-1
+      grounding); provenance (system-derived | founder-added); a research
+      strategy (TOP-2); status (proposed | active | retired); and
+      supersededAt/supersededBy for evolution — a re-described topic supersedes
+      its prior form, retained not overwritten (VAL-3), like DM-2. Hard-deleted
+      only on the wrong-org purge (MEMS-2) or a BIL-2 account deletion (SEC-4).
+      The active set is the editorial agenda (TOP-4). Owned by Org (DM-1); feeds
+      Strategy section (a) (STR-1) and the Radar (EXT-1).

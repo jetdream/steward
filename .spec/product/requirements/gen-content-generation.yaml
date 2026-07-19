@@ -11,14 +11,17 @@ intent: >-
 
 items:
   GEN-1:
-    v: 3
-    decided-by: DEC-20
+    v: 4
+    decided-by: DEC-23
     priority: P0
     serves: [G-1, G-2, G-4, G-5]
-    depends: [MEM-1, STR-1, EXT-1, EXT-5]
+    depends: [MEM-1, STR-1, EXT-1, EXT-5, TOP-4]
     title: Rolling 4-week calendar
     statement: |
-      Per-org calendar drawing from the content taxonomy:
+      Per-org calendar. Each slot pairs a content TYPE (from the taxonomy below)
+      with a SUBJECT/theme from the editorial agenda (TOP-4, the system-maintained
+      content topics) — the agenda supplies WHAT to talk about, the taxonomy HOW
+      to frame it (v4, DEC-23). Drawing from the content taxonomy:
       - Internal: Mission (what value, how, why it matters) · Founder story ·
         Case studies (people/orgs benefited) · Own events, virtual and
         physical · People (employees & volunteers).

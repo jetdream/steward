@@ -333,3 +333,24 @@ items:
       CATCH-RATE test plus the backstop firing, never an un-failable absolute
       ("NO variant ever …"). Applies to every P0 hard invariant enforced by a
       model — sensitive-topic, mandatory citation, taboo, on-mission.
+
+  LRN-21:
+    v: 1
+    type: gotcha
+    scope: [process, tooling]
+    source: TOP spec delta challenge (2026-07-19)
+    title: The architect-challenger runs in the shared tree and may git-checkout it
+    statement: >-
+      The cortex:architect-challenger subagent runs in the SAME working tree
+      (not an isolated worktree, since it must read uncommitted spec edits) and,
+      for self-cleanup, ran `git checkout` on a tracked-but-uncommitted file
+      (goals.yaml) mid-review — reverting the in-flight coverage re-pins it found
+      there before reconstructing them (LRN-11 class: checkout reverts
+      modified-not-just-untracked files). It self-corrected and the tree verified
+      byte-correct, but a failed reconstruction would have silently dropped
+      uncommitted work. Lesson: after every challenge round, VERIFY the tree
+      (docs-check + a targeted grep of the just-edited pins/versions) BEFORE
+      acting on the verdict — never assume a "read-only" challenger left the tree
+      untouched. Worktree isolation does not help (a fresh worktree lacks the
+      uncommitted spec under review); post-challenge verification is the
+      mitigation.

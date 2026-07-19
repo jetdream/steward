@@ -1,0 +1,177 @@
+kind: spec
+prefix: TOPS
+title: Content Topics — behavior
+status: approved
+intent: >-
+  Exact behavior of the Content-Topics engine (register top-content-topics.yaml,
+  DEC-23): how the system proactively identifies topics (TOP-1), holds a
+  per-topic research strategy that drives external discovery (TOP-2), gently
+  proposes topics (TOP-3), and maintains the shared editorial agenda that feeds
+  internal content and external research (TOP-4). This spec covers the ENGINE
+  (backend + pipeline); the founder-facing surfaces — the topic-proposal card
+  and the agenda view — need experience-spine elements and are a fast-follow
+  (named in open-questions), mirroring MEM-3's deferred UI.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-1, DM-13, PIPE-1, ARC-26, ARC-16, SEC-4]
+depends-on: [MEMS]
+governed-by: [GR-1, GR-3, GR-5]
+assurance: standard
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single 3-lens pass → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/top-content-topics-2026-07-19-r2.md
+  summary: >-
+    r1 (single thorough challenger, three lenses) found 1 HIGH — GEN-1 (the
+    internal-planning agenda consumer) was unreconciled, DEC-23 having reshaped
+    STR-1/EXT-1 but not GEN-1 (an LRN-19 straggler) — plus six mediums and three
+    lows. Resolved: GEN-1 → v4 (the planner pairs a taxonomy type with an agenda
+    subject, TOP-4; DEC-23 binds it; G-1/G-2/G-4/G-5 coverage re-pinned), DM-13 →
+    v2 (evolution + evidence pointer), thin-Memory graceful degradation (MEMS-4),
+    the LRN-20 "never invents" reframe (deterministic evidence-pointer guard +
+    catch-rate), deterministic declined-topic suppression, the cold-start
+    bootstrap, and the section-(a) read-through / BIL-2-SEC-4 / provenance lows.
+    r2 (delta) verified all fixes with a clean LRN-19 agenda single-source sweep
+    and passed with three one-line fixes applied in the same change.
+
+design: >-
+  Module: @backend/topics (ARC-26) — the editorial-agenda engine. Topics are
+  Topic entities (DM-13) in Postgres (ADR-0002), owned by Org (DM-1).
+  Identification, research-strategy authoring, and proposal generation are LLM
+  steps in the shared pipeline (PIPE-1) via the ADR-0003 port, grounded in
+  Memory (MEMS retrieveContext — cause profile, mission, programs, people,
+  audience) plus the calendar/season and the external landscape (ARC-16 /
+  EXT-1). A topic's research strategy is the query/source/relevance package the
+  Radar (EXT-1) consumes; the strategy is refined by Discoveries triage feedback
+  (EXT-5). The active agenda feeds Strategy section (a) (STRS-1), the planner
+  (GEN-1), and external research (TOP-2/EXT-1). Proposals surface in the
+  colleague-moves-first journey (EXP-4) — a proactive push, NOT the pull-only
+  Discoveries feed (EXT-5). Boundaries: honest engagement only — GR-1 (no
+  outcome promises), VAL-1 (process not leads), VAL-4 (real over synthetic);
+  external content cited (GR-5) and sensitive-topic gated (GR-3). All model
+  calls logged per org (PIPE-1, OPS-1).
+  COLD START: a brand-new org's FIRST identification run uses Memory + calendar
+  only (no agenda yet → no external-landscape input); its cause-level topics
+  seed the first Radar run (EXT-1), whose results and triage (EXT-5) refine
+  subsequent runs. The TOP-1↔EXT-1 relationship is a bootstrapping feedback
+  loop grounded in Memory, not a deadlock.
+
+data: >-
+  DM-13 Topic (description, why-it-fits, provenance system-derived|founder-added,
+  research strategy, status proposed|active|retired) owned by DM-1 Org. The
+  editorial agenda is the active-Topic set (a derived view), not a separate
+  entity. Declined-proposal suppression reuses the Memory asked-set (MEMS-6);
+  triage-feedback signals live in Memory (MEM-1). Concrete field lists live in
+  @shared types at implementation.
+
+interfaces: >-
+  @backend/topics (ARC-26) exposes: identifyTopics(org) [scheduled — refreshes
+  the agenda]; getAgenda(org) -> active topics [callers: STR, GEN]; strategyFor(
+  topic) -> the research package the Radar consumes [caller: EXT]; proposeTopics(
+  org) -> gated proposals [caller: the proactive surface]; editAgenda(change) ->
+  adopt | adjust | retire, writing taste to Memory [caller: the agenda view /
+  chat]. tRPC/WS procedures for the fast-follow proposal card + agenda view live
+  in code once those surfaces are designed.
+
+items:
+  TOPS-1:
+    v: 1
+    title: Topic identification
+    implements: [TOP-1]
+    statement: >-
+      A scheduled run derives and maintains the org's topic set, GROUNDED in
+      Memory (cause profile, mission, programs, people, audience — via MEMS
+      retrieveContext) plus calendar/season and the external landscape (EXT-1).
+      Every persisted Topic (DM-13) carries a description and a why-it-fits
+      rationale backed by a RESOLVABLE Memory/Radar evidence pointer — a topic
+      with no evidence pointer is not persisted (a deterministic guard) — and
+      rationale quality is held by a labeled catch-rate test on an adversarial
+      fabricated-rationale set (grounding is an LLM step, so this pairs a
+      deterministic gate with a catch-rate, not an un-failable "never invents" —
+      LRN-20). Topics EVOLVE: a run may add, re-describe, or retire a topic; a
+      re-description SUPERSEDES the prior form, retained not overwritten (VAL-3,
+      DM-13 supersededBy), hard-deleted only on the wrong-org purge (MEMS-2) or
+      a BIL-2 account deletion (SEC-4, org-confidential data). Identification is
+      per-org.
+      THIN MEMORY (brand-new org) — consistent with MEMS-4: the run returns
+      CAUSE-LEVEL topics, flags their confidence as thin, and leans on the
+      interview (INT) to sharpen them; it does NOT fabricate org-specific
+      evidence to clear a specificity bar.
+      ACCEPTANCE: every persisted topic has a resolvable evidence pointer; a
+      thin-Memory org gets a non-empty cause-level topic set flagged thin (no
+      fabricated specifics); two orgs with the same cause but different
+      programs/people get different topics as Memory deepens.
+  TOPS-2:
+    v: 1
+    title: Per-topic research strategy
+    implements: [TOP-2]
+    statement: >-
+      Each topic carries a RESEARCH STRATEGY — a structured package, not a bare
+      keyword: query formulations, source/feed selection (EXT-4 feeds), and
+      recency + locality + credibility + relevance/engagement filters. The Radar
+      (EXT-1) discovers AGAINST this strategy per topic; discovery is never a
+      single static cause seed. The strategy is REFINED by Discoveries triage
+      feedback (EXT-5: worth-a-post / save / not-for-us tunes the topic's future
+      queries and thresholds). Every external candidate carries its source for
+      mandatory citation (GR-5); the sensitive-topic classifier (GR-3) and the
+      external-autonomy cap (EXT-3) always apply downstream.
+      ACCEPTANCE: two orgs whose agendas differ produce materially different,
+      on-strategy discovery for the same cause; a "not-for-us" triage verifiably
+      shifts that topic's subsequent discovery away from the rejected vein.
+  TOPS-3:
+    v: 1
+    title: Topic proposals — proactive, calm, honest
+    implements: [TOP-3]
+    statement: >-
+      The engine proposes topics as a PROACTIVE push in the colleague-moves-first
+      journey (EXP-4), never in the pull-only Discoveries feed (EXT-5). Each
+      proposal is RATE-LIMITED and calm (never spammy — VAL-6, R-10) and carries
+      a REASON (VAL-5) naming the org-specific evidence behind it ("you run three
+      after-school programs but haven't posted about outcomes — a 'student wins'
+      theme would…"). The founder DISPOSES: adopt (topic → active agenda),
+      adjust (re-describe), or decline; each disposition writes taste to Memory
+      (MEM-1). A DECLINED topic is not re-proposed: it is recorded in the
+      never-ask-twice asked-set (MEMS-6) keyed by a DETERMINISTIC
+      canonical-subject string (a structured unknown — exact, durable
+      suppression, NOT MEMS-6's bias-to-ask free-form path, which would
+      re-propose on uncertainty); declined topics extend the asked-set with a
+      new structured-unknown kind (per MEMS design-assumption (c)), alongside the
+      ONB-3 interview gaps MEMS-6 already keys. Proposals are grounded and NEVER manipulative:
+      engagement is sought only through real stories and honest framing. Proposal
+      text is founder-facing (not published, so the PIPE-2 publish guardrail
+      chain does not gate it) — GR-1 (no outcome promises) and VAL-1 (process not
+      leads) bind the proposal generator as authoring constraints, VAL-4 as
+      steering.
+      ACCEPTANCE: a proposal names its reason + org-specific evidence and makes
+      no outcome promise (GR-1); declining one durably and EXACTLY stops its
+      re-proposal across sessions; proposal cadence stays within the rate limit
+      even when many candidate topics exist.
+  TOPS-4:
+    v: 1
+    title: The editorial agenda — one shared, founder-owned source
+    implements: [TOP-4]
+    statement: >-
+      The active-Topic set is the EDITORIAL AGENDA: the SINGLE shared source read
+      by (a) internal planning — the Strategy's section (a), which persists soft
+      editorial preferences and READS THROUGH the agenda's topics without storing
+      them (STRS-1), and the planner's subject choice (GEN-1 v4) — and
+      (b) external research (TOPS-2 / EXT-1). There is no second copy: section (a)
+      and the planner READ the agenda, they do not restate it (mirrors the DEC-22
+      single-source discipline). It is explicit and FOUNDER-EDITABLE (VAL-3): adopt, reshape,
+      or retire topics via the agenda view or chat, each edit writing to Memory
+      (MEM-1) and binding the next identification/planning run immediately. The
+      agenda is auto-drafted first — never a blank page (VAL-6).
+      ACCEPTANCE: the same topic edit changes both what internal content is
+      planned (GEN-1 subject) and what external discovery looks for (EXT-1); no
+      code path stores the topic list anywhere but the Topic entities (one
+      source).
+
+open-questions:
+  - >-
+    Founder-facing surfaces are a FAST-FOLLOW experience pass, not in this
+    backend spec: (1) the topic-proposal card in the colleague-moves-first
+    journey (EXP-4, a sibling of the PRO-2 campaign-proposal card) for TOP-3;
+    (2) the agenda view — most likely surfaced as the editable section (a) of
+    How I write (EXP-42) — for TOP-4. Both need approved experience-spine
+    elements before a UI spec (method/ui.md), like MEM-3's deferred Knowledge
+    browser.

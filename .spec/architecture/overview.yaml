@@ -5,6 +5,8 @@ status: approved
 # Approved 2026-07-18 (architecture-approval pass). Challenger pass:
 # specs/challenges/architecture-2026-07-18-r1.md (F1–F3 resolved in-change).
 # Backed by ADR-0002 (stack), ADR-0003 (portability), ADR-0004 (news renderer).
+# Amended 2026-07-19: ARC-11 → v2 (MEM surfaces) and ARC-26 Content Topics added
+# (DEC-23), reviewed via the MEM + TOP spec challenges.
 
 intent: >-
   Technical module map for the core loop described in product/overview.md.
@@ -346,3 +348,18 @@ items:
       post-read triage dispositions (worth-a-post / save-for-later /
       not-for-us, DEC-20) and the saved shelf. Pull-only: never badged or
       counted (VAL-6, G-3).
+
+  ARC-26:
+    v: 1
+    kind: c4-component
+    title: Content Topics
+    parent: ARC-3
+    body: |
+      Editorial-agenda engine (TOP, DEC-23). Proactively identifies content
+      topics (TOP-1), maintains each topic's research strategy (TOP-2) that
+      drives the External Radar (ARC-16, EXT-1), generates gentle topic
+      proposals (TOP-3), and owns the shared, founder-editable agenda (TOP-4,
+      Topic entities DM-13) that feeds Strategy section (a) (ARC-14) and the
+      Content Engine's planner (ARC-15, GEN-1). Founder-facing surfaces (the
+      proposal card in the colleague-moves-first journey, the agenda view in
+      How I write) are a fast-follow experience addition.
