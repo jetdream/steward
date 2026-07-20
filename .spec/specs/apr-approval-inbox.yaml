@@ -4,9 +4,9 @@ title: Approval surface (Ready) & Composer — behavior
 status: approved
 challenge:
   date: 2026-07-19
-  by: cortex:architect-challenger (r1 single 4-lens pass → r2 delta)
+  by: cortex:architect-challenger (r1 4-lens → r2 delta → r3 delta [APRS-1 v3 QA gate])
   verdict: pass
-  record: .spec/specs/challenges/apr-approval-inbox-2026-07-19-r2.md
+  record: .spec/specs/challenges/apr-approval-inbox-2026-07-19-r3.md
   summary: >-
     r1 FAILED on one high — APRS-1 claimed approvals are "undoable until publish",
     contradicting DM-5 (recall only while a variant is PENDING; DM-5 invariant 2
@@ -23,7 +23,11 @@ challenge:
     passed; the composer "no authorship bypass" guarantee held throughout. Noted
     follow-up (non-blocking, architecture layer): the ARC/PIPE-2 diagrams could
     draw the composer's APR -> content-engine entry edge — honest today via DM-5's
-    composed-entry + PIPE-2 stage reuse.
+    composed-entry + PIPE-2 stage reuse. r3 (delta): APRS-1 -> v3 added the cohort-1
+    QA gate (a qaStatus=pending-review draft is withheld from the readyStack until
+    an operator clears it, DM-5 v2 / OPSS-1); verified no unreviewed draft can
+    auto-publish at TL1, additive/upstream of the disposition + veto logic; an
+    acceptance clause for the exclusion was added in-change; passed.
 intent: >-
   Exact behavior of where 90% of the founder's non-chat time lives (register
   apr-approval-inbox.yaml): the Ready disposition spine (APR-1), founder-selected
@@ -88,10 +92,13 @@ interfaces: >-
 
 items:
   APRS-1:
-    v: 2
+    v: 3
     title: Ready — the disposition spine
     implements: [APR-1]
     statement: >-
+      COHORT-1 QA GATE: a draft with qaStatus = pending-review (DM-5, the OPSS-1
+      operator-QA gate) is WITHHELD from this spine until an operator clears it;
+      once the per-org QA dial is off (qaStatus n/a) every draft flows normally.
       The finite, ordered Ready spine (EXP-2/EXP-16) shows each draft with
       per-channel variant PREVIEW and FIT INDICATORS (the GEN-5 verdicts on DM-5).
       Per card the dispositions are: APPROVE (all variants, one tap -> ContentItem
@@ -119,7 +126,10 @@ items:
       kill switch (AUT-3) or, once PUBLISHED under the default TL1 model, the 24h
       pull (native delete / news unpublish). Every disposition writes to Memory
       (the learning loop, APRS-3).
-      ACCEPTANCE: a card shows each variant's fit verdict (GEN-5); one-tap Approve
+      ACCEPTANCE: a card shows each variant's fit verdict (GEN-5); a pending-review
+      draft (the OPSS-1 QA gate, qaStatus pending-review) is withheld from the spine
+      until an operator clears it, and with the per-org QA dial off (qaStatus n/a)
+      drafts flow to the spine normally; one-tap Approve
       advances the item to approved; a still-PENDING approval recalls in place
       (approved -> draft), a SCHEDULED variant does NOT (its reversal is AUT-3
       pause/kill or the TL1 veto); the TL1 veto model is founder-selected (default

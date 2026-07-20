@@ -19,6 +19,15 @@ items:
     statement: >-
       Gratitude and impact posts are first-class overlay categories in every
       org's mix from week 1.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by STWS-1 (approved, challenge r1 pass): first-class from week 1,
+        realized by the GENS-1 ≥1/4wk plan-time overlay quota (the P0 guarantee
+        stands on this alone), with PROS-3 ask-hygiene (P1) complementary; impact
+        reports real past impact, no outcome promise (GR-1/VAL-4). Realization
+        pending code.
+      against: [STWS-1@1]
 
   STW-2:
     v: 1
@@ -30,3 +39,12 @@ items:
       At a campaign end date or a founder's one-tap "we hit a milestone,"
       generate a thank-you + impact-recap package and request needed material
       via PRO-1.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by STWS-2 (approved): campaign-end (auto, PROS-4 budget-gated) or
+        founder one-tap (founder-initiated) triggers a thank-you + impact-recap
+        package (GENS) + a PRO-1 material request (PROS-1); no outcome promise
+        (GR-1). P1; campaign-end-date data source is a noted open-question.
+        Realization pending code.
+      against: [STWS-2@1]

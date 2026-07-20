@@ -78,7 +78,7 @@ items:
       tags, provenance (upload vs harvested); the media library.
 
   DM-5:
-    v: 1
+    v: 2
     kind: data-entity
     title: ContentItem
     body: |
@@ -120,6 +120,10 @@ items:
       to the news destination (the one channel Steward solely controls);
       social variants are deleted natively on their platform, so their
       delivery state ends at `published`.
+      A cohort-1 OPERATOR-QA GATE (OPSS-1): a `qaStatus` flag (pending-review |
+      cleared | n/a) withholds a draft from the founder's Ready (APRS-1) until an
+      operator clears it; n/a (the default) once the per-org QA dial is off, so it
+      is invisible outside cohort-1 oversight.
 
   DM-6:
     v: 1
@@ -168,11 +172,15 @@ items:
       P1 (GEN-6).
 
   DM-11:
-    v: 1
+    v: 2
     kind: data-entity
     title: Subscription
     body: |
-      Stripe linkage (BIL-1).
+      Stripe linkage (BIL-1). Carries the subscription STATUS that gates
+      publishing (PUBS-1): PUBLISHING-ELIGIBLE = active OR grace (payment-failure
+      grace, publishing unaffected — EXP-34); NOT eligible = lapsed (grace expired)
+      OR cancelled (the durable BILS-2 stop, reversed only by re-subscribe). Plus a
+      refund event/field for the G-1 refund-rate metric (BILS-1).
 
   DM-12:
     v: 1

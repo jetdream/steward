@@ -1,0 +1,136 @@
+kind: spec
+prefix: OPSS
+title: Internal Operations Console — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single pass → r2/r3/r4 delta)
+  verdict: pass
+  record: .spec/specs/challenges/ops-console-2026-07-19-r4.md
+  summary: >-
+    r1 FAILED on two highs: (1) the G-2 measurement boundary was BACKWARDS — silent
+    operator QA INFLATES G-2 (founder sees only cleaned drafts) rather than leaving
+    it clean; and (2) the "hold before Ready" gate had no data home. Fixed: the QA
+    hold is now a qaStatus flag on ContentItem (DM-5 v2) that APRS-1 v3 excludes from
+    the readyStack (separately re-challenged, APR approved at v3); the G-2 estimator
+    reframed honestly — an operator-touched draft COUNTS as non-autonomous (kept in
+    the denominator, never credited/dropped; computed on the pre-QA draft), with G-2's
+    outcome note matched (r3 caught the note still saying "excluded" — the
+    cream-skimming inflation — fixed r4). constrained-by += DM-5/6/7/8; depends-on +=
+    APRS; operator-access + cross-org confidential-data (SEC-4) recorded as a deferred
+    SEC open-question (SEC-7 is founder auth, not operator auth). r2/r3 FAIL → r4 PASS.
+intent: >-
+  Exact behavior of the internal ops console (register ops-console.yaml, OPS-1):
+  per-org draft QA with a dial (silent for cohort 1), generation/publish failure
+  queues, interview-transcript review, external-radar precision review, and
+  account health. It substitutes PROCESS for headcount (R-8): operators silently
+  guarantee quality for cohort 1 (R-5) while the autonomy metrics (G-2) earn the
+  right to dial oversight down. Internal-only and deliberately thin; not a
+  founder-facing surface.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-5, DM-6, DM-7, DM-8, PIPE-1, ARC-22, EXP-10, EXP-37, EXP-50]
+depends-on: [GENS, PUBS, APRS]
+assurance: standard
+
+design: >-
+  The console is the internal ops module @backend/ops + a deliberately
+  low-fidelity operator UI (ARC-22, EXP-10 journey / EXP-37 flow / EXP-50 console;
+  design investment deferred until the founder-facing spine is built). It reads
+  the system's own logs and queues — it originates no org content. Model calls are
+  logged per org (PIPE-1) for QA + cost tracking. The DRAFT-QA GATE (OPSS-1) is the
+  behavior-significant piece: for cohort 1, operators SILENTLY review generated
+  drafts BEFORE they reach the founder's Ready surface (R-5 quality floor), behind
+  a DIAL that turns the oversight down per org as G-2 (approval-without-edit) earns
+  it. Measurement boundary: operator QA is PRE-founder and is NOT a founder edit —
+  G-2 measures the FOUNDER's dispositions on what reaches Ready, so operator QA
+  catching a broken draft does not pollute the metric (it changes what the founder
+  sees, upstream of the measurement point). The rest (OPSS-2) is monitoring:
+  generation/publish failure queues (PUB-1 failures retry + alert operators;
+  the founder is bothered only when action is needed, MEM-2), interview-transcript
+  review (INT), external-radar precision review (R-4 — the highest reputation-risk
+  surface, EXT), and account health. LRN-20: the QA-dial state and the
+  failure-queue routing are DETERMINISTIC; the QA review itself and the radar-
+  precision sampling are HUMAN operator judgment, not automated gates.
+
+data: >-
+  The console is a read/operate view over existing entities + logs: ContentItem
+  drafts (DM-5) for the QA gate, per-org model-call logs (PIPE-1), publish/
+  generation failure records (PUB-1), ChatSession transcripts (DM-6/DM-7) for
+  interview review, ExternalItem candidates (DM-8) for radar-precision review. The
+  per-org QA-dial setting is a small operator-config value. No new domain entity.
+
+interfaces: >-
+  @backend/ops (ARC-22) exposes (operator-only): qaQueue(org) -> drafts pending
+  silent review [OPSS-1; gated by the per-org dial]; setQaDial(org, level) ->
+  adjust oversight [OPSS-1]; failureQueue() -> generation/publish failures with
+  retry [OPSS-2, PUB-1]; transcripts(org) / radarPrecision(org) -> review surfaces
+  [OPSS-2, INT / R-4]; accountHealth(org). All operator-only (the operator-access
+  posture + cross-org confidential-data access is a deferred SEC concern —
+  open-questions; distinct from SEC-7 founder auth), never founder-facing. Exact
+  signatures live in code.
+
+items:
+  OPSS-1:
+    v: 1
+    title: Per-org draft QA gate — silent for cohort 1, dialed down as trust is earned
+    implements: [OPS-1]
+    statement: >-
+      For cohort 1, operators SILENTLY review generated drafts BEFORE they reach
+      the founder's Ready surface (APR) — the R-5 quality floor that substitutes
+      process for headcount (R-8). THE HOLD lives on the draft as a `qaStatus` flag
+      (DM-5: pending-review | cleared | n/a): a pending-review draft is WITHHELD
+      from the founder's Ready (APRS-1 excludes it) until an operator clears it. A
+      per-org DIAL controls the oversight (qaStatus n/a = off) and is turned DOWN as
+      the org's autonomy metrics earn the right; the dial state is a DETERMINISTIC
+      operator setting. G-2 CONFOUND (honest, VAL-3/LRN-20): silent operator QA
+      would INFLATE G-2 (approval-without-edit) if measured at the founder point —
+      the founder sees only cleaned drafts and edits fewer, so the rate would
+      reflect system + hidden operator labor, not autonomy alone, exactly while the
+      dial (turned down "as G-2 earns it") depends on that signal. To keep the
+      autonomy signal honest, an operator-QA intervention COUNTS as a NON-autonomous
+      outcome — a caught would-be edit: the draft is NOT dropped from the
+      denominator and NOT credited as approved-without-edit (excluding it would just
+      re-inflate by keeping only the clean cream). Equivalently, G-2 for cohort-1 is
+      computed on the PRE-QA draft AS IT WOULD HAVE REACHED THE FOUNDER, so a draft
+      an operator fixed counts AGAINST the rate. The confound is controlled and
+      surfaced (VAL-3/LRN-20), not asserted away. The QA REVIEW itself
+      is human judgment (not an automated gate); operator-authenticated (operator
+      access posture is a deferred SEC concern — open-questions), never
+      founder-facing.
+      ACCEPTANCE: with the dial at cohort-1 level, a generated draft (qaStatus
+      pending-review) is withheld from the founder's Ready until an operator clears
+      it; dialing oversight off (qaStatus n/a) lets drafts flow to Ready without
+      review; the G-2 rate for a cohort-1 org counts an operator-touched draft as
+      NON-autonomous (never dropped, never credited) — computed on the pre-QA draft
+      as it would have reached the founder, never on the post-QA drafts the founder
+      sees.
+  OPSS-2:
+    v: 1
+    title: Failure queues, review surfaces, account health
+    implements: [OPS-1]
+    statement: >-
+      The console surfaces: GENERATION/PUBLISH FAILURE QUEUES — PUB-1 (and
+      generation) failures retry with backoff and alert OPERATORS; the founder is
+      alerted only when action is needed (MEM-2); INTERVIEW-TRANSCRIPT review (INT,
+      DM-6/DM-7); EXTERNAL-RADAR PRECISION review (R-4 — the highest
+      reputation-risk surface, sampling EXT candidates DM-8); and ACCOUNT HEALTH.
+      All are internal, operator-only (the operator-access posture is a deferred
+      SEC concern — open-questions), and deliberately
+      low-fidelity (EXP-50). LRN-20: failure-queue routing/retry is deterministic;
+      transcript + radar-precision review are human sampling.
+      ACCEPTANCE: a generation/publish failure lands in the operator queue with
+      retry and does not alert the founder unless action is needed; interview
+      transcripts and a sampled radar-precision view are reviewable; none of these
+      surfaces is founder-facing.
+
+open-questions:
+  - >-
+    OPERATOR-ACCESS POSTURE is a deferred SEC concern: the console is operator-only
+    and reads ALL orgs' drafts/transcripts/candidates, which SEC-4 marks org
+    confidential — the operator role, its authn/authz, and the cross-org
+    confidential-data-access posture need a SEC element (SEC-7 is FOUNDER auth and
+    does not cover it). Decide before cohort-1 operators touch real org data.
+  - >-
+    The operator UI is deliberately low-fidelity (EXP-50) with design investment
+    DEFERRED until the founder-facing spine is built (EXP-10) — so no method/ui.md
+    pass is due yet; this is a conscious deferral, not a gap.

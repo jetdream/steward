@@ -30,9 +30,11 @@ items:
         Covered by PUBS-1 (approved, challenge r1 pass): official-API-only
         delivery (GR-6) at engagement-optimal ±5 min, posts only on a HEALTHY
         ChannelConnection (DM-14/ONBS-4), retry+operator alert (OPS-1),
-        founder-only-when-needed (MEM-2), AUT-3 kill/pause + AUT-1 veto honored;
-        asymmetric news destination. Realization pending code.
-      against: [PUBS-1@1]
+        founder-only-when-needed (MEM-2), AUT-3 kill/pause + AUT-1 veto honored,
+        and the account-level active-Subscription gate (PUBS-1 v2 — a cancelled org
+        does not publish, BILS-2); asymmetric news destination. Realization pending
+        code.
+      against: [PUBS-1@2]
 
   PUB-2:
     v: 1

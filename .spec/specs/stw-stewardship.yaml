@@ -1,0 +1,119 @@
+kind: spec
+prefix: STWS
+title: Stewardship Content Loop — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence + LRN-19/22 sweep)
+  verdict: pass
+  record: .spec/specs/challenges/stw-stewardship-2026-07-19-r1.md
+  summary: >-
+    r1 passed with no surviving high. The no-double-ownership claim verified —
+    STW-1 has exactly one implementer (STWS-1); GENS-1 implements GEN-1 and
+    provides the ≥1/4wk quota as a plan-time slot designation (week-1 guarantee
+    intact); PROS-3 genuinely flags asking-without-reporting. Two one-line mediums
+    applied: STWS-2's campaign-end-date auto recap named a high-priority PROS-4
+    budget consumer (the founder one-tap stays founder-initiated, not budget-gated);
+    the campaign-end-date sourced from the last campaign-tagged ContentItem
+    delivery date (DM-5) with a first-class-Campaign data-model open-question. Lows:
+    STWS-1's P0 guarantee scoped to the GENS-1 quota alone (PROS-3 hygiene P1
+    complementary).
+intent: >-
+  Exact behavior of the stewardship loop (register stw-stewardship.yaml): gratitude
+  and impact as FIRST-CLASS overlay categories in every org's mix from week 1
+  (STW-1) and milestone recaps (STW-2, P1). The donor-lifecycle logic that makes
+  "for nonprofits" a moat and feeds the north-star stewardship rhythm (G-4). STW-1
+  is REALIZED by the GENS-1 mix quota + PROS-3 ask-hygiene; STW-2 by a GENS package
+  + a PRO-1 material request.
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-5, ARC-15, EXP-2, EXP-24]
+depends-on: [GENS, PROS]
+governed-by: [GR-1]
+assurance: standard
+
+design: >-
+  Stewardship is the donor-lifecycle logic in the Content Engine module (ARC-15,
+  GEN + STW): gratitude/impact reporting as first-class content, the north-star
+  rhythm (G-4). It owns NO separate planner — STW-1 is REALIZED by GENS-1's mix
+  quota (≥1 impact/gratitude per rolling 4-week window as a PLAN-TIME slot
+  designation, overlays woven through the mix) so the overlay is first-class from
+  WEEK 1 (a brand-new org's first plan already carries it), and PROS-3 ask-hygiene
+  keeps the realized rhythm honest when the founder's dispositions drift. STW-2
+  (P1) milestone recaps: a campaign END DATE (a deterministic date trigger, DM-5)
+  or a founder one-tap "we hit a milestone" generates a thank-you + impact-recap
+  PACKAGE via the content engine (GENS) and requests any needed material via PRO-1
+  (PROS-1). Impact/recap content reports REAL, PAST impact (VAL-4) and never
+  promises future outcomes (GR-1). Surfaces: the stewardship rhythm lands in the
+  weekly visit (EXP-2); milestone recaps in the colleague-moves-first journey
+  (EXP-24, campaigns & milestones). LRN-20: the mix quota + the campaign-date
+  trigger are DETERMINISTIC; the recap PROSE is a grounded LLM step (GENS,
+  VAL-gated).
+
+data: >-
+  No new entity. Impact/gratitude overlay designation lives on the planned slot
+  (GEN-1 / DM-5, the plan-time overlay dimension GENS-1 counts). A milestone recap
+  is a ContentItem package (DM-5) generated on a campaign end-date or founder tap;
+  material needs route through PRO-1 (PROS-1).
+
+interfaces: >-
+  Stewardship has no standalone service — it is realized through existing engine
+  entry points: the GENS-1 planner enforces the impact/gratitude quota (STWS-1);
+  PROS-3 ask-hygiene flags a drifted rhythm; milestoneRecap(org, trigger) ->
+  generates a thank-you + impact-recap package via GENS + a PRO-1 material request
+  [STWS-2, P1]. Exact signatures live in code.
+
+items:
+  STWS-1:
+    v: 1
+    title: First-class overlay categories — from week 1
+    implements: [STW-1]
+    statement: >-
+      Gratitude and impact posts are FIRST-CLASS overlay categories in every org's
+      mix from WEEK 1 — not an afterthought. This is REALIZED by the GENS-1 mix
+      quota: ≥1 impact/gratitude per rolling 4-week window, assigned as a PLAN-TIME
+      slot designation (a deterministic reservation, not an LLM hope) and woven
+      through the mix — so even a brand-new org's first 4-week plan carries the
+      overlay (the north-star rhythm, G-4) — the P0 STW-1 guarantee stands on this
+      GENS-1 quota ALONE. PROS-3 ask-hygiene (P1, complementary) keeps the REALIZED
+      rhythm honest when the founder's dispositions drift (flagging
+      asking-without-reporting). Impact content reports REAL, PAST impact (VAL-4)
+      and NEVER promises future outcomes (GR-1). STW-1 owns the requirement; the
+      quota (GENS-1) and hygiene (PROS-3) are its enforcement — no separate
+      stewardship planner (no double-ownership).
+      ACCEPTANCE: every org's rolling 4-week plan carries ≥1 impact/gratitude
+      overlay from week 1 (the GENS-1 quota); an impact post reports real, past
+      impact and makes no outcome promise (GR-1/VAL-4); a drifted rhythm (ask
+      without a recent impact post) is flagged by ask-hygiene (PROS-3).
+  STWS-2:
+    v: 1
+    title: Milestone recaps
+    implements: [STW-2]
+    statement: >-
+      Two triggers generate a THANK-YOU + IMPACT-RECAP package (a set of drafts via
+      the content engine, GENS): (a) a campaign END DATE — derived from the last
+      scheduled campaign-tagged ContentItem's delivery date (DM-5); there is no
+      first-class Campaign entity yet (a data-model open-question) — which is an
+      UNPROMPTED proactive push and therefore a HIGH-PRIORITY, in-window consumer of
+      the PROS-4 interruption budget (like its sibling PROS-2 campaigns; never
+      unbudgeted, R-10); and (b) a founder's one-tap "we hit a milestone" — which is
+      FOUNDER-INITIATED, not an interruption, so not budget-gated. Either way it
+      requests any needed material via PRO-1 (PROS-1). The recap is grounded in the
+      real campaign/impact (VAL-4) and makes no outcome promise (GR-1); it passes
+      the PIPE-2 VAL chain like any generated content. P1 — not in the P1b slice.
+      ACCEPTANCE: a campaign end date (auto, budget-gated via PROS-4) OR a founder
+      milestone tap (founder-initiated, not budget-gated) triggers a thank-you +
+      impact-recap package; missing material triggers a PRO-1 request (PROS-1); the
+      recap makes no outcome promise (GR-1) and reports real impact.
+
+open-questions:
+  - >-
+    STWS-2's campaign-END-DATE trigger derives from the last scheduled
+    campaign-tagged ContentItem's delivery date (DM-5) — there is no first-class
+    Campaign data-entity (campaign is only a glossary overlay type). Whether to add
+    a first-class Campaign end-date field is a data-model decision to settle when
+    STW-2 (P1) is built; the P1b slice is unaffected (STW-2 is P1).
+  - >-
+    Founder-facing surfaces are the already-approved weekly visit (EXP-2, where the
+    stewardship rhythm lands) and the colleague-moves-first milestone card (EXP-24);
+    pixel-level design is a method/ui.md pass on those approved screens, not
+    deferred design.

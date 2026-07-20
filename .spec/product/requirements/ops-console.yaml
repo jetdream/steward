@@ -19,3 +19,12 @@ items:
       Per-org draft QA (silent review before Inbox for cohort 1, with a dial),
       generation/publish failure queues (PUB-1), interview transcript review,
       external-radar precision review (R-4), account health.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by OPSS-1 (silent cohort-1 draft-QA gate via the DM-5 qaStatus flag,
+        dialed down as G-2 earns it; G-2 confound controlled — operator-touched
+        counts as non-autonomous) + OPSS-2 (failure queues, transcript + R-4
+        radar-precision review, account health), both approved (challenge r4 pass).
+        Internal, operator-only. Realization pending code.
+      against: [OPSS-1@1, OPSS-2@1]

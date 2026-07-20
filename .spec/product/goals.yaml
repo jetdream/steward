@@ -102,7 +102,11 @@ items:
       reasoning: >-
         Field-validated only by the per-org approval-without-edit rate measured at an org's
         week 8 across the cohort. No cohort data yet → in-progress; `achieved` gated until a
-        measurement record lands.
+        measurement record lands. Cohort-1 measurement CONTROLS for the OPSS-1 silent
+        operator-QA confound — an operator-touched draft COUNTS as non-autonomous (kept in
+        the denominator, never credited, never dropped; equivalently computed on the PRE-QA
+        draft as it would have reached the founder), so the rate reflects autonomy, not
+        hidden operator labor and not cream-skimming (VAL-3).
     statement: ≥70% of drafts approved without edits by an org's week 8.
 
   G-3:

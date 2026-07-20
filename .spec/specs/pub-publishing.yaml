@@ -4,20 +4,22 @@ title: Publishing — behavior
 status: approved
 challenge:
   date: 2026-07-19
-  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence / cheaper-alternative+hidden-assumptions + LRN-19/22 sweep)
+  by: cortex:architect-challenger (r1 single pass → r2/r3 delta [PUBS-1 v2 subscription gate])
   verdict: pass
-  record: .spec/specs/challenges/pub-publishing-2026-07-19-r1.md
+  record: .spec/specs/challenges/pub-publishing-2026-07-19-r3.md
   summary: >-
-    r1 passed with no surviving high. The AUT-1 veto-window deferral was verified
-    HONEST cross-spec scoping (AUT has no spec; PUB only ever acts on
-    already-approved+scheduled variants, so it cannot auto-post during a veto
-    window unless AUT approves+schedules it); the news-destination asymmetry, DM-5
-    delivery recital, GR-6-as-sole-guardrail, and the LRN-20 split all held. Three
-    fixes applied in this change: the connection gate reframed POSITIVELY to "posts
-    only when a HEALTHY (connected) ChannelConnection exists" — closing the DM-14
-    `error`-state omission (the LRN-19 straggler); the scheduler named as the
-    PUB-2 rate-limit consumer; and a news-takedown ownership open-question added
-    (NWS-spec reconciliation — DM-5 published->unpublished / EXP-31 / SEC-8).
+    r1 passed (no high): AUT-1 veto deferral honest, news-destination asymmetry +
+    DM-5 recital + GR-6-sole-guardrail held; fixes — positive connection gate
+    (DM-14 error state, LRN-19), scheduler as PUB-2 rate-limit consumer,
+    news-takedown open-question. Later PUBS-1 -> v2 added the account-level
+    ACTIVE-Subscription publishing gate (closing the BIL->PUB gap the BIL
+    challenger found: a cancelled org must not publish, and no subscription gate
+    existed). r2 FAILED on the grace wording ("holds through grace" read as
+    BLOCKING during grace, opposite of EXP-34); r3 PASSED after splitting the gate —
+    PUBLISHING-ELIGIBLE = active OR payment-failure grace (publishing UNAFFECTED,
+    EXP-34); cancelled or grace-expired (lapsed) does NOT publish (durable BILS-2
+    stop, re-subscribe only). EXP-34 added to constrained-by; DM-11 -> v2 with the
+    status vocabulary; acceptance covers grace-continues / lapsed-stops.
 intent: >-
   Exact behavior of publishing (register pub-publishing.yaml): approved variants
   reach the four launch channels through official APIs at engagement-optimal
@@ -28,7 +30,7 @@ intent: >-
   approved and scheduled — and it honors the autonomy controls (AUT-1 veto,
   AUT-3 pause/kill).
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-5, DM-14, IG-1, IG-2, ARC-18, ARC-23, EXP-31]
+constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-5, DM-11, DM-14, IG-1, IG-2, ARC-18, ARC-23, EXP-31, EXP-34]
 governed-by: [GR-6]
 assurance: standard
 
@@ -74,7 +76,7 @@ interfaces: >-
 
 items:
   PUBS-1:
-    v: 1
+    v: 2
     title: Channels at launch — official APIs, scheduled delivery
     implements: [PUB-1]
     statement: >-
@@ -88,7 +90,14 @@ items:
       ChannelConnection exists (ONBS-4): a variant whose connection is in ANY
       non-healthy state — unconnected, expired, revoked, or error (the full DM-14
       status enum) — does NOT post; its connection state surfaces the needs-you
-      card (ONBS-4, SEC-10), never a silent failure. Delivery is per-variant (DM-5: pending -> scheduled
+      card (ONBS-4, SEC-10), never a silent failure. Publishing additionally
+      requires the Subscription (DM-11) to be in a PUBLISHING-ELIGIBLE status —
+      ACTIVE, or within the payment-failure GRACE period (publishing is UNAFFECTED
+      during grace, EXP-34). A CANCELLED or grace-EXPIRED (lapsed) org does NOT
+      publish — the BILS-2 account-level stop, DISTINCT from and durable against the
+      reversible AUT-3 pause; gated on subscription status and reversed ONLY by
+      re-subscribe (never an un-pause). Delivery is
+      per-variant (DM-5: pending -> scheduled
       -> published; paused via the AUT-3 kill switch / per-channel pause). FAILURES
       retry with backoff and alert OPERATORS via failure queues (OPS-1); the
       founder is alerted ONLY when action is needed (MEM-2). The org news page is
@@ -101,7 +110,9 @@ items:
       within ±5 min of its slot; a failure retries and alerts operators (not the
       founder unless action is needed); a variant for an unconnected channel does
       not post (surfaces the needs-you card); the kill switch halts all posting
-      instantly (AUT-3).
+      instantly (AUT-3); a payment-failure GRACE-period org CONTINUES to publish
+      (EXP-34); only a CANCELLED or post-grace-LAPSED org stops publishing, restored
+      only by re-subscribe (not an un-pause).
   PUBS-2:
     v: 1
     title: Per-channel technical profiles

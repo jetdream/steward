@@ -1,0 +1,129 @@
+kind: spec
+prefix: BILS
+title: Billing & Account — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single pass → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/bil-billing-2026-07-19-r2.md
+  summary: >-
+    r1 FAILED on one high — BILS-2 mis-attributed cancel-stops-publishing to the
+    reversible AUT-3 kill switch, and NO subscription-status publishing gate existed
+    anywhere (a real BIL->PUB design gap). Fixed: cancel is a DISTINCT account-level
+    stop gated on Subscription status (DM-11), durable against un-pause, reversed
+    only by re-subscribe; the missing gate was ADDED to the publisher (PUBS-1 -> v2,
+    separately re-challenged to r3 incl. the payment-failure grace nuance — grace
+    keeps publishing, EXP-34; cancelled/lapsed stops). BIL constrained-by += ARC-18;
+    depends-on [PUBS, NWSS]. Mediums: "articles included" re-cited to EXP-35 (not
+    DEC-10); refund recorded as a distinct Subscription event/field for the G-1
+    metric (DM-11 v2). Deletion trichotomy (SEC-4 hard delete + SEC-8/NWSS-1 410)
+    and the empty governed-by held. r2 delta passed.
+intent: >-
+  Exact behavior of billing (register bil-billing.yaml): one plan at $199/mo with
+  a 30-day money-back guarantee instead of a trial (BIL-1), a guilt-free cancel
+  with export + honored deletion (BIL-2), and the P2 annual plan (BIL-3). One
+  plan, one promise; the refund rate is a G-1 metric, so the guilt-free exit is a
+  deliberate brand promise that protects it. Cancel stops publishing via an
+  account-level subscription-status gate (PUBS-1), durable and distinct from the
+  reversible AUT-3 pause; deletion follows SEC-4 + the SEC-8 news-route trichotomy
+  (NWSS-1).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, DM-11, IG-4, ARC-18, SEC-4, EXP-8, EXP-34, EXP-35]
+depends-on: [PUBS, NWSS]
+assurance: standard
+
+design: >-
+  Billing is @backend/billing (ARC-21) via the Stripe adapter behind the ADR-0003
+  billing port (IG-4); the Subscription (DM-11) is the Stripe linkage. One plan,
+  card at signup, NO trial — the 30-day money-back guarantee replaces the trial and
+  is a ONE-CLICK refund within the window (BIL-1); refund rate is tracked as a G-1
+  metric. Cancel (BILS-2) stops publishing via an ACCOUNT-LEVEL subscription-status
+  gate enforced by the publisher (PUBS-1, DM-11) — durable, reversed only by
+  re-subscribe, NOT the reversible AUT-3 pause — OFFERS a data export (articles
+  included, EXP-35), and HONORS deletion on request: a BIL-2 hard delete removes
+  org-confidential data (SEC-4),
+  after which the news route returns a generic 410 (SEC-8, NWSS-1); while the
+  account merely lapses/tombstones the news route serves the org-branded not-here
+  page (the SEC-8 trichotomy). Surfaces: the fair-account-and-exit journey (EXP-8 —
+  plan & billing EXP-34, cancel with dignity EXP-35), in the Controls tray
+  (EXP-45). The guilt-free exit is a deliberate promise to a guilt-prone persona,
+  protecting the G-1 refund metric from dark-pattern backlash. LRN-20: the price,
+  no-trial, one-click-refund-within-window, cancel-halts-publishing, and
+  hard-delete are all DETERMINISTIC — no LLM step. Guarantee MARKETING posture is
+  Q-6 (open, not spec-blocking).
+
+data: >-
+  DM-11 Subscription — the Stripe linkage (plan, status, current-period); the
+  publisher's account-level gate (PUBS-1) reads its PUBLISHING-ELIGIBLE status
+  (active or payment-failure grace — EXP-34; cancelled/lapsed does not publish). A REFUND is
+  recorded on the Subscription as a distinct refund event/field (distinguishable
+  from an ordinary post-window cancel) so the G-1 refund-rate metric is queryable.
+  A BIL-2 deletion hard-removes org-confidential data (SEC-4) — export precedes
+  it. No new entity (fields on Subscription, concrete shapes in @shared types).
+
+interfaces: >-
+  @backend/billing (ARC-21) exposes: subscribe(org, card) -> Subscription [Stripe,
+  IG-4, DM-11; no trial]; refundWithinGuarantee(org) -> one-click refund inside the
+  30-day window + one-question survey [BIL-1, G-1]; cancel(org) -> set Subscription
+  inactive (DM-11) -> account-level publishing stop enforced by the publisher
+  (PUBS-1), offer export [BILS-2]; exportData(org) -> org data incl. articles
+  (EXP-35); deleteData(org) -> hard delete org-confidential data (SEC-4) + news
+  route -> 410 (NWSS-1). Exact Stripe/tRPC signatures live in code.
+
+items:
+  BILS-1:
+    v: 1
+    title: Single plan
+    implements: [BIL-1]
+    statement: >-
+      One plan: $199/month via Stripe Billing (IG-4, A-5; Subscription DM-11), card
+      captured at signup, NO free trial. The 30-day money-back guarantee REPLACES a
+      trial and is honored as a ONE-CLICK refund within the window plus a
+      one-question exit survey. Refund rate is tracked as a G-1 metric. All of this
+      is DETERMINISTIC: the fixed price, the no-trial rule, and the one-click refund
+      gated on the 30-day window are mechanical, not judgment. Guarantee MARKETING
+      posture is Q-6 (open) — copy/positioning only, not a behavior gate.
+      ACCEPTANCE: signup captures a card and starts the $199/mo plan with no trial;
+      a refund request inside 30 days is honored in one click and recorded for the
+      G-1 refund-rate metric; a request after 30 days is out of the guarantee.
+  BILS-2:
+    v: 1
+    title: Cancel anytime — guilt-free, export, honored deletion
+    implements: [BIL-2]
+    statement: >-
+      On cancel, publishing STOPS immediately — an ACCOUNT-LEVEL stop gated on
+      Subscription status (DM-11) and enforced by the publisher (PUBS-1): DURABLE
+      and distinct from the reversible AUT-3 pause (an un-pause does NOT resume a
+      cancelled org), reversed ONLY by re-subscribe (EXP-35). A data EXPORT is
+      OFFERED (articles included, EXP-35), and
+      deletion is HONORED on request: a hard delete removes org-confidential data
+      (SEC-4). The news route then follows the SEC-8 trichotomy (NWSS-1): while the
+      account is active or tombstoned the route serves the org-branded not-here
+      page; after the hard deletion it returns a generic 410. The exit is
+      guilt-free (EXP-35) — one gesture, no dark patterns — a deliberate brand
+      promise to a guilt-prone persona that protects the G-1 refund metric. All
+      steps are DETERMINISTIC (halt / export / hard-delete), no LLM step.
+      ACCEPTANCE: cancel halts publishing at once (no variant posts afterward);
+      export is offered and includes articles; a deletion request hard-deletes
+      org-confidential data (SEC-4) and the news route returns 410 (NWSS-1); the
+      cancel flow is one guilt-free gesture (EXP-35), never a dark-pattern maze; a
+      cancelled org's publishing stays stopped through any AUT-3 un-pause and
+      resumes only on re-subscribe (the account-level gate, PUBS-1).
+  BILS-3:
+    v: 1
+    title: Annual plan
+    implements: [BIL-3]
+    statement: >-
+      An annual plan at the $166/mo equivalent. P2 — not in P1b scope; when added
+      it reuses the same Stripe/Subscription (DM-11) plan pattern (IG-4), never a
+      bespoke billing path.
+      ACCEPTANCE (deferred, P2): the annual plan is a Stripe plan variant on the
+      existing Subscription model with no separate billing code path.
+
+open-questions:
+  - >-
+    Q-6 (the 30-day-guarantee MARKETING posture — how prominently it is promised)
+    is OPEN but is copy/positioning, not a behavior gate; BILS-1 is unaffected.
+    Pixel-level plan/cancel screens (EXP-34/EXP-35) are a method/ui.md pass on the
+    approved fair-account-and-exit journey (EXP-8).
