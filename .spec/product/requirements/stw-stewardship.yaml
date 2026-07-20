@@ -27,7 +27,7 @@ items:
         stands on this alone), with PROS-3 ask-hygiene (P1) complementary; impact
         reports real past impact, no outcome promise (GR-1/VAL-4). Realization
         pending code.
-      against: [STWS-1@1]
+      against: [STWS-1@1, G-4@1, GEN-1@4]
 
   STW-2:
     v: 1
@@ -47,4 +47,4 @@ items:
         package (GENS) + a PRO-1 material request (PROS-1); no outcome promise
         (GR-1). P1; campaign-end-date data source is a noted open-question.
         Realization pending code.
-      against: [STWS-2@1]
+      against: [STWS-2@1, G-4@1, PRO-1@1]

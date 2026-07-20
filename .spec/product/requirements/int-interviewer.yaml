@@ -28,7 +28,7 @@ items:
         thinking-partner skill grounded in Memory (MEMS-4) + the gap model
         (ONBS-3); conversational quality honestly framed as an LLM behavior held
         by heuristic + acceptance (LRN-20). Realization pending code.
-      against: [INTS-1@1]
+      against: [INTS-1@1, G-2@1, G-3@1, G-5@1]
 
   INT-2:
     v: 1
@@ -48,7 +48,7 @@ items:
         driven by the single ONBS-3 gap model, answers via the MEMS-1 free-remark
         path (MEMS-5 narrower default), never re-asks via the MEMS-6 asked-set,
         value-connecting. Realization pending code.
-      against: [INTS-2@1]
+      against: [INTS-2@1, G-2@1, G-3@1, G-5@1, ONB-3@1, MEM-1@1, MEM-2@1]
 
   INT-3:
     v: 1
@@ -66,7 +66,7 @@ items:
         probes with a distinct per-org aggregate cadence budget (mirrors TOPS-3),
         consulting the MEMS-6 asked-set / MEMS-5 shouldAsk; PRO-1 boundary noted.
         Realization pending code.
-      against: [INTS-3@2]
+      against: [INTS-3@2, G-2@1, G-3@1, G-5@1]
 
   INT-4:
     v: 1
@@ -95,4 +95,4 @@ items:
         a filtered VIEW of the ONBS-3 gap model (asked-set + shouldAsk), surfaced
         in the Knowledge view (UX-5) + chat; disposition-triggered enrichment via
         CHT-5; never-blocking, dismissible. Realization pending code.
-      against: [INTS-4@1]
+      against: [INTS-4@1, G-2@1, G-3@1, G-5@1]

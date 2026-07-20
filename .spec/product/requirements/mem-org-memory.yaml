@@ -33,7 +33,7 @@ items:
         retrieval with no fact invention (MEMS-4) together cover MEM-1's critical
         path: every enriching action writes an attributed entry, and a stated
         correction binds every future draft. Realization is pending code.
-      against: [MEMS-1@2, MEMS-2@1, MEMS-3@1, MEMS-4@1]
+      against: [MEMS-1@2, MEMS-2@1, MEMS-3@1, MEMS-4@1, G-2@1, G-3@1]
 
   MEM-2:
     v: 1
@@ -53,7 +53,7 @@ items:
         per-org asked-set with deterministic keying + bias-to-ask on uncertainty
         (MEMS-6) together cover MEM-2's critical path: the system asks only when it
         must, and never twice. Realization is pending code.
-      against: [MEMS-5@1, MEMS-6@1]
+      against: [MEMS-5@1, MEMS-6@1, G-2@1, G-3@1]
 
   MEM-3:
     v: 1

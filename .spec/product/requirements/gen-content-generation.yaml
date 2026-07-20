@@ -45,7 +45,7 @@ items:
         impact/gratitude, ≤25% asks) are deterministic counts over PLAN-TIME slot
         designations on a trailing 28-day window; saved-pool freshness rules
         (DEC-20). Realization pending code.
-      against: [GENS-1@1]
+      against: [GENS-1@1, G-1@1, G-2@1, G-4@1, G-5@1, MEM-1@1, STR-1@2, EXT-1@2, EXT-5@2, TOP-4@1]
 
   GEN-2:
     v: 1
@@ -64,7 +64,7 @@ items:
         Covered by GENS-2 (approved): a variant per CONNECTED channel (DM-14),
         adapted for PUB-2 technical + STR-1 §e, technical limits deterministically
         validated; adapt -> VAL -> fit per PIPE-2. Realization pending code.
-      against: [GENS-2@1]
+      against: [GENS-2@1, G-2@1, G-4@1, PUB-2@1, STR-1@2]
 
   GEN-3:
     v: 1
@@ -83,7 +83,7 @@ items:
         awaiting_picture->approved editorial gate (deterministic); AI visuals
         disabled behind the GR-4 flag; library sources tagged by Memory.
         Realization pending code.
-      against: [GENS-3@1]
+      against: [GENS-3@1, G-2@1, G-4@1]
 
   GEN-4:
     v: 1
@@ -103,7 +103,7 @@ items:
         state (never an error, XH-5), the DM-5 approval gate, picture request
         (PRO-1) with Memory-ranked library suggestions, one-tap attach (APR-1).
         Realization pending code.
-      against: [GENS-4@1]
+      against: [GENS-4@1, G-2@1, G-4@1, GEN-3@1, PRO-1@1]
 
   GEN-5:
     v: 1
@@ -123,7 +123,7 @@ items:
         (PIPE-2/DM-5), visible skip reason, retained variant for founder
         preview/override; deterministic skip scoped to technical/structural,
         semantic §e is an LLM classification (STRS-3). Realization pending code.
-      against: [GENS-5@1]
+      against: [GENS-5@1, G-2@1, G-4@1, STR-3@1, PUB-2@1]
 
   GEN-6:
     v: 1
@@ -137,4 +137,4 @@ items:
         Covered by GENS-6 (approved): PostMetric (DM-10) as read-only planner
         weighting; no metric alone triggers an autonomous action (VAL-3). P1 —
         outside the P1a thin slice. Realization pending code.
-      against: [GENS-6@1]
+      against: [GENS-6@1, G-2@1, G-4@1]

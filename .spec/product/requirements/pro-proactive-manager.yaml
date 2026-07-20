@@ -29,7 +29,7 @@ items:
         the MEMS-6 asked-set + the PROS-4 budget (high when event-tied); GEN-4
         trigger after library suggestions; upload → library + drafts. Realization
         pending code.
-      against: [PROS-1@1]
+      against: [PROS-1@1, G-3@1, G-4@1, MEM-1@1, GEN-4@1]
 
   PRO-2:
     v: 1
@@ -46,7 +46,7 @@ items:
         (XP-4), authored through GENS + VAL (GR-1 no outcome promise), a
         high-priority in-season push drawing from the PROS-4 budget. Realization
         pending code.
-      against: [PROS-2@1]
+      against: [PROS-2@1, G-3@1, G-4@1]
 
   PRO-3:
     v: 1
@@ -62,7 +62,7 @@ items:
         Covered by PROS-3 (approved): flags asking-without-reporting and proposes
         the missing impact post (STW-1), a low-tier push drawing from the PROS-4
         budget, measured against the GEN-1 mix quota. P1. Realization pending code.
-      against: [PROS-3@1]
+      against: [PROS-3@1, G-3@1, G-4@1]
 
   PRO-4:
     v: 1
@@ -94,4 +94,4 @@ items:
         consumers PRO-1/2/3 + INT-3/TOP-3, pull-only exemption, GR-3/GR-8 never
         budget-gated; volume-vs-timing reconciled with APRS-2. Realization pending
         code.
-      against: [PROS-4@1]
+      against: [PROS-4@1, G-3@1, PRO-1@1, PRO-2@1, PRO-3@1, INT-3@1, TOP-3@1]

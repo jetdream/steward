@@ -30,7 +30,7 @@ items:
         "I don't know" -> INT-4 gap, and the GR-2 legal/tax decline gate (the
         answer surface bypasses PIPE-2 VAL) held by catch-rate + fail-safe.
         Realization pending code.
-      against: [CHTS-1@1]
+      against: [CHTS-1@1, G-2@1, G-3@1]
 
   CHT-2:
     v: 2
@@ -51,7 +51,7 @@ items:
         never a bare fact), Strategy §c projects it (STRS-1 view, DEC-22), binds
         the next draft (MEMS-3), rule-contradiction surfaced. Realization pending
         code.
-      against: [CHTS-2@1]
+      against: [CHTS-2@1, G-2@1, G-3@1]
 
   CHT-3:
     v: 1
@@ -69,7 +69,7 @@ items:
         pipelines (never a parallel path, guardrails inherited downstream),
         destructive/outward actions confirm-back, permission/autonomy-scoped
         (AUT). P1 — outside the P1a thin slice (R-1). Realization pending code.
-      against: [CHTS-3@1]
+      against: [CHTS-3@1, G-2@1, G-3@1]
 
   CHT-4:
     v: 1
@@ -86,7 +86,7 @@ items:
         proactive message (a deterministic gate — no reason, not sent); colleague
         tone is an LLM quality held by review/eval (honest LRN-20 split); binds
         all system-initiated chat surfaces. Realization pending code.
-      against: [CHTS-4@1]
+      against: [CHTS-4@1, G-2@1, G-3@1]
 
   CHT-5:
     v: 1
@@ -117,4 +117,4 @@ items:
         DS-6), the guided Adjust as the default alternative to APR-1 raw edit, and
         the single enrichment loop (DEC-17) shared with INT-4 (post-completion
         OptionalReason -> Memory). Realization pending code.
-      against: [CHTS-5@1]
+      against: [CHTS-5@1, G-2@1, G-3@1]

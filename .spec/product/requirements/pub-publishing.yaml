@@ -34,7 +34,7 @@ items:
         and the account-level active-Subscription gate (PUBS-1 v2 — a cancelled org
         does not publish, BILS-2); asymmetric news destination. Realization pending
         code.
-      against: [PUBS-1@2]
+      against: [PUBS-1@2, G-1@1, G-4@1, G-5@1]
 
   PUB-2:
     v: 1
@@ -52,7 +52,7 @@ items:
         single source read by GENS-2/GENS-5), swappable per channel without code
         (R-6), isolated so one channel's change never affects others; the scheduler
         also consumes rate limits. Realization pending code.
-      against: [PUBS-2@1]
+      against: [PUBS-2@1, G-1@1, G-4@1]
 
   PUB-3:
     v: 1
@@ -69,7 +69,7 @@ items:
         timestamp, live link, exact text) visible in Calendar/Published (UX-4 /
         XG-4) — the VAL-3 nothing-hidden guarantee; auto-published posts logged
         like approved ones. Realization pending code.
-      against: [PUBS-3@1]
+      against: [PUBS-3@1, G-1@1, G-4@1]
 
   PUB-4:
     v: 1
@@ -84,4 +84,4 @@ items:
         LinkedIn, if adopted, reuses the ARC-18 adapter-behind-a-port + PUB-2
         profile pattern — no bespoke publishing path (GR-6, R-6). Realization
         pending code.
-      against: [PUBS-4@1]
+      against: [PUBS-4@1, G-1@1, G-4@1]

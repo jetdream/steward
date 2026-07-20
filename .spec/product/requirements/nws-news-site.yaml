@@ -37,7 +37,7 @@ items:
         (DM-1 newsConfig, DEC-10), asymmetric publish (state + cache purge, ARC-18/
         ADR-0004), founder-owned takedown with SEC-8's active/tombstoned/deleted
         trichotomy. Realization pending code.
-      against: [NWSS-1@1]
+      against: [NWSS-1@1, G-1@1, G-4@1]
 
   NWS-2:
     v: 1
@@ -54,7 +54,7 @@ items:
         Covered by NWSS-2 (approved): SSR + deterministic OG/Twitter meta,
         sitemap.xml, canonical URLs (ARC-23/ADR-0004); correct unfurl on all four
         channels; SEC-8 rate-limit/bot-guard. Realization pending code.
-      against: [NWSS-2@1]
+      against: [NWSS-2@1, G-1@1, G-4@1]
 
   NWS-3:
     v: 1
@@ -73,7 +73,7 @@ items:
         (name/logo/accent sanctioned slots only, steward-token base, GR-7; no fonts
         per DEC-10), "published with Steward" footer, DS-4 a11y. Realization pending
         code.
-      against: [NWSS-3@1]
+      against: [NWSS-3@1, G-1@1, G-4@1]
 
   NWS-4:
     v: 2
@@ -95,7 +95,7 @@ items:
         universal GEN-1 categories + the active TOP-4 agenda PUBLISH-SCOPED (active
         ∩ published) so no forward intent leaks (SEC-8) and no empty pages (DS-6);
         single source is TOPS-4 (DEC-25). Realization pending code.
-      against: [NWSS-4@1]
+      against: [NWSS-4@1, G-1@1, G-4@1]
 
   NWS-5:
     v: 1
@@ -114,7 +114,7 @@ items:
         ArticleLink; a deterministic guard emits the link only in the DM-5
         published state — never to an unpublished/recalled/not-yet-published
         article. Realization pending code.
-      against: [NWSS-5@1]
+      against: [NWSS-5@1, G-1@1, G-4@1]
 
   NWS-6:
     v: 2
@@ -134,4 +134,4 @@ items:
         Covered by NWSS-6 (approved): the Settings custom-subdomain affordance
         (managed DNS + auto SSL); Steward address canonical until chosen; no
         serving journey (like APR-2). P1. Realization pending code.
-      against: [NWSS-6@1]
+      against: [NWSS-6@1, G-1@1, G-4@1]

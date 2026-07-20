@@ -28,7 +28,7 @@ items:
         publish-then-takedown, opt-in hold-then-publish (DEC-26), with a durable
         veto latch; GR-3/GR-8 always override autonomy. P1b active = TL0.
         Realization pending code.
-      against: [AUTS-1@1]
+      against: [AUTS-1@1, G-2@1, G-3@1, G-4@1]
 
   AUT-2:
     v: 1
@@ -48,7 +48,7 @@ items:
         threshold PROPOSES (never auto-applies) promotion; auto-demote on
         spikes; permanent caps hold Fundraising Asks + External at TL1 (EXT-3).
         P2 (rides the promotion mechanic). Realization pending code.
-      against: [AUTS-2@1]
+      against: [AUTS-2@1, G-2@1, G-3@1]
 
   AUT-3:
     v: 1
@@ -66,4 +66,4 @@ items:
         instantly (a deterministic gate over PUBS-1; DM-5 scheduled->paused),
         per-channel pause, always one gesture from the chrome (UXS-6, VAL-3),
         instantly reversible. P0, active in P1b. Realization pending code.
-      against: [AUTS-3@1]
+      against: [AUTS-3@1, G-2@1, G-3@1]

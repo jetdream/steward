@@ -30,7 +30,7 @@ items:
         Covered by UXS-1 (approved, challenge r1 pass): phone-is-the-floor
         one-handed reach, desktop adds a summoned pane (DEC-19) never exclusive
         capability, single-column home, no native apps. Realization pending code.
-      against: [UXS-1@1]
+      against: [UXS-1@1, G-3@1]
 
   UX-2:
     v: 2
@@ -48,7 +48,7 @@ items:
         Covered by UXS-2 (approved): the conversation is the home's medium (DEC-18
         fusion), interviewer/questions/redirects inline (CHTS/INTS), never blank
         (CHTS-5), commands P1 — no separate chat page. Realization pending code.
-      against: [UXS-2@1]
+      against: [UXS-2@1, G-3@1]
 
   UX-3:
     v: 3
@@ -65,7 +65,7 @@ items:
         Covered by UXS-3 (approved): the finite in-home Ready spine that always
         reaches "caught up"; holds/failures pin and are never batch-cleared (the
         One-Home invariant, reconciled with APRS-1). Realization pending code.
-      against: [UXS-3@1]
+      against: [UXS-3@1, G-3@1]
 
   UX-4:
     v: 1
@@ -81,7 +81,7 @@ items:
         Covered by UXS-4 (approved): a one-click, pull-only glass-wall view of the
         plan (GENS-1) + publish log (PUBS-3) across channels (screen XG-8), never
         badged/nudging. Realization pending code.
-      against: [UXS-4@1]
+      against: [UXS-4@1, G-3@1]
 
   UX-5:
     v: 2
@@ -100,7 +100,7 @@ items:
         glass-wall views (Knowledge XG-6, How-I-write XG-7) never gated behind
         chat (DEC-18/VAL-3); Knowledge hosts INT-4, How-I-write is the versioned
         Strategy (STRS/STR-2). Realization pending code.
-      against: [UXS-5@1]
+      against: [UXS-5@1, G-3@1]
 
   UX-6:
     v: 1
@@ -117,7 +117,7 @@ items:
         (APRS-2), notifications (APRS-4), per-category autonomy (AUT-1),
         pause/kill (AUT-3), plan (BIL-1); the kill switch always one gesture from
         the chrome. Realization pending code.
-      against: [UXS-6@1]
+      against: [UXS-6@1, G-3@1]
 
   UX-7:
     v: 2
@@ -134,7 +134,7 @@ items:
         Covered by UXS-7 (approved): Compose as an action in the chrome / via chat
         (never a nav destination, VAL-6), launching the APRS-5 composer flow,
         reachable one-handed (UXS-1). Realization pending code.
-      against: [UXS-7@1]
+      against: [UXS-7@1, G-3@1]
 
   UX-8:
     v: 2
@@ -153,4 +153,4 @@ items:
         Covered by UXS-8 (approved): the one-click, pull-only Discoveries feed
         (EXT-5, screen XG-9) that never badges/counts/nudges or generates
         tasks/digest entries (VAL-6, G-3). P1. Realization pending code.
-      against: [UXS-8@1]
+      against: [UXS-8@1, G-3@1]

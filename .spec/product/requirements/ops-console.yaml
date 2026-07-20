@@ -27,4 +27,4 @@ items:
         counts as non-autonomous) + OPSS-2 (failure queues, transcript + R-4
         radar-precision review, account health), both approved (challenge r4 pass).
         Internal, operator-only. Realization pending code.
-      against: [OPSS-1@1, OPSS-2@1]
+      against: [OPSS-1@1, OPSS-2@1, G-1@1, G-2@1]

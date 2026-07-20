@@ -31,7 +31,7 @@ items:
         (IG-3); candidates with a provenance-bound, dereferenceable source (R-4/
         GR-5 guard) + rationale + event date; cold-start bootstrap. Realization
         pending code.
-      against: [EXTS-1@1]
+      against: [EXTS-1@1, G-2@1, G-4@1]
 
   EXT-2:
     v: 1
@@ -51,7 +51,7 @@ items:
         content engine (GENS, LRN-22), mandatory GR-5 citation + org-perspective
         commentary + GR-3 sensitive gating at PIPE-2 VAL (PIPE-3 v2); sourced from
         the ExternalItem (DM-8<->DM-5). Realization pending code.
-      against: [EXTS-2@1]
+      against: [EXTS-2@1, G-2@1, G-4@1, EXT-1@2]
 
   EXT-3:
     v: 1
@@ -68,7 +68,7 @@ items:
         Covered by EXTS-3 (approved): the permanent TL1 cap as a hard
         deterministic invariant, enforced from the autonomy side by AUTS-2
         (no double-ownership). Realization pending code.
-      against: [EXTS-3@1]
+      against: [EXTS-3@1, G-2@1, G-4@1]
 
   EXT-4:
     v: 2
@@ -87,7 +87,7 @@ items:
         Covered by EXTS-4 (approved): structured feeds + engines behind the same
         ADR-0003 port and agenda-driven query model (no bespoke path); banned
         agenda topics suppress discovery. P1; upgrade order is the open Q-4.
-      against: [EXTS-4@1]
+      against: [EXTS-4@1, G-2@1, G-4@1]
 
   EXT-5:
     v: 2
@@ -117,4 +117,4 @@ items:
         XG-9); three dispositions writing to Memory (MEMS-1) + tuning discovery;
         saved pool feeds the planner (GENS-1); not-for-us refines TOPS-2; never
         badged/nudged. Surface P2, behavior specified. Realization pending code.
-      against: [EXTS-5@1]
+      against: [EXTS-5@1, G-2@1, G-4@1, EXT-1@2, MEM-1@1]

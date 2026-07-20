@@ -29,7 +29,7 @@ items:
         STRS-1 formalizes the five-section doc with the (a/b/d/e)-persisted /
         (c)-derived-view split (DM-3 v2) and section (a) drawn from the TOP-4
         agenda. Realization pending code.
-      against: [STRS-1@1]
+      against: [STRS-1@1, G-2@1]
 
   STR-2:
     v: 1
@@ -47,7 +47,7 @@ items:
         Covered by STRS-2 (approved): auto-draft grounded in ONB-2 + interview,
         founder-editable (How-I-write + chat) with semantic (not positional)
         routing, immediate binding, two versioning paths. Realization pending code.
-      against: [STRS-2@1]
+      against: [STRS-2@1, G-2@1, ONB-2@1, CHT-2@2]
 
   STR-3:
     v: 1
@@ -66,7 +66,7 @@ items:
         queue, with the soft-inject (a/b/d) vs hard-gate (e channel-fit, GEN-5)
         split and the (c) overlay co-located but not performed by strategy-fit.
         Realization pending code.
-      against: [STRS-3@1]
+      against: [STRS-3@1, G-2@1]
 
   STR-4:
     v: 2
@@ -92,4 +92,4 @@ items:
         enforcement-time independence of the platform GR check (org overlay
         never gates it), write-time loosen-detection best-effort. Realization
         pending code.
-      against: [STRS-4@1]
+      against: [STRS-4@1, G-2@1]
