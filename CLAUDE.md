@@ -13,7 +13,7 @@ TypeScript 7 - (types always must be checked before commit)
 biome linting - (always must be checked before commit)
 Vite + React 
 Tailwind + ShadCN
-Postgres + pgvector
+Postgres + pgvector with Drizzle
 tRPC
 WebSocket for realtime updates with light payloads
 BetterAuth - Google Sign-in + Dev login by entering email only (no password shortcut)
@@ -21,8 +21,15 @@ Vercel AI SDK 7
 OpenTelemetry (for dev - LGTM) 
 
 ## Code Standards
-Strict Typing (no `any`), no exceptions
 Shared package to defined types for all crossboundary objects
+
+Follow strict type hygiene, including:
+- Strict Typing (no `any`), no exceptions
+- Strictly branded types only for IDs
+- Never redefine essentially same fields - use Property Selection utility types Pick<>, Omit<> and Union<>
+- Use type inference from Drizzle types
+- Use Zod type definition with inference for key entities
+- No unsafe json/yaml parsing - use Zod for type checking
 
 ## Project structure
 Three top level src folders:

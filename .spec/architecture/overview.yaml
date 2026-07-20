@@ -11,8 +11,8 @@ status: approved
 intent: >-
   Technical module map for the core loop described in product/overview.md.
   Stack baseline is ADR-0002 (constitution-fixed: NodeJS 24, TypeScript, Vite +
-  React, Tailwind + ShadCN, Postgres + pgvector, tRPC, WebSocket, BetterAuth,
-  Vercel AI SDK, OTel/LGTM). Cross-cutting principle: deployment portability via
+  React, Tailwind + ShadCN, Postgres + pgvector via Drizzle, tRPC, WebSocket,
+  BetterAuth, Vercel AI SDK, OTel/LGTM). Cross-cutting principle: deployment portability via
   ports & adapters (ADR-0003) — every external/infra dependency behind a
   domain-defined port with environment-selected adapters. Modelled as a C4
   register: one c4-context (the system), its c4-container runtime units (client,

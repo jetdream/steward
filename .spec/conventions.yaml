@@ -1,0 +1,42 @@
+kind: conventions
+title: Steward Engineering Conventions
+status: approved
+decided-by: DEC-29
+# The implementation-altitude compass (method/conventions.md): prescriptive
+# "how we build here" that guides code decisions the spec/architecture leaves
+# open. Scoped PROSE, no IDs (VAL-6) — surfaced to the agent at edit time by the
+# conventions hook, never a roll-up node. Founded from the constitution's Code
+# Standards (root CLAUDE.md, DEC-29). Mechanical rules stay in tsc/biome; product
+# principles stay in values (VAL-*) / guardrails (GR-*) — not restated here.
+# All blocks are `global` for now: with no src/ yet, path-scoped (client/backend/
+# shared) blocks would match nothing — add them via /cortex:conventions once the
+# source tree exists (register a scope-vocabulary + learning-scopes path map then).
+intent: >-
+  Type-first discipline is the house style: the type system, inferred from one
+  source per concern, is the contract — hand-written duplicate shapes and
+  unchecked external data are the smells. These make an agent's un-specified
+  micro-decisions predictable and idiomatic; they never override a spec,
+  guardrail, or value.
+scopes:
+  global:
+    must: |
+      - Strict typing, no `any`, no exceptions (tsc enforces the mechanical
+        floor; this is the intent behind it — reach for `unknown` + a narrowing
+        check or a Zod parse, never `any`, never a cast to silence the checker).
+      - Strictly branded types for IDs: every entity ID is a branded type, never
+        a bare `string`, so IDs of different entities are not interchangeable.
+      - No unsafe parsing: never trust `JSON.parse`/YAML/`any` at a boundary
+        (network, DB edge, file, env, LLM output) — validate with Zod and use the
+        inferred type downstream. (Mirrors the kit's own zod-at-the-boundary rule.)
+      - Cross-boundary types live once in the `@shared` package (constitution);
+        client and backend import them, never redefine them.
+    should: |
+      - Don't redefine an essentially-identical shape — derive it with the
+        Property Selection utility types (`Pick`, `Omit`, `Partial`) and unions,
+        so one change propagates (DRY, VAL-3 — do not over-abstract either).
+      - Prefer type INFERENCE from the single source of a concern over
+        hand-written types: Drizzle-inferred row/insert types for persistence
+        (ADR-0002, DM entities), and `z.infer<>` for a validated entity's type —
+        so the schema is the one source and the TS type follows it.
+      - Define key entities as a Zod schema with an inferred type, and reuse that
+        schema for boundary validation rather than writing a parallel validator.

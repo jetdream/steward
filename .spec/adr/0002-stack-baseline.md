@@ -37,7 +37,13 @@ Adopt and record the constitution-fixed stack as the baseline:
 - **Client**: Vite + React, Tailwind + ShadCN; all backend calls through
   domain-specific API React hooks; realtime over WebSocket (light payloads).
 - **Backend**: Node 24 + TypeScript service exposing tRPC + WebSocket.
-- **Datastore**: Postgres + pgvector (system of record + Memory embeddings).
+- **Datastore**: Postgres + pgvector (system of record + Memory embeddings),
+  accessed through **Drizzle** — a light, type-first query builder whose
+  inferred row/insert types are the persistence contract (see the conventions
+  register). *(Amended 2026-07-20, DEC-29: Drizzle fills the ORM slot this ADR
+  left open. It is NOT the "Prisma-style heavy ORM" the options-considered
+  rejected — it adds minimal surface and serves the one-language / strong-typing
+  axis rather than working against it.)*
 - **Auth**: BetterAuth (Google Sign-in + dev email-only login).
 - **LLM**: Vercel AI SDK (provider-abstracted; model selection deferred to
   the skeleton).

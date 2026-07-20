@@ -15,6 +15,36 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-29:
+    v: 1
+    date: 2026-07-20
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0002]
+    title: Engineering conventions register + Drizzle; Vercel Eve rejected, keep Vercel AI SDK 7
+    statement: >-
+      The founder expanded the constitution's Code Standards (root CLAUDE.md,
+      2026-07-20) with prescriptive type-hygiene rules and two stack touches;
+      this DEC propagates them into .spec at the right altitudes. Three parts.
+      (1) FOUND the engineering CONVENTIONS register (.spec/conventions.yaml,
+      kind: conventions — the implementation compass, scoped prose, DEC-28
+      mechanism): strict typing (no `any`), strictly branded types for IDs,
+      reuse field shapes via Pick/Omit/Union rather than redefining, prefer
+      type inference from Drizzle over hand-written row types, Zod
+      type-definitions-with-inference for key entities, and no unsafe
+      json/yaml parsing (Zod-validate at every untrusted boundary). These are
+      idiom-level "how we build here", not requirements — surfaced to the agent
+      at edit time, never a roll-up node. (2) ADOPT Drizzle as the light,
+      type-first query builder over Postgres + pgvector — recorded as a dated
+      amendment to ADR-0002 (it fills the ORM slot ADR-0002 left open; it is
+      consistent with the "one language, minimal surface, strong typing" axis
+      and is explicitly NOT the "Prisma-style heavy ORM" that ADR-0002's
+      options-considered rejected). (3) REJECT adopting Vercel Eve as the
+      primary AI-agent framework (a mid-session constitution edit, reverted):
+      the LLM layer stays the proven, provider-abstracted Vercel AI SDK 7 per
+      ADR-0002 — Eve is a very new framework and making it primary would be a
+      one-way-door lock-in on the product's core (VIS-1) against ADR-0002's
+      12-week/minimal-moving-parts founding axis; recorded as a dead-end
+      (LRN-25) so it is not silently re-raised without new maturity evidence.
   DEC-28:
     v: 1
     date: 2026-07-20

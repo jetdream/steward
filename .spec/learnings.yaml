@@ -422,3 +422,27 @@ items:
       after editing either — a one-line note in the higher layer can silently
       override the spec, and the graph lint (which checks IDs/pins, not semantic
       agreement) will not see it.
+
+  LRN-25:
+    v: 1
+    type: dead-end
+    scope: [architecture, process]
+    source: constitution stack edit + /cortex:change-request intake (2026-07-20, DEC-29)
+    title: Vercel Eve as the primary agent framework — considered, rejected (keep the provider-abstracted AI SDK)
+    statement: >-
+      A mid-session constitution edit made Vercel Eve the PRIMARY AI-agent
+      framework with Vercel AI SDK 7 demoted to fallback. Rejected on intake and
+      reverted. Reasons, so this is not silently re-raised: (1) it overturns the
+      accepted ADR-0002 LLM baseline (Vercel AI SDK, provider-abstracted) which
+      ADR-0003's portability port and the PIPE/MEMS specs build on — a
+      supersession, not a constitution edit; (2) it is a one-way-door lock-in on
+      the product's CORE (VIS-1, "an AI employee") onto a very new framework,
+      cutting against ADR-0002's founding axis (one language, minimal moving
+      parts, 12 weeks to revenue); (3) with no src/ yet there is nothing forcing
+      the choice now. Revisit ONLY with new evidence of Eve's production maturity
+      AND a concrete fit the AI SDK cannot meet — then via a superseding ADR, not
+      a constitution edit. Drizzle (the other stack touch that day) was ACCEPTED
+      (a light type-first query builder, consistent with the axis; ADR-0002
+      amendment, DEC-29) — the contrast is the point: a reversible, axis-aligned
+      addition lands; an irreversible core-layer swap onto an unproven dependency
+      does not.

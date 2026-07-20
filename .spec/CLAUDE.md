@@ -147,6 +147,7 @@ Who decides what. Right-sized for a two-founder product; the decisive artifact i
 
 - [product/](product/) — business truth: vision, goals, values, guardrails, scope, requirements
 - [learnings.yaml](learnings.yaml) — engineering learnings: gotchas, dead-ends, patterns (`LRN-*`)
+- [conventions.yaml](conventions.yaml) — engineering conventions: the implementation compass (scoped must/should prose, no IDs; how we build where the spec is silent — method/conventions.md)
 - [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts; [specs/challenges/](specs/challenges/) holds challenge evidence
 - [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval)
 - [experience/](experience/) — the experience spine: journeys/flows/screens/touchpoints (`UI-*`), the experienced-HOW parallel to architecture (method/ui.md)
