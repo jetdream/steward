@@ -15,10 +15,10 @@ challenge:
     ACTIVE-Subscription publishing gate (closing the BIL->PUB gap the BIL
     challenger found: a cancelled org must not publish, and no subscription gate
     existed). r2 FAILED on the grace wording ("holds through grace" read as
-    BLOCKING during grace, opposite of EXP-34); r3 PASSED after splitting the gate —
+    BLOCKING during grace, opposite of XB-2); r3 PASSED after splitting the gate —
     PUBLISHING-ELIGIBLE = active OR payment-failure grace (publishing UNAFFECTED,
-    EXP-34); cancelled or grace-expired (lapsed) does NOT publish (durable BILS-2
-    stop, re-subscribe only). EXP-34 added to constrained-by; DM-11 -> v2 with the
+    XB-2); cancelled or grace-expired (lapsed) does NOT publish (durable BILS-2
+    stop, re-subscribe only). XB-2 added to constrained-by; DM-11 -> v2 with the
     status vocabulary; acceptance covers grace-continues / lapsed-stops.
 intent: >-
   Exact behavior of publishing (register pub-publishing.yaml): approved variants
@@ -30,7 +30,7 @@ intent: >-
   approved and scheduled — and it honors the autonomy controls (AUT-1 veto,
   AUT-3 pause/kill).
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-5, DM-11, DM-14, IG-1, IG-2, ARC-18, ARC-23, EXP-31, EXP-34]
+constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-5, DM-11, DM-14, IG-1, IG-2, ARC-18, ARC-23, XG-4, XB-2]
 governed-by: [GR-6]
 assurance: standard
 
@@ -48,7 +48,7 @@ design: >-
   backoff and alert OPERATORS via failure queues (OPS-1); the founder is bothered
   ONLY when action is needed (MEM-2, PUB-1 acceptance). The publish log (PUBS-3)
   is the VAL-3 "everything auto-done is logged and visible" record, surfaced in
-  Calendar/Published (UX-4 / EXP-31). Delivery honors the AUT-3 kill switch /
+  Calendar/Published (UX-4 / XG-4). Delivery honors the AUT-3 kill switch /
   per-channel pause and the AUT-1 TL1 veto window — the veto-window hold/takedown
   mechanics and their DM-5 interaction are the (future) AUT spec's to define,
   referenced here, not restated (a cross-spec reconciliation noted in
@@ -70,7 +70,7 @@ interfaces: >-
   engagement-optimal slot [DM-5 pending -> scheduled]; publish(variant) -> posts
   via the official channel adapter [IG-1 / IG-2; reads DM-14; DM-5 -> published;
   writes the PUBS-3 log]; pause(scope) / killSwitch() -> halt delivery [AUT-3];
-  publishLog(org) -> the record [UX-4 / EXP-31]. News-destination publish sets the
+  publishLog(org) -> the record [UX-4 / XG-4]. News-destination publish sets the
   article publish-state + purges the renderer cache tag (ARC-23, ADR-0004) rather
   than calling an outbound API. Exact adapter/tRPC signatures live in code.
 
@@ -93,7 +93,7 @@ items:
       card (ONBS-4, SEC-10), never a silent failure. Publishing additionally
       requires the Subscription (DM-11) to be in a PUBLISHING-ELIGIBLE status —
       ACTIVE, or within the payment-failure GRACE period (publishing is UNAFFECTED
-      during grace, EXP-34). A CANCELLED or grace-EXPIRED (lapsed) org does NOT
+      during grace, XB-2). A CANCELLED or grace-EXPIRED (lapsed) org does NOT
       publish — the BILS-2 account-level stop, DISTINCT from and durable against the
       reversible AUT-3 pause; gated on subscription status and reversed ONLY by
       re-subscribe (never an un-pause). Delivery is
@@ -111,7 +111,7 @@ items:
       founder unless action is needed); a variant for an unconnected channel does
       not post (surfaces the needs-you card); the kill switch halts all posting
       instantly (AUT-3); a payment-failure GRACE-period org CONTINUES to publish
-      (EXP-34); only a CANCELLED or post-grace-LAPSED org stops publishing, restored
+      (XB-2); only a CANCELLED or post-grace-LAPSED org stops publishing, restored
       only by re-subscribe (not an un-pause).
   PUBS-2:
     v: 1
@@ -136,7 +136,7 @@ items:
       Every published ChannelVariant produces a log entry: what went out, where,
       when, with the live link and the exact variant text sent (DM-5 published
       state). The log is APPEND-ONLY and VISIBLE in the Calendar/Published view
-      (UX-4 / EXP-31) — the VAL-3 "everything auto-done is logged and visible"
+      (UX-4 / XG-4) — the VAL-3 "everything auto-done is logged and visible"
       guarantee. For the news destination, "published" is the article publish-state
       (ADR-0004).
       ACCEPTANCE: every published variant produces a log entry with destination,

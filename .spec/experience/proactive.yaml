@@ -1,0 +1,121 @@
+kind: experience
+prefix: XP
+title: Steward Experience — Proactive (The Colleague Moves First)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XP-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  The system initiating with a reason (VAL-5, VAL-6): campaigns & milestones approved once, the photo request and quick upload, and the bot pipe (Telegram/WhatsApp) that lets a founder feed material from the field. Journeys XP-1..; screens/touchpoints XP-5..8. Split from the One-Home spine (DEC-28); unblocked drafts land back in the home stack (XH).
+items:
+  XP-1:
+    v: 1
+    kind: journey
+    title: "The colleague moves first"
+    serves: [PRO-1, PRO-2, STW-2, GEN-3, BOT-1, BOT-2, BOT-3]
+    body: |
+      Steward initiates: reasoned photo requests for the scarcest resource
+      (real photos, GEN-3), campaign proposals approved once as a set,
+      milestone recaps — and the messenger bots as the lowest-friction
+      pipe from the founder's phone into the same context layer. Flows:
+      send me three photos (XP-2) → the bot pipe (XP-3) → approve once
+      — campaigns & milestones (XP-4).
+
+  XP-2:
+    v: 1
+    kind: flow
+    parent: XP-1
+    title: "Flow: send me three photos"
+    body: |
+      A reasoned request (PRO-1): why these photos, for what post, by when
+      — in the stream, by email (XP-6), and via the bots (XP-3).
+      Upload is resumable over bad connectivity (XP-5 from the email
+      path); arrivals route to the requesting draft first. The library
+      (GEN-3) is seeded at ingestion and suggests before it asks. States:
+      request satisfied by bot mid-flow, request expired (the draft stays
+      awaiting-picture, guilt-free), library suggestion accepted instead,
+      founder declines ("no photos for this one" — the draft reworks
+      photo-free or skips, no re-ask), wrong photo (swap from the library;
+      the library is browsable/taggable where it is picked).
+
+  XP-3:
+    v: 1
+    kind: flow
+    parent: XP-1
+    title: "Flow: the bot pipe"
+    body: |
+      WhatsApp/Telegram (XP-7/XP-8): photos, facts, links, voice notes
+      from wherever the founder is; everything lands in the same context
+      layer with a colleague-voice acknowledgment naming destination and
+      payoff ("got them — three photos filed for Saturday's recap",
+      BOT-1). Simple org-aware questions get answers (BOT-2); anything
+      deeper gets a deep link home. States: unlinked sender (secure
+      account-link handshake first), voice notes supported — transcribed
+      and filed with the transcript echoed back, unsupported media scoped
+      to video/stickers/documents (honest "send it as a photo, voice note,
+      or text"), mid-request arrival (routes to that request's drafts
+      first), rate/spam guard (quiet).
+
+  XP-4:
+    v: 1
+    kind: flow
+    parent: XP-1
+    title: "Flow: approve once — campaigns & milestones"
+    body: |
+      A campaign proposal (PRO-2) arrives as one expandable package card in
+      the stream — the whole set visible, approved once, then executed
+      autonomously with the usual per-item visibility. Milestone recaps
+      (STW-2, P1) ride the same shape. A campaign that includes fundraising
+      asks shows its ask-spacing honestly (PRO-3 hygiene applies inside
+      packages too). States: package partially adjusted (only the changed
+      items return for a look), campaign declined (not re-proposed soon;
+      reason optional — XH-9), material needed (the package names what it
+      still needs and rides XP-2).
+
+  # ───────────────────────── Flows: Earning the reins (XA-1) ─────────────────────────
+
+  XP-5:
+    v: 1
+    kind: screen
+    parent: XP-2
+    title: "Screen: quick upload"
+    body: |
+      The from-a-link photo drop (PRO-1 via XP-6): opened from an email
+      on a phone, minimal chrome, resumable over bad connectivity, photos
+      route to the requesting draft with a colleague-voice confirmation
+      and payoff. Exists so sending photos never requires "opening the
+      app" (G-3).
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
+
+  XP-6:
+    v: 1
+    kind: touchpoint
+    parent: XP-2
+    title: "Touchpoint: the photo-request email"
+    body: |
+      A reasoned ask with its payoff and deadline (PRO-1), linking to
+      quick upload (XP-5). Rides email whenever the messenger window is
+      closed (XP-8). Never more than one open request's worth of asking.
+
+  XP-7:
+    v: 1
+    kind: touchpoint
+    parent: XP-3
+    title: "Touchpoint: Telegram bot"
+    body: |
+      The Telegram face of the pipe (official Bot API, BOT-3): same
+      context, same voice (CHT-4); command-free — plain messages and
+      media, with a pinned "what I can do here" note.
+
+  XP-8:
+    v: 1
+    kind: touchpoint
+    parent: XP-3
+    title: "Touchpoint: WhatsApp bot"
+    body: |
+      The WhatsApp face (Business API, BOT-3, A-8): same contract as
+      XP-7; template-message constraints respected — the bot initiates
+      only within platform rules, and photo requests ride the email
+      touchpoint (XP-6) when the messaging window is closed.

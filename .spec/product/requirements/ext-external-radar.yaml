@@ -114,7 +114,7 @@ items:
       status: complete
       reasoning: >-
         Covered by EXTS-5 (approved): read-first pull-only feed (DM-8, UX-8/
-        EXP-44); three dispositions writing to Memory (MEMS-1) + tuning discovery;
+        XG-9); three dispositions writing to Memory (MEMS-1) + tuning discovery;
         saved pool feeds the planner (GENS-1); not-for-us refines TOPS-2; never
         badged/nudged. Surface P2, behavior specified. Realization pending code.
       against: [EXTS-5@1]

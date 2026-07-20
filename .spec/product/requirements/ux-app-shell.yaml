@@ -79,7 +79,7 @@ items:
       status: complete
       reasoning: >-
         Covered by UXS-4 (approved): a one-click, pull-only glass-wall view of the
-        plan (GENS-1) + publish log (PUBS-3) across channels (screen EXP-43), never
+        plan (GENS-1) + publish log (PUBS-3) across channels (screen XG-8), never
         badged/nudging. Realization pending code.
       against: [UXS-4@1]
 
@@ -97,7 +97,7 @@ items:
       status: complete
       reasoning: >-
         Covered by UXS-5 (approved): two one-click, plain-labeled, pull-only
-        glass-wall views (Knowledge EXP-41, How-I-write EXP-42) never gated behind
+        glass-wall views (Knowledge XG-6, How-I-write XG-7) never gated behind
         chat (DEC-18/VAL-3); Knowledge hosts INT-4, How-I-write is the versioned
         Strategy (STRS/STR-2). Realization pending code.
       against: [UXS-5@1]
@@ -113,7 +113,7 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Covered by UXS-6 (approved): the Controls tray (EXP-45) with cadence
+        Covered by UXS-6 (approved): the Controls tray (XA-6) with cadence
         (APRS-2), notifications (APRS-4), per-category autonomy (AUT-1),
         pause/kill (AUT-3), plan (BIL-1); the kill switch always one gesture from
         the chrome. Realization pending code.
@@ -151,6 +151,6 @@ items:
       status: complete
       reasoning: >-
         Covered by UXS-8 (approved): the one-click, pull-only Discoveries feed
-        (EXT-5, screen EXP-44) that never badges/counts/nudges or generates
+        (EXT-5, screen XG-9) that never badges/counts/nudges or generates
         tasks/digest entries (VAL-6, G-3). P1. Realization pending code.
       against: [UXS-8@1]

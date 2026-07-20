@@ -18,7 +18,7 @@ challenge:
     determinism honestly re-pinned to PLAN-TIME slot designations (overlays are a
     reservation the quota counts; prose realization is a soft VAL/fit — LRN-20
     trap closed); the ≥1-impact quota pinned to a trailing 28-day sliding window
-    seeded from scheduled history (no cross-regeneration gap); EXP-2/EXP-16 added
+    seeded from scheduled history (no cross-regeneration gap); XH-1/XH-5 added
     to constrained-by; GR-2 added to governed-by; GENS-5 deterministic skip scoped
     to technical/structural (semantic §e is LLM); the picture gate reworded to the
     DM-5 awaiting_picture→approved editorial boundary. r2 delta verified all fixes
@@ -35,7 +35,7 @@ intent: >-
   the creative pairing/writing is the LLM part, grounded and guardrail-gated
   (PIPE-1/PIPE-2). Generation produces drafts; approval is APR, publishing is PUB.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, ARC-15, EXP-2, EXP-16]
+constrained-by: [ADR-0002, ADR-0003, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, ARC-15, XH-1, XH-5]
 depends-on: [MEMS, STRS, TOPS]
 governed-by: [GR-1, GR-2, GR-3, GR-4, GR-5, GR-8]
 assurance: standard
@@ -71,7 +71,7 @@ design: >-
   every-post-a-picture rule is the DM-5 editorial-gate invariant: a ContentItem
   cannot leave awaiting_picture toward APPROVED without a MediaAsset (GEN-3/GEN-4),
   and no variant schedules while the item is not approved (DM-5). Surfaces: the
-  weekly-visit Ready spine (EXP-2/EXP-16) receives drafts; awaiting-picture and
+  weekly-visit Ready spine (XH-1/XH-5) receives drafts; awaiting-picture and
   channel-skip states render there. Boundaries: real pictures only, AI visuals
   disabled (GR-4); external content cited (GR-5); asks never promise outcomes
   (GR-1); no fabricated events or impact (VAL-4).
@@ -191,11 +191,11 @@ items:
       advance from awaiting_picture to APPROVED — the deterministic editorial gate
       (DM-5 invariant 1) that realizes GEN-3's hard rule; and no variant schedules
       while the item is not approved (DM-5 invariant 2). It
-      is a complete-but-blocked state, NEVER an error (EXP-16 awaiting-picture:
+      is a complete-but-blocked state, NEVER an error (XH-5 awaiting-picture:
       dashed warn slot, disabled Approve until resolved). It triggers a picture
       request (PRO-1) with suggestions from the library ranked by Memory tags, and
       offers one-tap attach from the library in the Ready surface (APR-1); no
-      library match hands off to a photo request (PRO-1, EXP-22).
+      library match hands off to a photo request (PRO-1, XP-2).
       ACCEPTANCE: a pictureless draft is visible and editable but its
       schedule/approve action is disabled until a picture attaches; attaching from
       library or upload clears the block; the state reads as awaiting-picture, not
@@ -240,5 +240,5 @@ open-questions:
   - >-
     Pixel-level UI for the awaiting-picture slot (GENS-4) and the channel-skip
     reason (GENS-5) is a method/ui.md pass on the already-approved Ready-spine
-    card states (EXP-16) — separate from this backend spec. Not a blocker: the
-    weekly-visit journey (EXP-2) and its card states are approved.
+    card states (XH-5) — separate from this backend spec. Not a blocker: the
+    weekly-visit journey (XH-1) and its card states are approved.

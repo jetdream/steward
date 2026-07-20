@@ -58,7 +58,7 @@ items:
     body: |
       Transactional email behind the Email port (ADR-0003): React-email
       templates (the steward-token digest/nudge/request/veto touchpoints
-      EXP-51..54), adapter SendGrid initially, Resend later as a config-only
+      XH-15, XP-6, XA-7, XH-16), adapter SendGrid initially, Resend later as a config-only
       switch. Digest + time-sensitive notifications (APR-4). Web push is P1.
 
   IG-6:
@@ -86,7 +86,7 @@ items:
       port (ADR-0003): photo/fact ingestion + light Q&A. Official API only
       (BOT-3, SEC-9); platform approval + per-conversation costs tracked as
       A-8; message-window rules respected (bot-initiated messages fall back to
-      the EXP-52 email when the window is closed). Vendor infra ADR deferred.
+      the XP-6 email when the window is closed). Vendor infra ADR deferred.
 
   IG-9:
     v: 1

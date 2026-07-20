@@ -29,7 +29,7 @@ intent: >-
   "here's what I know" review turns corrections into permanent rules (ONB-5), and
   how first drafts land inside the first session on minimum viable context
   (ONB-6). This spec covers the ENGINE beneath the ALREADY-APPROVED day-one
-  experience (journey EXP-1); NEW pixel-level UI detail is a separate method/ui.md
+  experience (journey XO-1); NEW pixel-level UI detail is a separate method/ui.md
   pass on those approved screens (named in open-questions).
 design-scope: cross-cutting
 constrained-by: [ADR-0002, ADR-0003, DM-1, DM-2, DM-3, DM-14, PIPE-1, ARC-12, ARC-18, IG-1, IG-2, IG-6, IG-7, SEC-3, SEC-4, SEC-10]
@@ -48,10 +48,10 @@ design: >-
   are LLM steps in the shared pipeline (PIPE-1) via the ADR-0003 port, grounded
   and source-pointed. ChannelConnection (DM-14) is the connect flow's output and
   the Publisher's (ARC-18) input for PUB-1. The founder-facing surfaces are the
-  ALREADY-APPROVED day-one experience — journey EXP-1: doorstep (EXP-40) →
-  day-one home (EXP-38); flows arrival & watch it learn (EXP-11), the first
-  conversation + "here's what I know" (EXP-12), first drafts + connect-in-context
-  (EXP-13), meet the plan (EXP-14). This spec is the backend behavior beneath
+  ALREADY-APPROVED day-one experience — journey XO-1: doorstep (XO-6) →
+  day-one home (XH-12); flows arrival & watch it learn (XO-2), the first
+  conversation + "here's what I know" (XO-3), first drafts + connect-in-context
+  (XO-4), meet the plan (XO-5). This spec is the backend behavior beneath
   them. Boundaries: reads public presence only, with signup consent (A-5, SEC-3);
   no third-party PII (SEC-3); official platform APIs only (GR-6); no fabrication
   (the LRN-20 grounded-guard + catch-rate pattern, applied per element).
@@ -90,7 +90,7 @@ items:
     statement: >-
       The Org (DM-1) is created from name + email alone; NOTHING downstream
       blocks on missing fields (VAL-6, ONB-1) — verification and ingestion run
-      behind the already-working home (EXP-11). EIN is OPTIONAL. When the founder
+      behind the already-working home (XO-2). EIN is OPTIONAL. When the founder
       provides an EIN, or the system CONFIDENTLY matches the org name to a single
       registry record, it verifies 501(c)(3) status and pulls registry data via
       ProPublica/IRS (IG-6, A-4). Org-name -> EIN matching is a fuzzy/LLM step
@@ -98,7 +98,7 @@ items:
       the founder confirms before it is treated as the org's verified identity —
       the system never silently binds a wrong EIN; a founder-PROVIDED EIN is
       verified directly. Verification STATUS is a fact surfaced honestly
-      (verified | pending | unmatched | already-registered — EXP-11 states),
+      (verified | pending | unmatched | already-registered — XO-2 states),
       never a gate; a failed or blocked lookup degrades to "unverified" without
       blocking and without fabricating registry data.
       ACCEPTANCE: an org with only name + email reaches a working home and first
@@ -131,8 +131,8 @@ items:
       read, under signup consent (A-5, SEC-3); no third-party PII is stored
       (SEC-3). A "this isn't us" action triggers the deterministic wrong-org purge
       (MEMS-2) — a clean hard-delete of the mis-ingested entries. Thin, slow, or
-      failed sources degrade honestly and non-blockingly (EXP-11); no sources at
-      all routes to the interview as the primary path (ONBS-3, EXP-12).
+      failed sources degrade honestly and non-blockingly (XO-2); no sources at
+      all routes to the interview as the primary path (ONBS-3, XO-3).
       ACCEPTANCE: ingested facts/style land in Memory each with a source pointer
       and an assumed mark; the Strategy shows a style seed derived from real
       posts; "this isn't us" leaves no residual entries; ingestion failure never
@@ -173,7 +173,7 @@ items:
       DETERMINISTIC state machine (connected | expired | revoked | error): an
       OAuth failure at connect time gets a plain-language retry; a LATER token
       expiry or revocation becomes a pinned needs-you card with its reason
-      (EXP-13, SEC-10) — the founder never discovers a dead channel silently — and
+      (XO-4, SEC-10) — the founder never discovers a dead channel silently — and
       re-auth reuses this same flow. Official platform APIs only (GR-6).
       ACCEPTANCE: a channel connects independently of any other onboarding step
       and of draft generation; an approved draft for an unconnected channel holds
@@ -186,7 +186,7 @@ items:
     statement: >-
       The assembled profile (facts, tone, programs, people — from ONBS-2) is
       presented for correction with every inference marked assumed (DS-5
-      AssumedNote, EXP-12). A founder correction is written through the MEM-1
+      AssumedNote, XO-3). A founder correction is written through the MEM-1
       write path (MEMS-1) as a PERMANENT rule: a factual fix SUPERSEDES the
       inferred entry (MEMS-2 supersession — retained, not overwritten, VAL-3); a
       correction phrased as a PROHIBITION becomes a taboo/styleRule enforced
@@ -224,8 +224,8 @@ items:
 open-questions:
   - >-
     A UI-detail pass (method/ui.md) over the already-approved day-one screens
-    (doorstep EXP-40, day-one home EXP-38, flows EXP-11..14) — e.g. the exact
+    (doorstep XO-6, day-one home XH-12, flows XO-2, XO-3, XO-4, XO-5) — e.g. the exact
     AssumedNote affordance on the "here's what I know" card (ONBS-5) and the
     connect-in-context sheet (ONBS-4) — is separate from this backend spec, like
     MEM-3's deferred Knowledge browser. Not a blocker: the day-one experience
-    spine (journey EXP-1) is already approved.
+    spine (journey XO-1) is already approved.

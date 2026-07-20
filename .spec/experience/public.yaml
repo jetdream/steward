@@ -1,0 +1,67 @@
+kind: experience
+prefix: XN
+title: Steward Experience — Public (Donor & News)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XN-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  The outward-facing, unauthenticated surfaces: a donor arriving from a link, the public news front page and article (XN-1..4). Every external post carries a citation (GR-5). Split from the One-Home spine (DEC-28); the news subdomain setting lives in Controls (XA-6).
+items:
+  XN-1:
+    v: 1
+    kind: journey
+    title: "The donor reads"
+    serves: [NWS-1, NWS-2, NWS-3, NWS-4, NWS-5]
+    body: |
+      The non-founder chapter: the org's audience arrives from a social
+      link (NWS-5), a search result (NWS-2), or a shared URL and lands on
+      something unmistakably the ORG's (NWS-3, DS-8) — calm, fast,
+      credible — with a path deeper (topic navigation, NWS-4) and the quiet
+      "published with Steward" growth seam (G-1). Content guardrails hold
+      here exactly as on social (GR-1, GR-2, GR-5). Flow: XN-2.
+
+  XN-2:
+    v: 1
+    kind: flow
+    parent: XN-1
+    title: "Flow: arrive from a link and read"
+    body: |
+      Social post → article (XN-3) → optionally the front page / topic
+      rail (XN-4) → back out (share, follow the org's channels, or the
+      donation URL when the org stores one — a plain Memory fact per the
+      scope boundary, never a donations module). States: article
+      unpublished/recalled (a warm org-branded not-here page, never a bare
+      404), slow network (server-rendered text first, images progressive),
+      link unfurl previews (OG correctness is part of this flow's
+      acceptance), search-engine entry (canonical URLs).
+
+  # ───────────────────────── Flow: Operators (XOPS-1) ─────────────────────────
+
+  XN-3:
+    v: 1
+    kind: screen
+    parent: XN-2
+    title: "Screen: news article (public)"
+    body: |
+      Medium-like reading surface on the DS-8 template: org masthead
+      (name/logo/accent slots — Q-10), generous type, the story with its
+      real photos, CitationBlock on external stories (GR-5), topic tags
+      (NWS-4), "published with Steward" footer (NWS-3). No app chrome, no
+      founder controls — this is the donor's surface.
+      Mockups: design/mockups/exp-48-49-news-public/round-1/ (founder-reviewed).
+
+  XN-4:
+    v: 1
+    kind: screen
+    parent: XN-2
+    title: "Screen: news front page (public)"
+    body: |
+      The org's article list with a topic navigation rail (NWS-4:
+      universal categories + org-domain topics), newest first, calm
+      density — the org's living public record (G-4 made visible to
+      donors). Empty state narrates honestly ("stories are on their way");
+      canonical URLs throughout (NWS-2).
+      Mockups: design/mockups/exp-48-49-news-public/round-1/ (founder-reviewed).

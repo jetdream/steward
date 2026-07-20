@@ -15,6 +15,39 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-28:
+    v: 1
+    date: 2026-07-20
+    by: founder (shpin.p@diffco.us)
+    binds: [XO-1, XH-1, XA-1, XP-1, XG-1, XB-1, XN-1, XOPS-1]
+    title: Split the monolithic experience spine into eight by-domain registers
+    statement: >-
+      The One-Home experience spine (DEC-18) had grown to a single ~1000-line
+      register of 56 elements (EXP-*, experience/spine.yaml) — past the
+      readability / write-contention threshold the Cortex method names as the
+      trigger to split (method/ui.md "Scaling", shipped in cortex v0.21.0). The
+      founder directed the split, sequenced Cortex-guidance-FIRST so the split
+      would conform to a blessed convention (done: v0.21.0 added per-domain
+      experience-register guidance, fixed the serves goal-vs-requirement doc
+      drift, promoted `touchpoint` to a standard kind, and shipped the
+      ux-designed completion tier). Decision: decompose the spine BY JOURNEY
+      DOMAIN into eight registers, each with its own prefix and file —
+      onboarding (XO), home / the One-Home shell (XH), autonomy (XA), proactive
+      (XP), glass-wall (XG), account (XB), public (XN), ops (XOPS). The shared
+      surface is homed ONCE and referenced by ID (VAL-4): the home shell (XH)
+      is the most cross-referenced register; the glass-wall views, Controls
+      tray, and satellites link to it, never copy it. This is a
+      CONTENT-PRESERVING migration — every element body is verbatim from the
+      DEC-18 spine; IDs were re-homed EXP-* -> <domain>-* in tree order, and
+      the ~46 citing sites (17 gated specs' constrained-by, requirements,
+      architecture, decisions, the vision-experience map) were re-pointed as a
+      pure reference update, so no spec is re-challenged or version-bumped by
+      this reorg. The eight registers are re-gated together by one
+      Product-Designer challenger pass (structural/delta — content unchanged);
+      experience/spine.yaml (EXP) is retired, experience/ui.yaml stays
+      superseded for history. Chosen over keeping one register (fails the scale
+      trigger) and over a register-per-journey (over-structure, VAL-6).
+
   DEC-23:
     v: 1
     date: 2026-07-19
@@ -56,7 +89,7 @@ items:
       between publish-then-takedown and hold-then-publish, and the safety-vs-speed
       trade is genuinely founder-specific. Decision: the TL1 veto model is a
       FOUNDER-OPERATOR-selectable setting, DEFAULTING to PUBLISH-THEN-TAKEDOWN.
-      (a) DEFAULT publish-then-takedown — the approved design (EXP-26 "Published —
+      (a) DEFAULT publish-then-takedown — the approved design (XA-3 "Published —
       you can stop it until Thu 6pm", the DS-5 veto-window card, vision.md #8): a
       clean draft auto-publishes at its optimal time and the founder may PULL it
       within the 24h window (native platform delete for social; DM-5
@@ -195,7 +228,7 @@ items:
     v: 1
     date: 2026-07-19
     by: founder (shpin.p@diffco.us)
-    binds: [EXT-5, GEN-1, DM-8, EXP-32, EXP-43, EXP-44, DEC-19]
+    binds: [EXT-5, GEN-1, DM-8, XG-5, XG-8, XG-9, DEC-19]
     title: Design round-2 refinements — true breakpoints, informative calendar, Discoveries as a triage feed
     statement: >-
       Founder feedback on the first glass-wall/day-one renders, taken as four
@@ -204,7 +237,7 @@ items:
       tappable with icon affordances (text micro-actions like "edit" collapse to
       icons; ≥44px targets, DS-4). Design-language rule, recorded in DESIGN.md.
       (2) Knowledge needs real visual hierarchy (design-level; no spec change).
-      (3) CALENDAR IS INFORMATIVE AND INTERACTIVE (EXP-43 v2): day cells carry
+      (3) CALENDAR IS INFORMATIVE AND INTERACTIVE (XG-8 v2): day cells carry
       content hints (title snippet + type + TIME), a day can hold several items
       (stacked chronologically — the ~1/day cadence is typical, not a cap;
       campaign/event days exceed it), mobile renders as an agenda list and desktop
@@ -214,7 +247,7 @@ items:
       right pane is where item interaction lives (DEC-19 summon-beside; the
       pane may swap its content one level, the stream never leaves).
       (4) DISCOVERIES IS A READ-FIRST TRIAGE FEED, not a passive reading room
-      (EXT-5 v2, EXP-32/EXP-44 v2): each item leads with content worth reading
+      (EXT-5 v2, XG-5/XG-9 v2): each item leads with content worth reading
       (headline, source, short summary); after reading, three dispositions —
       "worth a post" (event-tied items flagged time-sensitive and prioritized),
       "save for later" (a kept pool the planner draws from to fill open calendar
@@ -226,7 +259,7 @@ items:
     v: 1
     date: 2026-07-19
     by: founder (shpin.p@diffco.us)
-    binds: [UX-1, EXP-38, EXP-39]
+    binds: [UX-1, XH-12, XH-13]
     title: Mobile-first priority + desktop summon-beside (simultaneity model)
     statement: >-
       Two decisions taken on review of the One-Home desktop rendering (AI-S-SC).
@@ -242,14 +275,14 @@ items:
       REFINES the challenged r1 mechanics ("a summoned view is a mode of the home,
       never a sibling destination" — beside-with-stream-present strengthens exactly
       that guarantee); no new elements, serves edges, or states — recorded as a
-      clarifying v2 of EXP-38/EXP-39 without a new challenge round (conscious call,
+      clarifying v2 of XH-12/XH-13 without a new challenge round (conscious call,
       altitude rule).
 
   DEC-18:
     v: 1
     date: 2026-07-19
     by: founder (shpin.p@diffco.us)
-    binds: [EXP-1, EXP-38, UX-2, UX-3, UX-5, UX-7, UX-8, ARC-5, ARC-7, DEC-14, DEC-16, DEC-17]
+    binds: [XO-1, XH-12, UX-2, UX-3, UX-5, UX-7, UX-8, ARC-5, ARC-7, DEC-14, DEC-16, DEC-17]
     title: Full experience-spine replacement — the One-Home model (EXP register)
     statement: >-
       The founder directed a from-scratch reevaluation of the entire experience

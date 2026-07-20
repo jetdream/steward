@@ -20,7 +20,7 @@ design-scope: cross-cutting  # cross-cutting (MUST cite designs in constrained-b
 constrained-by: []         # design-element IDs (architecture OR experience) and
                            # /or ADR IDs — NOT file paths. Architecture elements'
                            # files must be `approved`, ADRs `accepted`. e.g.
-                           # [ADR-0002, DM-2, PIPE-2, EXP-41]
+                           # [ADR-0002, DM-2, PIPE-2, XG-6]
 depends-on: []             # capability spec prefixes whose specs constrain this
 governed-by: []            # GUARDRAIL IDs only (GR-*). Values (VAL-*) are cited
                            # in prose, never here (DCX-18).

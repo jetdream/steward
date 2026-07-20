@@ -126,7 +126,7 @@ items:
       (news.<org-domain>) over the default dedicated Steward news domain
       (NWS-1), with managed DNS guidance and automatic SSL. Until chosen, the
       Steward-operated address is canonical. Experienced as a settings
-      affordance (EXP-45, Controls) — deliberately no serving journey, like
+      affordance (XA-6, Controls) — deliberately no serving journey, like
       APR-2's cadence selection.
     coverage:
       status: complete

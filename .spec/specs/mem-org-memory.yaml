@@ -10,7 +10,7 @@ intent: >-
   asking twice (MEM-2). This is the shared read/write layer every other
   capability consumes (PIPE-1, "one brain, several skills"). MEM-3 (the
   Knowledge browser) is P1 and out of this P1a pass — covered by a later spec
-  against EXP-41.
+  against XG-6.
 design-scope: cross-cutting
 constrained-by: [ADR-0002, ADR-0003, DM-1, DM-2, PIPE-1, PIPE-2, ARC-11, SEC-4]
 depends-on: []
@@ -31,7 +31,7 @@ challenge:
     for founder rules/taboos; the Strategy projects them; the overlay is
     enforced at the VAL stage): PIPE-1/PIPE-2 v2, STR-4/CHT-2 v2, ARC-11 v2, and
     the spec rewrite. Delta rounds r2/r3 caught incomplete DEC-22 propagation
-    across phrasing variants (glossary Redirect + EXP-19, then APR-3 slash-form);
+    across phrasing variants (glossary Redirect + XH-8, then APR-3 slash-form);
     r4 verified closure with a clean exhaustive multi-variant sweep and no new
     high. Full records: specs/challenges/mem-org-memory-2026-07-19-r1..r4.md.
 
@@ -245,7 +245,7 @@ items:
           exists) -> ask.
       EVERYTHING ELSE -> DEFAULT SENSIBLY and record the default as a
       MemoryEntry bearing the `assumed` marker, surfaced to the founder as a
-      correctable AssumedNote (DS-5; e.g. EXP-12, EXP-24) whose correction
+      correctable AssumedNote (DS-5; e.g. XO-3, XP-4) whose correction
       writes back through MEMS-1. A silent guess — a default with no `assumed`
       marker and no surfaced note — is forbidden (VAL-3).
       EXTRACTION AMBIGUITY (rule vs. one-off fact) — applies ONLY to FREE

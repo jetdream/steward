@@ -82,7 +82,7 @@ items:
         Covered by ONBS-4 (approved): OAuth connect any order/time, never a gate;
         ChannelConnection (DM-14) with encrypted credentials (SEC-10); a
         deterministic health state machine; publishing activates on a healthy
-        connection (PUB-1/ARC-18); expiry surfaces as the EXP-13 needs-you card.
+        connection (PUB-1/ARC-18); expiry surfaces as the XO-4 needs-you card.
         Realization pending code.
       against: [ONBS-4@1]
 

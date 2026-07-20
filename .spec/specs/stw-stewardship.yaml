@@ -26,7 +26,7 @@ intent: >-
   is REALIZED by the GENS-1 mix quota + PROS-3 ask-hygiene; STW-2 by a GENS package
   + a PRO-1 material request.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-5, ARC-15, EXP-2, EXP-24]
+constrained-by: [ADR-0002, ADR-0003, DM-5, ARC-15, XH-1, XP-4]
 depends-on: [GENS, PROS]
 governed-by: [GR-1]
 assurance: standard
@@ -44,8 +44,8 @@ design: >-
   PACKAGE via the content engine (GENS) and requests any needed material via PRO-1
   (PROS-1). Impact/recap content reports REAL, PAST impact (VAL-4) and never
   promises future outcomes (GR-1). Surfaces: the stewardship rhythm lands in the
-  weekly visit (EXP-2); milestone recaps in the colleague-moves-first journey
-  (EXP-24, campaigns & milestones). LRN-20: the mix quota + the campaign-date
+  weekly visit (XH-1); milestone recaps in the colleague-moves-first journey
+  (XP-4, campaigns & milestones). LRN-20: the mix quota + the campaign-date
   trigger are DETERMINISTIC; the recap PROSE is a grounded LLM step (GENS,
   VAL-gated).
 
@@ -113,7 +113,7 @@ open-questions:
     a first-class Campaign end-date field is a data-model decision to settle when
     STW-2 (P1) is built; the P1b slice is unaffected (STW-2 is P1).
   - >-
-    Founder-facing surfaces are the already-approved weekly visit (EXP-2, where the
-    stewardship rhythm lands) and the colleague-moves-first milestone card (EXP-24);
+    Founder-facing surfaces are the already-approved weekly visit (XH-1, where the
+    stewardship rhythm lands) and the colleague-moves-first milestone card (XP-4);
     pixel-level design is a method/ui.md pass on those approved screens, not
     deferred design.

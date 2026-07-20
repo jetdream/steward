@@ -47,7 +47,7 @@ items:
       reasoning: >-
         Covered by APRS-2 (approved): the deterministic digest cadence with
         event-driven items on a separate always-allowed channel that never frames
-        the home as behind (EXP-15). Realization pending code.
+        the home as behind (XH-4). Realization pending code.
       against: [APRS-2@1]
 
   APR-3:
@@ -81,7 +81,7 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Covered by APRS-4 (approved): email via the IG-5 port (EXP-51 digest),
+        Covered by APRS-4 (approved): email via the IG-5 port (XH-15 digest),
         deep-link to the Ready-spine top, time-sensitive off-cadence notifies,
         routine items batched (bother-only-when-needed, MEM-2). Realization pending
         code.
@@ -121,6 +121,6 @@ items:
       status: complete
       reasoning: >-
         Covered by APRS-6 (approved): exactly one nudge at >72h, a second miss
-        escalates nothing (rhythm restarted forward, EXP-15/DEC-16), rate-limited,
+        escalates nothing (rhythm restarted forward, XH-4/DEC-16), rate-limited,
         never guilt (VAL-5). P1. Realization pending code.
       against: [APRS-6@1]

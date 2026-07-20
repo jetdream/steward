@@ -28,7 +28,7 @@ intent: >-
   curiosity and TOP-3 proposals — draws from ONE per-org ceiling so limits cannot
   stack into a spammy week (R-10). Pull-only surfaces are exempt.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-2, DM-4, PIPE-1, ARC-19, EXP-4]
+constrained-by: [ADR-0002, ADR-0003, DM-2, DM-4, PIPE-1, ARC-19, XP-1]
 depends-on: [MEMS, GENS]
 governed-by: [GR-1]
 assurance: standard
@@ -46,8 +46,8 @@ design: >-
   library (DM-4) + drafts. Campaign/ask content is authored through the content
   engine (GENS) and passes the PIPE-2 VAL guardrail chain — asks never promise
   outcomes (GR-1), include the donation URL only when the org provided one
-  (scope). Surfaces: the colleague-moves-first journey (EXP-4 — photo requests
-  EXP-22, campaigns EXP-24); proactive pushes are distinct from the pull-only
+  (scope). Surfaces: the colleague-moves-first journey (XP-1 — photo requests
+  XP-2, campaigns XP-4); proactive pushes are distinct from the pull-only
   Discoveries feed (EXT-5), which is exempt from the budget. LRN-20 split: the
   budget ceiling, the priority ordering (high preempts low), the pull-only
   exemption, the asked-set consult, and the event-date time-sensitivity flag are
@@ -102,7 +102,7 @@ items:
     implements: [PRO-2]
     statement: >-
       Seasonal packages (GivingTuesday, year-end) are proposed PRE-DRAFTED — a set
-      of drafts the founder approves ONCE, not one at a time (EXP-24). Campaign
+      of drafts the founder approves ONCE, not one at a time (XP-4). Campaign
       content is authored through the content engine (GENS) and passes the PIPE-2
       VAL chain: asks never promise outcomes (GR-1), include the donation URL only
       when the org provided one (scope), external items cited (GR-5). A campaign
@@ -121,7 +121,7 @@ items:
       ASKING-WITHOUT-REPORTING (a fundraising ask with no recent impact/gratitude
       post) and proposes the missing impact post (STW-1) — the stewardship rhythm.
       This is a proactive push (draws from the PROS-4 budget) surfaced as an
-      ask-hygiene card (EXP-16). P1 — not in the P1b slice. Bounds interact with
+      ask-hygiene card (XH-5). P1 — not in the P1b slice. Bounds interact with
       the GEN-1 mix quota (asks <=25%, impact >=1/4wk); ask-hygiene is the
       proactive nudge that keeps the realized rhythm honest when the founder's
       dispositions drift.
@@ -167,6 +167,6 @@ items:
 open-questions:
   - >-
     The founder-facing PRO surfaces are in the approved colleague-moves-first
-    journey (EXP-4 — photo request EXP-22, campaign card EXP-24); the exact budget
+    journey (XP-1 — photo request XP-2, campaign card XP-4); the exact budget
     is a per-org tuning value (a constraint/config, set from cohort-1 data), not a
-    spec constant. Pixel-level card affordances are a method/ui.md pass on EXP-4.
+    spec constant. Pixel-level card affordances are a method/ui.md pass on XP-1.

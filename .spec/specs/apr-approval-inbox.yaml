@@ -37,7 +37,7 @@ intent: >-
   loop (MEMS-1). Critically: the composer routes founder-authored content through
   the SAME guardrail chain as generated content — authorship is not a bypass.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-4, DM-5, DM-9, PIPE-2, ARC-15, ARC-17, IG-5, EXP-2, EXP-16, EXP-46]
+constrained-by: [ADR-0002, ADR-0003, DM-4, DM-5, DM-9, PIPE-2, ARC-15, ARC-17, IG-5, XH-1, XH-5, XH-14]
 depends-on: [MEMS, GENS, CHTS]
 governed-by: [GR-1, GR-2, GR-3, GR-5, GR-8]
 assurance: standard
@@ -46,8 +46,8 @@ design: >-
   The Ready surface is @backend/approval (ARC-17): it receives VAL-cleared drafts
   from the content engine (GENS via PIPE-2) and records founder edits/verdicts
   before publishing (PUB). It is the disposition surface of the weekly-visit
-  journey (EXP-2 — work the stack EXP-16, deep review EXP-39) plus the
-  founder-initiated composer (EXP-7 / EXP-33 / the composer sheet EXP-46).
+  journey (XH-1 — work the stack XH-5, deep review XH-13) plus the
+  founder-initiated composer (XH-3 / XH-11 / the composer sheet XH-14).
   Dispositions write to Memory through the SINGLE MEMS-1 path (the learning loop):
   inline edits, skip-reasons, rejections, and accepted rule-proposals are the
   EXPLICIT correction channels MEMS-1 already enumerates (APR-1/APR-3 →
@@ -62,7 +62,7 @@ design: >-
   chain, not an APR-side pipeline (LRN-22 ownership). So a founder-authored post
   that trips GR-1/GR-2/GR-3/GR-5/GR-8 is held/flagged exactly like a generated one
   (no authorship bypass, the CHTS-1 lesson applied to composition). Notifications go via the Email port (IG-5, the
-  EXP-51 digest touchpoint). LRN-20 split: the batch-approve pinned-card
+  XH-15 digest touchpoint). LRN-20 split: the batch-approve pinned-card
   exclusion, the Trust-Level publish gate, and the digest cadence are
   DETERMINISTIC; recurring-edit-pattern detection (APRS-3) and channel-fit
   suggestion are LLM judgments held by acceptance + the confirm-before-bind
@@ -78,7 +78,7 @@ data: >-
 
 interfaces: >-
   @backend/approval (ARC-17) exposes: readyStack(org) -> ordered pending cards
-  with per-variant fit verdicts [EXP-16]; approve(item, channels?) -> approved
+  with per-variant fit verdicts [XH-5]; approve(item, channels?) -> approved
   [DM-5; at TL1 opens the 24h veto window, AUT-1]; batchApprove(org) -> approves
   ready cards EXCLUDING pinned/blocked (held/sensitive/veto/awaiting-picture) [a
   deterministic filter]; editDraft(item, variant?, text) -> a diffed edit
@@ -99,7 +99,7 @@ items:
       COHORT-1 QA GATE: a draft with qaStatus = pending-review (DM-5, the OPSS-1
       operator-QA gate) is WITHHELD from this spine until an operator clears it;
       once the per-org QA dial is off (qaStatus n/a) every draft flows normally.
-      The finite, ordered Ready spine (EXP-2/EXP-16) shows each draft with
+      The finite, ordered Ready spine (XH-1/XH-5) shows each draft with
       per-channel variant PREVIEW and FIT INDICATORS (the GEN-5 verdicts on DM-5).
       Per card the dispositions are: APPROVE (all variants, one tap -> ContentItem
       approved, DM-5); PER-CHANNEL TOGGLE (approve a subset of fit variants); INLINE EDIT
@@ -115,7 +115,7 @@ items:
       clean draft auto-approves without the founder acting, under the org's
       founder-selected veto model (DEFAULT publish-then-takedown — it publishes and
       shows a veto-window card "Published — stop it until <time>", pullable for 24h
-      (EXP-26); OPT-IN hold-then-publish — held in pending 24h, publishes only if
+      (XA-3); OPT-IN hold-then-publish — held in pending 24h, publishes only if
       unvetoed; AUTS-1); at TL2 it autopilots. A vetoed/pulled item is handed to
       founder control and is NEVER re-auto-approved (AUTS-1). Approving advances to
       the next pending card. UNDO scope follows the DM-5 lifecycle exactly
@@ -146,7 +146,7 @@ items:
       weekly). The digest (APRS-4) is delivered on that cadence. EVENT-DRIVEN items
       — campaigns, time-sensitive external items, and picture-request follow-ups
       (GENS-4 / PRO-1) — arrive ANYTIME, NOT gated by the cadence, and never
-      re-paint the home as "behind" (EXP-15). The cadence is a deterministic
+      re-paint the home as "behind" (XH-4). The cadence is a deterministic
       schedule; event-driven items are a separate, always-allowed channel.
       ACCEPTANCE: the digest arrives on the selected cadence; a time-sensitive
       external item or campaign can arrive between digests without waiting for the
@@ -159,7 +159,7 @@ items:
       Every founder EDIT (inline Edit or an accepted redirect) is DIFFED against
       the draft (the DM-5 edit-diff log). RECURRING edit PATTERNS — not one-offs —
       are detected and PROPOSED as Memory styleRules/taboos: a rule-proposal card
-      (EXP-16: "you've shortened 4 X posts in a row — set 'max 200 chars on X'?"),
+      (XH-5: "you've shortened 4 X posts in a row — set 'max 200 chars on X'?"),
       accept / edit / decline. An ACCEPTED proposal is written to Memory through
       the MEMS-1 explicit-correction path (styleRule or taboo, never a bare fact);
       the Strategy's org-rules section PROJECTS it (DEC-22, STRS-1 §c view). A
@@ -178,8 +178,8 @@ items:
     implements: [APR-4]
     statement: >-
       Email (web push is P1) for digest-ready and time-sensitive items, via the
-      Email port (IG-5, the EXP-51 digest touchpoint); deep links land at the TOP
-      of the Ready spine (EXP-15). Delivery is deterministic; time-sensitive items
+      Email port (IG-5, the XH-15 digest touchpoint); deep links land at the TOP
+      of the Ready spine (XH-4). Delivery is deterministic; time-sensitive items
       may notify OFF-cadence (APRS-2). Routine items are BATCHED into the digest —
       not one notification per draft — so the founder is bothered only when it
       helps (VAL-5, MEM-2 bother-only-when-needed).
@@ -210,8 +210,8 @@ items:
       generated one. Then normal scheduling/publishing (PUB-1). Also reachable via chat ("post this photo with
       a thank-you to Saturday's volunteers") — chat-initiated composition is P0 for
       creation-with-confirmation, P1 for the full command flow (CHT-3, CHTS-3).
-      Surfaces: the make-something-now flow (EXP-7 / EXP-33), the composer sheet
-      (EXP-46).
+      Surfaces: the make-something-now flow (XH-3 / XH-11), the composer sheet
+      (XH-14).
       ACCEPTANCE: a composed post yields per-channel adaptations shown for
       confirmation before publishing; a composed post with no picture cannot be
       approved for scheduling (GENS-3/GENS-4); composed content that violates a
@@ -222,10 +222,10 @@ items:
     title: Quiet accountability
     implements: [APR-6]
     statement: >-
-      If a digest sits unopened for >72h, exactly ONE gentle nudge (EXP-54); never
+      If a digest sits unopened for >72h, exactly ONE gentle nudge (XH-16); never
       guilt, never spam (VAL-5). A second consecutive miss escalates NOTHING —
       time-insensitive items are held quietly, and a returning founder gets "here's
-      what happened while you were away" with the rhythm restarted forward (EXP-15),
+      what happened while you were away" with the rhythm restarted forward (XH-4),
       never a guilt or streak-loss message (DEC-16). The nudge is rate-limited to
       the single send. P1.
       ACCEPTANCE: an unopened >72h digest triggers exactly one nudge; a second
@@ -234,7 +234,7 @@ items:
 
 open-questions:
   - >-
-    Pixel-level card affordances (the disposition controls on EXP-16, the deep
-    review EXP-39, the composer sheet EXP-46) are a method/ui.md pass on the
-    already-approved weekly-visit (EXP-2) and make-something-now (EXP-7) journeys —
+    Pixel-level card affordances (the disposition controls on XH-5, the deep
+    review XH-13, the composer sheet XH-14) are a method/ui.md pass on the
+    already-approved weekly-visit (XH-1) and make-something-now (XH-3) journeys —
     not deferred design, just the UI-spec altitude below this backend spec.

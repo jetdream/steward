@@ -49,10 +49,10 @@ design: >-
   channels. It HOSTS the interviewer (INTS) and shares ONE enrichment loop with
   INT-4 (the interviewer consumes the same disposition signal — not a second
   loop). Command actions (CHTS-3, P1) reuse the UI pipelines (GEN / PUB / AUT),
-  never a parallel code path. Surfaces: the just-talk journey (EXP-3) — ask
-  anything led (EXP-18), redirect & adjust (EXP-19), teach by disposing (EXP-20),
-  do it by chat (EXP-21, P1); the enrichment open-questions list lives in the
-  Knowledge view (EXP-41 / UX-5, INT-4). SKILL vs SURFACE: CHT is the
+  never a parallel code path. Surfaces: the just-talk journey (XH-2) — ask
+  anything led (XH-7), redirect & adjust (XH-8), teach by disposing (XH-9),
+  do it by chat (XH-10, P1); the enrichment open-questions list lives in the
+  Knowledge view (XG-6 / UX-5, INT-4). SKILL vs SURFACE: CHT is the
   conversational SURFACE; INT is the questioning SKILL it hosts; the guided Adjust
   and the enrichment loop are chat-surface behaviors that Memory/INT consume.
   LRN-20 split: grounding/retrieval, confirm-back-BEFORE-bind (CHTS-2), the
@@ -101,7 +101,7 @@ items:
       Memory WITH their sources, the plan/schedule from ContentItem state. A
       question it cannot answer from grounded context is answered HONESTLY ("I
       don't know — want me to note it as a gap?" -> the gap lands in the INT-4
-      open-questions, EXP-18), NEVER bluffed (VAL-4). Retrieval/assembly is
+      open-questions, XH-7), NEVER bluffed (VAL-4). Retrieval/assembly is
       deterministic; answer synthesis is an LLM step whose GROUNDING (a claim
       without retrievable backing is not asserted as fact, mirroring MEMS-4) is
       held by a catch-rate target on a labeled set — the honest LRN-20 split, NOT
@@ -139,7 +139,7 @@ items:
       Memory rule (DEC-22, STRS-1 §c is a view) — there is no second copy. The
       write binds future drafts IMMEDIATELY (the next generation reads the updated
       active overlay, MEMS-3). A redirect that CONTRADICTS a standing rule is
-      NAMED and the founder chooses (EXP-19), never silently overwritten.
+      NAMED and the founder chooses (XH-8), never silently overwritten.
       ACCEPTANCE: a redirect is confirmed back before it binds; once confirmed it
       is written to Memory as a styleRule/taboo (never a bare fact) and the next
       draft reflects it; a redirect contradicting a standing rule surfaces the
@@ -154,7 +154,7 @@ items:
       as the UI (GEN, PUB, AUT), NEVER a parallel code path (one source of truth
       for the action logic and its guardrails). DESTRUCTIVE or outward-facing
       actions (reschedule, pause, publish, campaign) CONFIRM back what they will
-      do before executing and report what they did after (EXP-21). Actions are
+      do before executing and report what they did after (XH-10). Actions are
       permission/autonomy-scoped (AUT): a command beyond the current Trust Level
       is offered, not taken, with the scope named. P1 — NOT in the P1a thin slice
       (R-1), which is interviewer + context Q&A + redirects only.
@@ -187,7 +187,7 @@ items:
       The composer is NEVER blank (VAL-6, DS-6 applied to chat): when idle it
       offers a few non-trivial, context-relevant suggested openings — computed
       from Memory + Strategy + what changed since the last visit — never an empty
-      box (EXP-18); it LEADS so the founder mostly ANSWERS questions they already
+      box (XH-7); it LEADS so the founder mostly ANSWERS questions they already
       know. It HOSTS the GUIDED ADJUST — the default alternative to APR-1's raw
       inline edit: instead of a text editor, the conversation asks WHAT to change
       and offers the most relevant options given the full context (Memory +
@@ -196,7 +196,7 @@ items:
       moments (APR-1). It is the home of the ENRICHMENT LOOP (learn-by-disposing,
       DEC-17): an information-bearing disposition — a Skip/reject (OptionalReason
       asked AFTER the action completes — answering is a gift, never a toll,
-      EXP-20) or an Adjust — becomes a short, optional conversation that deepens
+      XH-9) or an Adjust — becomes a short, optional conversation that deepens
       Memory (MEMS-1). This is ONE loop shared with INT-4 (the interviewer
       consumes the same disposition signal), not a second loop.
       ACCEPTANCE: opening chat with no prior context shows suggested, specific
@@ -207,7 +207,7 @@ items:
 open-questions:
   - >-
     The chat SURFACE is the already-approved One-Home stream (UX-2, DEC-18; the
-    EXP-3 flows EXP-18/19/20 are approved) — not deferred. The only UI follow is
-    the CHT-3 command-action affordances (P1, EXP-21) with their destructive
+    XH-2 flows XH-7/19/20 are approved) — not deferred. The only UI follow is
+    the CHT-3 command-action affordances (P1, XH-10) with their destructive
     confirm, which sit OUTSIDE the P1a thin slice (R-1); their UI-detail pass
     (method/ui.md) waits on the P1 command work.

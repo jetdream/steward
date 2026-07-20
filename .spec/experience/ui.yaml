@@ -2,8 +2,10 @@ kind: experience
 prefix: UI
 title: Steward Experience Spine — Journeys, Flows, Screens, Touchpoints (superseded)
 status: superseded
-# SUPERSEDED by experience/spine.yaml (EXP-*, the One-Home model) — DEC-18,
-# 2026-07-19, after a founder-directed from-scratch reevaluation. Retained on
+# SUPERSEDED by the One-Home model (EXP-*) — DEC-18, 2026-07-19, after a
+# founder-directed from-scratch reevaluation; the EXP spine was itself later
+# split by domain into experience/{onboarding,home,autonomy,proactive,
+# glass-wall,account,public,ops}.yaml (DEC-28, see registry.yaml). Retained on
 # disk so historical references (DEC-8/9/14/16, INC-3, challenge records
 # r1-r3, design mockup provenance) keep resolving; do not extend or edit
 # items here — the successor register is the living spine.

@@ -43,7 +43,7 @@ items:
       status: complete
       reasoning: >-
         Covered by PROS-2 (approved): pre-drafted seasonal sets approved once
-        (EXP-24), authored through GENS + VAL (GR-1 no outcome promise), a
+        (XP-4), authored through GENS + VAL (GR-1 no outcome promise), a
         high-priority in-season push drawing from the PROS-4 budget. Realization
         pending code.
       against: [PROS-2@1]

@@ -1,0 +1,306 @@
+kind: experience
+prefix: XH
+title: Steward Experience — Home (The One-Home Shell)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XH-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  The shared surface every other domain references by ID: the single home the founder lives in (XH-12), the draft opened in place (XH-13), the weekly visit and its stack, just-talk conversation, compose-as-action (XH-3/XH-11/XH-14), and the digest/nudge touchpoints that pull the founder back. This is the most cross-referenced register (VAL-4 single source of truth) — the glass-wall views (XG), autonomy tray (XA), and satellites link here, never copy it. Home embodies the five spine principles (DEC-28): one home / no navigation tax (P1), colleague-speaks-first (P2), morphs-with-trust (P3), finite-by-design (P4), glass-wall-always-open (P5).
+items:
+  XH-1:
+    v: 1
+    kind: journey
+    title: "The weekly visit"
+    serves: [APR-1, APR-2, APR-3, APR-4, APR-6, GEN-2, GEN-4, GEN-5, EXT-2, PRO-3, STW-1, UX-1, UX-3]
+    body: |
+      The recurring heart: the digest arrives (email/push), the founder
+      lands at the top of the READY SPINE — a finite, ordered, clearable
+      stack inside the home — and finishes in minutes. Entry states the
+      contract (count, time estimate, mix); disposal is per card (approve /
+      adjust / skip / redirect); completion is an honest terminus with the
+      rhythm framed as steady presence, never a streak score (DEC-16, G-4).
+      A missed week draws exactly one gentle nudge, then the system holds
+      quietly and welcomes the founder back warmly (APR-6). Flows: the
+      visit arrives (XH-4) → work the stack (XH-5) → caught up (XH-6).
+
+  XH-2:
+    v: 1
+    kind: journey
+    title: "Just talk"
+    serves: [CHT-1, CHT-2, CHT-3, CHT-4, CHT-5, INT-3, INT-4, MEM-2, UX-2]
+    body: |
+      The ambient conversation IS the home's medium — not a destination
+      beside the work but the substance around it (DEC-18 fuses what the
+      superseded spine split into a chat page + docked companion). It leads
+      (CHT-5): suggested, non-trivial openings when idle; questions the
+      founder can answer from what they already know; redirects confirmed
+      back before binding (CHT-2); the guided Adjust instead of a raw
+      editor; and the enrichment loop — every information-bearing
+      disposition becomes a short optional conversation that deepens Memory
+      (never re-asking what it knows, MEM-2). Flows: ask anything, led
+      (XH-7) → redirect & adjust (XH-8) → teach it by disposing
+      (XH-9) → do it by chat (XH-10, P1).
+
+  XH-3:
+    v: 1
+    kind: journey
+    title: "Make something now"
+    serves: [APR-5, UX-7]
+    body: |
+      The founder-initiated path: a photo and an idea become a post.
+      Compose is an ACTION in the chrome (and available by talking), never
+      a place (UX-7, VAL-6); the fit gate pre-suggests channels; adapted
+      variants are confirmed before anything ships. One flow (XH-11), one
+      sheet (XH-14).
+
+  XH-4:
+    v: 1
+    kind: flow
+    parent: XH-1
+    title: "Flow: the visit arrives"
+    body: |
+      The digest email/push carries the week's shape (XH-15, APR-2/APR-4);
+      its deep link lands at the top of the Ready spine in the home. Entry
+      states the contract: count, honest time estimate, mix line. States:
+      nothing new this visit (the home says why and what it needs — DS-6),
+      event-driven items between visits (campaigns, time-sensitive external
+      — arrive quietly, never re-paint the home as "behind"), THE MISSED
+      WEEK: exactly one gentle nudge (XH-16, APR-6); a second miss
+      escalates nothing — time-insensitive items are held quietly, and a
+      returning founder gets "here's what happened while you were away"
+      with the rhythm restarted forward, never guilt (VAL-5).
+
+  XH-5:
+    v: 1
+    kind: flow
+    parent: XH-1
+    title: "Flow: work the stack"
+    body: |
+      The finite spine, per card: approve (all variants, one tap) /
+      per-channel toggle / ADJUST (guided, in conversation — CHT-5; raw
+      inline edit remains for power moments, APR-1) / skip (optional
+      one-tap reason — XH-9) / free-text redirect (confirm-back, CHT-2).
+      Every card carries ReasonLine + ProvenanceLine (tap-through to
+      Memory); external cards are citation-first (EXT-2, GR-5, CitationBlock)
+      and their length-limited variants carry the ArticleLink badge
+      (NWS-5). Approving advances to the next pending card; every approval
+      is undoable in place until it publishes. States: awaiting-picture
+      (GEN-4 — complete-but-blocked, never an error: dashed warn slot,
+      library suggestions with a reason, one-tap attach, disabled Approve
+      until resolved; no matches hands off to a photo request, XP-2),
+      rule-proposal card (APR-3's visible payoff: "you've shortened 4 X
+      posts in a row — make it a rule?", accept/edit/decline, declined not
+      re-asked soon), ask-hygiene card (PRO-3: the missing impact post,
+      ReasonLine naming the flag, STW-1), batch approve ("approve all
+      ready" — skips held and veto-window cards), deep review (a card opens
+      into XH-13). Screen: XH-12; deep review: XH-13.
+
+  XH-6:
+    v: 1
+    kind: flow
+    parent: XH-1
+    title: "Flow: caught up"
+    body: |
+      The honest terminus, always reachable (DEC-18 discipline): "That's
+      everything — N posts heading out", what happens next ("next from
+      me…", VAL-6), and the rhythm as quiet pride — "6 weeks of steady
+      presence" (G-4), never a streak score, never confetti (DEC-16).
+      States: first-ever week ("your first full week"), rhythm broken last
+      week (grace, restart framed forward), partial finish (blocked items
+      named with their unblock path), unresolved pinned item (the terminus
+      never says "that's everything" over an open hold or failure — it says
+      what still needs the founder).
+
+  # ───────────────────────── Flows: Just talk (XH-2) ─────────────────────────
+
+  XH-7:
+    v: 1
+    kind: flow
+    parent: XH-2
+    title: "Flow: ask anything, led"
+    body: |
+      The home's composer is never blank (CHT-5): when idle it offers a few
+      non-trivial, context-relevant openings ("ask me what's going out this
+      week", "tell me about Saturday's event — I'll draft from it") instead
+      of an empty box. Full-context answers with sources (CHT-1): "what's
+      going out this week and where?", "what do you know about our
+      volunteer program?". INT-3 periodic curiosity arrives here,
+      rate-limited, tied to the calendar. States: founder opens with
+      nothing in mind (suggestions carry it), long-idle return (openings
+      refresh to what changed), can't answer (honest: "I don't know —
+      want me to note it as a gap?" — the gap lands in the INT-4 open
+      questions, never a bluff).
+
+  XH-8:
+    v: 2
+    kind: flow
+    parent: XH-2
+    title: "Flow: redirect & adjust"
+    body: |
+      Plain-language feedback ("less formal", "never name donors") is
+      confirmed back before it binds (CHT-2) and written to Memory — the
+      single source (MEM-1); the Strategy's org-rules section projects it
+      (DEC-22) — versioned, undoable. The guided ADJUST (CHT-5) is the
+      default alternative to raw editing: the conversation asks what to
+      change and offers the most relevant options given Memory + Strategy +
+      this draft ("warmer? shorter? lead with the kids? different
+      photo?"); the redraft lands in place. States: ambiguous redirect
+      (confirm-back resolves it), redirect that contradicts a standing rule
+      (named, founder chooses), undo.
+
+  XH-9:
+    v: 1
+    kind: flow
+    parent: XH-2
+    title: "Flow: teach it by disposing"
+    body: |
+      The enrichment loop (DEC-17, glossary): a skip offers a one-tap
+      OptionalReason AFTER the action completes — answering is a gift,
+      never a toll — and an answered "why" can open exactly one deeper,
+      optional question that writes a rule or fact to Memory (MEM-1). The
+      always-available OPEN QUESTIONS list (INT-4) lives in the Knowledge
+      view (XG-6) and occasionally surfaces one dismissible card in the
+      stream — each question tied to its payoff ("a founder-story detail
+      would sharpen next week's posts"), rate-limited, never blocking,
+      never a nag. States: reason declined (not re-asked soon), question
+      answered (later drafts visibly improve), list emptied (it says so,
+      and stays quiet).
+
+  XH-10:
+    v: 1
+    kind: flow
+    parent: XH-2
+    title: "Flow: do it by chat (P1)"
+    body: |
+      Command actions through conversation (CHT-3): "move Thursday's post
+      to Friday", "pause X for two weeks". Permission-scoped; failures are
+      honest and name the scope. Every action confirms back what it did.
+
+  # ───────────────────────── Flows: The colleague moves first (XP-1) ─────────────────────────
+
+  XH-11:
+    v: 1
+    kind: flow
+    parent: XH-3
+    title: "Flow: compose"
+    body: |
+      From the chrome + or by talking ("post this photo with a
+      thank-you"): master text → picture (library first, upload, or bot) →
+      channels (the fit gate pre-suggests and explains skips, GEN-5) →
+      adapted variants confirmed (APR-5) → schedule. Progressive
+      disclosure, never a wizard maze. States: no picture yet (draft parks
+      as awaiting-picture, guilt-free), channel override, save-for-later.
+      Screen: XH-14.
+
+  # ───────────────────────── Flows: Fair account and exit (XB-1) ─────────────────────────
+
+  XH-12:
+    v: 2
+    kind: screen
+    parent: XH-5
+    title: "Screen: the home"
+    body: |
+      THE one founder surface (UX-1..3; DEC-18) — homed under the weekly
+      visit because that is its steady life, but it is every journey's
+      landing. One invariant skeleton, three densities:
+      CHROME (never changes): Pause (AUT-3, one gesture) · wordmark · the
+      Look-inside cluster — Knowledge / How I write / Plan & Published /
+      Discoveries, each one click, never badged (P5) · Controls · +
+      Compose. Mobile: same chrome collapsed to a top bar + sheet.
+      SUMMON MECHANICS (all views and trays, XG-6, XG-7, XG-8, XG-9, XA-6, XH-14; v2 — DEC-19): a
+      summoned surface opens BESIDE the home on desktop — the stream stays
+      present (dimmed, place kept; the pinned zone is never dimmed) while
+      the elevated pane occupies the added width — and as a full-screen
+      takeover on phone. The chrome persists, one "back to Steward"
+      gesture returns, focus is trapped while open and restored on
+      dismiss. A summoned view is a mode of the home, never a sibling
+      destination — a router-of-destinations implementation would rebuild
+      the shell DEC-18 abolished. MOBILE-FIRST (UX-1 v2, DEC-19): the
+      phone is the floor — every action here is one-handed on a phone;
+      desktop adds simultaneity (home + one pane), never density — the
+      stream never stretches into a dashboard.
+      REGIONS (never reorder): (1) the PINNED zone — held-for-approval
+      cards (GR-3), publish failures, channel re-auth; cannot scroll away,
+      never batch-cleared; (2) the READY SPINE — the finite, ordered stack
+      with its header contract ("Ready for you · 3 of 5 · about six
+      minutes") and the one accent verb per card (Approve, DS-2); (3) the
+      CONVERSATION — recent exchanges and the composer with suggested
+      openings (CHT-5), never a blank box; (4) the TERMINUS — caught-up
+      state with the rhythm line ("6 weeks of steady presence", G-4,
+      DEC-16) and "next from me" (VAL-6).
+      SHAPES: day-one (narrated ingestion + interview cards where Ready
+      will be), steady (the weekly visit), quiet (earned autonomy: mostly
+      veto-window/report lines + rhythm; "nothing needs you this week").
+      The shape changes density and content, NEVER layout — the persona's
+      spatial memory is protected (DEC-18 discipline).
+      Every card resolves from the design-system inventory (DS-1..8 —
+      the substrate's post-card anatomy; DS-5 trust chrome: HeldForApproval,
+      veto-window, awaiting-picture, ReasonLine,
+      ProvenanceLine, FitBadge, ArticleLink, CitationBlock, OptionalReason,
+      AssumedNote); stream-only rows (report lines, interview and
+      open-question cards, the campaign package header) are COMPOSED from
+      existing primitives — no screen-invented components (GR-7).
+      Accessibility (DS-4): landmarked regions, each card a focusable
+      article, polite live-region updates, stable focus order — the stream
+      is navigable, not a moving feed.
+      Mockups: design/mockups/exp-38-home/round-1/ (three shapes + desktop;
+      founder-reviewed — the desktop review produced DEC-19).
+
+  XH-13:
+    v: 2
+    kind: screen
+    parent: XH-5
+    title: "Screen: the draft, opened"
+    body: |
+      A Ready card expanded for deep review — a focused pane BESIDE the
+      home on desktop (the stream stays present, place kept — v2, DEC-19),
+      a full-screen takeover on phone, one "back to Steward" gesture. Master text and photo large; per-channel variant tabs (FB /
+      IG / Threads / X) each with technical fit; the NEWS variant is the
+      long-form article — headline, hero, Medium-length body — reviewed
+      here with its donor-visible topic tags editable before publish
+      (NWS-4); ArticleLink badges on length-limited variants (NWS-5 —
+      never a link to an unpublished article); CitationBlock on external
+      stories (GR-5). ReasonLine, ProvenanceLine, AssumedNote where
+      relevant; schedule rows in plain language ("Tue 9:05 — when your
+      followers are around"); skipped channels shown with their reason,
+      overridable (GEN-5). Verbs: Approve (accent) · Adjust (guided, chat)
+      · Edit (raw, inline) · Skip · Redirect. Approval undoable in place
+      until publish.
+
+  XH-14:
+    v: 1
+    kind: screen
+    parent: XH-11
+    title: "Screen: compose sheet"
+    body: |
+      The one founder-authored path (APR-5, UX-7): a focused sheet —
+      master text, picture (library first), channels with fit-gate
+      suggestions and visible skip reasons, adapted variants to confirm,
+      schedule. Progressive disclosure; closing parks an unfinished draft
+      honestly.
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
+
+  XH-15:
+    v: 1
+    kind: touchpoint
+    parent: XH-4
+    title: "Touchpoint: the digest email"
+    body: |
+      The week's shape in the subject; the body names the mix and the
+      honest time estimate; one link, landing at the top of Ready
+      (APR-2, APR-4). Colleague voice (VAL-5); renders on phone mail
+      clients; never more than the founder's chosen cadence.
+
+  XH-16:
+    v: 1
+    kind: touchpoint
+    parent: XH-4
+    title: "Touchpoint: the nudge email"
+    body: |
+      Exactly one, gentle, after a missed visit (APR-6): "your posts are
+      waiting whenever you have a minute" — never guilt, never a
+      streak-broken framing (VAL-5, DEC-16). After it: quiet holding, warm
+      welcome-back (XH-4).

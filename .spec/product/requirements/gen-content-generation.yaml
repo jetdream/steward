@@ -100,7 +100,7 @@ items:
       status: complete
       reasoning: >-
         Covered by GENS-4 (approved): the complete-but-blocked awaiting-picture
-        state (never an error, EXP-16), the DM-5 approval gate, picture request
+        state (never an error, XH-5), the DM-5 approval gate, picture request
         (PRO-1) with Memory-ranked library suggestions, one-tap attach (APR-1).
         Realization pending code.
       against: [GENS-4@1]

@@ -320,7 +320,7 @@ items:
     body: |
       A separate SEO-first SSR/SSG deployable (Astro + React islands, ADR-0004)
       serving the org news site (NWS-1..6) to the public reader persona
-      (journey EXP-9). Reads published article/topic data from the backend
+      (journey XN-1). Reads published article/topic data from the backend
       read-API and images via the Blob port (ADR-0003); renders the DS-8
       org-branded template. Isolated from the authenticated SPA so its
       caching/SEO/rate-limit posture (SEC-8) is independent. Resolves the

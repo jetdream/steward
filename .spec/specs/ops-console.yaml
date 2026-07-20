@@ -28,13 +28,13 @@ intent: >-
   right to dial oversight down. Internal-only and deliberately thin; not a
   founder-facing surface.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-5, DM-6, DM-7, DM-8, PIPE-1, ARC-22, EXP-10, EXP-37, EXP-50]
+constrained-by: [ADR-0002, ADR-0003, DM-5, DM-6, DM-7, DM-8, PIPE-1, ARC-22, XOPS-1, XOPS-2, XOPS-3]
 depends-on: [GENS, PUBS, APRS]
 assurance: standard
 
 design: >-
   The console is the internal ops module @backend/ops + a deliberately
-  low-fidelity operator UI (ARC-22, EXP-10 journey / EXP-37 flow / EXP-50 console;
+  low-fidelity operator UI (ARC-22, XOPS-1 journey / XOPS-2 flow / XOPS-3 console;
   design investment deferred until the founder-facing spine is built). It reads
   the system's own logs and queues — it originates no org content. Model calls are
   logged per org (PIPE-1) for QA + cost tracking. The DRAFT-QA GATE (OPSS-1) is the
@@ -116,7 +116,7 @@ items:
       reputation-risk surface, sampling EXT candidates DM-8); and ACCOUNT HEALTH.
       All are internal, operator-only (the operator-access posture is a deferred
       SEC concern — open-questions), and deliberately
-      low-fidelity (EXP-50). LRN-20: failure-queue routing/retry is deterministic;
+      low-fidelity (XOPS-3). LRN-20: failure-queue routing/retry is deterministic;
       transcript + radar-precision review are human sampling.
       ACCEPTANCE: a generation/publish failure lands in the operator queue with
       retry and does not alert the founder unless action is needed; interview
@@ -131,6 +131,6 @@ open-questions:
     console is disabled outside the ops environment. The audit log + reason prompt
     are first-class parts of ARC-22 at implementation.
   - >-
-    The operator UI is deliberately low-fidelity (EXP-50) with design investment
-    DEFERRED until the founder-facing spine is built (EXP-10) — so no method/ui.md
+    The operator UI is deliberately low-fidelity (XOPS-3) with design investment
+    DEFERRED until the founder-facing spine is built (XOPS-1) — so no method/ui.md
     pass is due yet; this is a conscious deferral, not a gap.

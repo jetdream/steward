@@ -11,7 +11,7 @@ intent: >-
   overlay, enforced at the VAL stage (DEC-22, MEMS-3) — this spec does not
   re-home that; it formalizes the rest of the contract.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-1, DM-3, DM-2, PIPE-1, PIPE-2, ARC-14, EXP-42]
+constrained-by: [ADR-0002, ADR-0003, DM-1, DM-3, DM-2, PIPE-1, PIPE-2, ARC-14, XG-7]
 depends-on: [MEMS]
 governed-by: [GR-1, GR-2, GR-3, GR-4, GR-5, GR-6, GR-8]
 assurance: standard
@@ -47,7 +47,7 @@ design: >-
   (c) is the deterministic Memory overlay gate (MEMS-3), co-located with — not
   performed by — this strategy check. Founder edits bind immediately (no
   approval): (a/b/d/e) → a StrategyDoc version + visible diff; (c) → a Memory
-  write (supersession, MEMS-2). Founder surface: How I write (EXP-42, UX-5) and
+  write (supersession, MEMS-2). Founder surface: How I write (XG-7, UX-5) and
   chat (CHT-2).
 
 data: >-
@@ -63,7 +63,7 @@ interfaces: >-
   ONB, INT]; editSection(section, change) -> a StrategyDoc version for a/b/d/e,
   or a Memory write for c [callers: the How-I-write view, CHT]; validateDraft(
   draft) -> the strategy-fit verdict consumed at the PIPE-2 VAL stage [caller:
-  the pipeline]. tRPC/WS procedures for EXP-42 (read + inline edit + diffs) live
+  the pipeline]. tRPC/WS procedures for XG-7 (read + inline edit + diffs) live
   in code. Edits emit light WS events so open How-I-write / home surfaces
   refresh (ARC-1).
 
@@ -97,9 +97,9 @@ items:
       AUTO-DRAFT — sections (a/b/d/e) are auto-drafted by the shared LLM
       pipeline (PIPE-1, ADR-0003 port) grounded in ONB-2 style findings +
       interview answers (INT); nothing is invented (VAL-4). The draft is
-      presented for founder review at first run (EXP-42) — never a blank page
+      presented for founder review at first run (XG-7) — never a blank page
       (VAL-6).
-      FOUNDER-OWNED EDITS — editable in the How-I-write view (EXP-42, UX-5) and
+      FOUNDER-OWNED EDITS — editable in the How-I-write view (XG-7, UX-5) and
       via chat (CHT-2). An edit to (a/b/d/e) creates a new StrategyDoc version
       with a visible diff; an edit to (c) — an org rule — routes through the
       Memory write path as a founder-stated rule (MEMS-1, the same funnel as a
@@ -109,7 +109,7 @@ items:
       and written to Memory as a taboo enforced via the (c) overlay (MEMS-3) —
       it can never earn soft-only enforcement by placement. Section (a) holds
       only soft editorial preferences, drawn from the agenda (TOP-4). The
-      How-I-write view (EXP-42) surfaces (c)'s Memory-supersession history as its
+      How-I-write view (XG-7) surfaces (c)'s Memory-supersession history as its
       visible diff, so "versioned with visible diffs" holds uniformly across all
       five sections.
       IMMEDIATE BINDING — an accepted edit takes effect on the NEXT generation

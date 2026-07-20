@@ -1,0 +1,130 @@
+kind: experience
+prefix: XA
+title: Steward Experience — Autonomy (Earning the Reins & Controls)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XA-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  How trust is offered, earned, exercised, and revoked: the offer, the published-veto-open window, held-for-you, pause & pull back (XA-1..5), the Controls tray (XA-6), and the action-notice touchpoint. Autonomy is always visible and revocable (VAL-3). Controls (XA-6) is referenced from account (XB) and public (XN); the home shell (XH) summons it. Split from the One-Home spine (DEC-28).
+items:
+  XA-1:
+    v: 1
+    kind: journey
+    title: "Earning the reins"
+    serves: [AUT-1, AUT-2, AUT-3, UX-6]
+    body: |
+      The trust arc made visible and always revocable (VAL-3). Promotion is
+      offered, never taken (AUT-2), in plain labels — "Ask me first /
+      Publish with a heads-up / Run on your own" (DEC-16) — with permanent
+      caps stated wherever the level shows (fundraising asks, external —
+      EXT-3 via AUT-2). At a heads-up level the home carries quiet
+      veto-window cards; a sensitive topic is HELD for the founder at every
+      level (GR-3), pinned and unmissable; the offer moment proactively
+      glimpses the glass wall (DEC-18 discipline); and Pause is one gesture
+      in the chrome, always (AUT-3). As trust grows the home enters its
+      QUIET SHAPE — the earned-autonomy proof is the surface itself going
+      calm. Flows: the offer (XA-2) → published, veto open (XA-3) →
+      held for you (XA-4) → pause & pull back (XA-5).
+
+  XA-2:
+    v: 1
+    kind: flow
+    parent: XA-1
+    title: "Flow: the offer"
+    body: |
+      After earned consistency (AUT-2), Steward proposes — never takes —
+      the next trust level, in plain words: "You've approved 10 impact
+      posts in a row unchanged. Want me to publish these with a heads-up
+      from now on?" The offer card GLIMPSES THE GLASS WALL (DEC-18
+      discipline): a compact "here's everything I published this month"
+      summary with a link into Plan & Published — trust is asked for with
+      the evidence attached. Permanent caps are stated in the same breath
+      (fundraising asks and external stay at heads-up forever). States:
+      accepted (the home explains what changes), declined (not re-offered
+      soon), auto-demotion after rejection/edit spikes (named, never
+      silent).
+
+  XA-3:
+    v: 1
+    kind: flow
+    parent: XA-1
+    title: "Flow: published, veto open"
+    body: |
+      At "publish with a heads-up", items go out on time and appear in the
+      stream as quiet VETO-WINDOW cards (DS-5): "Published — you can stop
+      it until Thu 6pm", with veto & pull, and see-what-went-out. Excluded
+      from the Ready count and from batch approve — they need NO action.
+      The action notice (XA-7) mirrors time-sensitive ones off-app. In
+      the QUIET SHAPE (full autonomy earned), the home is mostly these plus
+      the rhythm line: "nothing needs you this week — 5 posts went out on
+      their own"; the stream is the log (VAL-3). The quiet-shape report
+      lines and Plan & Published (XG-8) render the SAME single PUB-3
+      publish log — one source, two views, never a second log. States:
+      veto used (pulled everywhere, said plainly), veto expired (normal
+      life; a later change of heart uses XG-4's recall/unpublish or the
+      channel's native delete), quiet-shape week.
+
+  XA-4:
+    v: 1
+    kind: flow
+    parent: XA-1
+    title: "Flow: held for you"
+    body: |
+      GR-3, at every trust level: a sensitive-topic item is pulled OUT of
+      the auto-publish path and PINNED at the top of the home as a
+      HeldForApproval card (DS-5) — visually the inverse of the veto card,
+      counted in Ready, always actionable, never batch-approvable, its
+      ReasonLine naming the hold ("this touches a sensitive topic, so I'm
+      not publishing it myself"). Because the home is the only landing
+      surface and the pinned zone cannot scroll away, arrival = seeing it;
+      a time-sensitive hold additionally rides the action notice (XA-7,
+      APR-4) so an away founder is pulled back. States: hold approved
+      (publishes normally), hold redirected, hold expired-while-away (still
+      pinned, still waiting — it never auto-resolves).
+
+  XA-5:
+    v: 1
+    kind: flow
+    parent: XA-1
+    title: "Flow: pause & pull back"
+    body: |
+      Fear to calm in one gesture: Pause in the chrome stops all publishing
+      instantly (AUT-3), from anywhere, always visible; per-channel pause
+      and the trust dials live in Controls (XA-6) in plain labels with
+      caps stated (AUT-1). States: global pause (the home says what's
+      paused and what resumes how), per-channel pause, resume (nothing
+      publishes retroactively without saying so).
+
+  # ───────────────────────── Flows: Looking inside (XG-1) ─────────────────────────
+
+  XA-6:
+    v: 1
+    kind: screen
+    parent: XA-5
+    title: "Screen: Controls"
+    body: |
+      The summoned tray for everything that configures the colleague
+      (UX-6): cadence (APR-2), notification channels (APR-4), the trust
+      dials per category in plain labels with permanent caps stated
+      (AUT-1; asks and external capped at heads-up), per-channel pause +
+      the kill switch mirror (AUT-3), channel connections and re-auth
+      (ONB-4), plan & billing (BIL-1, XB-2), the CANCEL section
+      (XB-3, sibling of billing), and the org's news subdomain upgrade
+      (NWS-6, P1 — deliberately a settings affordance with no journey of
+      its own).
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
+
+  XA-7:
+    v: 1
+    kind: touchpoint
+    parent: XA-3
+    title: "Touchpoint: the action notice"
+    body: |
+      The actionable-only alert family (APR-4, PUB-1's rule): a heads-up
+      publish with its veto window, a time-sensitive held-for-approval
+      item (GR-3), a publish failure, a channel needing re-auth. Each
+      carries its reason and one deep link to the pinned card. Nothing
+      else ever notifies.

@@ -69,11 +69,12 @@ else (ADR-0003) — Blob for images, the backend read-API for article/topic data
 
 - The public surface is isolated from the app: its cache/SEO/rate-limit posture
   (SEC-8) and its availability are independent of the authenticated app.
-- NWS specs `constrained-by` this ADR + the DS-8 component + the EXP-48/EXP-49
-  approved screens (the design gate spans both spines).
+- NWS specs `constrained-by` this ADR + the DS-8 component + the XN-3/XN-4
+  approved screens.
   *(Amended 2026-07-19, DEC-18: originally pointed at UI-60/UI-61; those live
   in the superseded register and cannot pass the design gate — the successor
-  screens are EXP-48/EXP-49 in `experience/spine.yaml`.)*
+  screens are XN-3/XN-4, in `experience/public.yaml` since the DEC-28 by-domain
+  split of the experience spine.)*
 - A second front-end deployable to build and operate — accepted as the cost of
   SEO the SPA structurally cannot deliver; kept small (read-only, few routes).
 - Ties to ADR-0003: images via the Blob port, data via the backend read-API,

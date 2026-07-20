@@ -45,7 +45,7 @@ design: >-
   Radar (EXT-1) consumes; the strategy is refined by Discoveries triage feedback
   (EXT-5). The active agenda feeds Strategy section (a) (STRS-1), the planner
   (GEN-1), and external research (TOP-2/EXT-1). Proposals surface in the
-  colleague-moves-first journey (EXP-4) — a proactive push, NOT the pull-only
+  colleague-moves-first journey (XP-1) — a proactive push, NOT the pull-only
   Discoveries feed (EXT-5). Boundaries: honest engagement only — GR-1 (no
   outcome promises), VAL-1 (process not leads), VAL-4 (real over synthetic);
   external content cited (GR-5) and sensitive-topic gated (GR-3). All model
@@ -125,7 +125,7 @@ items:
     implements: [TOP-3]
     statement: >-
       The engine proposes topics as a PROACTIVE push in the colleague-moves-first
-      journey (EXP-4), never in the pull-only Discoveries feed (EXT-5). Each
+      journey (XP-1), never in the pull-only Discoveries feed (EXT-5). Each
       proposal is RATE-LIMITED and calm (never spammy — VAL-6, R-10; the rate
       limit is realized via the SHARED PRO-4 proactive-interruption budget —
       DEC-24, LOW/deferrable tier, so proposals yield to time-sensitive
@@ -174,8 +174,8 @@ open-questions:
   - >-
     Founder-facing surfaces are a FAST-FOLLOW experience pass, not in this
     backend spec: (1) the topic-proposal card in the colleague-moves-first
-    journey (EXP-4, a sibling of the PRO-2 campaign-proposal card) for TOP-3;
+    journey (XP-1, a sibling of the PRO-2 campaign-proposal card) for TOP-3;
     (2) the agenda view — most likely surfaced as the editable section (a) of
-    How I write (EXP-42) — for TOP-4. Both need approved experience-spine
+    How I write (XG-7) — for TOP-4. Both need approved experience-spine
     elements before a UI spec (method/ui.md), like MEM-3's deferred Knowledge
     browser.

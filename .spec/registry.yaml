@@ -63,7 +63,15 @@ prefixes:
   STWS: specs/stw-stewardship.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
-  EXP: experience/spine.yaml
+  # experience spine split by domain (DEC-28, 2026-07-20); EXP/spine.yaml retired
+  XO: experience/onboarding.yaml
+  XH: experience/home.yaml
+  XA: experience/autonomy.yaml
+  XP: experience/proactive.yaml
+  XG: experience/glass-wall.yaml
+  XB: experience/account.yaml
+  XN: experience/public.yaml
+  XOPS: experience/ops.yaml
   DM: architecture/data-model.yaml
   IG: architecture/integrations.yaml
   PIPE: architecture/llm-pipeline.yaml

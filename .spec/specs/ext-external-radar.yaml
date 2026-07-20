@@ -28,7 +28,7 @@ intent: >-
   (GR-3), autonomy permanently capped. Discovery is driven by the editorial agenda
   (TOPS) and grounded in Memory; drafting is done by the content engine (GENS).
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-8, PIPE-1, PIPE-2, PIPE-3, ARC-16, IG-3, EXP-6, EXP-44]
+constrained-by: [ADR-0002, ADR-0003, DM-8, PIPE-1, PIPE-2, PIPE-3, ARC-16, IG-3, XG-1, XG-9]
 depends-on: [MEMS, TOPS, GENS, AUTS]
 governed-by: [GR-3, GR-5]
 assurance: standard
@@ -45,7 +45,7 @@ design: >-
   GEN-1); GR-5 mandatory citation + GR-3 sensitive-topic are enforced at the
   PIPE-2 VAL stage, and external content is permanently TL1-capped (EXTS-3 /
   AUTS-2 permanent caps). The Discoveries feed (EXTS-5) is the PULL-ONLY,
-  read-first surface (UX-8 / EXP-44); each disposition writes to Memory (MEMS-1),
+  read-first surface (UX-8 / XG-9); each disposition writes to Memory (MEMS-1),
   feeds the saved pool the planner draws from (GENS-1), and refines the research
   strategies (TOPS-2). Highest reputation-risk surface (R-4): the radar-precision
   review lives in ops (OPS-1). Cold start: a brand-new org's cause-level topics
@@ -155,7 +155,7 @@ items:
     implements: [EXT-5]
     statement: >-
       Every candidate (EXTS-1) is stored and READABLE as the org's personalized
-      feed (DM-8; surfaced on UX-8 / EXP-44). READ-FIRST: each item leads with
+      feed (DM-8; surfaced on UX-8 / XG-9). READ-FIRST: each item leads with
       headline + source + a short summary BEFORE any ask — the founder reads, then
       disposes. Three one-tap dispositions, each writing to Memory (MEMS-1) and
       tuning future discovery: "worth a post" (hands to drafting, EXTS-2;
@@ -178,6 +178,6 @@ open-questions:
     which structured feeds first) is OPEN and P1; the v0 (EXTS-1) is Gemini-only,
     so it does not block P1b.
   - >-
-    The Discoveries UI surface (UX-8 / EXP-44) is P2; the read-first triage
+    The Discoveries UI surface (UX-8 / XG-9) is P2; the read-first triage
     BEHAVIOR (EXTS-5) is specified now (GENS-1 / TOPS-2 depend on it), the pixel
-    surface is a method/ui.md pass on the approved EXP-44 screen when it ships.
+    surface is a method/ui.md pass on the approved XG-9 screen when it ships.

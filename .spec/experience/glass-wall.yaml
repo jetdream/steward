@@ -1,0 +1,175 @@
+kind: experience
+prefix: XG
+title: Steward Experience — Glass Wall (Looking Inside)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XG-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  The always-open, pull-only transparency surface (P5, VAL-3): the four plain-labeled views — Knowledge, How I write, Plan & Published, Discoveries (XG-6..9) — reached from the home chrome (XH). Steering how it writes, browsing what it knows, and reading discoveries (XG-2..5). Split from the One-Home spine (DEC-28).
+items:
+  XG-1:
+    v: 1
+    kind: journey
+    title: "Looking inside"
+    serves: [STR-1, STR-2, MEM-3, PUB-3, GEN-1, EXT-5, UX-4, UX-5, UX-8]
+    body: |
+      The glass wall (VAL-3): four plain-labeled views, each ONE CLICK from
+      the permanent Look-inside cluster in the home chrome, each pull-only
+      — never badged, never counted, never nudging, never gated behind
+      asking in chat (DEC-18 guarantee). "How I write" (the Strategy,
+      versioned), "What Steward knows" (Memory, editable), "Plan &
+      Published" (the calendar and the publish log), and "Discoveries"
+      (everything the radar found). Visited occasionally; carries
+      disproportionate trust weight. Flows: steer how it writes (XG-2) →
+      browse what it knows (XG-3) → plan & published (XG-4) → read the
+      discoveries (XG-5).
+
+  XG-2:
+    v: 1
+    kind: flow
+    parent: XG-1
+    title: "Flow: steer how it writes"
+    body: |
+      The Strategy as a plain-language, versioned document (STR-1's five
+      sections; STR-2): read it, edit it inline, see diffs, watch edits
+      bind immediately. Chat edits (CHT-2) land here visibly — the
+      document is the source of truth, the conversation is one way to
+      change it. States: first visit framed as "here's how I plan to speak
+      for you", edit conflict with a standing redirect (named), version
+      history browse. Screen: XG-7.
+
+  XG-3:
+    v: 1
+    kind: flow
+    parent: XG-1
+    title: "Flow: browse what it knows"
+    body: |
+      The Memory browser (MEM-3, P1): facts, stories, people, rules — each
+      with provenance, each editable/deletable; inferred items wear
+      AssumedNotes. Hosts the INT-4 open-questions list ("help me
+      understand you") with each question's payoff named. States: correct
+      an item (never violated again — MEM-1), delete (explains what it
+      affects — "two scheduled drafts use this" — then gone from future
+      drafts), empty sections honest about what would fill them. Screen:
+      XG-6.
+
+  XG-4:
+    v: 1
+    kind: flow
+    parent: XG-1
+    title: "Flow: plan & published"
+    body: |
+      Forward and backward visibility in one view: the rolling four-week
+      calendar (GEN-1) and the publish log with links and variant text
+      (PUB-3). Recall an approved-but-unpublished item; UNPUBLISH a
+      published news article at P0 (the one channel with no native delete
+      outside Steward — its URL then serves the warm not-here page,
+      XN-2). A publish failure appears here AND as a pinned needs-you
+      card in the home — surfaced only when founder action is needed
+      (PUB-1's alert rule). States: empty month (narrated), recalled item
+      (returns to Ready), failure resolved. Screen: XG-8.
+
+  XG-5:
+    v: 2
+    kind: flow
+    parent: XG-1
+    title: "Flow: read the discoveries"
+    body: |
+      Read first, dispose after (EXT-5 v2, DEC-20): the founder enters a
+      feed genuinely worth reading — each item leads with its content —
+      and, having read, gives one tap: WORTH A POST (hands to the normal
+      pipeline, arriving in Ready, never publishing directly; items tied
+      to an ongoing or imminent event are flagged time-sensitive and
+      prioritized in drafting), SAVE FOR LATER (the kept pool the planner
+      draws from to fill open calendar slots in quiet weeks), or NOT FOR
+      US (OptionalReason reuse — teaches taste). All marks write to
+      Memory. Strictly PULL: no badge, no count, no nudge, no digest
+      entries; browse time is voluntary (G-3 excludes it). States: fresh
+      org (feed warming up — narrated, cause-profile inputs shown), item
+      already drafted (marked), saved item picked up by the planner (its
+      draft's ReasonLine credits the save and names its age: "you saved
+      this two weeks ago"), saved item gone stale (an event-tied save
+      annotates as PASSED at its event date and is never auto-drafted into
+      irrelevance; the planner prefers fresh over old), source unavailable
+      (kept with a note), empty topic. Screen: XG-9.
+      (v2: DEC-20 — read-first triage; pull-only unchanged.)
+
+  # ───────────────────────── Flow: Make something now (XH-3) ─────────────────────────
+
+  XG-6:
+    v: 1
+    kind: screen
+    parent: XG-3
+    title: "Screen: Knowledge — what Steward knows"
+    body: |
+      The glass wall's memory pane (MEM-3): facts, stories, people, rules,
+      grouped and searchable; provenance on tap; AssumedNotes on
+      everything inferred; edit and delete in place. Hosts the INT-4 open
+      questions ("help me understand you") with payoffs named — the
+      10-minutes-to-spare surface. Empty sections narrate what would fill
+      them (DS-6).
+      Mockups: design/mockups/exp-41-44-glass-wall/round-2/ (founder-reviewed).
+
+  XG-7:
+    v: 1
+    kind: screen
+    parent: XG-2
+    title: "Screen: How I write — the Strategy"
+    body: |
+      The five STR-1 sections as one plain-language document: what to
+      post / tone with examples / restrictions / standing instructions /
+      per-channel rules. Versioned with visible diffs (STR-2); edits bind
+      immediately; chat-made rules land here marked with their origin.
+      Framed on first visit as "here's how I plan to speak for you."
+      Mockups: design/mockups/exp-42-45-46-47-founder-surfaces/round-1/ (founder-reviewed).
+
+  XG-8:
+    v: 2
+    kind: screen
+    parent: XG-4
+    title: "Screen: Plan & Published"
+    body: |
+      Forward + backward in one view (UX-4): the rolling four-week
+      calendar (GEN-1) above the publish log (PUB-3 — what went out,
+      where, when, with links and variant text). v2 (DEC-20) — the
+      calendar is INFORMATIVE and INTERACTIVE, never bare checkmarks:
+      every entry carries a content hint (title snippet + a type chip —
+      the existing category-chip treatment, no new DS class) and
+      its TIME ("Tue 9:05 — when your followers are around", PUB-1); a day
+      can hold several items, stacked chronologically (the ~1/day cadence
+      is typical, not a cap — campaign and event days exceed it). Desktop:
+      the four-week grid; phone: the same weeks as an agenda list.
+      Selecting any planned or published item opens its preview and
+      interaction IN THIS SAME PANE, one level deep, with "back to Plan &
+      Published" — recall, reschedule, unpublish (news articles, P0), and
+      view-what-went-out live on the opened item; the home stream stays
+      present throughout (DEC-19). Failures wear their state here and pin
+      in the home only when actionable. Empty month narrated (DS-6).
+      Mockups: design/mockups/exp-41-44-glass-wall/round-2/ (founder-reviewed).
+
+  XG-9:
+    v: 2
+    kind: screen
+    parent: XG-5
+    title: "Screen: Discoveries"
+    body: |
+      The org's own news feed, worth reading (EXT-5 v2, UX-8): each item
+      leads with its CONTENT — headline, source, a two-to-three line
+      summary — with a relevance ReasonLine (why the org's audience
+      cares). Read-more expands in place on phone and opens the reader in
+      the pane on desktop (one level, back returns). The three dispositions
+      sit ON the collapsed card already — a headline-obvious "not for us"
+      never costs an expand (R-10) — and travel with the item when opened:
+      "Worth a post" (time-sensitive badge when event-tied, with the event
+      date), "Save for later", "Not for us". A quiet SAVED shelf holds the
+      kept pool the planner draws from in thin weeks; it appears with the
+      first save (no empty shelf is rendered) and a passed event-tied save
+      wears its PASSED annotation. GR-7 compositions, no new DS classes:
+      the time-sensitive badge is a FitBadge-class chip carrying the event
+      date; the SAVED shelf is a warm-tier group of composed rows.
+      Explicitly not a task list: no progress, no counts, no completion
+      state (contrast with the Ready spine by design).
+      (v2: DEC-20 — read-first triage feed.)

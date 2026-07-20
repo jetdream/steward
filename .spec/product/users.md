@@ -20,7 +20,7 @@ Design consequence (see [vision.md](vision.md)): the system owns the context, mo
 
 ## Audience readers (the org's donors and community)
 
-The org's donors, volunteers, and local community — readers of the public org news page (NWS-1..5, journey EXP-9; added by DEC-9). They arrive from a social link or a search result, usually on a phone inside an in-app browser, with low context and seconds of attention; the page must read as the ORG's page (DS-8), be fast and credible, and never expose founder controls. They are readers, not users: no accounts, no engagement features (scope.md).
+The org's donors, volunteers, and local community — readers of the public org news page (NWS-1..5, journey XN-1; added by DEC-9). They arrive from a social link or a search result, usually on a phone inside an in-app browser, with low context and seconds of attention; the page must read as the ORG's page (DS-8), be fast and credible, and never expose founder controls. They are readers, not users: no accounts, no engagement features (scope.md).
 
 ## Operators (us)
 

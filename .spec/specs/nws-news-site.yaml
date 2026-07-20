@@ -14,7 +14,7 @@ challenge:
     (DS-6). Fixed: the public rail is now the active agenda INTERSECTED with topics
     that have ≥1 PUBLISHED article (publish-scoped; TOPS-4 stays the single source
     for which topics are active, DEC-25; a day-one org shows universal categories
-    only). Mediums: constrained-by += DM-13/EXP-36; NWSS-1 mirrors SEC-8's
+    only). Mediums: constrained-by += DM-13/XN-2; NWSS-1 mirrors SEC-8's
     active/tombstoned/deleted trichotomy; PUBS open-question #2 marked RESOLVED
     (NWS owns the takedown action, PUB owns the cache-purge mechanism). Lows:
     TOPS-4 caller list swept (publish-scoped NWS reader), DM-5/DM-13 linkage named,
@@ -30,7 +30,7 @@ intent: >-
   the ARC-23 renderer (ADR-0004); publishes/takes-down via the ARC-18 adapter.
   Content guardrails apply in full on the public surface (GR-1, GR-2, GR-5).
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-1, DM-5, DM-13, ARC-18, ARC-23, SEC-8, EXP-9, EXP-36, EXP-48, EXP-49]
+constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-1, DM-5, DM-13, ARC-18, ARC-23, SEC-8, XN-1, XN-2, XN-3, XN-4]
 depends-on: [PUBS, TOPS, GENS]
 governed-by: [GR-1, GR-2, GR-5, GR-7]
 assurance: standard
@@ -52,8 +52,8 @@ design: >-
   (PIPE-2), and holds here exactly as on social. SEC-8 is the public posture:
   serves only published, founder-approved article content — no authenticated data,
   no other-org data, no third-party PII; rate-limited + bot-guarded independently
-  of the app. First non-founder persona (users.md); journey EXP-9 (donor reads),
-  flow EXP-36, screens article EXP-48 + front page/rail EXP-49. LRN-20 split: the
+  of the app. First non-founder persona (users.md); journey XN-1 (donor reads),
+  flow XN-2, screens article XN-3 + front page/rail XN-4. LRN-20 split: the
   addressing, SSR/indexability, cache-purge-on-publish/unpublish, the
   never-link-an-unpublished-article guard, and the agenda-rail read are
   DETERMINISTIC; article prose is upstream LLM content (GENS), already VAL-cleared.
@@ -96,7 +96,7 @@ items:
       IMMEDIATE despite CDN caching (SEC-8) — this resolves the PUBS-1
       news-takedown open-question. Route afterlife follows SEC-8's trichotomy:
       while the account is ACTIVE or TOMBSTONED, a recalled/unpublished route
-      serves the warm org-branded "not here" page (EXP-36); only after a BIL-2 HARD
+      serves the warm org-branded "not here" page (XN-2); only after a BIL-2 HARD
       DELETION (org data + branding removed, SEC-4) does the slug return a generic
       410 gone page — never a stale or bare 404.
       ACCEPTANCE: every active org resolves a news page at its configured address;
@@ -141,7 +141,7 @@ items:
     title: Front page and topic navigation — the agenda is the org-domain rail
     implements: [NWS-4]
     statement: >-
-      A front page (EXP-49) listing articles with a topic navigation rail built
+      A front page (XN-4) listing articles with a topic navigation rail built
       from TWO ladders: the UNIVERSAL categories (the GEN-1 content taxonomy —
       mission, founder, case studies, events, people, external), a STABLE
       donor-facing structure; and the org's PUBLISHED-agenda topics as the
@@ -185,7 +185,7 @@ items:
     title: Org-selected custom subdomain
     implements: [NWS-6]
     statement: >-
-      In prod an org may CHOOSE, in Settings (EXP-45, Controls), its own news
+      In prod an org may CHOOSE, in Settings (XA-6, Controls), its own news
       subdomain (news.<org-domain>) over the default dedicated Steward news domain
       (NWSS-1), with managed DNS guidance and automatic SSL. Until chosen, the
       Steward-operated address is CANONICAL (NWSS-2 canonical URLs point there).
@@ -197,7 +197,7 @@ items:
 
 open-questions:
   - >-
-    Pixel-level design of the article page (EXP-48) and the front page / topic
-    rail (EXP-49) is a method/ui.md pass on those approved screens under GR-7 +
+    Pixel-level design of the article page (XN-3) and the front page / topic
+    rail (XN-4) is a method/ui.md pass on those approved screens under GR-7 +
     the DS-8 org-branded template — the UI-spec altitude below this behavior spec.
-    Not deferred design (EXP-9 / EXP-36 / the screens are approved).
+    Not deferred design (XN-1 / XN-2 / the screens are approved).

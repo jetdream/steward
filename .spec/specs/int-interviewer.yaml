@@ -43,9 +43,9 @@ design: >-
   interrupt-or-assume classifier (MEMS-5) — the interviewer is a FREE remark
   channel, so ambiguous rule-vs-fact input follows MEMS-5's narrower default with
   a correctable AssumedNote, never a manufactured binding rule. It surfaces in the
-  home stream: the day-one first conversation (EXP-12, ONBS-3), the just-talk
-  journey for ongoing curiosity and enrichment (EXP-3; INT-3/INT-4), and the
-  always-available open-questions list in the Knowledge view (EXP-30 / UX-5) and
+  home stream: the day-one first conversation (XO-3, ONBS-3), the just-talk
+  journey for ongoing curiosity and enrichment (XH-2; INT-3/INT-4), and the
+  always-available open-questions list in the Knowledge view (XG-3 / UX-5) and
   chat. The enrichment loop (learn-by-disposing) is SHARED with chat (CHT-5): an
   information-bearing disposition invites one deeper optional question. SKILL vs
   SURFACE: INT is the questioning skill; CHT is the conversational surface; they
@@ -153,7 +153,7 @@ items:
       Onboarding gathers what it can and never blocks on gaps (ONB-1); the rest
       fills PROGRESSIVELY, on the founder's time. The interviewer maintains a
       gentle, always-available set of OPEN QUESTIONS — a few specific items
-      surfaced in the Knowledge view (UX-5 / EXP-30) and via chat, each tied to
+      surfaced in the Knowledge view (UX-5 / XG-3) and via chat, each tied to
       why it helps ("a founder-story detail would sharpen next week's posts"). The
       list is a FILTERED VIEW of the gap model (ONBS-3) after the asked-set
       (MEMS-6) and shouldAsk (MEMS-5) — not a separately stored list (single
@@ -170,8 +170,8 @@ items:
 open-questions:
   - >-
     Pixel-level UI for the INT-4 open-questions list is a method/ui.md pass on
-    the already-approved Knowledge view (EXP-30 / UX-5) and the day-one first
-    conversation (EXP-12) — the affordance for the "help me understand you" list
+    the already-approved Knowledge view (XG-3 / UX-5) and the day-one first
+    conversation (XO-3) — the affordance for the "help me understand you" list
     and the in-stream question cards — separate from this backend spec, like
-    MEM-3's deferred Knowledge browser. Not a blocker: journeys EXP-1/EXP-3 are
+    MEM-3's deferred Knowledge browser. Not a blocker: journeys XO-1/XH-2 are
     approved.

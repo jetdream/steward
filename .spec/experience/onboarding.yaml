@@ -1,0 +1,109 @@
+kind: experience
+prefix: XO
+title: Steward Experience — Onboarding (Day One & Doorstep)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XO-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  The first-run experienced-HOW: the handshake that turns a name+email into a working colleague (XO-1), and the returning-founder doorstep. Split from the monolithic One-Home spine (DEC-28); the five spine principles still govern — the colleague speaks first (P2), no empty states (P4/DS-6), the home morphs with trust (P3). The everyday home this journey hands off to lives in [[home.yaml]] (XH).
+items:
+  # ───────────────────────── Journeys (the trust arc + satellites) ─────────────────────────
+  XO-1:
+    v: 1
+    kind: journey
+    title: "Day one — the handshake"
+    serves: [ONB-1, ONB-2, ONB-3, ONB-4, ONB-5, ONB-6, INT-1, INT-2, STR-2]
+    body: |
+      From "org name + email" to the first approved post inside the first
+      session (G-5). The home opens in its DAY-ONE SHAPE: Steward is already
+      working and narrating (never a form, never a wizard), a few curious
+      questions arrive as cards, "here's what I know" invites correction,
+      first drafts land in the same stream, and the relevant channel is
+      connected in context at the moment of first approval. Everything is
+      skippable and resumable; nothing blocks on completeness (ONB-1).
+      Flows: arrival & watch it learn (XO-2) → the first conversation
+      (XO-3) → first drafts, first yes (XO-4); meet the plan (XO-5)
+      is offered, never gated.
+      Mockups: design/mockups/exp-1-day-one/round-1/ (founder-reviewed).
+
+  XO-2:
+    v: 1
+    kind: flow
+    parent: XO-1
+    title: "Flow: arrival & watch it learn"
+    body: |
+      Org name + email is enough (ONB-1); EIN optional with visible
+      501(c)(3) verification when given; consent to read the public
+      presence stated in plain language (A-5). The home opens in day-one
+      shape with Steward already narrating ingestion in colleague voice —
+      the no-empty-state rule's hardest test (DS-6): "I'm reading your
+      website now — first drafts in about ten minutes." Findings stream in
+      as cards. States: EIN unmatched (proceed anyway), verification
+      pending (never blocks), already-registered org, no sources at all
+      (the interview becomes the primary path — XO-3 — honestly framed),
+      slow source, failed source (honest, non-blocking: "your site
+      wouldn't load — I'll retry; meanwhile, tell me…"). Screens: XO-6
+      (doorstep) → XH-12 (home, day-one shape).
+
+  XO-3:
+    v: 1
+    kind: flow
+    parent: XO-1
+    title: "Flow: the first conversation"
+    body: |
+      The curious-colleague interview runs IN the home stream (INT-1): a
+      few questions at a time, never an interrogation (INT-2), every answer
+      visibly landing ("I'll turn this into a founder-story post — you'll
+      see it in your first batch"). Resumable forever; never re-asks
+      (MEM-2). "Here's what I know" arrives as a correctable profile card
+      (ONB-5): facts, tone, programs, people — every inference marked with
+      an AssumedNote (DS-5); corrections become permanent rules (MEM-1).
+      States: founder has two minutes (graceful pause), founder rambles
+      (the interviewer follows the story — that is the point), thin profile
+      (honest about gaps + what would fill them), wrong-org ingestion
+      (a "this isn't us" escape that purges cleanly).
+
+  XO-4:
+    v: 1
+    kind: flow
+    parent: XO-1
+    title: "Flow: first drafts, first yes"
+    body: |
+      First drafts appear in the stream as the chapter's payoff (ONB-6):
+      "Here are your first drafts — built from your website and our chat",
+      with first-run copy that teaches the verbs by using them. Approving
+      the first draft prompts connecting the relevant channel IN CONTEXT
+      (ONB-4) — any order, any time, never a gate: zero connected means
+      drafts still flow and publishing waits; partial is normal for week
+      one; OAuth failure gets a plain-language retry; a LATER token expiry
+      becomes a pinned needs-you card with its reason — the founder never
+      discovers a dead channel silently. Target: a live post inside 48
+      hours (G-5).
+
+  XO-5:
+    v: 1
+    kind: flow
+    parent: XO-1
+    title: "Flow: meet the plan"
+    body: |
+      Steward introduces its auto-drafted editorial contract (STR-2) as
+      "here's how I plan to speak for you — change anything", linking the
+      How-I-write view (XG-7). States: founder skips entirely (fine —
+      the strategy binds anyway and stays one click away, P5), founder
+      edits inline (versioned, diffs visible).
+
+  # ───────────────────────── Flows: The weekly visit (XH-1) ─────────────────────────
+
+  XO-6:
+    v: 1
+    kind: screen
+    parent: XO-2
+    title: "Screen: doorstep"
+    body: |
+      Sign-up: org name + email (ONB-1), EIN optional with visible
+      verification state, consent in plain language, then straight into
+      the home's day-one shape — no profile wizard, no checklist. Sign-in
+      thereafter is unremarkable and fast.

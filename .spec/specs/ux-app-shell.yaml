@@ -14,8 +14,8 @@ challenge:
     LRN-20 split, and all five cross-cutting reconciliations (APRS-1 batch
     exclusion, CHTS surface/behavior split, APRS-5 composer ownership, MEM-3/UX-8
     P1 framing, the client-hook contract). One medium applied in this change: the
-    spec cited FLOWS (EXP-31/EXP-32) where it meant the SCREENS — swapped to
-    EXP-43 (Plan & Published) and EXP-44 (Discoveries) in UXS-4, UXS-8, and the
+    spec cited FLOWS (XG-4/XG-5) where it meant the SCREENS — swapped to
+    XG-8 (Plan & Published) and XG-9 (Discoveries) in UXS-4, UXS-8, and the
     design section, so the deferred pixel pass routes to the right layout-bearing
     screens (an LRN-22 wrong-element class the lint cannot see — both IDs resolve).
 intent: >-
@@ -29,7 +29,7 @@ intent: >-
   (routing, region order, one-click reachability, finite stack, pull-only); the
   pixel layer is a method/ui.md pass on the approved spine + design system.
 design-scope: cross-cutting
-constrained-by: [ADR-0001, ADR-0002, ADR-0003, EXP-1, EXP-2, EXP-3, EXP-5, EXP-6, EXP-7, EXP-38]
+constrained-by: [ADR-0001, ADR-0002, ADR-0003, XO-1, XH-1, XH-2, XA-1, XG-1, XH-3, XH-12]
 depends-on: [CHTS, APRS]
 governed-by: [GR-7]
 assurance: standard
@@ -43,19 +43,19 @@ design: >-
   inventory (DS-5 trust chrome, DS-6 no-empty-state) — the shell invents no
   component, color, spacing, or type role. ONE-HOME INVARIANTS (DEC-18, the
   enforceable cross-cutting rules): (1) the home's chrome + region ORDER never
-  change across its shapes — day-one / weekly-visit / quiet (EXP-1 / EXP-2 /
-  EXP-5); (2) holds and failures PIN and are never batch-cleared (reconciles with
+  change across its shapes — day-one / weekly-visit / quiet (XO-1 / XH-1 /
+  XA-1); (2) holds and failures PIN and are never batch-cleared (reconciles with
   APRS-1); (3) the stream ALWAYS reaches an honest "caught up" — never an infinite
   feed; (4) the glass wall is ONE CLICK, plain-labeled, PULL-ONLY, and never gated
   behind asking in chat (UXS-4/5/8). The shell HOSTS the ambient conversation
   (CHTS, UXS-2) and the Ready spine (APRS, UXS-3) and launches the composer
   (APRS-5, UXS-7); it owns NO business logic — all backend calls go through
-  domain-specific API hooks (the client contract). Surfaces: journeys EXP-1 (day
-  one) / EXP-2 (weekly visit) / EXP-3 (just talk) / EXP-5 (earning the reins — the
-  quiet shape) / EXP-6 (looking inside — the glass wall) / EXP-7 (make something
-  now); the home screen EXP-38; glass-wall screens Knowledge EXP-41, How-I-write
-  EXP-42, Calendar/Published (EXP-43), Discoveries (EXP-44); the Controls tray
-  EXP-45. LRN-20: the shell's invariants are DETERMINISTIC structural/routing
+  domain-specific API hooks (the client contract). Surfaces: journeys XO-1 (day
+  one) / XH-1 (weekly visit) / XH-2 (just talk) / XA-1 (earning the reins — the
+  quiet shape) / XG-1 (looking inside — the glass wall) / XH-3 (make something
+  now); the home screen XH-12; glass-wall screens Knowledge XG-6, How-I-write
+  XG-7, Calendar/Published (XG-8), Discoveries (XG-9); the Controls tray
+  XA-6. LRN-20: the shell's invariants are DETERMINISTIC structural/routing
   rules (region order, one-click reachability, finite stack, pull-only-no-badge) —
   genuinely enforceable, not LLM behaviors; conversational CONTENT within the
   stream is the LLM part, owned by CHTS/INTS, not this spec.
@@ -125,7 +125,7 @@ items:
     statement: >-
       A glass-wall view — one click from the home's Look-inside cluster,
       pull-only: planned and published posts across all channels plus the publish
-      log (GENS-1 plan, PUBS-3 log; screen EXP-43). Read-oriented; never badged,
+      log (GENS-1 plan, PUBS-3 log; screen XG-8). Read-oriented; never badged,
       counted, or nudging (VAL-6).
       ACCEPTANCE: one click from the home shows the plan + publish log across all
       channels; it is pull-only (no badge, no nudge).
@@ -135,9 +135,9 @@ items:
     implements: [UX-5]
     statement: >-
       Two one-click glass-wall views: KNOWLEDGE — what the system knows (the MEM-3
-      browser at P1; hosts the INT-4 open-questions list; screen EXP-41) — and HOW
+      browser at P1; hosts the INT-4 open-questions list; screen XG-6) — and HOW
       I WRITE — the Posting Strategy (STRS sections, versioned editor per STR-2;
-      screen EXP-42). Each is ONE CLICK from the home's Look-inside cluster,
+      screen XG-7). Each is ONE CLICK from the home's Look-inside cluster,
       plain-labeled, PULL-ONLY, and NEVER gated behind asking in chat (the
       glass-wall guarantee, DEC-18 / VAL-3).
       ACCEPTANCE: both views open in one click from the home, plain-labeled;
@@ -148,7 +148,7 @@ items:
     title: Settings / Billing surface
     implements: [UX-6]
     statement: >-
-      The controls surface (the Controls tray, EXP-45): digest cadence (APRS-2),
+      The controls surface (the Controls tray, XA-6): digest cadence (APRS-2),
       notifications (APRS-4), autonomy levels per category (AUT-1), per-channel
       pause and the global kill switch (AUT-3), and plan & billing (BIL-1). The
       kill switch is ALWAYS reachable — one gesture in the chrome, at every
@@ -173,7 +173,7 @@ items:
     implements: [UX-8]
     statement: >-
       A PULL-ONLY glass-wall view: the org's personalized feed of discovered
-      external content (EXT-5; screen EXP-44), one click from the home's
+      external content (EXT-5; screen XG-9), one click from the home's
       Look-inside cluster. Pull-only BY RULE — it never carries a badge or count,
       and the feed never generates tasks, digest entries, or nudges (VAL-6;
       browsing time is voluntary under G-3). P1.
@@ -184,6 +184,6 @@ open-questions:
   - >-
     Pixel-level shell design — the exact chrome, the desktop summoned-pane layout
     (DEC-19), the Look-inside cluster, and the home's shape transitions — is a
-    method/ui.md pass on the already-approved One-Home spine (home screen EXP-38 +
-    journeys EXP-1/2/3/5/6/7) and the design system (GR-7). Not deferred design
+    method/ui.md pass on the already-approved One-Home spine (home screen XH-12 +
+    journeys XO-1/2/3/5/6/7) and the design system (GR-7). Not deferred design
     (the spine is approved); it is the pixel-spec altitude below this behavior spec.

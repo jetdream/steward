@@ -100,7 +100,7 @@ items:
         draft --> awaiting_picture : no picture assigned (GEN-4)
         awaiting_picture --> draft : picture attached
         draft --> approved : founder approves / TL permits (AUT-1)
-        approved --> draft : recalled before any variant is scheduled (VAL-3; EXP-31)
+        approved --> draft : recalled before any variant is scheduled (VAL-3; XG-4)
         draft --> skipped : founder skips
 
       Delivery lifecycle (per ChannelVariant — one per destination, incl. the
@@ -187,7 +187,7 @@ items:
     body: |
       Stripe linkage (BIL-1). Carries the subscription STATUS that gates
       publishing (PUBS-1): PUBLISHING-ELIGIBLE = active OR grace (payment-failure
-      grace, publishing unaffected — EXP-34); NOT eligible = lapsed (grace expired)
+      grace, publishing unaffected — XB-2); NOT eligible = lapsed (grace expired)
       OR cancelled (the durable BILS-2 stop, reversed only by re-subscribe). Plus a
       refund event/field for the G-1 refund-rate metric (BILS-1).
 
@@ -230,7 +230,7 @@ items:
       but connectable any time) and READ by the Publisher (ARC-18) to activate a
       destination for PUB-1 — zero connections means drafts still flow and
       publishing waits (ONB-6 is decoupled from connection). A token expiry/
-      revocation is a first-class state that surfaces as the EXP-13 needs-you
+      revocation is a first-class state that surfaces as the XO-4 needs-you
       card with its reason, never a silent dead channel. Hard-deleted with org
       data on a BIL-2 account deletion (SEC-4). Owned by Org (DM-1). Concrete
       field lists live in @shared types.

@@ -302,7 +302,7 @@ items:
       to a single source. The contradiction sweep (SDLC Phase B step 5) updated
       the obvious citers (CHT-2, STR-4, goal coverage) but missed stragglers in
       OTHER registers and OTHER phrasings: the glossary Redirect term and the
-      experience flow EXP-19 said "Memory or Strategy" (word form), and APR-3 said
+      experience flow XH-8 said "Memory or Strategy" (word form), and APR-3 said
       "Strategy/Memory rules" (SLASH form) — the latter invisible to a regex
       matching only the word form. Two challenge rounds were spent finding these
       one at a time. Lesson: when a decision reconciles a CONCEPT, before

@@ -67,7 +67,7 @@ items:
       reasoning: >-
         Covered by PUBS-3 (approved): an append-only per-variant log (destination,
         timestamp, live link, exact text) visible in Calendar/Published (UX-4 /
-        EXP-31) — the VAL-3 nothing-hidden guarantee; auto-published posts logged
+        XG-4) — the VAL-3 nothing-hidden guarantee; auto-published posts logged
         like approved ones. Realization pending code.
       against: [PUBS-3@1]
 

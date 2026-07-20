@@ -1,0 +1,49 @@
+kind: experience
+prefix: XOPS
+title: Steward Experience — Ops (Operators & Console)
+status: approved
+# Domain register split from the monolithic EXP spine (experience/spine.yaml,
+# DEC-18 era) by domain per DEC-28 (2026-07-20 founder reorg). Content is
+# preserved verbatim; IDs re-homed EXP-* -> XOPS-* (tree order). The five
+# One-Home principles and the DS-5 component inventory (GR-7) still govern.
+# Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+intent: >-
+  The internal operator-facing experience behind the glass: the silent QA pass and the operator console (XOPS-1..3). Operator access is governed (SEC-11/ADR-0005). Split from the One-Home spine (DEC-28).
+items:
+  XOPS-1:
+    v: 1
+    kind: journey
+    title: "Operators behind the glass"
+    serves: [OPS-1]
+    body: |
+      Internal and deliberately thin: per-org draft QA before the home
+      (with a dial), failure queues, interview transcripts, radar precision
+      (R-4). One flow (XOPS-2), one low-fidelity console (XOPS-3); design
+      investment deferred until the founder-facing spine is built.
+
+  # ───────────────────────── Flows: Day one (XO-1) ─────────────────────────
+
+  XOPS-2:
+    v: 1
+    kind: flow
+    parent: XOPS-1
+    title: "Flow: silent QA pass (internal)"
+    body: |
+      OPS-1: per-org draft QA before the home (with a dial to reduce it as
+      G-2 improves), failure queues, transcripts, radar precision review.
+      Screen: XOPS-3. Low fidelity by decision (DEC-8 precedent, carried
+      forward).
+
+  # ───────────────────────── Screens ─────────────────────────
+
+  XOPS-3:
+    v: 1
+    kind: screen
+    parent: XOPS-2
+    title: "Screen: operator console (internal)"
+    body: |
+      Low-fidelity by decision: per-org QA queue with the dial, failure
+      queues, interview transcripts, radar precision review (OPS-1, R-4).
+      Never founder-visible.
+
+  # ───────────────────────── Touchpoints ─────────────────────────

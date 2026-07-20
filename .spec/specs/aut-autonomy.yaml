@@ -12,7 +12,7 @@ challenge:
     APRS-1 still encoded the rejected reading; and (2) the veto (approved->draft
     recall) had no latch, so a vetoed post could silently re-auto-approve. A wider
     sweep then found DEC-26's original hold-then-publish-only choice contradicted
-    the APPROVED spine (EXP-26), DS-5 veto card, glossary, and vision.md #8 (all
+    the APPROVED spine (XA-3), DS-5 veto card, glossary, and vision.md #8 (all
     publish-then-takedown). Founder-operator resolved it: DEC-26 REVISED — the TL1
     veto model is a founder setting, DEFAULT publish-then-takedown (the approved
     design, no spine/DS/vision reversal), opt-in hold-then-publish. Fixes: AUTS-1
@@ -32,7 +32,7 @@ intent: >-
   DM-5 reconcile against a definite behavior. Autonomy governs what may publish
   without founder approval; it NEVER short-circuits the guardrail chain.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-5, DM-9, PIPE-2, ARC-20, EXP-5]
+constrained-by: [ADR-0002, ADR-0003, DM-5, DM-9, PIPE-2, ARC-20, XA-1]
 governed-by: [GR-3, GR-8]
 assurance: standard
 
@@ -48,7 +48,7 @@ design: >-
   PUBLISH-THEN-TAKEDOWN: (a) default — a clean draft auto-publishes at its optimal
   slot and is PULLABLE for 24h (native delete for social; DM-5
   published->unpublished for news), shown as the approved veto-window card
-  (EXP-26/DS-5); (b) opt-in hold-then-publish — the auto-approved draft is HELD in
+  (XA-3/DS-5); (b) opt-in hold-then-publish — the auto-approved draft is HELD in
   the DM-5 pending phase for 24h and publishes only if unvetoed. A veto/pull in
   either model hands the item to founder control and it is NEVER re-auto-approved
   (the veto latch). The default needs no spine/DS/vision change (it IS the approved
@@ -56,7 +56,7 @@ design: >-
   The kill switch (AUT-3) is the always-on
   revocability (VAL-3), one gesture in the chrome (UXS-6). P1b ACTIVE surface: TL0
   (launch state) + the kill switch; TL1/TL2 + promotion (AUTS-2) are P2, semantics
-  pinned now. Surface: the earning-the-reins journey (EXP-5) — the offer moment,
+  pinned now. Surface: the earning-the-reins journey (XA-1) — the offer moment,
   veto-window cards, held-for-you, pause. LRN-20 split: Trust Levels, the 24h
   hold, veto-recall, the promotion THRESHOLD counts, auto-demote, and the kill
   switch are DETERMINISTIC state/counting rules; the classifiers that override
@@ -103,7 +103,7 @@ items:
       (a) DEFAULT publish-then-takedown — a clean draft is auto-approved (editorial
       draft->approved, no founder tap) and PUBLISHES at its optimal slot (PUBS-1);
       it appears as a veto-window card ("Published — you can stop it until <time>",
-      EXP-26/DS-5) and the founder may PULL it within 24h (native platform delete
+      XA-3/DS-5) and the founder may PULL it within 24h (native platform delete
       for social; DM-5 published->unpublished for news).
       (b) OPT-IN hold-then-publish — the auto-approved draft is HELD in the DM-5
       pending phase for the 24h window (veto = the approved->draft recall during
@@ -168,10 +168,10 @@ items:
 open-questions:
   - >-
     TL1/TL2 ACTIVATION and the promotion UX (the offer moment, veto-window cards,
-    held-for-you) are P2 (EXP-5 is approved; AUTS-2 is the mechanic). This spec
+    held-for-you) are P2 (XA-1 is approved; AUTS-2 is the mechanic). This spec
     pins the TL1 VETO MODEL (DEC-26: founder-selectable, default
     publish-then-takedown) now. The DEFAULT veto-window card is already designed
-    (EXP-26/DS-5); the OPT-IN hold-then-publish founder-facing card (a "held —
+    (XA-3/DS-5); the OPT-IN hold-then-publish founder-facing card (a "held —
     publishes <time> unless you stop it" variant) is a deferred P2 experience
-    surface (method/ui.md on EXP-25..28) when TL1 ships. Not a P1b blocker (P1b
+    surface (method/ui.md on XA-2, XA-3, XA-4, XA-5) when TL1 ships. Not a P1b blocker (P1b
     ships TL0 + kill switch only).

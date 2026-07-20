@@ -93,7 +93,7 @@ items:
       URL/slug reservation (a small record, not the whole Org) follows the
       account-active rule (Q-11, DEC-10): while active/tombstoned an
       unpublished-or-recalled route serves the warm org-branded "not here"
-      page (EXP-36); after a BIL-2 hard deletion (org data + branding removed,
+      page (XN-2); after a BIL-2 hard deletion (org data + branding removed,
       SEC-4) the slug returns a GENERIC 410 gone page, never a stale
       org-branded one. The "published with Steward" footer is the only
       cross-org element.
@@ -121,7 +121,7 @@ items:
       Threads, X access/refresh tokens) are org secrets — encrypted at rest,
       never logged, never sent to the client, and requested at the minimum
       permission scope (A-1, GR-6). Revocation and expiry are first-class states,
-      not silent failures: an unusable connection surfaces as the EXP-13
+      not silent failures: an unusable connection surfaces as the XO-4
       needs-you card with its reason and is re-authorized by re-running the
       ONB-4 connect flow. Hard-deleted with org data on a BIL-2 account deletion
       (SEC-4). Distinct from founder auth (SEC-7, BetterAuth) — these are the
