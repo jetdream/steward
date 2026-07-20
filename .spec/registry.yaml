@@ -61,6 +61,7 @@ prefixes:
   BILS: specs/bil-billing.yaml
   OPSS: specs/ops-console.yaml
   STWS: specs/stw-stewardship.yaml
+  DSS: specs/ds-design-system.yaml   # design-system component contracts (trio artifact 2, method/ui.md §5)
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   # experience spine split by domain (DEC-28, 2026-07-20); EXP/spine.yaml retired

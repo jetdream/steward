@@ -1,0 +1,273 @@
+kind: spec
+prefix: DSS
+title: Design System — component contracts
+status: approved
+design-scope: cross-cutting
+# TRIO artifact 2 of 3 (method/ui.md §5): the component-contract spec that binds
+# the DS-1..8 guarantees (requirements register) to concrete, evidence-bearing
+# component contracts. Artifact 1 = product/requirements/ds-design-system.yaml
+# (DS-*). Artifact 3 = GR-7 (the "conform to the design system" guardrail UI
+# specs cite via governed-by). Without this middle artifact, "the Button honors
+# the system" is a claim the graph cannot see.
+governed-by: []               # GR-7 governs UI specs; the design system IS the thing conformed to, so it does not cite its own conform-guardrail.
+depends-on: []
+constrained-by: [ADR-0001]    # the Open Design airbnb substrate re-themed as steward (accepted).
+challenge:
+  date: 2026-07-20
+  by: cortex:architect-challenger
+  verdict: pass
+  record: .spec/specs/challenges/ds-design-system-2026-07-20-r1.md
+  summary: >-
+    Product-Designer + design-conformance lenses over the 23 component
+    contracts vs the built steward system and DS-1..8; verdict pass.
+design: >-
+  Each spec-element is one component's contract: its API (props / variants /
+  slots), the design tokens it consumes (DS-1), and the interaction states it
+  must render (default / hover / focus / disabled / loading / error / empty) at
+  the DS-4 accessibility baseline. The layer is grounded on the steward theme
+  (design/design-system/steward/tokens.css + tailwind-v4.css) which binds the
+  Open Design airbnb token schema (ADR-0001, DS-1). Realization is by
+  `@implements <DSS-ID>` markers in the shared component source once the client
+  exists; today no `src/` exists, so the register is approved (design gate) but
+  its elements are not yet realized. Preview reference for each COMPONENT
+  contract: design/design-system/steward/preview/<component>.html; the two
+  foundation contracts (DSS-1 token source, DSS-4 a11y primitives) have no
+  standalone preview — they live in tokens.css/tailwind-v4.css and are shown
+  across the colors/typography/spacing previews. Composite surfaces
+  (Ready-spine card, approve panel, chat message) COMPOSE these primitives and
+  never introduce new visual values (GR-7).
+data: >-
+  The steward theme tokens (color, type, spacing, radius, elevation, motion) —
+  the single source every component reads (DS-1); light-only in v1 (DS-7).
+interfaces: >-
+  The exported component API surface (props, variants, slots) of the shared UI
+  layer, consumed by every screen across the eight experience registers.
+items:
+  # ── Foundations (the token + theme layer) ──────────────────────────────
+  DSS-1:
+    v: 1
+    implements: [DS-1, DS-7]
+    title: Token source & Tailwind theme binding
+    statement: >-
+      tokens.css binds the Open Design token schema (schema names preserved
+      exactly, ADR-0001) and is the SINGLE source of every color/type/spacing/
+      radius/elevation/motion value; the Tailwind v4 theme derives from the same
+      file (no parallel scale). Components read tokens only — a raw hex, px, or
+      ms literal in a component is a violation. v1 exposes the light theme;
+      dark mode is a future sibling token file, never a component fork (DS-7).
+      Source carries `@implements DSS-1`.
+  DSS-2:
+    v: 1
+    implements: [DS-2]
+    title: Accent & color-role discipline
+    statement: >-
+      The one accent (terracotta #B5502E, a token) is reserved for the primary
+      action, the active-nav indicator, and at most one focal element per
+      viewport (DS-2's exact set); everything else resolves from the grayscale ramp. All
+      status/semantic color (success/warn/danger) stays under ~5% of any surface.
+      A utility enforcing "one accent focal per viewport" is the shared guard.
+      Source carries `@implements DSS-2`.
+  DSS-3:
+    v: 1
+    implements: [DS-3]
+    title: Typography scale
+    statement: >-
+      Bricolage Grotesque (display) + Source Sans 3 (body); the two-mode rhythm —
+      tight display leading (1.2) with negative tracking ≥20px, generous body
+      leading (1.43), body weight ≥500 at UI density, sentence case throughout.
+      Both webfonts are loaded by every surface. Type roles are tokens, never
+      ad-hoc sizes. Source carries `@implements DSS-3`.
+  DSS-4:
+    v: 1
+    implements: [DS-4]
+    title: Accessibility primitives
+    statement: >-
+      The shared a11y floor every component inherits: WCAG 2.1 AA text contrast
+      (the accent passes 5.06:1 on white both directions), ≥44px touch targets,
+      and a visible 2px ink focus ring (the substrate's photography-safe
+      treatment). Focus is trapped in summoned panes/sheets and restored on
+      dismiss. Source carries `@implements DSS-4`.
+  # ── Base components ─────────────────────────────────────────────────────
+  DSS-5:
+    v: 1
+    implements: [DS-2, DS-4]
+    title: Button contract
+    statement: >-
+      Button exposes {variant: primary|secondary|quiet|danger, size, disabled,
+      loading, iconOnly} and renders default/hover/focus/disabled/loading (the
+      built system names the low-emphasis variant `quiet`, per DESIGN.md /
+      buttons.html — not "ghost"). The
+      PRIMARY variant is the accent and maps to the screen's single primary verb
+      (Approve or its equivalent, VAL-6/DS-2); danger is reserved for the kill
+      switch / destructive confirms. Consumes tokens only; meets DSS-4.
+      Source carries `@implements DSS-5`.
+  DSS-6:
+    v: 1
+    implements: [DS-4]
+    title: Input & form-control contract
+    statement: >-
+      Text inputs, selects, toggles, and the per-channel toggle expose
+      {value, disabled, error, helpText} and render default/focus/filled/
+      disabled/error; the error state meets DSS-4 contrast and pairs a text
+      reason (never color alone). Source carries `@implements DSS-6`.
+  DSS-7:
+    v: 1
+    implements: [DS-1]
+    title: Card / surface & elevation contract
+    statement: >-
+      The base card anatomy inverted from the substrate: radius, three-layer
+      elevation, and a 4:3 org-photo hero slot, all from tokens (DS-1). The
+      surface primitive backs every stream card and panel; the org's own
+      photography is the hero (VAL-4). Source carries `@implements DSS-7`.
+  # ── Trust chrome (DS-5) ─────────────────────────────────────────────────
+  DSS-8:
+    v: 1
+    implements: [DS-5]
+    title: ReasonLine contract
+    statement: >-
+      One quiet line (--text-sm, --muted) under every system-initiated item
+      stating WHY it exists, in first-person colleague voice (VAL-5). Present on
+      every proactive request, draft, and nudge. Slot: reason text (+ optional
+      tap-through). Source carries `@implements DSS-8`.
+  DSS-9:
+    v: 1
+    implements: [DS-5]
+    title: FitBadge contract
+    statement: >-
+      Per-channel chip with two states: fit (subtle --success tint) or
+      skipped-with-reason (names the rule, GEN-5). Always override-able by the
+      founder. Sibling of ArticleLink (DSS-18). Source carries `@implements DSS-9`.
+  DSS-10:
+    v: 1
+    implements: [DS-5]
+    title: TrustLevel indicator contract
+    statement: >-
+      The per-category autonomy state {TL0|TL1|TL2}, rendered where it acts and
+      editable in Controls. Pairs with the kill switch, which is always one
+      gesture in --danger and never buried (AUT-3). Source carries
+      `@implements DSS-10`.
+  DSS-11:
+    v: 1
+    implements: [DS-5]
+    title: AssumedNote contract
+    statement: >-
+      A visible "assumed" marker on anything the system defaulted rather than
+      asked (MEM-2, VAL-3), with a one-tap correction path. Source carries
+      `@implements DSS-11`.
+  DSS-12:
+    v: 1
+    implements: [DS-5]
+    title: Awaiting-picture state contract
+    statement: >-
+      A written-but-blocked draft (GEN-4) renders COMPLETE with a quiet
+      --warn-tinted picture slot plus library suggestions — never an error
+      state, always a next step (DS-6). Source carries `@implements DSS-12`.
+  DSS-13:
+    v: 1
+    implements: [DS-5]
+    title: ProvenanceLine contract
+    statement: >-
+      The Memory sources a draft was grounded on ("from your update last
+      Tuesday · your website"), quiet metadata with tap-through to the entries
+      (DEC-8, VAL-3) — the weeks-1–8 trust surface. Source carries
+      `@implements DSS-13`.
+  DSS-14:
+    v: 1
+    implements: [DS-5]
+    title: OptionalReason contract
+    statement: >-
+      A one-tap, dismissible reason affordance ("not now" / "not our style" /
+      tell me why) shared by Skip, veto, and radar-feed marks (DEC-8); feeds
+      Memory and NEVER blocks the primary action. Source carries
+      `@implements DSS-14`.
+  DSS-15:
+    v: 1
+    implements: [DS-5]
+    title: Veto-window card contract
+    statement: >-
+      The TL1 heads-up card class ("published on my own — you can veto until
+      <time>"): its own quiet visual register, EXCLUDED from progress counts and
+      batch actions, never confusable with needs-approval (DEC-8, DEC-26).
+      Source carries `@implements DSS-15`.
+  DSS-16:
+    v: 1
+    implements: [DS-5]
+    title: HeldForApproval card contract
+    statement: >-
+      GR-3's founder-facing face and the veto-window card's deliberate inverse
+      (DEC-14): a sensitive-topic draft held for the founder at EVERY trust
+      level — pinned in the home's needs-you zone, counted in Ready, always
+      actionable, never batch-approvable, its ReasonLine (DSS-8) naming the
+      hold. Visually distinct from both needs-approval and the veto-window
+      class. Source carries `@implements DSS-16`.
+  DSS-17:
+    v: 1
+    implements: [DS-5]
+    title: CitationBlock contract
+    statement: >-
+      GR-5's visual form: source + link + the org's commentary framing as ONE
+      treatment, shared by inbox external cards and public news articles
+      (DEC-9). Source carries `@implements DSS-17`.
+  DSS-18:
+    v: 1
+    implements: [DS-5]
+    title: ArticleLink badge contract
+    statement: >-
+      FitBadge's sibling: which social variants carry the news-page article link
+      and why (length-limited channels first, NWS-5); never shown for
+      unpublished articles (DEC-9). Source carries `@implements DSS-18`.
+  # ── Composite surfaces (compose the primitives; invent nothing — GR-7) ──
+  DSS-19:
+    v: 1
+    implements: [DS-2, DS-5, DS-6]
+    title: Ready-spine post card contract
+    statement: >-
+      The stream's post card COMPOSES existing primitives — the card surface
+      (DSS-7) with the 4:3 org photo, master text, per-channel FitBadges
+      (DSS-9), ReasonLine (DSS-8) on system-initiated items, and the awaiting-
+      picture state (DSS-12) where applicable — with actions Approve (accent,
+      DSS-5/DS-2), edit, skip, redirect. It introduces NO new visual value
+      (GR-7). Source carries `@implements DSS-19`.
+  DSS-20:
+    v: 1
+    implements: [DS-2]
+    title: Approve panel contract
+    statement: >-
+      The substrate's booking-panel pattern repurposed for post review: the
+      single primary Approve CTA (accent), per-channel toggles (DSS-6), and the
+      schedule note. Sticky right-rail on desktop; bottom-anchored bar on phone
+      (DS-4 targets). Source carries `@implements DSS-20`.
+  DSS-21:
+    v: 1
+    implements: [DS-5]
+    title: Chat-message contract
+    statement: >-
+      The colleague-presence message row: spacious rhythm, first-person voice
+      (VAL-5), real org content rendered as rich inline cards (drafts, photos,
+      strategy snippets) — never a support-widget bubble. Source carries
+      `@implements DSS-21`.
+  # ── Voice & zero-states (DS-6) ──────────────────────────────────────────
+  DSS-22:
+    v: 1
+    implements: [DS-6]
+    title: Empty / loading narration pattern
+    statement: >-
+      There are NO empty states: every zero-state narrates work in progress
+      ("I'm reading your website now — first drafts in about ten minutes") or
+      proposes the next concrete step, in first-person colleague voice (VAL-5,
+      VAL-6). Skeletons/spinners are replaced by narration wherever the wait is
+      meaningful. The shared pattern that every surface's loading/empty branch
+      uses. Source carries `@implements DSS-22`.
+  # ── News page template (DS-8) ───────────────────────────────────────────
+  DSS-23:
+    v: 1
+    implements: [DS-8, DS-4]
+    title: News-page template contract
+    statement: >-
+      The public news reading template: a steward-token base with SANCTIONED
+      per-org slots — org name, logo, and accent color ONLY (no per-org
+      typography, Q-10) — plus the "published with Steward" footer, and the
+      CitationBlock (DSS-17) treatment for sources. Per-org branding is a
+      sanctioned token, never an invented value (GR-7). Reading-surface a11y per
+      DS-4. Source carries `@implements DSS-23`.
+open-questions: []
