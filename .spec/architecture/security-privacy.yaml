@@ -126,3 +126,18 @@ items:
       ONB-4 connect flow. Hard-deleted with org data on a BIL-2 account deletion
       (SEC-4). Distinct from founder auth (SEC-7, BetterAuth) — these are the
       org's channel-publishing credentials, not the founder's login.
+
+  SEC-11:
+    v: 1
+    kind: posture
+    title: Operator access & audit
+    body: |
+      Internal operators (the ops console, OPS-1 / OPSS-1 / OPSS-2) read ALL orgs'
+      confidential data (drafts, transcripts, radar candidates — SEC-4). This is a
+      DEDICATED operator role, DISTINCT from founder auth (SEC-7, BetterAuth):
+      least-privilege, scoped to the console functions; every access to an org's
+      confidential data is REASON-GATED and fully AUDIT-LOGGED (no un-logged raw
+      browse); the console is disabled outside the ops environment. Model +
+      alternatives in ADR-0005 (accepted), founder-ratified as DEC-27. The audit
+      log + cross-org reason prompt are first-class parts of the ops module
+      (ARC-22), not add-ons.

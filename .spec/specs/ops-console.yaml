@@ -125,11 +125,11 @@ items:
 
 open-questions:
   - >-
-    OPERATOR-ACCESS POSTURE is a deferred SEC concern: the console is operator-only
-    and reads ALL orgs' drafts/transcripts/candidates, which SEC-4 marks org
-    confidential — the operator role, its authn/authz, and the cross-org
-    confidential-data-access posture need a SEC element (SEC-7 is FOUNDER auth and
-    does not cover it). Decide before cohort-1 operators touch real org data.
+    RESOLVED (SEC-11, ADR-0005, DEC-27): operator access is a dedicated,
+    least-privilege role distinct from founder auth (SEC-7); cross-org
+    confidential-data (SEC-4) access is reason-gated + fully audit-logged; the
+    console is disabled outside the ops environment. The audit log + reason prompt
+    are first-class parts of ARC-22 at implementation.
   - >-
     The operator UI is deliberately low-fidelity (EXP-50) with design investment
     DEFERRED until the founder-facing spine is built (EXP-10) — so no method/ui.md

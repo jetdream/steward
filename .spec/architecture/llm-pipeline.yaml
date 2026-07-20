@@ -65,6 +65,7 @@ items:
         participant VAL as Guardrail chain (STR-3, GR checks, Memory taboo overlay)
         participant FIT as Fit gate (GEN-5)
         participant INB as Ready (APR-1)
+        Note over PL,GEN: entry is a planner slot (GEN-1) OR a founder-authored composer master (APR-5) — both feed the same GEN → VAL → FIT chain
         PL->>RET: slot context (category, calendar, org profile)
         RET-->>GEN: grounded context package
         RET-->>VAL: active rule/taboo overlay (full set, deterministic — GR-8)

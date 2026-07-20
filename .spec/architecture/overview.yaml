@@ -84,6 +84,7 @@ items:
         EXTB --> CRADAR
         BOTB --> MEMB
         GENB --> APRB
+        APRB -.composer master \(APR-5\).-> GENB
         APRB --> PUBB
         PUBB -.news publish-state + cache purge.-> NEWS
         AUTB -.governs.-> PUBB

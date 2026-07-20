@@ -378,3 +378,47 @@ items:
       authority), and conform the spec to it rather than reflexively "optimizing"
       the flow. Only invert the architecture when the model is genuinely wrong, and
       then via the design pass (re-approve + cascade), never silently in a spec.
+
+  LRN-23:
+    v: 1
+    type: pattern
+    scope: [spec-authoring, process]
+    source: PUBS-1 v2 + APRS-1 v3 re-challenges (P1b, 2026-07-20)
+    title: Adding NEW behavior to an already-approved spec needs a delta re-challenge, not the additive-enumeration in-band shortcut
+    statement: >-
+      During P1a a few approved specs were bumped for purely ADDITIVE-CLARIFYING
+      enumeration edits (MEMS-1 naming the ONB-5 channel; INTS-3/TOPS-3 naming the
+      shared budget) and kept approved on the strength of the CONSUMING spec's
+      challenger reviewing the delta in-band. That shortcut does NOT extend to a NEW
+      BEHAVIOR. In P1b, closing the BIL->PUB gap added a real publishing gate
+      (PUBS-1 v2, active-Subscription) and the OPS QA hold added a readyStack filter
+      (APRS-1 v3) — both to already-approved specs, both re-pinned + green. The
+      consuming challengers (BIL, OPS) FLAGGED each as an un-challenged behavior
+      change on an approved spec (a silent gate-bypass class the lint can't catch:
+      it checks pin freshness, not that the challenge record post-dates the item
+      version). Both then FAILED their own delta re-challenge (PUBS-1 v2's grace
+      wording was backwards; APRS-1 v3 lacked an acceptance clause). Lesson: when a
+      downstream change adds behavior to an approved spec, REGRESS that spec to
+      draft and delta-re-challenge the bumped item BEFORE re-approving — reserve the
+      in-band shortcut for genuinely additive-clarifying enumeration/reference edits
+      with no new behavior. The lint won't force this; it's a judgment gate.
+
+  LRN-24:
+    v: 1
+    type: gotcha
+    scope: [spec-authoring, process]
+    source: OPS G-2 confound reconciliation (P1b, 2026-07-20)
+    title: A goal/coverage note can SILENTLY GOVERN a spec — precedence means reconcile both sides of a cross-layer claim
+    statement: >-
+      OPSS-1 correctly reframed the silent-operator-QA measurement (an
+      operator-touched draft counts as NON-autonomous, kept in the denominator).
+      But the matching note added to G-2's outcome reasoning said "operator-touched
+      drafts EXCLUDED" — the exact cream-skimming inflation OPSS-1 repudiated. The
+      OPS challenger caught it as a HIGH precisely because GOALS > SPECS in
+      precedence: the biased goal note GOVERNS the honest spec, so an implementer
+      following the authoritative metric would inflate. Lesson: when a spec and a
+      higher-precedence layer (goal/value/guardrail) both assert a cross-cutting
+      property (here a metric definition), write them to AGREE and re-read BOTH
+      after editing either — a one-line note in the higher layer can silently
+      override the spec, and the graph lint (which checks IDs/pins, not semantic
+      agreement) will not see it.

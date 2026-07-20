@@ -124,6 +124,27 @@ items:
       source diverging from the agenda) and over fully unifying (dropping the
       stable universal categories a public site wants). Extends DEC-23.
 
+  DEC-27:
+    v: 1
+    date: 2026-07-20
+    by: founder (shpin.p@diffco.us)
+    binds: [SEC-11, OPS-1]
+    title: Operator access is a dedicated, least-privilege, reason-gated + audited role (ADR-0005)
+    statement: >-
+      The ops console (OPS-1, OPSS-1/2) reads ALL orgs' confidential data (SEC-4)
+      to run cohort-1 QA/failure/transcript/radar work — but no operator identity
+      or authz existed (SEC-7 is founder BetterAuth only), a gap the OPS spec
+      flagged as decidable before cohort-1 operators touch real org data. Decision:
+      operator access is a DEDICATED role distinct from founder auth,
+      least-privilege and scoped to the console functions; every access to an org's
+      confidential data is REASON-GATED and fully AUDIT-LOGGED; the console is
+      disabled outside the ops environment. Recorded as posture SEC-11; model +
+      alternatives in ADR-0005 (accepted). Chosen over reusing BetterAuth with an
+      operator flag (blurs founder/operator, weak cross-org audit) and
+      aggregates-only access (defeats OPSS-1's draft QA). Surfaced by the OPS
+      challenge; ratifiable — the specific mechanism can be adjusted before
+      cohort-1 without reopening the posture.
+
   DEC-22:
     v: 1
     date: 2026-07-19

@@ -125,6 +125,15 @@ items:
       operator clears it; n/a (the default) once the per-org QA dial is off, so it
       is invisible outside cohort-1 oversight.
 
+      Cross-capability fields accumulated on ContentItem (concrete shapes in
+      @shared at code): the slot's content TYPE + agenda TOPIC (GEN-1 pairing;
+      drives the NWSS-4 news category/topic rail), and an optional CAMPAIGN TAG
+      (PRO-2 / STWS-2) — a campaign is modelled as a tag on its member
+      ContentItems, and a campaign end date is DERIVED from the last scheduled
+      campaign-tagged item's delivery date. There is deliberately NO first-class
+      Campaign entity yet (DEFERRED to P1 with STW-2 — introduce a Campaign entity
+      only if milestone recaps / multi-item campaign state outgrow the tag model).
+
   DM-6:
     v: 1
     kind: data-entity

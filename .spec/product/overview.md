@@ -12,7 +12,7 @@ Scope discipline: **content in, content out** — no engagement handling, leads,
 
 ## The core loop
 
-**Org Memory** (facts, stories, media, rules) and the **Posting Strategy** (explicit editorial contract) feed the **Planner/Content Engine**, which drafts from two wells — *internal* org content and the *external radar* — producing per-channel adapted variants. Drafts flow to the **Ready** (the approval surface) (or originate in the **Composer**), then to the **Publisher** (fit-gated). The **Agentic Chat** sits across everything — it hosts the **Interviewer**, answers questions, takes redirects, and (Phase 2) executes commands. The **Proactive Manager** requests material and proposes campaigns; the **Autonomy System** governs what may publish without approval. Every founder action enriches Memory, so the loop compounds.
+**Org Memory** (facts, stories, media, rules) and the **Posting Strategy** (explicit editorial contract) feed the **Planner/Content Engine**. Grounded in Memory, the system also owns the **Content Topics / editorial agenda** — it proactively identifies *what* the org should talk about and holds a per-topic research strategy; this one shared, founder-editable agenda drives BOTH internal planning and the external radar's discovery (DEC-23). The planner drafts from two wells — *internal* org content and the *external radar* — pairing each slot's content TYPE with an agenda SUBJECT, producing per-channel adapted variants. Drafts flow to the **Ready** (the approval surface) (or originate in the **Composer**), then to the **Publisher** (fit-gated; a cancelled org does not publish). The **Agentic Chat** sits across everything — it hosts the **Interviewer**, answers questions (grounded; declines legal/tax advice, GR-2), takes redirects, and (Phase 2) executes commands. Founder rules and redirects write to **Memory as the single source** — the Strategy's org-rules section is a rendered view of it (DEC-22). The **Proactive Manager** requests material and proposes campaigns and topics within one shared interruption budget (DEC-24); the **Autonomy System** governs what may publish without approval. Every founder action enriches Memory, so the loop compounds.
 
 ```mermaid
 graph LR
@@ -26,6 +26,7 @@ graph LR
     RADAR[External Radar]
   end
   CHAT[Agentic Chat]
+  AGENDA[Content Topics / editorial agenda]
   ENGINE[Planner / Content Engine]
   INBOX[Ready — approvals]
   COMP[Composer]
@@ -37,7 +38,10 @@ graph LR
   INTQ --> MEM
   CHAT --- INTQ
   CHAT -->|redirects| MEM
-  CHAT -->|redirects| STRAT
+  MEM -->|org-rules view| STRAT
+  MEM --> AGENDA
+  AGENDA -->|subjects| ENGINE
+  AGENDA -->|drives discovery| RADAR
   MEM --> ENGINE
   STRAT --> ENGINE
   RADAR --> ENGINE
@@ -45,7 +49,7 @@ graph LR
   COMP --> INBOX
   INBOX -->|approved| PUBLISH
   AUTO -.governs.-> PUBLISH
-  PROMGR -->|material requests, campaigns| INBOX
+  PROMGR -->|material, campaigns, topic proposals| INBOX
   INBOX -->|approvals, edits, rejections| MEM
   PUBLISH -->|publish log| CHAT
 ```
