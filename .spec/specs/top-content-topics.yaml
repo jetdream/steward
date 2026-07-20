@@ -66,7 +66,8 @@ data: >-
 
 interfaces: >-
   @backend/topics (ARC-26) exposes: identifyTopics(org) [scheduled — refreshes
-  the agenda]; getAgenda(org) -> active topics [callers: STR, GEN]; strategyFor(
+  the agenda]; getAgenda(org) -> active topics [callers: STR, GEN; NWS reads it
+  publish-scoped — active ∩ published — for the public news rail, NWSS-4]; strategyFor(
   topic) -> the research package the Radar consumes [caller: EXT]; proposeTopics(
   org) -> gated proposals [caller: the proactive surface]; editAgenda(change) ->
   adopt | adjust | retire, writing taste to Memory [caller: the agenda view /

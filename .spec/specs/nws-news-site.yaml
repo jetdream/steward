@@ -1,0 +1,203 @@
+kind: spec
+prefix: NWSS
+title: Org News Site — behavior
+status: approved
+challenge:
+  date: 2026-07-19
+  by: cortex:architect-challenger (r1 single pass + product-designer lens → r2 delta)
+  verdict: pass
+  record: .spec/specs/challenges/nws-news-site-2026-07-19-r2.md
+  summary: >-
+    r1 FAILED on one high — NWSS-4 wired the PUBLIC org-domain rail to the RAW
+    active agenda (TOPS-4 getAgenda), leaking forward editorial INTENT to donors
+    (SEC-8) and yielding empty topic pages for planned-but-unpublished topics
+    (DS-6). Fixed: the public rail is now the active agenda INTERSECTED with topics
+    that have ≥1 PUBLISHED article (publish-scoped; TOPS-4 stays the single source
+    for which topics are active, DEC-25; a day-one org shows universal categories
+    only). Mediums: constrained-by += DM-13/EXP-36; NWSS-1 mirrors SEC-8's
+    active/tombstoned/deleted trichotomy; PUBS open-question #2 marked RESOLVED
+    (NWS owns the takedown action, PUB owns the cache-purge mechanism). Lows:
+    TOPS-4 caller list swept (publish-scoped NWS reader), DM-5/DM-13 linkage named,
+    DS-4 a11y acceptance added. r2 delta verified all against live text and passed;
+    residual = a code-time DM-5 field note for the type/agenda-topic linkage.
+intent: >-
+  Exact behavior of the org news site (register nws-news-site.yaml) — Steward's
+  first PUBLIC, donor-facing surface and the "published with Steward" growth loop:
+  a hosted page per org (NWS-1), SEO-first + shareable (NWS-2), an org-branded
+  minimal template (NWS-3), a front page whose org-domain rail REUSES the TOP-4
+  editorial agenda (NWS-4, DEC-25), cross-channel linking (NWS-5), and the P1
+  custom subdomain (NWS-6). Renders published ContentItem article forms (GENS) via
+  the ARC-23 renderer (ADR-0004); publishes/takes-down via the ARC-18 adapter.
+  Content guardrails apply in full on the public surface (GR-1, GR-2, GR-5).
+design-scope: cross-cutting
+constrained-by: [ADR-0002, ADR-0003, ADR-0004, DM-1, DM-5, DM-13, ARC-18, ARC-23, SEC-8, EXP-9, EXP-36, EXP-48, EXP-49]
+depends-on: [PUBS, TOPS, GENS]
+governed-by: [GR-1, GR-2, GR-5, GR-7]
+assurance: standard
+
+design: >-
+  The news site is the public renderer @client/news (ARC-23, dedicated Astro
+  renderer, ADR-0004) reading PUBLISHED ContentItem article forms (DM-5 — the
+  master story IS the article, no separate entity) via the backend read-API; it is
+  downstream of the data, never pushed to. "Publishing" to news is the ASYMMETRIC
+  destination (ARC-18, PUBS-1): it sets the article's publish-state and PURGES the
+  renderer cache tag (ADR-0004) — not an outbound third-party API call — so
+  takedown is immediate DESPITE CDN caching (SEC-8). The address is per-org
+  newsConfig (DM-1, DEC-10): dev app-path, prod dedicated Steward news domain, or
+  the org's own subdomain (NWSS-6). The front-page org-domain rail REUSES the
+  active TOP-4 editorial agenda (TOPS-4 getAgenda) — one source, not a second
+  derivation (DEC-25). GR-7 binds the org-branded template to steward tokens + the
+  DS-8 sanctioned slots (name/logo/accent only). Content guardrails (GR-1/GR-2/
+  GR-5) are inherited: the surface serves only VAL-cleared published content
+  (PIPE-2), and holds here exactly as on social. SEC-8 is the public posture:
+  serves only published, founder-approved article content — no authenticated data,
+  no other-org data, no third-party PII; rate-limited + bot-guarded independently
+  of the app. First non-founder persona (users.md); journey EXP-9 (donor reads),
+  flow EXP-36, screens article EXP-48 + front page/rail EXP-49. LRN-20 split: the
+  addressing, SSR/indexability, cache-purge-on-publish/unpublish, the
+  never-link-an-unpublished-article guard, and the agenda-rail read are
+  DETERMINISTIC; article prose is upstream LLM content (GENS), already VAL-cleared.
+
+data: >-
+  DM-1 Org.newsConfig — slug, domain mode (app-path | dedicated | custom),
+  optional customDomain (DEC-10). DM-5 ContentItem — its article form is what the
+  renderer serves; delivery state published -> unpublished is the news-only
+  takedown (NWSS-1). Front-page navigation reads the active TOP-4 Topic set
+  (agenda) + maps articles to GEN-1 taxonomy categories; no new entity — the news
+  site is a read-view + a publish-state, not a second content store.
+
+interfaces: >-
+  The renderer (ARC-23) is read-only over the backend API: renderArticle(org,
+  slug), renderFrontPage(org) -> articles + the topic rail (universal categories +
+  TOPS-4 active agenda), sitemap(org), robots(org). The publish/takedown side is
+  the ARC-18 adapter: publishArticle(item) / unpublishArticle(item) -> sets DM-5
+  publish-state + purges the renderer cache tag (SEC-8, ADR-0004) — NWS owns the
+  takedown ACTION, PUB owns the cache-purge MECHANISM. newsConfig(org, mode,
+  customDomain?) sets the address (NWSS-1/NWSS-6). Exact routes/signatures live in
+  code.
+
+items:
+  NWSS-1:
+    v: 1
+    title: Hosted news page per org — lifecycle + takedown
+    implements: [NWS-1]
+    statement: >-
+      Every org gets a hosted news page at a Steward-operated address (DM-1
+      newsConfig, DEC-10): dev defaults to an app-domain path (<app>/news/
+      <org-slug>), prod to a dedicated Steward news domain (org slug); an org may
+      upgrade to its own subdomain (NWSS-6). The address is RESERVED and served
+      while the org's account is active (Q-11). Articles publish through a standard
+      channel adapter (ARC-18), ADDITIVE to — never part of — PUB-1's four launch
+      channels; the news "publish" is ASYMMETRIC (sets DM-5 publish-state + purges
+      the renderer cache tag, ADR-0004, not an outbound API call). TAKEDOWN: an
+      article can be UNPUBLISHED (DM-5 published -> unpublished, news-only —
+      social variants delete natively, PUBS-1); the founder-initiated takedown
+      ACTION is owned HERE, executed via the ARC-18 cache-purge MECHANISM so it is
+      IMMEDIATE despite CDN caching (SEC-8) — this resolves the PUBS-1
+      news-takedown open-question. Route afterlife follows SEC-8's trichotomy:
+      while the account is ACTIVE or TOMBSTONED, a recalled/unpublished route
+      serves the warm org-branded "not here" page (EXP-36); only after a BIL-2 HARD
+      DELETION (org data + branding removed, SEC-4) does the slug return a generic
+      410 gone page — never a stale or bare 404.
+      ACCEPTANCE: every active org resolves a news page at its configured address;
+      publishing an article makes it live with the cache purged; unpublishing it
+      takes it down immediately (cache purged) and serves the org-branded not-here
+      page while active or tombstoned (generic 410 only after a BIL-2 hard
+      deletion); the news destination is never counted among PUB-1's four social
+      channels.
+  NWSS-2:
+    v: 1
+    title: SEO-first and shareable
+    implements: [NWS-2]
+    statement: >-
+      Server-rendered and perfectly indexable (ARC-23, ADR-0004): Open Graph +
+      Twitter-card meta, sitemap.xml, canonical URLs, semantic HTML, fast first
+      paint. A social share of ANY article must UNFURL correctly on all four
+      launch channels (the NWSS-5 relief valve depends on it). robots/sitemap and
+      independent rate-limiting/bot-guarding per SEC-8. Deterministic: the meta,
+      canonical URLs, and sitemap are generated per article, not best-effort.
+      ACCEPTANCE: an article page carries OG + Twitter-card meta and a canonical
+      URL and appears in sitemap.xml; sharing its URL on FB / IG / Threads / X
+      unfurls correctly; first paint is server-rendered text (images progressive).
+  NWSS-3:
+    v: 1
+    title: Org-branded minimal template
+    implements: [NWS-3]
+    statement: >-
+      One unified, minimalistic, Medium-like reading layout on the org-branded
+      template (DS-8): the org's name/logo/accent in SANCTIONED slots only, with
+      the steward-token base underneath — GR-7 binds it (no invented component,
+      color, font, or type role beyond the sanctioned name/logo/accent slots;
+      theming depth is name+logo+accent only, no fonts — DEC-10). The footer
+      carries the "published with Steward" reference — the growth loop (G-1).
+      ACCEPTANCE: articles render on the single DS-8 template with only
+      name/logo/accent in the sanctioned slots (no per-org custom component or
+      font); the footer carries "published with Steward"; all visual values
+      resolve from steward tokens (GR-7); the reading surface meets the DS-4
+      accessibility bar (semantic headings, contrast, focus order) inherited via
+      DS-8.
+  NWSS-4:
+    v: 1
+    title: Front page and topic navigation — the agenda is the org-domain rail
+    implements: [NWS-4]
+    statement: >-
+      A front page (EXP-49) listing articles with a topic navigation rail built
+      from TWO ladders: the UNIVERSAL categories (the GEN-1 content taxonomy —
+      mission, founder, case studies, events, people, external), a STABLE
+      donor-facing structure; and the org's PUBLISHED-agenda topics as the
+      org-domain rail. The org-domain rail is PUBLISH-SCOPED: the INTERSECTION of
+      the ACTIVE TOP-4 agenda (TOPS-4 — WHICH topics are current, the single
+      source per DEC-25) with topics that have ≥1 PUBLISHED article (WHAT the org
+      has actually published). It is NOT the raw planning agenda: forward editorial
+      intent is NEVER exposed on the public surface (SEC-8), and every rail entry
+      has real content behind it — no empty topic pages (DS-6). So the "single
+      source" is TOPS-4 for which topics are active (DEC-25); the public view
+      publish-scopes it. An article maps to a universal category (its content
+      TYPE) and its agenda topic (its SUBJECT), both carried from its GEN-1 slot
+      and persisted on the ContentItem (DM-5) / Topic (DM-13). A retired topic
+      (DM-13) drops from the rail; its already-published articles stay browsable
+      under their universal category (no dead links).
+      ACCEPTANCE: the front page shows the universal categories plus ONLY agenda
+      topics that HAVE a published article (never the raw active agenda — no empty
+      topic pages, no forward editorial intent leaked, SEC-8); a day-one org with
+      no published articles shows universal categories only (no empty agenda rail);
+      an article is reachable under both its content-type category and its
+      published agenda topic; a retired topic leaves the rail while its published
+      articles remain reachable.
+  NWSS-5:
+    v: 1
+    title: Cross-channel linking
+    implements: [NWS-5]
+    statement: >-
+      When a story is published on the news page, its per-channel social variants
+      (GENS-2) MAY carry the article LINK — the designed relief valve for
+      length-limited channels (X, Threads): a short post + a link to the long-form
+      home (the DS-5 ArticleLink badge, NWS-5). A DETERMINISTIC guard: a variant
+      links to the article ONLY when the article is in PUBLISHED state (DM-5) —
+      never to an unpublished, recalled, or not-yet-published article (a broken/
+      premature link is impossible by construction).
+      ACCEPTANCE: a social variant of a news-published story may carry the article
+      link; a variant NEVER links to an unpublished/recalled/not-yet-published
+      article (the link is emitted only in the published state); a length-limited
+      channel uses the link as the relief valve.
+  NWSS-6:
+    v: 1
+    title: Org-selected custom subdomain
+    implements: [NWS-6]
+    statement: >-
+      In prod an org may CHOOSE, in Settings (EXP-45, Controls), its own news
+      subdomain (news.<org-domain>) over the default dedicated Steward news domain
+      (NWSS-1), with managed DNS guidance and automatic SSL. Until chosen, the
+      Steward-operated address is CANONICAL (NWSS-2 canonical URLs point there).
+      Experienced as a settings affordance — deliberately NO serving journey (like
+      APR-2's cadence selection). P1 — not in the P1b thin slice.
+      ACCEPTANCE: an org can set a custom news subdomain in Settings; until set,
+      the Steward address is canonical; DNS guidance + automatic SSL are managed;
+      switching updates the canonical URL without breaking existing links.
+
+open-questions:
+  - >-
+    Pixel-level design of the article page (EXP-48) and the front page / topic
+    rail (EXP-49) is a method/ui.md pass on those approved screens under GR-7 +
+    the DS-8 org-branded template — the UI-spec altitude below this behavior spec.
+    Not deferred design (EXP-9 / EXP-36 / the screens are approved).

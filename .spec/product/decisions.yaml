@@ -102,6 +102,28 @@ items:
       budget without tiers (low-value proposals could crowd out a time-sensitive
       photo request). PRO-4 owns the budget; INT-3/TOP-3/PRO-1/PRO-2 draw from it.
 
+  DEC-25:
+    v: 1
+    date: 2026-07-19
+    by: founder (shpin.p@diffco.us)
+    binds: [NWS-4, TOP-4]
+    title: News-site topic navigation reuses the editorial agenda (hybrid — universal categories + live TOP-4 agenda)
+    statement: >-
+      NWS-4 originally derived the org-domain browse topics INDEPENDENTLY from the
+      cause profile in Memory — written before DEC-23 made the TOP-4 editorial agenda the
+      single source of "what this org talks about", so the news site would grow a
+      SECOND topic taxonomy that could diverge from the agenda. Decision: the news
+      front-page topic navigation is HYBRID — the fixed UNIVERSAL categories (the
+      GEN-1 content taxonomy: mission, founder, case studies, events, people,
+      external) PLUS the org's ACTIVE TOP-4 agenda topics as the org-domain rail.
+      Reuse the agenda (ONE source) rather than a second independent derivation —
+      extends DEC-23's single-source discipline to the reader-facing surface. The
+      universal categories give donors a STABLE browse structure; the agenda topics
+      keep the org-domain rail CURRENT with what the org actually publishes. NWS-4
+      -> v2. Chosen over keeping the separate reader-browse taxonomy (a second
+      source diverging from the agenda) and over fully unifying (dropping the
+      stable universal categories a public site wants). Extends DEC-23.
+
   DEC-22:
     v: 1
     date: 2026-07-19

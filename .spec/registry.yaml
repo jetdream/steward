@@ -57,6 +57,7 @@ prefixes:
   AUTS: specs/aut-autonomy.yaml
   EXTS: specs/ext-external-radar.yaml
   PROS: specs/pro-proactive-manager.yaml
+  NWSS: specs/nws-news-site.yaml
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   EXP: experience/spine.yaml

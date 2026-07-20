@@ -155,8 +155,7 @@ open-questions:
     the hold-then-publish delay lives in the AUT/DM-5 pending phase upstream of
     scheduling, so PUB needs no veto-hold state of its own.
   - >-
-    News-page UNPUBLISH/takedown (DM-5 published -> unpublished, news-only; a P0
-    affordance in EXP-31; mechanically an ARC-18 publisher cache-purge per
-    SEC-8/ADR-0004) is not exposed here — most likely the (unwritten) NWS spec's
-    to own. Settle the takedown-operation ownership (NWS vs PUB) when the NWS spec
-    is authored; the cache-purge mechanism itself lives in the publisher.
+    RESOLVED (DEC-25, NWSS-1): news-page UNPUBLISH/takedown (DM-5 published ->
+    unpublished, news-only) is owned as an ACTION by the NWS spec (NWSS-1), while
+    the cache-purge MECHANISM (ARC-18 tag-purge per SEC-8/ADR-0004) lives here in
+    the publisher — PUBS-1 executes the purge that NWS's takedown action triggers.

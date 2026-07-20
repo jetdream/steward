@@ -30,6 +30,14 @@ items:
       while the org's account is active (Q-11). Articles publish through a
       standard channel adapter (ARC-18), additive to — never part of —
       PUB-1's four launch channels.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by NWSS-1 (approved, challenge r2 pass): per-org hosted page
+        (DM-1 newsConfig, DEC-10), asymmetric publish (state + cache purge, ARC-18/
+        ADR-0004), founder-owned takedown with SEC-8's active/tombstoned/deleted
+        trichotomy. Realization pending code.
+      against: [NWSS-1@1]
 
   NWS-2:
     v: 1
@@ -40,6 +48,13 @@ items:
       Server-rendered, perfectly indexable: Open Graph + Twitter-card meta,
       sitemap.xml, canonical URLs, semantic HTML, fast first paint. A social
       share of any article must unfurl correctly on all four launch channels.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by NWSS-2 (approved): SSR + deterministic OG/Twitter meta,
+        sitemap.xml, canonical URLs (ARC-23/ADR-0004); correct unfurl on all four
+        channels; SEC-8 rate-limit/bot-guard. Realization pending code.
+      against: [NWSS-2@1]
 
   NWS-3:
     v: 1
@@ -51,18 +66,36 @@ items:
       org-branded template (DS-8): org name/logo/accent in sanctioned slots,
       steward-token base underneath. Footer carries the "published with
       Steward" reference — the growth loop (G-1). Theming depth is Q-10.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by NWSS-3 (approved): the single DS-8 org-branded template
+        (name/logo/accent sanctioned slots only, steward-token base, GR-7; no fonts
+        per DEC-10), "published with Steward" footer, DS-4 a11y. Realization pending
+        code.
+      against: [NWSS-3@1]
 
   NWS-4:
-    v: 1
-    decided-by: DEC-9
+    v: 2
+    decided-by: DEC-25
     priority: P0
     title: Front page and topic navigation
     statement: >-
       A front page listing articles with a topic navigation rail. Topics come
-      from two ladders: the universal categories (the GEN-1 content taxonomy
-      — mission, founder, case studies, events, people, external) and
-      org-domain topics derived from the org's cause profile in Memory
-      (the same profile that seeds EXT-1).
+      from two ladders: the UNIVERSAL categories (the GEN-1 content taxonomy
+      — mission, founder, case studies, events, people, external), a stable
+      donor-facing structure; and the org's ACTIVE EDITORIAL AGENDA (the TOP-4
+      content topics) as the org-domain rail — reused as the single source, NOT a
+      second independently-derived taxonomy (DEC-25, extending DEC-23). The
+      agenda rail stays current with what the org actually publishes.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by NWSS-4 (approved, challenge r2 pass): the hybrid rail =
+        universal GEN-1 categories + the active TOP-4 agenda PUBLISH-SCOPED (active
+        ∩ published) so no forward intent leaks (SEC-8) and no empty pages (DS-6);
+        single source is TOPS-4 (DEC-25). Realization pending code.
+      against: [NWSS-4@1]
 
   NWS-5:
     v: 1
@@ -74,6 +107,14 @@ items:
       variants (GEN-2) may carry the article link — the designed relief valve
       for length-limited channels (X, Threads): short post + link to the
       long-form home. Never a link to an unpublished article.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by NWSS-5 (approved): social variants (GENS-2) may carry the
+        ArticleLink; a deterministic guard emits the link only in the DM-5
+        published state — never to an unpublished/recalled/not-yet-published
+        article. Realization pending code.
+      against: [NWSS-5@1]
 
   NWS-6:
     v: 2
@@ -87,3 +128,10 @@ items:
       Steward-operated address is canonical. Experienced as a settings
       affordance (EXP-45, Controls) — deliberately no serving journey, like
       APR-2's cadence selection.
+    coverage:
+      status: complete
+      reasoning: >-
+        Covered by NWSS-6 (approved): the Settings custom-subdomain affordance
+        (managed DNS + auto SSL); Steward address canonical until chosen; no
+        serving journey (like APR-2). P1. Realization pending code.
+      against: [NWSS-6@1]
