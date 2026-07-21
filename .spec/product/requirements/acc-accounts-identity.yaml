@@ -1,0 +1,103 @@
+kind: requirements
+prefix: ACC
+title: Accounts & Identity
+status: approved
+serves: [G-1]
+# Founder/org-facing identity layer introduced by DEC-32 (Org⟂User model) and
+# DEC-30 (multi-seat reversal). Harmonized with BetterAuth (SEC-7): the
+# organization plugin supplies organization / member / invitation with
+# owner|admin|member roles and a `session.activeOrganizationId` active-org
+# context; the admin plugin supplies the app-level staff role + impersonation
+# consumed by the ADM register. The plugin mechanics are pinned in the
+# architecture/ADR pass; these items are the WHAT. Phasing (DEC-30 sequencing
+# note): the identity MODEL is P0 (a pre-code one-way door), founder-facing
+# multi-seat MANAGEMENT is P2 (cohort-1 orgs are single-founder).
+intent: >-
+  Who can sign in and which org(s) they act within. Steward separates the Org
+  (the customer/tenant and aggregate root, DM-1) from the User (the auth
+  principal): a User belongs to one or more Orgs through a Membership carrying a
+  role, and a session names the active Org. This replaces the former
+  one-account-per-org assumption (DEC-30) and is the substrate the internal
+  platform-admin surface (ADM) and support impersonation build on. Realized on
+  BetterAuth's organization + admin plugins (VAL-3 nothing-hidden, GR-6 official
+  mechanisms) rather than a bespoke identity system.
+items:
+  ACC-1:
+    v: 1
+    decided-by: DEC-32
+    priority: P0
+    flexibility: hard
+    title: Org⟂User separation
+    statement: >-
+      The system shall model the User (auth principal — sign-in identity) as
+      distinct from the Org (tenant, DM-1). Every non-public action is performed
+      by a User acting within exactly one active Org; org-owned data (DM-1 and
+      all it roots) is never addressable without an active-Org context. This is
+      the foundational account shape and is fixed before code (a one-way door).
+    acceptance: >-
+      A User record exists independent of any Org; org data access always
+      resolves through a (User, active-Org, role) triple, never a bare Org.
+  ACC-2:
+    v: 1
+    decided-by: DEC-30
+    priority: P0
+    title: Org membership with roles
+    statement: >-
+      An Org shall have one or more member Users, each linked by a Membership
+      carrying a role — owner (full control incl. billing/deletion), admin (all
+      but org deletion/owner change), member (day-to-day content) — mirroring
+      BetterAuth's built-in organization roles, with room for custom
+      access-control roles. Exactly one owner is required; the signup creator is
+      the owner. Single-founder orgs (the typical persona, users.md) are the
+      degenerate one-owner case — multi-seat is available, not assumed.
+    acceptance: >-
+      An org always has ≥1 owner; a member's permitted actions are gated by
+      their role; a single-founder org works with just the owner.
+  ACC-3:
+    v: 1
+    decided-by: DEC-32
+    priority: P1
+    title: Active-org session context & confinement
+    statement: >-
+      A session shall name the active Org (BetterAuth `activeOrganizationId`); a
+      User with multiple memberships switches among ONLY the orgs they belong
+      to. A regular User can never read or act in an org they are not a member
+      of — org confinement is enforced server-side on every request, not in the
+      client. (Support staff crossing this boundary is the ADM impersonation
+      path, separately gated — ADM-2.)
+    acceptance: >-
+      A user with two memberships can switch active org between exactly those
+      two; a request for an org the user does not belong to is refused
+      server-side; there is no client-only path around confinement.
+  ACC-4:
+    v: 1
+    decided-by: DEC-30
+    priority: P2
+    title: Member invitation & management
+    statement: >-
+      An owner/admin shall invite a User to the Org by email, assign/change
+      roles, and remove members (BetterAuth invitation flow: pending → accepted,
+      with expiry). This is the founder-facing multi-seat MANAGEMENT surface;
+      P2, sequenced after the internal-admin core (DEC-30) since cohort-1 orgs
+      are single-founder. Kept minimal, in the colleague voice (VAL-5) and the
+      spirit of the two-verb home (VAL-6) — not a heavyweight admin console.
+    acceptance: >-
+      An owner invites an email, the invitee accepts and gains the assigned
+      role, and an owner can change a member's role or remove them; invites
+      expire.
+  ACC-5:
+    v: 1
+    decided-by: DEC-32
+    priority: P0
+    title: BetterAuth identity harmonization
+    statement: >-
+      Identity, sessions, org membership, roles, and impersonation shall be
+      realized on BetterAuth (SEC-7) via its organization + admin plugins rather
+      than a bespoke system — Google sign-in + dev email-only login
+      (constitution) remain the auth methods, now issuing a User identity that
+      carries memberships and an active-Org context. The exact plugin
+      configuration and the reconciliation of the Org (DM-1) with the plugin's
+      organization table are an architecture/ADR concern (Step 3).
+    acceptance: >-
+      Sign-in yields a User with ≥1 membership and an active-Org context via
+      BetterAuth; no parallel hand-rolled identity store exists.

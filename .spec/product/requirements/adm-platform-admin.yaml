@@ -1,0 +1,128 @@
+kind: requirements
+prefix: ADM
+title: Platform Administration
+status: approved
+serves: [G-1]
+# The internal, staff-facing platform-admin surface (DEC-32), sibling of the
+# content-quality ops console (OPS-1) on the same operator-access model
+# (SEC-11, ADR-0005). Extends "Operators (us)" (users.md) from silent QA to
+# account/business administration + support impersonation + observability.
+# Harmonized with BetterAuth's admin plugin (app-level staff role + user
+# impersonation with session.impersonatedBy + impersonationSessionDuration).
+# Phasing (DEC-30/DEC-32): staff role, impersonation, activity ledger,
+# lifecycle, billing oversight = P1 (operate cohort 1); the KPI dashboard = P2.
+intent: >-
+  How DiffCo staff run and support the platform across all orgs. Builds on the
+  Org⟂User identity (ACC) and the SEC-11 operator posture (a dedicated
+  least-privilege role, reason-gated, fully audited, environment-gated). It is
+  internal-only, never founder-facing, and complements — does not replace — the
+  content-QA ops console (OPS-1, which keeps draft QA / failure queues /
+  radar-precision review). The account-health gesture in OPS-1 is subsumed here
+  under lifecycle (ADM-4).
+items:
+  ADM-1:
+    v: 1
+    decided-by: DEC-32
+    priority: P1
+    title: Platform-staff role & access
+    statement: >-
+      The system shall provide a dedicated PLATFORM-STAFF role — an app-level
+      admin (BetterAuth admin plugin), DISTINCT from org-level roles (ACC-2) and
+      from founder auth (SEC-7); staff are not org members. Access is
+      least-privilege, scoped to the admin/ops functions, reason-gated, fully
+      audit-logged, and disabled outside the ops environment (SEC-11, ADR-0005).
+      A regular User can never hold platform-staff powers.
+    acceptance: >-
+      A platform-staff user can reach admin functions no org member can; staff
+      access to an org's confidential data is reason-gated and audit-logged; the
+      surface is unavailable outside the ops environment.
+  ADM-2:
+    v: 1
+    decided-by: DEC-32
+    priority: P1
+    title: Support impersonation — act as org
+    statement: >-
+      A platform-staff user shall be able to enter any org and see the EXACT
+      view its owner sees, and act as that org's user, via a session-scoped
+      impersonation (BetterAuth `impersonateUser` → the org owner, yielding an
+      active-Org context; `session.impersonatedBy` records the staff identity;
+      time-boxed via `impersonationSessionDuration`). Every impersonation and
+      every act-as action is reason-gated and audited in full internally
+      (SEC-11) but NOT surfaced to the founder — the narrow VAL-3 carve-out
+      (DEC-31): results remain visible in the founder's own surfaces, only staff
+      attribution is withheld. The ACT-AS WRITE BOUNDARY — whether staff may
+      approve/publish/change Trust Level/edit Strategy as the org, and its
+      GR-3/GR-8/AUT and G-2-measurement interactions (cf. the OPS G-2 confound,
+      LRN-24) — is pinned at spec time (ADMS). Regular users can never
+      impersonate.
+    acceptance: >-
+      A staff user opens an org and sees the owner's exact view; entering
+      requires a logged reason; the session carries the impersonator identity
+      and expires; the founder's activity view does not attribute the staff
+      action though any resulting artifact still appears; a non-staff user has
+      no impersonation path.
+  ADM-3:
+    v: 1
+    decided-by: DEC-32
+    priority: P1
+    title: Org activity ledger
+    statement: >-
+      The system shall keep an append-only, per-org ACTIVITY LEDGER of all
+      actions — by a user, by the system automatically, and by background jobs
+      (incl. External Radar / news-events-articles discovery, generation,
+      publishing) — each with actor kind (user | system | job | staff-act-as),
+      action, target, and timestamp, reviewable by platform staff. It
+      generalizes the PIPE-1 model-call logging into one org observability
+      record and is the substrate the VAL-3 carve-out (DEC-31) audits against.
+    acceptance: >-
+      For a given org, staff can review a chronological log covering a user
+      action, an automatic system action, and a background discovery-job run;
+      each entry names actor kind, action, target, and time; staff-act-as
+      entries are present in the internal ledger.
+  ADM-4:
+    v: 1
+    decided-by: DEC-32
+    priority: P1
+    title: Org & account lifecycle
+    statement: >-
+      Staff shall provision, suspend, and offboard orgs, effect plan changes,
+      and see per-org account health (onboarding status, connection health,
+      publishing state) across all orgs. Subsumes the account-health gesture in
+      OPS-1. Destructive lifecycle actions (suspend/offboard) are reason-gated +
+      audited (SEC-11) and honor the BIL-2 export/deletion rules (SEC-4).
+    acceptance: >-
+      Staff can list orgs with health signals, suspend and restore an org, and
+      trigger an offboarding that respects BIL-2 export/deletion; each
+      destructive action is reason-gated and logged.
+  ADM-5:
+    v: 1
+    decided-by: DEC-32
+    priority: P1
+    title: Billing & subscription oversight
+    statement: >-
+      Staff shall have a cross-org view of subscription state (DM-11): active /
+      grace / cancelled / refunded, payment failures, and the refund events the
+      G-1 metric depends on (BILS-1). Read-first oversight; any billing action
+      staff take on an org's behalf follows the impersonation path (ADM-2) and
+      is audited. No new billing mechanism — it reads the BIL/Stripe model.
+    acceptance: >-
+      Staff can see every org's subscription status and refund events in one
+      view sufficient to compute the G-1 refund rate; a staff-initiated billing
+      change is attributed and audited.
+  ADM-6:
+    v: 1
+    decided-by: DEC-32
+    priority: P2
+    title: Business & KPI dashboard
+    statement: >-
+      Staff shall have a dashboard making the goal metrics observable across the
+      cohort: paying orgs and churn (G-1), approval-without-edit rate (G-2, on
+      the honest pre-QA basis of LRN-24 / OPSS-1), founder time-in-product (G-3),
+      posting-streak consistency (G-4), and activation-within-48h (G-5). P2 —
+      reporting that follows the operational core; it reads the activity ledger
+      (ADM-3), PostMetric (DM-10), and subscription (DM-11) data, adding no new
+      source of truth.
+    acceptance: >-
+      The dashboard shows current values for G-1..G-5 across active orgs, each
+      traceable to its underlying records; it introduces no metric definition
+      that conflicts with the goals register.
