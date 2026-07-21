@@ -11,6 +11,27 @@ intent: >-
   open count.
 
 items:
+  INC-6:
+    v: 1
+    status: resolved
+    binds: [ONBS-1, ACC-1]
+    title: The approved ONBS-1 signup predates the Org⟂User identity model
+    statement: >-
+      Detected 2026-07-21 (ACCS design-gate challenge). ONBS-1 (approved
+      2026-07-18) specifies signup as startSignup(name,email) -> Org, creating
+      only the Org (DM-1) — the one-account-per-org shape DEC-30/DEC-32 reversed.
+      The new identity model requires signup to also create a User (DM-15) and an
+      owner Membership (DM-16); that transition (out of ACCS-1's "signed-in User
+      with no membership" state) must be specified in an approved spec, not left
+      implicit.
+    resolution: >-
+      ACCS-1 (this change) OWNS signup-time identity: it specifies that signup
+      creates the (User, Org, owner-Membership) triple, layered on ONBS-1's Org
+      creation, and ACCS depends-on ONBS. ONBS-1's prose ("-> Org") is
+      stale-but-not-wrong (it still creates the Org; ACCS adds the identity
+      half) and is flagged for reconciliation the next time the ONB spec is
+      revised — tracked here, not silently dropped, and no re-gate of the
+      approved ONB spec is forced by this reorg.
   INC-4:
     v: 1
     status: resolved

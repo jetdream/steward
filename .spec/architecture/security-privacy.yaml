@@ -135,7 +135,7 @@ items:
       org's channel-publishing credentials, not the founder's login.
 
   SEC-11:
-    v: 2
+    v: 3
     kind: posture
     title: Operator & platform-staff access, impersonation & audit
     body: |
@@ -149,9 +149,11 @@ items:
       IMPERSONATION (act-as-org, ADM-2) is reason-gated (a SupportSession DM-18
       captures the required reason over BetterAuth's session.impersonatedBy),
       time-boxed (impersonationSessionDuration), and recorded in the per-org
-      activity ledger (ADM-3, DM-17) — audited in full internally but NOT
-      surfaced to the founder (the VAL-3 carve-out, DEC-31); results still appear
-      in the founder's own surfaces. The console is disabled outside the ops
-      environment. Founder-ratified: DEC-27 (the operator posture) + DEC-32
-      (this identity/impersonation model). The audit log + reason prompt + ledger
+      activity ledger (ADM-3, DM-17) — audited in full internally; the staff
+      IDENTITY is not surfaced to the founder, but a neutral "a Steward support
+      action" marker AND the results ARE shown on the founder's own surfaces (the
+      VAL-3 carve-out, DEC-31 refined by DEC-33 — v3: the marker replaces full
+      silence). The console is disabled outside the ops environment.
+      Founder-ratified: DEC-27 (the operator posture) + DEC-32 (this
+      identity/impersonation model) + DEC-33 (the founder-facing support marker). The audit log + reason prompt + ledger
       are first-class parts of the ops module (ARC-22), not add-ons.

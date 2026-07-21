@@ -11,7 +11,7 @@ supersedes: ~
 > DEC-32): the operator role is now the BetterAuth admin-plugin app-level role
 > rather than a separate operator identity, extended to act-as-org impersonation
 > and a per-org activity ledger. ADR-0005's guarantees (least-privilege,
-> reason-gate, full audit, ops-env-only) are preserved in SEC-11 v2. Retained
+> reason-gate, full audit, ops-env-only) are preserved in SEC-11. Retained
 > for history; do not cite in `constrained-by`.
 
 ## Context

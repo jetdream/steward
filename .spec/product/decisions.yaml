@@ -15,6 +15,25 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-33:
+    v: 1
+    date: 2026-07-21
+    by: founder (shpin.p@diffco.us)
+    binds: [VAL-3, ADM-2, SEC-11]
+    title: Impersonation carve-out surfaces a neutral fact-of-support marker (refines DEC-31)
+    statement: >-
+      Refines the DEC-31 VAL-3 carve-out after the ADMS design-gate surfaced a
+      failure mode: at an ask-first (TL0) org, a fully-silent staff act-as
+      publish appears as a post the founder never approved, reading as a breach
+      rather than a benign result. Founder decision (2026-07-21, admin-capability
+      ideation): a staff act-as action surfaces a NEUTRAL "a Steward support
+      action" MARKER on the founder's own surfaces (e.g. the PUBS-3 publish log)
+      alongside the result — the FACT of support is shown, the staff IDENTITY is
+      withheld. This turns ON the founder-visibility DEC-31 had deferred to a
+      "later switch", so it is recorded as its own decision and VAL-3 goes to v3
+      (identity hidden; fact-of-support shown). More honest to VAL-3's
+      nothing-hidden spirit than full silence; the staff-facing activity ledger
+      (DM-17, ADMS-3) retains full attribution for audit.
   DEC-32:
     v: 1
     date: 2026-07-21

@@ -61,15 +61,16 @@ operator identity:
   memberships (ACC-3).
 - **Platform-staff role** (ADM-1): the BetterAuth **admin-plugin** app-level
   role, DISTINCT from org roles; staff are not org members. ADR-0005's posture
-  is PRESERVED and carried by SEC-11 v2: least-privilege, reason-gated cross-org
+  is PRESERVED and carried by SEC-11: least-privilege, reason-gated cross-org
   access, fully audit-logged, disabled outside the ops environment.
 - **Support impersonation** (ADM-2): `impersonateUser` → the org owner yields
   the exact founder view + active-org context; `session.impersonatedBy` records
   the staff identity; time-boxed via `impersonationSessionDuration`. A reason is
   REQUIRED and recorded on a `SupportSession` (DM-18) — BetterAuth does not
   capture a reason natively, so that is Steward's thin addition over the plugin.
-  Audited in full internally, not surfaced to the founder (VAL-3 v2 carve-out,
-  DEC-31). The **act-as WRITE boundary** (which founder actions staff may
+  Audited in full internally; the staff IDENTITY is not surfaced to the founder,
+  while a neutral "support action" marker IS (the VAL-3 carve-out, DEC-31 refined
+  by DEC-33). The **act-as WRITE boundary** (which founder actions staff may
   perform — approve/publish/Trust-Level/Strategy — and the GR-3/GR-8/AUT and
   G-2-measurement interactions, cf. LRN-24) is NOT decided here; it is pinned in
   the ADMS spec at the behavior gate.
@@ -81,9 +82,9 @@ operator identity:
 
 - Supersedes ADR-0005 (its separate-operator-identity mechanism); its
   guarantees (least-privilege, reason-gate, audit, ops-env-only) are retained,
-  now realized on BetterAuth and recorded in SEC-11 v2. DEC-27 (the operator
+  now realized on BetterAuth and recorded in SEC-11. DEC-27 (the operator
   posture ratification) stands; DEC-32 ratifies this model.
-- Binds SEC-7 v2 (auth generalized to multi-user + plugins), SEC-11 v2
+- Binds SEC-7 v2 (auth generalized to multi-user + plugins), SEC-11
   (impersonation + ledger added to the posture), DM-1 (Org, now explicitly the
   tenant with identity external), DM-15/16/17/18 (new entities), ACC-* and ADM-*.
 - The ADMS/ACCS specs cite this ADR in `constrained-by`; the act-as write

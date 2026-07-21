@@ -1,0 +1,119 @@
+kind: spec
+prefix: ACCS
+title: Accounts & Identity — behavior
+status: approved
+challenge:
+  date: 2026-07-21
+  by: cortex:architect-challenger (four lenses; r1 fail → r2 delta pass)
+  verdict: pass
+  record: .spec/specs/challenges/acc-accounts-identity-2026-07-21-r2.md
+  summary: >-
+    r1 FAILED on two highs — the single-owner invariant was unenforced
+    (updateRole could mint a second owner) and ACCS-1's signup-time membership
+    creation silently contradicted the approved ONBS-1. Fixed: owner changes
+    only via atomic transfer + invites are admin|member only (single-owner
+    enforced in statement + acceptance); INC-6 records the ONBS reconciliation
+    with ACCS owning signup-time identity + depends-on ONBS. Mediums (active-org
+    confinement; system/job actor scoping) + low (DM-17/GR-6 wiring) also fixed.
+    r2 delta PASS.
+design-scope: cross-cutting
+governed-by: [GR-6]
+depends-on: [ONBS]
+constrained-by: [ADR-0006, DM-1, DM-15, DM-16, DM-17, SEC-7]
+intent: >-
+  Exact behavior of the account/identity layer (register acc-accounts-identity,
+  ACC-1..5): who signs in, how a User relates to Orgs through Memberships with
+  roles, how the active-org context works, and how org confinement is enforced.
+  Realized on BetterAuth (SEC-7 v2, ADR-0006) — the organization plugin
+  (organization/member/invitation, activeOrganizationId) and, for staff, the
+  admin plugin (consumed by ADMS). Multi-user per org (DEC-30); the typical
+  cohort-1 org is owner-only.
+design: >-
+  Identity is BetterAuth. A User (DM-15) authenticates (Google or dev
+  email-only) and carries one or more Memberships (DM-16) to Orgs (DM-1) with an
+  org-plugin role (owner|admin|member). A session names the active org
+  (activeOrganizationId); switching is limited to the user's own memberships.
+  Org confinement is a SERVER-side authorization check on every org-scoped
+  request (the tRPC/data layer resolves the (user, activeOrg, role) triple and
+  refuses any org the user is not a member of) — never a client concern. The
+  owner is the signup creator; exactly one owner per org. Invitations (org-plugin
+  invitation: email, role, pending→accepted, expiry) are the ACC-4 multi-seat
+  path (P2). LRN-20: role/confinement checks are DETERMINISTIC; no LLM step.
+data: >-
+  BetterAuth-managed: user (DM-15), member (DM-16), invitation, session
+  (activeOrganizationId, impersonatedBy). Org (DM-1) is the tenant aggregate
+  root; org-owned entities are addressable only within an active-org context.
+  Concrete shapes in @shared types + the BetterAuth schema.
+interfaces: >-
+  Auth/session endpoints (BetterAuth): sign-in, session (→ user + activeOrg +
+  role), setActiveOrganization(orgId) [confined to memberships], and the
+  invitation flow (invite/accept/updateRole/remove) for ACC-4. Every org-scoped
+  API resolves and enforces the (user, activeOrg, role) triple. Exact signatures
+  live in code.
+items:
+  ACCS-1:
+    v: 1
+    implements: [ACC-1, ACC-5]
+    title: User–Org identity on BetterAuth
+    statement: >-
+      A User (DM-15) is the auth principal, distinct from the Org (DM-1); sign-in
+      (Google or dev email-only, SEC-7) yields a User who may hold one or more
+      Memberships (DM-16). There is no bespoke identity store — BetterAuth's
+      organization + admin plugins are the mechanism (ADR-0006, GR-6). Every
+      org-scoped action resolves through a (User, active-Org, role) triple; org
+      data is never addressable without an active-org context. SIGNUP creates the
+      whole triple: ACCS OWNS the signup-time identity — the (User, Org,
+      owner-Membership) creation layered on ONBS-1's org creation (depends-on
+      ONBS; the ONBS-1 prose reconciliation is tracked as INC-6). The creator
+      becomes the org's sole owner.
+      ACCEPTANCE: a signed-in User with no membership can act in no org; signup
+      creates a User + Org + an owner Membership for the creator in one flow; org
+      data access always carries a resolved active-org + role.
+  ACCS-2:
+    v: 1
+    implements: [ACC-2, ACC-3]
+    title: Roles, active-org context & server-side confinement
+    statement: >-
+      A Membership carries owner|admin|member (BetterAuth org roles); role gates
+      the permitted actions (owner: all incl. billing/deletion; admin: all but
+      org deletion/owner change; member: day-to-day content). The org scope of a
+      user request is resolved SERVER-SIDE from the session's active org
+      (activeOrganizationId) — NOT from a client-supplied org id: a request that
+      names any org other than the active one is refused (even one the user is
+      also a member of) until the active org is switched via
+      setActiveOrganization, which is itself confined to the user's memberships.
+      So a multi-membership user always acts within exactly one active org
+      (ACC-1), keeping ledger attribution (DM-17) correct. NON-USER actors
+      (system/background jobs — DM-17 actorKind system|job) have no session/active
+      org; each such actor carries an EXPLICIT single-org scope and is equally
+      confined to that one org, never a cross-org wildcard. The only cross-org
+      user path is staff impersonation (ADMS-2), never a regular user.
+      ACCEPTANCE: a member cannot perform an owner-only action; a user who is a
+      member of A and B with active org A is refused a request naming B until they
+      switch active org; a request naming a non-member org is refused; a
+      background job runs against exactly one explicitly-scoped org, never all
+      orgs.
+  ACCS-3:
+    v: 1
+    implements: [ACC-4]
+    title: Member invitation & lifecycle
+    statement: >-
+      An owner/admin invites a User to the org by email with an admin|member
+      role (NEVER owner — ownership changes only via the transfer rule below;
+      BetterAuth invitation: pending → accepted, with expiry), changes a member's
+      role, and removes members. The SINGLE-OWNER invariant is Steward-enforced (not native
+      to the BetterAuth org plugin, where `owner` is just a role updateRole would
+      freely duplicate): role-change may target only admin|member and can NEVER
+      set or produce a second `owner`; the owner changes ONLY via an atomic
+      OWNERSHIP TRANSFER (demote-current-owner + promote-target in one
+      operation), and the last owner cannot be removed except by transfer. P2 —
+      the founder-facing multi-seat management surface, sequenced after the
+      internal-admin core (DEC-30); minimal and in colleague voice (VAL-5).
+      ACCEPTANCE: an invite email becomes an accepted membership at the assigned
+      admin|member role (an owner invite is impossible); an owner can change a
+      member's role (admin|member) and remove a
+      member; a role-change can never create a second owner; promoting a member
+      to owner is possible only via an atomic transfer that demotes the prior
+      owner, so the org always has exactly one owner; the last owner cannot be
+      removed without transfer; invitations expire.
+open-questions: []

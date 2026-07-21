@@ -274,10 +274,14 @@ items:
     title: ActivityEvent
     body: |
       An append-only, per-org activity-ledger entry (ADM-3). Fields: orgId,
-      timestamp, actorKind (user | system | job | staff-act-as), actorId (the
-      acting User, or the job/system identifier; for staff-act-as the
-      impersonating staff User via session.impersonatedBy), action, and target
-      (a ref to the affected entity). Generalizes the PIPE-1 model-call log into
+      timestamp, actorKind (user | system | job | staff | staff-act-as), actorId
+      (the acting User, or the job/system identifier; for staff / staff-act-as
+      the staff User — via session.impersonatedBy for act-as), action, and
+      target (a ref to the affected entity). `staff` covers a DIRECT staff
+      action or reason-gated confidential READ that is not impersonation (e.g. a
+      lifecycle action ADM-4, or opening the ledger/health view) — so SEC-11's
+      "no un-logged raw browse" has a representable entry; `staff-act-as` covers
+      actions taken while impersonating the owner (ADM-2). Generalizes the PIPE-1 model-call log into
       ONE org observability record and is the substrate the impersonation
       carve-out (VAL-3, DEC-31) is audited against. Owned by Org (DM-1); read by
       platform staff (ADM-3) and the KPI dashboard (ADM-6). Staff-act-as

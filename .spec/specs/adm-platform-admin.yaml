@@ -1,0 +1,226 @@
+kind: spec
+prefix: ADMS
+title: Platform Administration — behavior
+status: approved
+challenge:
+  date: 2026-07-21
+  by: cortex:architect-challenger (four lenses; r1→r4, three fails then pass)
+  verdict: pass
+  record: .spec/specs/challenges/adm-platform-admin-2026-07-21-r4.md
+  summary: >-
+    Four rounds on the full-parity impersonation spec. r1: G-2 rule not in the
+    higher-precedence goal note + ledger couldn't represent staff reads/actions
+    (both fixed — G-2 outcome note + DM-17 `staff` actorKind). r2: the neutral
+    support-action marker was an unrecorded value change (fixed — DEC-33, VAL-3
+    → v3). r3: incomplete cascade — SEC-11 still said "not surfaced" (fixed —
+    SEC-11 → v3, DEC-33 binds it) + marker stranded off PUBS-3 (fixed —
+    cross-cutting obligation, rendering tracked to PUBS-3/experience). r4 PASS
+    (one non-blocking acceptance split applied). GR-3/GR-8 holds fire and may be
+    cleared by staff-as-founder (DEC-32 full parity, no bypass); full audit +
+    reason-gate (SEC-11 v3); honest G-2 (LRN-24).
+design-scope: cross-cutting
+governed-by: [GR-3, GR-6, GR-8]
+depends-on: [ACCS, BILS, OPSS, AUTS, PUBS]
+constrained-by: [ADR-0006, DM-11, DM-15, DM-17, DM-18, SEC-4, SEC-11]
+intent: >-
+  Exact behavior of the internal platform-admin surface (register
+  adm-platform-admin, ADM-1..6): the platform-staff role, support impersonation
+  (act-as-org at full founder parity), the per-org activity ledger, org/account
+  lifecycle, billing oversight, and the KPI dashboard. Internal-only, on the
+  SEC-11 posture and ADR-0006; sibling of the content-QA ops console (OPSS).
+design: >-
+  Platform staff hold the BetterAuth admin-plugin APP-LEVEL role (distinct from
+  org roles ACCS-2 and founder auth). Cross-org access to confidential data
+  (SEC-4) is REASON-GATED and audit-logged; the surface is ops-environment only
+  (SEC-11). SUPPORT IMPERSONATION: `impersonateUser` → the org owner yields the
+  exact founder view + active-org context; a SupportSession (DM-18) captures the
+  REQUIRED reason over BetterAuth's session.impersonatedBy; time-boxed
+  (impersonationSessionDuration). Act-as is FULL FOUNDER PARITY (DEC-32 / founder
+  decision 2026-07-21): staff may perform ANY action the owner can — including
+  live publishing (GR-6 channels), approving drafts, changing Trust Level (AUT),
+  and account cancel/delete (BIL). Two invariants hold regardless of actor: (a)
+  the content guardrail chain (GR-1..GR-8, incl. GR-3 sensitive-topic and GR-8
+  stated-correction) gates act-as-published CONTENT exactly as for the founder —
+  impersonation grants the founder's authority, never a guardrail bypass; and
+  (b) every act-as action is written to the activity ledger (ADMS-3) with full
+  staff attribution for internal audit; the staff IDENTITY is not surfaced to
+  the founder, but a neutral "a Steward support action" marker IS shown on the
+  founder's own surfaces alongside the result (the VAL-3 carve-out, DEC-31
+  refined by DEC-33) — so a support action is explained, never an unattributed
+  ghost, even at TL0. G-2 INTEGRITY (LRN-24): a draft APPROVED/edited under
+  staff act-as counts as NON-autonomous for G-2 (never credited as
+  approved-without-edit), same principle as the OPSS-1 operator-QA confound. The
+  rest (ledger, lifecycle, billing view, KPI) is read/operate over existing
+  entities. LRN-20: role/impersonation gating, ledger append, and lifecycle
+  transitions are DETERMINISTIC; no LLM step.
+data: >-
+  BetterAuth admin-plugin role on the User (DM-15); SupportSession (DM-18,
+  reason + time-box); ActivityEvent (DM-17, the ledger); reads Subscription
+  (DM-11) for oversight and PostMetric (DM-10) + the ledger for KPIs. No new
+  domain source of truth. Concrete shapes in @shared types + BetterAuth schema.
+interfaces: >-
+  @backend/ops (ARC-22), all platform-staff-only: impersonate(orgId, reason) ->
+  SupportSession + an act-as session [ADMS-2]; stopImpersonating(); ledger(org,
+  filters) -> ActivityEvent stream [ADMS-3]; org lifecycle
+  provision/suspend/restore/offboard(org, reason) [ADMS-4]; billingOverview() ->
+  cross-org subscription/refund view [ADMS-5]; kpis() -> G-1..G-5 rollup
+  [ADMS-6]. Every entry point re-checks the app-level staff role + reason-gate +
+  audit (SEC-11). Exact signatures live in code.
+items:
+  ADMS-1:
+    v: 1
+    implements: [ADM-1]
+    title: Platform-staff role & guarded access
+    statement: >-
+      Platform staff authenticate as a BetterAuth admin-plugin app-level role,
+      DISTINCT from org roles (ACCS-2) and founder/user auth (SEC-7); staff are
+      not org members. AUDIT has two tiers. (1) Any access to a SINGLE ORG's
+      CONFIDENTIAL data (SEC-4 — its drafts, chats, radar candidates, its
+      activity ledger, its billing detail) or any staff ACTION on an org (ADM-4
+      lifecycle) is REASON-GATED and recorded on that org's activity ledger
+      (DM-17) as a `staff` entry (or `staff-act-as` when impersonating, ADM-2) —
+      so SEC-11's "no un-logged raw browse" always has a representable entry.
+      (2) CROSS-ORG AGGREGATE views that expose no single org's confidential
+      content — the KPI dashboard (ADM-6) and the billing-status rollup (ADM-5) —
+      are staff-role-gated but carry NO per-org reason prompt and NO per-org
+      ledger entry: SEC-11's reason-gate + "no un-logged raw browse" mandate is
+      scoped to a single org's CONFIDENTIAL data (SEC-4), which these aggregates
+      do not expose (this keeps ADMS's "no new source of truth" honest — no
+      separate platform audit store is introduced). Drilling from an aggregate
+      INTO a single org's confidential data re-enters tier (1). The admin surface
+      is unavailable outside the ops environment (SEC-11). A regular User can
+      never obtain staff powers.
+      ACCEPTANCE: a staff user reaches admin functions no org member can; opening
+      a single org's confidential data or acting on an org without a recorded
+      reason is refused, and the access appears as a `staff`/`staff-act-as`
+      ledger entry on that org; a cross-org aggregate view (KPI/billing rollup)
+      requires the staff role but no per-org reason and writes no per-org ledger
+      entry; the surface denies outside the ops environment; a regular user has
+      no path to the staff role.
+  ADMS-2:
+    v: 1
+    implements: [ADM-2]
+    title: Support impersonation — act as org at full founder parity
+    statement: >-
+      A staff user impersonates an org (BetterAuth `impersonateUser` → the owner):
+      the EXACT founder view + active-org context, `session.impersonatedBy` set,
+      time-boxed (impersonationSessionDuration), gated on a SupportSession
+      (DM-18) with a REQUIRED reason (SEC-11). Act-as is FULL FOUNDER PARITY — any
+      owner action, including live publish (GR-6), approve, Trust-Level change
+      (AUT), and cancel/delete (BIL). INVARIANTS:
+      (a) GUARDRAIL CHAIN RUNS, NOT BYPASSED: act-as content is classified and
+      gated by GR-1..GR-8 identically to the founder's own — a sensitive-topic
+      (GR-3) or stated-taboo (GR-8) draft still FIRES its hold. Where a guardrail
+      routes to HUMAN approval, an act-as session MAY provide that approval /
+      clear the hold as the owner would — this is the accepted, founder-ratified
+      consequence of full parity (2026-07-21): the guardrail is not skipped, but
+      the human who clears it may be the staffer acting as the founder. Every
+      such clearance is ledgered (staff-act-as).
+      (b) VISIBILITY (VAL-3 carve-out, DEC-31 refined by DEC-33): every act-as action is ledgered
+      (ADMS-3) as `staff-act-as` attributed to the staff User, audited in full
+      internally. The staff IDENTITY is not surfaced to the founder, BUT a
+      NEUTRAL "a Steward support action" MARKER must be shown on the founder's
+      own surfaces alongside the result — so an act-as result is always
+      EXPLAINED, never an unattributed ghost, reconciling with Trust Level (at an
+      ask-first TL0 org a support-published post carries the marker rather than
+      reading as a post the founder never approved). Identity hidden,
+      fact-of-support shown. This is a CROSS-CUTTING obligation ADMS owns; the
+      surfaces that RENDER it (the publish log PUBS-3, and the founder activity
+      views in the experience spine) carry the marker in their own specs — a
+      cascade tracked in open-questions, since PUBS-3 v1 does not yet render it.
+      A draft approved/edited under act-as is NON-autonomous for G-2 (LRN-24,
+      G-2 outcome note). Regular users can never impersonate.
+      ACCEPTANCE: entering an org requires a logged reason and starts a
+      time-boxed SupportSession carrying impersonatedBy; staff can take any owner
+      action, including clearing a GR-3/GR-8 hold (which still fires first and is
+      ledgered); every act-as action is a `staff-act-as` ledger entry carrying a
+      fact-of-support signal (ADMS's owned half); the founder-facing surfaces
+      that render that signal (PUBS-3 / the experience views — the tracked
+      cascade) show a neutral "Steward support action" marker and never the staff
+      identity, including at TL0; act-as approvals are excluded from the G-2
+      numerator (kept in the denominator); a non-staff user has no impersonation
+      path.
+  ADMS-3:
+    v: 1
+    implements: [ADM-3]
+    title: Org activity ledger
+    statement: >-
+      An append-only per-org ledger (ActivityEvent, DM-17) records every action
+      with actorKind (user | system | job | staff | staff-act-as), actorId,
+      action, target, timestamp — user actions, automatic system actions,
+      background jobs (External Radar discovery, generation, publishing), and
+      DIRECT staff actions/reads (`staff`, ADMS-1) as well as impersonated ones
+      (`staff-act-as`, ADMS-2) — generalizing the PIPE-1 model-call log. The
+      ledger is a STAFF-FACING audit record with FULL attribution. The founder
+      never sees the ledger's staff/staff-act-as attribution; on the founder's
+      own surfaces an act-as result instead carries the neutral "Steward support
+      action" marker (ADMS-2, VAL-3 v3 / DEC-33). Append-only: entries are never edited or
+      deleted.
+      ACCEPTANCE: for an org, staff see a chronological log spanning a user
+      action, a system action, a discovery-job run, a direct `staff` action, and
+      a `staff-act-as` action, each with actor kind / action / target / time; the
+      founder cannot see the staff attribution (only the neutral marker on their
+      own surfaces); no API mutates or removes a past entry.
+  ADMS-4:
+    v: 1
+    implements: [ADM-4]
+    title: Org & account lifecycle
+    statement: >-
+      Staff list orgs with health signals (onboarding status, connection health,
+      publishing state), and provision / suspend / restore / offboard an org.
+      Destructive transitions (suspend, offboard) are reason-gated + audited
+      (SEC-11) and honor BIL-2 export/deletion (SEC-4): an offboard runs the
+      BIL-2 export-then-hard-delete and the SEC-8 news-route afterlife (NWSS-1).
+      Subsumes the OPSS account-health gesture.
+      ACCEPTANCE: staff see per-org health; a suspend halts the org and is
+      reversible; an offboard performs the BIL-2 export + hard delete and leaves
+      the news route per SEC-8/NWSS-1; each destructive action carries a logged
+      reason.
+  ADMS-5:
+    v: 1
+    implements: [ADM-5]
+    title: Billing & subscription oversight
+    statement: >-
+      Staff see a cross-org view of Subscription (DM-11) state (active / grace /
+      cancelled / refunded), payment failures, and the refund events the G-1
+      refund-rate depends on (BILS-1) — read-first. Any billing change staff make
+      on an org's behalf goes through impersonation (ADMS-2) and is audited; no
+      new billing mechanism.
+      ACCEPTANCE: staff see every org's subscription status and refund events
+      sufficient to compute the G-1 refund rate; a staff-initiated billing change
+      is performed via act-as and appears in the ledger.
+  ADMS-6:
+    v: 1
+    implements: [ADM-6]
+    assurance: standard
+    title: Business & KPI dashboard
+    statement: >-
+      A dashboard computes G-1..G-5 across active orgs from existing sources —
+      Subscription (DM-11) for paying/churn/refund (G-1), the ledger (ADMS-3) +
+      dispositions for approval-without-edit (G-2 — an operator-QA-touched or
+      staff-act-as-dispositioned draft counts as NON-autonomous: kept in the
+      denominator, never credited to the numerator, per the G-2 outcome note /
+      OPSS-1 / LRN-24), founder session activity for time-in-product (G-3),
+      publish cadence for the streak (G-4), and first-approved-post timing for
+      activation (G-5). P2 — reporting; it READS these sources and introduces no
+      metric definition that conflicts with the goals register.
+      ACCEPTANCE: the dashboard shows current G-1..G-5 across active orgs, each
+      value traceable to its underlying records; the G-2 value counts operator-QA
+      and staff-act-as approvals as non-autonomous (kept in the denominator, not
+      the numerator), matching the G-2 outcome note; no metric contradicts
+      goals.yaml.
+open-questions:
+  - >-
+    The neutral "Steward support action" marker (ADMS-2, DEC-33/VAL-3 v3) is a
+    cross-cutting obligation owned here, but the surfaces that RENDER it must
+    carry it in their own specs: the publish log (PUBS-3 v1 does not yet render
+    it) and the founder activity views in the experience spine (Step 5 / a
+    /cortex:ux pass). Tracked so the rendering is not silently dropped; folded in
+    when PUBS is next revised and when the experience surfaces are authored. A
+    natural DS home is a neutral marker component beside the DS-5 trust chrome.
+  - >-
+    ADMS-1 tiering rests on "billing DETAIL" (invoices / payment instruments —
+    SEC-4-adjacent, tier-1 reason-gated) vs the subscription-STATUS rollup
+    (account metadata — tier-2, no per-org reason); ADMS-5 exposes the status
+    rollup. The exact confidential/metadata line for billing is settled with the
+    BIL data-model when ADMS-5 is built.

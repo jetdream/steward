@@ -26,18 +26,20 @@ items:
       The org's existing channels teach the system the org's real voice; the
       system amplifies before it invents.
   VAL-3:
-    v: 2
-    decided-by: DEC-31
+    v: 3
+    decided-by: DEC-33
     title: Nothing hidden
     statement: >-
       The strategy is explicit and editable; autonomy is earned and always
       revocable; everything the SYSTEM does on its own is logged and visible to
       the founder. One deliberate, narrow exception (DEC-31): internal support
-      staff acting-as-org is audited IN FULL internally but its attribution is
-      not surfaced to the founder — the RESULTS still appear in the founder's
-      own surfaces, only the "staff did this" attribution is withheld. (v2:
-      DEC-31 records the impersonation carve-out; the system-autonomy promise is
-      unchanged.)
+      staff acting-as-org is audited IN FULL internally, and the founder's own
+      surfaces show a NEUTRAL "a Steward support action" marker alongside the
+      result (DEC-33) — the FACT that support acted is shown, only the staff
+      IDENTITY is withheld. So a support action is never an unexplained ghost,
+      even at an ask-first org. (v2: DEC-31 recorded the carve-out; v3: DEC-33
+      surfaces the neutral fact-of-support marker rather than full silence. The
+      system-autonomy promise is unchanged.)
   VAL-4:
     v: 1
     origin: baseline
