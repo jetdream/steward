@@ -54,18 +54,23 @@ items:
       Meta/X/Threads developer-policy compliance; no scraping-based or
       policy-violating publishing paths.
   GR-7:
-    v: 2
-    decided-by: DEC-9
+    v: 3
+    decided-by: DEC-35
     title: Conform to the design system
     rule: >-
-      Every user-facing surface — screens, touchpoints, and the components
-      inside them — resolves its visual values from the steward theme tokens
-      and reuses the design-system component inventory (DS-1..8, including
-      the news-page template's sanctioned org slots). A screen, email, or UI
-      spec inventing its own component, color, spacing, or type role is a
-      governed violation, not a matter of taste. UI specs cite this
-      guardrail via governed-by (method/ui.md §5). (v2: inventory pointer
-      widened to DS-8 — DEC-9; the rule itself is unchanged.)
+      Every FOUNDER- and PUBLIC-facing surface — screens, touchpoints, and the
+      components inside them — resolves its visual values from the steward theme
+      tokens AND reuses the design-system component inventory (DS-1..8, including
+      the news-page template's sanctioned org slots). A screen, email, or UI spec
+      inventing its own component, color, spacing, or type role there is a
+      governed violation, not a matter of taste. UI specs cite this guardrail via
+      governed-by (method/ui.md §5). INTERNAL staff tools (the ops/admin console —
+      OPS/ADM, never founder- or public-facing) must still resolve visual values
+      from the steward theme tokens (DS-1/DS-3/DS-4), but MAY compose shadcn
+      primitives directly rather than the founder DSS inventory — they are
+      deliberately lower-fidelity (XOPS/DEC-8 precedent) and not the brand
+      surface. (v3: DEC-35 scopes the inventory-reuse clause to founder/public
+      surfaces; internal tools conform via tokens only. v2: DS-8 — DEC-9.)
   GR-8:
     v: 1
     decided-by: DEC-21

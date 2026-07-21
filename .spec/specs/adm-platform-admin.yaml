@@ -4,9 +4,9 @@ title: Platform Administration — behavior
 status: approved
 challenge:
   date: 2026-07-21
-  by: cortex:architect-challenger (four lenses; r1→r4, three fails then pass)
+  by: cortex:architect-challenger (architect lens; r1→r6, five fails then pass)
   verdict: pass
-  record: .spec/specs/challenges/adm-platform-admin-2026-07-21-r4.md
+  record: .spec/specs/challenges/adm-platform-admin-2026-07-21-r6.md
   summary: >-
     Four rounds on the full-parity impersonation spec. r1: G-2 rule not in the
     higher-precedence goal note + ledger couldn't represent staff reads/actions
@@ -18,21 +18,34 @@ challenge:
     (one non-blocking acceptance split applied). GR-3/GR-8 holds fire and may be
     cleared by staff-as-founder (DEC-32 full parity, no bypass); full audit +
     reason-gate (SEC-11 v3); honest G-2 (LRN-24).
+    FINALIZATION (DEC-35, v2, record r6): the two-role change (admin/support,
+    admin-only staff management, seed admin, shadcn+tokens console / GR-7 v3)
+    took two more fails on the SAME incomplete-cascade class — propagated up
+    through the spec framing, DM-15 v2, glossary, and the requirement ADM-1 v2 —
+    then PASS. Role-change escalation audit deferred to the DEC-35 threat-model.
 design-scope: cross-cutting
 governed-by: [GR-3, GR-6, GR-8]
 depends-on: [ACCS, BILS, OPSS, AUTS, PUBS]
 constrained-by: [ADR-0006, DM-11, DM-15, DM-17, DM-18, SEC-4, SEC-11]
 intent: >-
   Exact behavior of the internal platform-admin surface (register
-  adm-platform-admin, ADM-1..6): the platform-staff role, support impersonation
-  (act-as-org at full founder parity), the per-org activity ledger, org/account
-  lifecycle, billing oversight, and the KPI dashboard. Internal-only, on the
-  SEC-11 posture and ADR-0006; sibling of the content-QA ops console (OPSS).
+  adm-platform-admin, ADM-1..6): the platform-staff roles (admin/support),
+  support impersonation (act-as-org at full founder parity), the per-org activity
+  ledger, org/account lifecycle, billing oversight, and the KPI dashboard.
+  Internal-only, on the SEC-11 posture and ADR-0006; sibling of the content-QA
+  ops console (OPSS).
 design: >-
-  Platform staff hold the BetterAuth admin-plugin APP-LEVEL role (distinct from
-  org roles ACCS-2 and founder auth). Cross-org access to confidential data
-  (SEC-4) is REASON-GATED and audit-logged; the surface is ops-environment only
-  (SEC-11). SUPPORT IMPERSONATION: `impersonateUser` → the org owner yields the
+  Platform staff hold one of TWO BetterAuth admin-plugin APP-LEVEL roles — admin
+  or support (ADMS-1, DEC-35), distinct from org roles (ACCS-2) and founder auth.
+  ADMIN adds staff-user management (create staff, assign admin|support); SUPPORT
+  performs all ORG operations but not staff management. A SEED admin exists at
+  install (default credentials, rotated manually); staff are otherwise created by
+  an admin. Staff management is admin-only; staff CREATION is evidenced by the
+  BetterAuth user record (platform-level, distinct from the org-scoped DM-17
+  ledger). An append-only role-CHANGE (privilege-escalation) trail + any
+  reason-gate on role grants is deferred to the DEC-35 threat-model pass, not
+  claimed present (BetterAuth's role field is current-state, not history). Cross-org access to confidential data (SEC-4) is
+  REASON-GATED and audit-logged; the surface is ops-environment only (SEC-11). SUPPORT IMPERSONATION: `impersonateUser` → the org owner yields the
   exact founder view + active-org context; a SupportSession (DM-18) captures the
   REQUIRED reason over BetterAuth's session.impersonatedBy; time-boxed
   (impersonationSessionDuration). Act-as is FULL FOUNDER PARITY (DEC-32 / founder
@@ -54,8 +67,10 @@ design: >-
   entities. LRN-20: role/impersonation gating, ledger append, and lifecycle
   transitions are DETERMINISTIC; no LLM step.
 data: >-
-  BetterAuth admin-plugin role on the User (DM-15); SupportSession (DM-18,
-  reason + time-box); ActivityEvent (DM-17, the ledger); reads Subscription
+  The admin|support app-level role on the User (DM-15); staff creation +
+  role-grant are BetterAuth admin-plugin operations recorded in its own user/role
+  records (platform-level, not the orgId-scoped DM-17). SupportSession (DM-18,
+  reason + time-box); ActivityEvent (DM-17, the org ledger); reads Subscription
   (DM-11) for oversight and PostMetric (DM-10) + the ledger for KPIs. No new
   domain source of truth. Concrete shapes in @shared types + BetterAuth schema.
 interfaces: >-
@@ -64,17 +79,34 @@ interfaces: >-
   filters) -> ActivityEvent stream [ADMS-3]; org lifecycle
   provision/suspend/restore/offboard(org, reason) [ADMS-4]; billingOverview() ->
   cross-org subscription/refund view [ADMS-5]; kpis() -> G-1..G-5 rollup
-  [ADMS-6]. Every entry point re-checks the app-level staff role + reason-gate +
-  audit (SEC-11). Exact signatures live in code.
+  [ADMS-6]; and ADMIN-ONLY staff management createStaff / setStaffRole(user,
+  admin|support) [ADMS-1] via the BetterAuth admin plugin (support is denied it).
+  Every entry point re-checks the admin|support app-level role (+ the admin-only
+  gate on staff management) + reason-gate + audit (SEC-11). Exact signatures live
+  in code.
 items:
   ADMS-1:
-    v: 1
+    v: 2
     implements: [ADM-1]
-    title: Platform-staff role & guarded access
+    title: Platform-staff roles, provisioning & guarded access
     statement: >-
-      Platform staff authenticate as a BetterAuth admin-plugin app-level role,
-      DISTINCT from org roles (ACCS-2) and founder/user auth (SEC-7); staff are
-      not org members. AUDIT has two tiers. (1) Any access to a SINGLE ORG's
+      Platform staff hold one of TWO BetterAuth admin-plugin app-level roles —
+      ADMIN or SUPPORT — DISTINCT from org roles (ACCS-2) and founder/user auth
+      (SEC-7); staff are not org members (DEC-35). ADMIN can do everything,
+      INCLUDING staff-user management (create staff users, assign the admin|
+      support role). SUPPORT can perform all ORG operations — impersonation
+      (ADMS-2), lifecycle (ADMS-4), billing oversight (ADMS-5), ledger review
+      (ADMS-3), KPIs (ADMS-6) — but NOT staff-user management. PROVISIONING: a
+      seed admin exists at install (default credentials, rotated manually by the
+      operator); all further staff are created by an admin via the BetterAuth
+      admin plugin (createUser + role assignment) — there is no self-service
+      staff signup. Staff management is ADMIN-ONLY. Staff CREATION is evidenced
+      by the BetterAuth user record (platform-level, distinct from the orgId-
+      scoped DM-17 ledger, which cannot hold a platform event). An append-only
+      who-changed-whose-ROLE escalation trail — and any reason-gate on role
+      grants — is part of the deferred DEC-35 threat-model pass (BetterAuth's role
+      field is current-state, not history), NOT claimed as already present. AUDIT
+      (of org confidential-data access) has two tiers. (1) Any access to a SINGLE ORG's
       CONFIDENTIAL data (SEC-4 — its drafts, chats, radar candidates, its
       activity ledger, its billing detail) or any staff ACTION on an org (ADM-4
       lifecycle) is REASON-GATED and recorded on that org's activity ledger
@@ -96,7 +128,11 @@ items:
       ledger entry on that org; a cross-org aggregate view (KPI/billing rollup)
       requires the staff role but no per-org reason and writes no per-org ledger
       entry; the surface denies outside the ops environment; a regular user has
-      no path to the staff role.
+      no path to the staff role. ROLE BOUNDARY: an admin can create a staff user
+      and assign admin|support; a support user cannot reach staff-user management
+      at all, but can perform every org operation (impersonate, lifecycle,
+      billing oversight, ledger, KPIs); the seed admin can sign in at install
+      with the default credentials.
   ADMS-2:
     v: 1
     implements: [ADM-2]

@@ -17,11 +17,12 @@ intent: >-
   How DiffCo staff run and support the platform across all orgs. Four journeys —
   administer an org (ADM-1/ADM-4), support an org by acting as it (ADM-2), audit
   an org's activity (ADM-3), and watch platform health (ADM-5/ADM-6). The
-  console needs dense internal-tool primitives — a data table/list, data-viz for
-  the KPI dashboard, and the act-as banner (staff trust-chrome) — that the
-  founder-spine design system (card/badge/form/DS-5 trust-chrome) does NOT yet
-  own; those are a tracked DS extension (Q-14), NOT invented per-screen. Where a design-system component already fits (badges, buttons,
-  cards, the DS-5 trust chrome) it is reused directly (GR-7). Every surface has a
+  console is built on shadcn primitives (tables, charts, the act-as banner)
+  styled with the steward theme tokens (DS-1 tokens / DS-3 type / DS-4 a11y) —
+  GR-7 v3 (DEC-35) scopes the DSS component-inventory reuse to founder/public
+  surfaces, so internal staff tools conform via the token layer and may use
+  shadcn directly rather than the founder DSS inventory. Deliberately
+  lower-fidelity (XOPS/DEC-8 precedent), never the brand surface. Every surface has a
   permission-denied state (a non-staff/out-of-ops-env viewer is refused) as a
   first-class state, because unauthorized access is the primary risk here.
   Support impersonation is the one cross-org path and is always reason-gated,
@@ -139,10 +140,10 @@ items:
     body: |
       A searchable/filterable table of all orgs with health signals (onboarding
       status, connection health, publishing state, subscription status). Built on
-      the internal-console table/list primitive (Q-14 DS extension); status
-      signals are chips composed from DSS-9's chip shape + DSS-2 semantic/
-      grayscale color roles (the DSS-19 compose-primitives precedent), inventing
-      nothing. States: default list, empty search
+      a shadcn table styled with the steward tokens (DS-1/DS-3/DS-4; GR-7 v3 /
+      DEC-35 — internal tools use shadcn + tokens, not the founder DSS
+      inventory); status signals are shadcn badges in the steward semantic/
+      grayscale color roles (DS-2). States: default list, empty search
       ("no orgs match"), loading skeleton, error+retry, permission-denied
       (non-staff / out-of-ops-env). Row → org detail (XADM-4).
   XADM-4:
@@ -176,11 +177,10 @@ items:
       time remaining; a one-gesture "exit support session" control. This is staff
       chrome (never the founder's). On time-box expiry it warns then auto-exits.
       Distinct visual register (the DS `danger` semantic color role, DSS-2) so an
-      act-as session is never mistaken for a real founder session. The banner
-      itself is the ACT-AS TRUST-CHROME component (a staff sibling of the DS-5
-      inventory) tracked in the Q-14 DS extension; modeled here as the
-      impersonation surface (chrome homed on this element until the component
-      lands).
+      act-as session is never mistaken for a real founder session. The banner is
+      a shadcn element styled with the steward `danger` token (DS-2) — staff
+      chrome, not part of the founder DSS inventory (GR-7 v3 / DEC-35); modeled
+      here as the impersonation surface.
   XADM-12:
     v: 1
     kind: screen
@@ -190,8 +190,8 @@ items:
       The append-only per-org ledger (ADMS-3, DM-17): chronological entries with
       actorKind (user | system | job | staff | staff-act-as), actor, action,
       target, time; full staff attribution (internal). Built on the
-      internal-console table/list primitive (Q-14); actorKind chips compose
-      DSS-9 + DSS-2 color roles (DSS-19 precedent). States:
+      a shadcn table styled with the steward tokens (GR-7 v3 / DEC-35); actorKind
+      badges in the steward semantic/grayscale color roles (DS-2). States:
       populated, empty ("no activity yet"), loading (paged), error,
       permission-denied (tier-1 confidential — the sharpest unauthorized-access
       case, ADMS-1). Read-only — no edit/delete affordance exists.
@@ -204,8 +204,8 @@ items:
       Cross-org subscription state (active / grace / cancelled / refunded),
       payment failures, and refund events feeding the G-1 refund rate (ADMS-5).
       Read-first; a per-org billing action routes through act-as (XADM-6).
-      Aggregate (no single-org confidential content, ADMS-1 tier 2). Built on the
-      internal-console table/list primitive (Q-14). States: loaded, loading, empty
+      Aggregate (no single-org confidential content, ADMS-1 tier 2). A shadcn
+      table styled with the steward tokens (GR-7 v3). States: loaded, loading, empty
       (early cohort, no refund events yet), error, permission-denied.
   XADM-16:
     v: 1
@@ -215,7 +215,7 @@ items:
     body: |
       G-1..G-5 across active orgs (ADMS-6): paying/churn/refund (G-1),
       approval-without-edit on the honest non-act-as/non-QA basis (G-2, LRN-24),
-      time-in-product (G-3), streak (G-4), activation (G-5). Charts use the
-      internal-console data-viz primitive (Q-14 DS extension). States: loaded,
+      time-in-product (G-3), streak (G-4), activation (G-5). Charts use a
+      shadcn-compatible chart library styled with the steward tokens (GR-7 v3 / DEC-35). States: loaded,
       loading, empty (no cohort data yet → "no data yet", never a blank), error,
       permission-denied.

@@ -44,3 +44,17 @@ items:
       be filled during intake before architecture decisions that depend on it
       (data residency, backup, uptime SLOs) are made. Placeholder so the gap
       is explicit, not silently assumed.
+
+  CON-4:
+    v: 1
+    category: compliance
+    title: Admin impersonation time-box & audit retention
+    statement: >-
+      (DEC-35.) Support-impersonation sessions (ADMS-2, DM-18) are time-boxed at the
+      BetterAuth default (1h, impersonationSessionDuration) — no custom value.
+      The org activity ledger (DM-17) and SupportSession audit records are
+      retained WITHOUT a fixed limit for now (revisitable). Open interaction to
+      settle at implementation: a BIL-2 hard deletion removes org-confidential
+      data (SEC-4) — decide then whether the staff-access AUDIT trail for a
+      deleted org survives deletion (audit/compliance need) or is purged with the
+      org (SEC-4 confidentiality); they pull opposite ways. Tightens SEC-11.

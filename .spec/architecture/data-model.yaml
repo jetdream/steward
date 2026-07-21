@@ -236,15 +236,19 @@ items:
       field lists live in @shared types.
 
   DM-15:
-    v: 1
+    v: 2
     kind: data-entity
     title: User
     body: |
       The authentication principal (BetterAuth user), DISTINCT from the Org
       tenant (DM-1) — the account/identity separation ACC-1 introduces. Fields:
-      id, email, name, and an app-level `role` (BetterAuth admin plugin) that
-      marks a PLATFORM-STAFF user (ADM-1); a normal founder/org user carries no
-      such role. A User is NOT owned by an Org; it links to one or more Orgs
+      id, email, name, and an app-level `role` (BetterAuth admin plugin) that is
+      `admin` | `support` for PLATFORM STAFF (ADMS-1, DEC-35) and absent for a
+      normal founder/org user. A seed admin user is created at install (default
+      credentials, rotated manually); further staff are created + role-assigned
+      by an admin via the admin plugin (recorded in its own user/role records —
+      platform-level, not the orgId-scoped DM-17 ledger). A User is NOT owned by
+      an Org; it links to one or more Orgs
       through a Membership (DM-16). BetterAuth sessions carry the active-org
       context (activeOrganizationId, ACC-3) and, during impersonation,
       `impersonatedBy` (the staff User, ADM-2). Sign-in is Google + dev

@@ -13,29 +13,38 @@ serves: [G-1]
 # lifecycle, billing oversight = P1 (operate cohort 1); the KPI dashboard = P2.
 intent: >-
   How DiffCo staff run and support the platform across all orgs. Builds on the
-  Org⟂User identity (ACC) and the SEC-11 operator posture (a dedicated
-  least-privilege role, reason-gated, fully audited, environment-gated). It is
+  Org⟂User identity (ACC) and the SEC-11 operator posture — dedicated
+  least-privilege platform-staff roles (admin/support, ADM-1), reason-gated,
+  fully audited, environment-gated. It is
   internal-only, never founder-facing, and complements — does not replace — the
   content-QA ops console (OPS-1, which keeps draft QA / failure queues /
   radar-precision review). The account-health gesture in OPS-1 is subsumed here
   under lifecycle (ADM-4).
 items:
   ADM-1:
-    v: 1
-    decided-by: DEC-32
+    v: 2
+    decided-by: DEC-35
     priority: P1
-    title: Platform-staff role & access
+    title: Platform-staff roles & access
     statement: >-
-      The system shall provide a dedicated PLATFORM-STAFF role — an app-level
-      admin (BetterAuth admin plugin), DISTINCT from org-level roles (ACC-2) and
-      from founder auth (SEC-7); staff are not org members. Access is
-      least-privilege, scoped to the admin/ops functions, reason-gated, fully
-      audit-logged, and disabled outside the ops environment (SEC-11, ADR-0005).
-      A regular User can never hold platform-staff powers.
+      The system shall provide dedicated PLATFORM-STAFF roles — app-level roles
+      (BetterAuth admin plugin) in TWO tiers, ADMIN and SUPPORT — DISTINCT from
+      org-level roles (ACC-2) and from founder auth (SEC-7); staff are not org
+      members. ADMIN can do everything, INCLUDING creating staff users and
+      assigning the admin|support tier; SUPPORT can perform all org operations
+      (impersonation, lifecycle, billing oversight, ledger, KPIs) EXCEPT
+      staff-user management (DEC-35). A seed admin exists at install (default
+      credentials, rotated manually). Access is least-privilege, reason-gated,
+      fully audit-logged for org-confidential access, and disabled outside the
+      ops environment (SEC-11, ADR-0006). A regular User can never hold
+      platform-staff powers. (v1 founded by DEC-32 as a single role; v2 splits it
+      into admin/support — DEC-35.)
     acceptance: >-
       A platform-staff user can reach admin functions no org member can; staff
       access to an org's confidential data is reason-gated and audit-logged; the
-      surface is unavailable outside the ops environment.
+      surface is unavailable outside the ops environment; a SUPPORT user cannot
+      create staff or assign roles (admin-only) while an ADMIN can; the seed
+      admin can sign in at install.
   ADM-2:
     v: 1
     decided-by: DEC-32

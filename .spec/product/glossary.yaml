@@ -11,9 +11,28 @@ intent: >-
 
 terms:
   Org: >-
-    A customer organization — a small US 501(c)(3) nonprofit with a single
-    account.
+    A customer organization — a small US 501(c)(3) nonprofit. Has one or more
+    member Users with roles (owner/admin/member; owner is the default, the
+    typical cohort-1 org is owner-only) since the DEC-30 multi-seat reversal.
   Founder-Operator: The primary user persona; the person running the org (users.md).
+  Org role (owner / admin / member): >-
+    A User's role WITHIN an org, on their Membership (ACCS-2, DM-16): owner (all,
+    incl. billing/deletion/ownership transfer), admin (all but org
+    deletion/owner change), member (day-to-day content). Scoped to one org.
+    Distinct from a PLATFORM-STAFF role (below).
+  Platform staff: >-
+    Internal DiffCo users who run and support the platform across ALL orgs (ADM
+    / ops console) — a BetterAuth admin-plugin APP-LEVEL role, NOT org members
+    and distinct from any org role. Two kinds: platform admin and platform
+    support.
+  Platform admin: >-
+    The full platform-staff role: every platform/admin operation INCLUDING
+    creating staff users and assigning platform roles (ADMS-1). Distinct from the
+    org-level "admin" role (which is one org's admin Membership).
+  Platform support: >-
+    The platform-staff role for all ORG operations — support impersonation,
+    lifecycle, billing oversight, activity-ledger review, KPIs — but NOT
+    staff-user management (ADMS-1, DEC-35).
   Org Memory: >-
     (short: Memory) The persistent knowledge store about an org: facts,
     stories, style rules, taboos, people, programs, events — each entry

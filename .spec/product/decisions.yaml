@@ -15,6 +15,36 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-35:
+    v: 1
+    date: 2026-07-21
+    by: founder (shpin.p@diffco.us)
+    binds: [GR-7, ADMS-1, Q-14, ADM-1]
+    title: Admin-capability finalization — console DS, staff roles, time-box & retention
+    statement: >-
+      Pre-implementation finalization calls for the admin/platform-management
+      capability (founder). (1) CONSOLE DS: the internal admin console is built
+      on shadcn primitives styled with the steward theme tokens (DS-1 tokens,
+      DS-3 type, DS-4 a11y), NOT the founder DSS component-contract inventory —
+      GR-7's "reuse the design-system inventory" clause is SCOPED to
+      founder/public-facing surfaces (the brand product); internal staff tools
+      must resolve visual values from the steward tokens but may compose shadcn
+      directly. GR-7 → v3. This RESOLVES Q-14 (no DS-trio extension for internal
+      tools; the console is deliberately lower-fidelity, XOPS/DEC-8 precedent).
+      (2) STAFF ROLES: two platform-staff roles — admin (full, incl. creating
+      staff users + assigning roles) and support (ALL org operations —
+      impersonation, lifecycle, billing oversight, ledger, KPIs — EXCEPT
+      staff-user management). A seeded admin user at install (default
+      credentials, rotated manually); admins create staff and assign admin|
+      support (BetterAuth admin plugin). ADMS-1 → v2. (3) OPERATIONS: support-
+      impersonation time-box = BetterAuth default (1h); activity-ledger +
+      SupportSession audit retention = UNLIMITED for now, revisitable (CON-4),
+      with the BIL-2 hard-delete-vs-audit-trail interaction to settle at
+      implementation. The DEC-33 support marker stays a plain neutral label
+      (kept simple), its founder-surface rendering the tracked ADMS-2 cascade;
+      ACC-4 multi-seat stays P2; a security/threat-model pass on impersonation
+      AND staff role/privilege management (incl. the role-change escalation audit
+      trail) is the pre-ship gate (SEC threat-model deferral).
   DEC-34:
     v: 1
     date: 2026-07-21

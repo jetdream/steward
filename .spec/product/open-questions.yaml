@@ -157,7 +157,7 @@ items:
 
   Q-14:
     v: 1
-    status: open
+    status: resolved
     title: Internal admin-console design-system primitives
     statement: >-
       The platform-admin console (experience register XADM) needs dense
@@ -172,3 +172,7 @@ items:
       reuse components that were never built. Mirrors the DEC-33 support-marker
       DS-home cascade. Internal, lower-fidelity (XOPS/DEC-8 precedent); not a P1b
       blocker.
+      RESOLVED (DEC-35): the internal console uses shadcn primitives styled with
+      the steward theme tokens (DS-1/DS-3/DS-4) — NO DS-trio extension. GR-7 → v3
+      scopes the inventory-reuse clause to founder/public surfaces; internal
+      tools conform via tokens only. The XADM screens are updated accordingly.
