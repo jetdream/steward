@@ -234,3 +234,72 @@ items:
       card with its reason, never a silent dead channel. Hard-deleted with org
       data on a BIL-2 account deletion (SEC-4). Owned by Org (DM-1). Concrete
       field lists live in @shared types.
+
+  DM-15:
+    v: 1
+    kind: data-entity
+    title: User
+    body: |
+      The authentication principal (BetterAuth user), DISTINCT from the Org
+      tenant (DM-1) — the account/identity separation ACC-1 introduces. Fields:
+      id, email, name, and an app-level `role` (BetterAuth admin plugin) that
+      marks a PLATFORM-STAFF user (ADM-1); a normal founder/org user carries no
+      such role. A User is NOT owned by an Org; it links to one or more Orgs
+      through a Membership (DM-16). BetterAuth sessions carry the active-org
+      context (activeOrganizationId, ACC-3) and, during impersonation,
+      `impersonatedBy` (the staff User, ADM-2). Sign-in is Google + dev
+      email-only (SEC-7). Concrete field lists live in @shared types.
+
+      erDiagram
+        USER ||--o{ MEMBERSHIP : "member via"
+        ORG ||--o{ MEMBERSHIP : "has members"
+
+  DM-16:
+    v: 1
+    kind: data-entity
+    title: Membership
+    body: |
+      Links a User (DM-15) to an Org (DM-1) with a role — owner | admin | member
+      (BetterAuth organization-plugin `member`; ACC-2). Exactly one owner per org
+      (the signup creator); an Org has one or more Memberships (multi-seat,
+      DEC-30) — the typical cohort-1 org is owner-only. A PENDING membership is
+      an Invitation (BetterAuth `invitation`: email, role, status
+      pending|accepted, expiresAt) — the ACC-4 invite flow. Platform staff are
+      NOT Memberships; they hold the app-level role on the User (DM-15, ADM-1).
+      Concrete field lists live in @shared types.
+
+  DM-17:
+    v: 1
+    kind: data-entity
+    title: ActivityEvent
+    body: |
+      An append-only, per-org activity-ledger entry (ADM-3). Fields: orgId,
+      timestamp, actorKind (user | system | job | staff-act-as), actorId (the
+      acting User, or the job/system identifier; for staff-act-as the
+      impersonating staff User via session.impersonatedBy), action, and target
+      (a ref to the affected entity). Generalizes the PIPE-1 model-call log into
+      ONE org observability record and is the substrate the impersonation
+      carve-out (VAL-3, DEC-31) is audited against. Owned by Org (DM-1); read by
+      platform staff (ADM-3) and the KPI dashboard (ADM-6). Staff-act-as
+      attribution is never surfaced on founder surfaces (VAL-3), only the
+      resulting artifact is. Concrete field lists live in @shared types.
+
+      erDiagram
+        ORG ||--o{ ACTIVITY_EVENT : records
+
+  DM-18:
+    v: 1
+    kind: data-entity
+    title: SupportSession
+    body: |
+      A staff support-impersonation grant (ADM-2) — Steward's reason-capturing
+      layer over BetterAuth impersonation (which records session.impersonatedBy
+      and a time-box via impersonationSessionDuration, but no reason). Fields:
+      staffUserId (DM-15), orgId (DM-1), reason (REQUIRED — the SEC-11
+      reason-gate), startedAt, expiresAt, endedAt. One row per act-as entry;
+      the ActivityEvent (DM-17) rows it produces reference it. Exists only in
+      the ops environment (SEC-11). Concrete field lists live in @shared types.
+
+      erDiagram
+        USER ||--o{ SUPPORT_SESSION : "staff opens"
+        ORG ||--o{ SUPPORT_SESSION : "targeted by"

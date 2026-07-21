@@ -1,11 +1,18 @@
 ---
 kind: adr
 title: Operator access & audit model
-status: accepted
+status: superseded
 supersedes: ~
 ---
 
 # ADR-0005 — Operator access & audit model
+
+> **Superseded by [ADR-0006](0006-identity-impersonation-model.md)** (2026-07-21,
+> DEC-32): the operator role is now the BetterAuth admin-plugin app-level role
+> rather than a separate operator identity, extended to act-as-org impersonation
+> and a per-org activity ledger. ADR-0005's guarantees (least-privilege,
+> reason-gate, full audit, ops-env-only) are preserved in SEC-11 v2. Retained
+> for history; do not cite in `constrained-by`.
 
 ## Context
 

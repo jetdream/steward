@@ -69,13 +69,20 @@ items:
       enabled per Q-3).
 
   SEC-7:
-    v: 1
+    v: 2
     kind: posture
     title: Auth
     body: |
-      Auth: BetterAuth — Google Sign-in + dev login by email only
-      (constitution). Dev login must be disabled outside development
-      environments.
+      Auth is BetterAuth (constitution): Google Sign-in + dev email-only login;
+      dev login must be disabled outside development environments. v2 (ACC-5,
+      ADR-0006): BetterAuth is generalized to a MULTI-USER identity model — it
+      issues a User (DM-15, the auth principal, distinct from the Org tenant
+      DM-1), carries org membership + roles via the organization plugin
+      (Membership DM-16, activeOrganizationId — ACC-2/ACC-3), and provides the
+      app-level PLATFORM-STAFF role + impersonation via the admin plugin
+      (ADM-1/ADM-2). Regular users are confined server-side to their own
+      memberships (ACC-3); staff impersonation is the only cross-org path
+      (SEC-11).
 
   SEC-8:
     v: 1
@@ -128,16 +135,23 @@ items:
       org's channel-publishing credentials, not the founder's login.
 
   SEC-11:
-    v: 1
+    v: 2
     kind: posture
-    title: Operator access & audit
+    title: Operator & platform-staff access, impersonation & audit
     body: |
-      Internal operators (the ops console, OPS-1 / OPSS-1 / OPSS-2) read ALL orgs'
-      confidential data (drafts, transcripts, radar candidates — SEC-4). This is a
-      DEDICATED operator role, DISTINCT from founder auth (SEC-7, BetterAuth):
-      least-privilege, scoped to the console functions; every access to an org's
-      confidential data is REASON-GATED and fully AUDIT-LOGGED (no un-logged raw
-      browse); the console is disabled outside the ops environment. Model +
-      alternatives in ADR-0005 (accepted), founder-ratified as DEC-27. The audit
-      log + cross-org reason prompt are first-class parts of the ops module
-      (ARC-22), not add-ons.
+      Internal platform staff read ALL orgs' confidential data (drafts,
+      transcripts, radar candidates — SEC-4) to run the ops console (OPS-1) and
+      the platform-admin surface (ADM-1..6). v2 (ADR-0006 supersedes ADR-0005):
+      the role is the BetterAuth admin-plugin APP-LEVEL role — DISTINCT from org
+      roles (ACC-2) and from founder/user auth (SEC-7) — least-privilege, scoped
+      to the admin/ops functions. Every cross-org access to confidential data is
+      REASON-GATED and fully AUDIT-LOGGED (no un-logged raw browse). SUPPORT
+      IMPERSONATION (act-as-org, ADM-2) is reason-gated (a SupportSession DM-18
+      captures the required reason over BetterAuth's session.impersonatedBy),
+      time-boxed (impersonationSessionDuration), and recorded in the per-org
+      activity ledger (ADM-3, DM-17) — audited in full internally but NOT
+      surfaced to the founder (the VAL-3 carve-out, DEC-31); results still appear
+      in the founder's own surfaces. The console is disabled outside the ops
+      environment. Founder-ratified: DEC-27 (the operator posture) + DEC-32
+      (this identity/impersonation model). The audit log + reason prompt + ledger
+      are first-class parts of the ops module (ARC-22), not add-ons.
