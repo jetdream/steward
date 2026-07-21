@@ -23,7 +23,9 @@ Re-introduction trigger is pending decision Q-5.
 
 ## Not in this product (unchanged from v0.2)
 
-CRM, email marketing, grant writing, ad management, website building, event tools, multi-seat roles, video/Reels/Stories, native mobile apps, white-label mode, political or non-US organizations. LinkedIn is evaluation-only (PUB-4).
+CRM, email marketing, grant writing, ad management, website building, event tools, video/Reels/Stories, native mobile apps, white-label mode, political or non-US organizations. LinkedIn is evaluation-only (PUB-4).
+
+*(Amended 2026-07-21, DEC-30: "multi-seat roles" is no longer a non-goal — an org may have multiple member users with roles, on the Org⟂User account model, DEC-32. This is distinct from the internal platform-staff/admin role, which is not an org member.)*
 
 ## Boundary cases
 

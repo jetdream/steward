@@ -26,12 +26,18 @@ items:
       The org's existing channels teach the system the org's real voice; the
       system amplifies before it invents.
   VAL-3:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-31
     title: Nothing hidden
     statement: >-
       The strategy is explicit and editable; autonomy is earned and always
-      revocable; everything auto-done is logged and visible.
+      revocable; everything the SYSTEM does on its own is logged and visible to
+      the founder. One deliberate, narrow exception (DEC-31): internal support
+      staff acting-as-org is audited IN FULL internally but its attribution is
+      not surfaced to the founder — the RESULTS still appear in the founder's
+      own surfaces, only the "staff did this" attribution is withheld. (v2:
+      DEC-31 records the impersonation carve-out; the system-autonomy promise is
+      unchanged.)
   VAL-4:
     v: 1
     origin: baseline

@@ -15,6 +15,74 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-32:
+    v: 1
+    date: 2026-07-21
+    by: founder (shpin.p@diffco.us)
+    binds: [DM-1, SEC-4, SEC-7, SEC-11, ADR-0005, OPS-1, G-1]
+    title: Adopt an Org⟂User identity, staff-impersonation, and org activity-ledger model
+    statement: >-
+      To operate and support the platform (extending the internal ops console
+      OPS-1), the founder adopts three foundational additions, decided now
+      because there is no src/ yet — the account/auth shape is a one-way door
+      best fixed before code. (1) SEPARATE IDENTITY FROM TENANT: the Org (DM-1,
+      today the aggregate root and implicit account) is split from a new User
+      (auth principal, SEC-7); users link to orgs via a membership with a role.
+      (2) SUPPORT IMPERSONATION ("act as org"): a dedicated platform-staff role
+      may enter any org through a session-scoped org context and act AS the
+      founder; regular users are hard-confined to their own memberships. This
+      extends the SEC-11 operator posture (reason-gated, fully audited,
+      environment-gated) from read-mostly QA to act-as, and supersedes/extends
+      the ADR-0005 operator-access model — the concrete model (time-box,
+      reason-gate, act-as write boundary, audit retention) is authored as a
+      superseding ADR in the architecture pass. (3) ORG ACTIVITY LEDGER: an
+      append-only per-org record of all actions — user, system/automatic, and
+      background jobs (incl. External Radar discovery) — reviewable by staff;
+      it generalizes the PIPE-1 model-call logging. New entities (User,
+      membership, activity event, support-session) and the auth generalization
+      are defined in the data-model/architecture pass. Serves G-1 (operate and
+      retain cohort-1 orgs). Depends on the compass changes DEC-30 (multi-seat)
+      and DEC-31 (VAL-3 carve-out).
+  DEC-31:
+    v: 1
+    date: 2026-07-21
+    by: founder (shpin.p@diffco.us)
+    binds: [VAL-3, SEC-11]
+    title: VAL-3 carve-out — internal support impersonation is audited, not founder-surfaced
+    statement: >-
+      VAL-3 ("Nothing hidden — everything auto-done is logged AND visible")
+      is the product's core trust promise about the SYSTEM's autonomy. The
+      founder decided that internal support staff acting-as-org (DEC-32) is a
+      single, deliberate EXCEPTION to the "visible" clause: every staff
+      impersonation action is logged IN FULL internally (reason-gated,
+      attributed, audited — SEC-11) but is NOT surfaced to the founder.
+      Resolves INC-5. Scope of the exception is deliberately NARROW: it covers
+      the ATTRIBUTION of a staff act-as action, not the RESULT — a founder still
+      sees the material effects in their own surfaces (e.g. a published post
+      appears). VAL-3 → v2 carries this carve-out inline so the value is
+      self-documenting. Residual trust risk acknowledged (a silent act-as on
+      confidential nonprofit data inverts the "nothing hidden" promise if it
+      ever leaks); mitigation — keep act-as writes tightly scoped (the boundary
+      is fixed at spec time) and design the ledger so founder-visibility can be
+      switched on later without a schema change.
+  DEC-30:
+    v: 1
+    date: 2026-07-21
+    by: founder (shpin.p@diffco.us)
+    binds: [SEC-7]
+    title: Reverse the multi-seat non-goal — allow multiple org members
+    statement: >-
+      The founder reverses two governing statements to allow MULTIPLE members
+      per org: scope.md's "Not in this product … multi-seat roles" non-goal and
+      the users.md "Single account per org" persona line. Resolves INC-4. Going
+      forward an Org has one or more member Users with roles (owner + members);
+      the Founder-Operator persona generalizes to "org members", with the owner
+      the default primary. This is the founder-facing half of the identity model
+      (DEC-32); the internal platform-staff role is distinct and not an org
+      member. scope.md and users.md are amended in this change. Note (sequencing,
+      not scope): the two-founder / 12-week / R-8 constraint argues for building
+      the internal-admin core first and the founder-facing multi-seat management
+      UX as a thin follow — recorded so the requirement authoring can phase it.
   DEC-29:
     v: 1
     date: 2026-07-20

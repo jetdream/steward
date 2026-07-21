@@ -11,6 +11,42 @@ intent: >-
   open count.
 
 items:
+  INC-4:
+    v: 1
+    status: resolved
+    binds: [SEC-7, DM-1]
+    title: Multi-member orgs contradict the single-founder scope and persona
+    statement: >-
+      Detected 2026-07-21 (admin/management capability ideation). The founder
+      requested that platform admin capabilities rest on an Org⟂User account
+      model that allows MULTIPLE members per org. This contradicts scope.md's
+      "Not in this product … multi-seat roles" non-goal and the users.md
+      "Single account per org" Founder-Operator persona line. It is an explicit,
+      deliberate scope expansion (not an oversight), so it is recorded and
+      resolved rather than blocked.
+    resolution: >-
+      DEC-30 reverses the multi-seat non-goal: an Org has one or more member
+      Users with roles (owner + members), and the persona generalizes to "org
+      members". scope.md and users.md amended in the same change. The internal
+      platform-staff role is distinct (DEC-32), not an org member.
+  INC-5:
+    v: 1
+    status: resolved
+    binds: [VAL-3, SEC-11]
+    title: Internal-only impersonation logging contradicts VAL-3 "logged and visible"
+    statement: >-
+      Detected 2026-07-21 (admin/management capability ideation). The chosen
+      support-impersonation posture — staff act-as-org logged internally but NOT
+      surfaced to the founder (DEC-32) — contradicts VAL-3's "everything
+      auto-done is logged AND visible". VAL-3 is the product's core trust
+      promise, so the tension is recorded as a first-class inconsistency rather
+      than absorbed silently.
+    resolution: >-
+      DEC-31 records a deliberately NARROW carve-out: staff act-as actions are
+      fully audited internally (reason-gated, attributed — SEC-11) but their
+      attribution is not surfaced to the founder, while the RESULTS remain
+      visible in the founder's own surfaces. VAL-3 → v2 carries the carve-out
+      inline. Residual trust risk acknowledged; mitigations in DEC-31.
   INC-3:
     v: 1
     status: resolved

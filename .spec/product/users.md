@@ -8,7 +8,7 @@ status: approved
 
 ## Founder-Operator (primary)
 
-Runs a small US 501(c)(3): solo–5 people, ~$50K–$1M annual budget, no marketing or communications staff. Single account per org.
+Runs a small US 501(c)(3): solo–5 people, ~$50K–$1M annual budget, no marketing or communications staff. The **owner** of the org account. *(Amended 2026-07-21, DEC-30: an org may now have multiple member users with roles — owner + members — on the Org⟂User model, DEC-32; the owner is the primary/default and the persona above still describes the typical solo founder. Multi-seat is available, not assumed.)*
 
 Mission expert, marketing-averse, low AI literacy, time-poor. Knows they *should* be posting, feels guilty that they aren't, has tried a scheduler or ChatGPT and bounced off. Allergic to anything that must be studied before it's useful. Wants the work *done*, not a tool.
 
@@ -24,7 +24,7 @@ The org's donors, volunteers, and local community — readers of the public org 
 
 ## Operators (us)
 
-Silent QA through the ops console (OPS-1) for cohort 1, dialed down as G-2 improves.
+Silent QA through the ops console (OPS-1) for cohort 1, dialed down as G-2 improves. *(Extended 2026-07-21, DEC-32: a dedicated platform-staff role gains the broader admin surface — org & account lifecycle, billing/KPI oversight, support impersonation "act as org", and the org activity ledger. Staff are a distinct role, not org members; access is reason-gated + fully audited, SEC-11.)*
 
 ## Explicitly not for (now)
 
