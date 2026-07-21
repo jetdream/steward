@@ -15,6 +15,31 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-34:
+    v: 1
+    date: 2026-07-21
+    by: founder (shpin.p@diffco.us)
+    binds: [XADM-1, XB-4, Q-14]
+    title: Admin-capability experience — internal console (XADM) + founder team surface
+    statement: >-
+      Founder-directed authoring of the admin/platform-management experience
+      (the /cortex:ux round completing the capability's Steps 1-5). Founds the
+      internal platform-admin console register XADM (experience/admin.yaml) — four
+      journeys serving ADM-1..6: administer/lifecycle (XADM-1), support
+      impersonation act-as-org with a reason-gated entry + persistent banner +
+      time-box (XADM-6), the org activity-ledger audit (XADM-10), and billing +
+      KPI health (XADM-13) — internal-only, lower-fidelity than the founder spine
+      (the XOPS/DEC-8 precedent), governed by SEC-11 v3 / ADR-0006. Adds the
+      founder-facing multi-seat team surface (XB-4/5/6, serving ACC-4, P2) in the
+      Controls area, on the founder-spine card system. Passed the Product-Designer
+      challenger (r1 fail → r2 pass; record
+      specs/challenges/experience-admin-2026-07-21-r2.md). The internal console
+      needs DS primitives the founder-spine design system does not own (dense
+      table, data-viz, the act-as banner trust-chrome) — tracked as Q-14, to be
+      resolved before the screens are built. The DEC-33 founder-facing support
+      marker is deliberately NOT in the internal console (staff see full
+      attribution); its founder-surface rendering remains the tracked ADMS-2
+      cascade.
   DEC-33:
     v: 1
     date: 2026-07-21

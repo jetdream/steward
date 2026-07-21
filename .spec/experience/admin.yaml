@@ -1,0 +1,221 @@
+kind: experience
+prefix: XADM
+title: Steward Experience — Platform Admin Console (internal)
+status: approved
+# Sign-off: DEC-34 (founder-directed admin-experience round). Product-Designer
+# challenger pass: specs/challenges/experience-admin-2026-07-21-r2.md (r1 fail →
+# r2 pass). Internal-console DS primitives (table/data-viz/act-as-banner) are the
+# tracked Q-14 extension — resolve before build.
+# The internal staff-facing platform-admin console experience (DEC-32), sibling
+# of the ops register (XOPS). Serves the ADM-* requirements; internal-only, never
+# founder-facing. Grounded on the steward design system (GR-7, DS-*) but lower
+# fidelity than the founder spine (the XOPS/DEC-8 precedent — internal tools earn
+# less design investment). Reaches `approved` via the Product-Designer challenger
+# + a HITL DEC. Access is governed (SEC-11 v3, ADR-0006): reason-gated, audited,
+# ops-environment only.
+intent: >-
+  How DiffCo staff run and support the platform across all orgs. Four journeys —
+  administer an org (ADM-1/ADM-4), support an org by acting as it (ADM-2), audit
+  an org's activity (ADM-3), and watch platform health (ADM-5/ADM-6). The
+  console needs dense internal-tool primitives — a data table/list, data-viz for
+  the KPI dashboard, and the act-as banner (staff trust-chrome) — that the
+  founder-spine design system (card/badge/form/DS-5 trust-chrome) does NOT yet
+  own; those are a tracked DS extension (Q-14), NOT invented per-screen. Where a design-system component already fits (badges, buttons,
+  cards, the DS-5 trust chrome) it is reused directly (GR-7). Every surface has a
+  permission-denied state (a non-staff/out-of-ops-env viewer is refused) as a
+  first-class state, because unauthorized access is the primary risk here.
+  Support impersonation is the one cross-org path and is always reason-gated,
+  time-boxed, and audited to the org activity ledger. Founder-facing rendering of
+  a support action (the neutral "Steward support action" marker, DEC-33) is NOT
+  here — it lives on the founder's own surfaces (the tracked ADMS-2 cascade);
+  internal staff see full attribution.
+items:
+  # ───────────────────────── Journeys ─────────────────────────
+  XADM-1:
+    v: 1
+    kind: journey
+    serves: [ADM-1, ADM-4]
+    title: "Administer an org"
+    body: |
+      A staff member signs in (BetterAuth admin-plugin app-level role, ADMS-1),
+      finds an org, reads its health, and runs a lifecycle action. Empty: a
+      staff member with no orgs matching a search sees a "no orgs match" state,
+      never a blank. Permission: a non-staff session or an out-of-ops-environment
+      request is denied (SEC-11) — the console does not render. Destructive
+      actions (suspend/offboard) require a typed reason (ADMS-4).
+  XADM-6:
+    v: 1
+    kind: journey
+    serves: [ADM-2]
+    title: "Support an org — act as"
+    body: |
+      A staff member enters an org to see the EXACT founder view and act at full
+      founder parity (ADMS-2). Entry requires a typed reason (opens a
+      SupportSession, DM-18); a persistent banner marks the impersonation and
+      offers one-gesture exit; the session is time-boxed and auto-ends. Every
+      act-as action is written to the org activity ledger as `staff-act-as`.
+      Regular users have no impersonation path (permission-denied is the default
+      for non-staff).
+  XADM-10:
+    v: 1
+    kind: journey
+    serves: [ADM-3]
+    title: "Audit an org's activity"
+    body: |
+      A staff member reviews an org's append-only activity ledger (ADMS-3, DM-17)
+      — user, system, background-job, staff, and staff-act-as entries with full
+      attribution (internal; the founder never sees staff attribution). Empty: a
+      brand-new org shows "no activity yet". Loading: paginated/streamed for long
+      histories. The ledger is read-only — no entry can be edited or deleted.
+  XADM-13:
+    v: 1
+    kind: journey
+    serves: [ADM-5, ADM-6]
+    title: "Watch platform health"
+    body: |
+      A staff member watches the business: cross-org subscription/refund
+      oversight (ADMS-5) and the G-1..G-5 KPI dashboard (ADMS-6). Read-mostly;
+      any billing action on an org's behalf routes through act-as (XADM-6). These
+      aggregate views expose no single org's confidential content, so they are
+      staff-role-gated without a per-org reason (ADMS-1 tier 2).
+
+  # ───────────────────────── Flows ─────────────────────────
+  XADM-2:
+    v: 1
+    kind: flow
+    parent: XADM-1
+    title: "Flow: find & open an org"
+    body: |
+      Search/filter the org directory (XADM-3) → open one org's detail (XADM-4).
+      Opening a single org's confidential data is reason-gated + ledgered as a
+      `staff` entry (ADMS-1 tier 1). Empty search → "no orgs match"; error (data
+      unavailable) → a retry state, never a blank table.
+  XADM-5:
+    v: 1
+    kind: flow
+    parent: XADM-1
+    title: "Flow: org lifecycle actions"
+    body: |
+      From org detail (XADM-4): provision / suspend / restore / offboard (ADMS-4).
+      Each destructive transition requires a typed reason (SEC-11) and shows a
+      confirm with the consequence (suspend halts the org; offboard runs the
+      BIL-2 export-then-hard-delete and the SEC-8/NWSS-1 news-route afterlife).
+      Reason-gated + audited; a failed action surfaces its error, never a silent
+      no-op.
+  XADM-7:
+    v: 1
+    kind: flow
+    parent: XADM-6
+    title: "Flow: enter & act as org"
+    body: |
+      Reason prompt (XADM-8) → the founder view opens under a persistent act-as
+      banner (XADM-9) → staff act at full parity → one-gesture exit (or auto-end
+      on time-box). Entry without a reason is refused. On exit/expiry the staff
+      returns to the console; the SupportSession is closed and ledgered.
+  XADM-11:
+    v: 1
+    kind: flow
+    parent: XADM-10
+    title: "Flow: review the activity ledger"
+    body: |
+      Open an org's ledger (XADM-12), filter by actorKind / time / target. Empty
+      and loading states as in XADM-10. Read-only.
+  XADM-14:
+    v: 1
+    kind: flow
+    parent: XADM-13
+    title: "Flow: business health"
+    body: |
+      The billing overview (XADM-15) and the KPI dashboard (XADM-16). Read-mostly;
+      drilling from an aggregate into one org's confidential detail re-enters the
+      reason-gated tier-1 path (ADMS-1).
+
+  # ───────────────────────── Screens ─────────────────────────
+  XADM-3:
+    v: 1
+    kind: screen
+    parent: XADM-2
+    title: "Screen: org directory"
+    body: |
+      A searchable/filterable table of all orgs with health signals (onboarding
+      status, connection health, publishing state, subscription status). Built on
+      the internal-console table/list primitive (Q-14 DS extension); status
+      signals are chips composed from DSS-9's chip shape + DSS-2 semantic/
+      grayscale color roles (the DSS-19 compose-primitives precedent), inventing
+      nothing. States: default list, empty search
+      ("no orgs match"), loading skeleton, error+retry, permission-denied
+      (non-staff / out-of-ops-env). Row → org detail (XADM-4).
+  XADM-4:
+    v: 1
+    kind: screen
+    parent: XADM-2
+    title: "Screen: org detail"
+    body: |
+      One org's health + entry points: subscription state, connection health,
+      onboarding status; lifecycle actions (XADM-5); links into the activity
+      ledger (XADM-12) and "act as" (XADM-6). Opening confidential detail is
+      reason-gated (ADMS-1). Low fidelity by decision. States: loaded, loading,
+      error, permission-denied.
+  XADM-8:
+    v: 1
+    kind: screen
+    parent: XADM-7
+    title: "Screen: impersonation entry (reason prompt)"
+    body: |
+      A modal requiring a typed reason before act-as begins (SEC-11 reason-gate,
+      opens the SupportSession DM-18). Cannot proceed with an empty reason;
+      states: default, validation error (empty/short reason), permission-denied.
+  XADM-9:
+    v: 1
+    kind: screen
+    parent: XADM-7
+    title: "Screen: act-as banner"
+    body: |
+      A persistent, unmistakable banner over the founder view for the whole
+      impersonation session: names the org, the acting staff, the reason, and the
+      time remaining; a one-gesture "exit support session" control. This is staff
+      chrome (never the founder's). On time-box expiry it warns then auto-exits.
+      Distinct visual register (the DS `danger` semantic color role, DSS-2) so an
+      act-as session is never mistaken for a real founder session. The banner
+      itself is the ACT-AS TRUST-CHROME component (a staff sibling of the DS-5
+      inventory) tracked in the Q-14 DS extension; modeled here as the
+      impersonation surface (chrome homed on this element until the component
+      lands).
+  XADM-12:
+    v: 1
+    kind: screen
+    parent: XADM-11
+    title: "Screen: org activity ledger"
+    body: |
+      The append-only per-org ledger (ADMS-3, DM-17): chronological entries with
+      actorKind (user | system | job | staff | staff-act-as), actor, action,
+      target, time; full staff attribution (internal). Built on the
+      internal-console table/list primitive (Q-14); actorKind chips compose
+      DSS-9 + DSS-2 color roles (DSS-19 precedent). States:
+      populated, empty ("no activity yet"), loading (paged), error,
+      permission-denied (tier-1 confidential — the sharpest unauthorized-access
+      case, ADMS-1). Read-only — no edit/delete affordance exists.
+  XADM-15:
+    v: 1
+    kind: screen
+    parent: XADM-14
+    title: "Screen: billing overview"
+    body: |
+      Cross-org subscription state (active / grace / cancelled / refunded),
+      payment failures, and refund events feeding the G-1 refund rate (ADMS-5).
+      Read-first; a per-org billing action routes through act-as (XADM-6).
+      Aggregate (no single-org confidential content, ADMS-1 tier 2). Built on the
+      internal-console table/list primitive (Q-14). States: loaded, loading, empty
+      (early cohort, no refund events yet), error, permission-denied.
+  XADM-16:
+    v: 1
+    kind: screen
+    parent: XADM-14
+    title: "Screen: KPI dashboard"
+    body: |
+      G-1..G-5 across active orgs (ADMS-6): paying/churn/refund (G-1),
+      approval-without-edit on the honest non-act-as/non-QA basis (G-2, LRN-24),
+      time-in-product (G-3), streak (G-4), activation (G-5). Charts use the
+      internal-console data-viz primitive (Q-14 DS extension). States: loaded,
+      loading, empty (no cohort data yet → "no data yet", never a blank), error,
+      permission-denied.

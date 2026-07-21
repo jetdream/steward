@@ -154,3 +154,21 @@ items:
       style seed. Decide whether to budget X read scope so the org's X voice is
       harvested directly — a paid-tier + budget question, not a blocker (surfaced
       by the ONB r1 challenge).
+
+  Q-14:
+    v: 1
+    status: open
+    title: Internal admin-console design-system primitives
+    statement: >-
+      The platform-admin console (experience register XADM) needs dense
+      internal-tool primitives — a data table/list, data-viz for the KPI
+      dashboard (ADM-6), and the act-as banner (staff trust-chrome, XADM-9) —
+      that the founder-spine design system (DS-1..8 / DSS-1..23) does NOT own (it
+      is card / badge / form / DS-5 trust-chrome). Decide BEFORE the XADM screens
+      are built: extend the DS trio with these internal-tool primitives, or
+      establish a separate internal-console component layer. Tracked (surfaced by
+      the XADM Product-Designer challenge) so the console's GR-7 conformance is
+      honest — the screens name the needed primitives rather than claiming to
+      reuse components that were never built. Mirrors the DEC-33 support-marker
+      DS-home cascade. Internal, lower-fidelity (XOPS/DEC-8 precedent); not a P1b
+      blocker.

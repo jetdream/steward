@@ -77,6 +77,7 @@ prefixes:
   XB: experience/account.yaml
   XN: experience/public.yaml
   XOPS: experience/ops.yaml
+  XADM: experience/admin.yaml   # internal platform-admin console experience (sibling of XOPS)
   DM: architecture/data-model.yaml
   IG: architecture/integrations.yaml
   PIPE: architecture/llm-pipeline.yaml

@@ -7,6 +7,9 @@ status: approved
 # preserved verbatim; IDs re-homed EXP-* -> XB-* (tree order). The five
 # One-Home principles and the DS-5 component inventory (GR-7) still govern.
 # Product-Designer challenger (the reorg, all 8 registers): specs/challenges/experience-split-2026-07-20-r1.md.
+# XB-4/5/6 (founder-facing multi-seat team management, serves ACC-4) added +
+# signed off in the admin-capability round: DEC-34, challenger record
+# specs/challenges/experience-admin-2026-07-21-r2.md.
 intent: >-
   Plan, billing, and a cancel-with-dignity path (XB-1..3) — the account surfaces live in the Controls tray (XA-6, referenced by ID). Fair account and exit: no dark patterns, data-export honored (VAL-3). Split from the One-Home spine (DEC-28).
 items:
@@ -52,5 +55,49 @@ items:
       support ticket; policy per SEC), re-subscribe (memory retained per
       data policy unless deleted). Surface: the cancel section of Controls
       (XA-6), sibling of billing.
+
+  XB-4:
+    v: 1
+    kind: journey
+    serves: [ACC-4]
+    title: "Manage members & roles"
+    body: |
+      The founder-facing multi-seat surface (ACC-4, P2 — deferred after the
+      core; cohort-1 orgs are single-founder, so this is minimal and quiet).
+      The owner invites a teammate by email at an admin|member role, changes a
+      role, or removes a member; ownership moves only by an atomic transfer
+      (ACCS-3). In colleague voice (VAL-5), no jargon; a one-owner org (the
+      typical case) sees a calm "just you for now — invite someone?" rather than
+      an empty table (VAL-6, DS-6). Reached from the Controls tray (XA-6).
+      Flow: XB-5.
+
+  XB-5:
+    v: 1
+    kind: flow
+    parent: XB-4
+    title: "Flow: invite & manage members"
+    body: |
+      Invite (email + admin|member role) → pending invitation (expires) →
+      accepted membership; change a member's role (admin|member only — never
+      owner); remove a member; transfer ownership (atomic demote+promote,
+      ACCS-3). States: no members yet (the calm single-founder zero-state),
+      pending invite, invite expired/resend, last-owner-guard (cannot remove or
+      demote the sole owner without transfer), permission-denied (a member
+      cannot manage members). Screen: XB-6.
+
+  XB-6:
+    v: 1
+    kind: screen
+    parent: XB-5
+    title: "Screen: team & roles"
+    body: |
+      A section of Controls (XA-6): the member list with roles, an invite
+      affordance, per-member role/remove controls (owner/admin only), and the
+      ownership-transfer control. Reuses the DS card/badge/button inventory
+      (GR-7) — a member LIST OF CARDS on the founder-spine card system (not a
+      table, which the founder DS does not own), inventing nothing. States:
+      single-owner zero-state, populated list,
+      pending invites, error, permission-denied (member view is read-only).
+      Low ceremony; this is settings, not a destination.
 
   # ───────────────────────── Flow: The donor reads (XN-1) ─────────────────────────
