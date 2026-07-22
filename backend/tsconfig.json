@@ -1,6 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "//": "Minimal for the scaffold increment. Node types + the server lib set join with the walking-skeleton increment (DEC-37 deliverable 5), which also splits the gate into project references so each root gets its own lib/types.",
+  "//": "Server package: Node globals + the ES2023 lib. Type-checked directly by the gate (npm run typecheck). Includes drizzle.config.ts so the migration config is checked too.",
   "extends": "../tsconfig.base.json",
-  "include": ["src"]
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"]
+  },
+  "include": ["src", "drizzle.config.ts"]
 }

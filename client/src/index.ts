@@ -2,12 +2,13 @@
  * @module @client
  *
  * The Steward web app (ARC-2): the React SPA (Vite + Tailwind + ShadCN) that
- * renders the One-Home experience spine. Every call to the backend goes through
- * a domain-specific API React hook — never a raw fetch/tRPC call from a component
- * (constitution "Client"). UI is built only on an approved screen (the design
- * gate). This seed only proves the `@shared` import path resolves through the gate.
+ * renders the One-Home experience spine. Every backend call goes through a
+ * domain-specific API React hook (constitution "Client"). UI is built only on an
+ * approved screen (the design gate). The React app entry lands with the
+ * walking-skeleton increment; this seed consumes a `@shared` type to hold the
+ * import path.
  */
-import { SHARED_PACKAGE } from "@shared";
+import type { Org } from "@shared";
 
-/** The shared package this client binds its cross-boundary types to. */
-export const CLIENT_SHARED_BINDING = SHARED_PACKAGE;
+/** A minimal Org projection for client list surfaces (Property Selection, DRY). */
+export type ClientOrgSummary = Pick<Org, "id" | "name">;

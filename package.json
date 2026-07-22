@@ -13,15 +13,19 @@
   ],
   "scripts": {
     "docs:check": "cortex-docs-check",
-    "typecheck": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p shared/tsconfig.json && tsc -p backend/tsconfig.json && tsc -p client/tsconfig.json && tsc -p news/tsconfig.json",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "gate": "npm run docs:check && npm run typecheck && npm run lint",
+    "db:generate": "drizzle-kit generate --config=backend/drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=backend/drizzle.config.ts",
     "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.5",
+    "@types/node": "^26.1.1",
     "cortex": "github:DiffCo/cortex#v0.21.0",
+    "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
     "typescript": "^7.0.2"
   }

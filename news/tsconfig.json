@@ -1,6 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "//": "Minimal for the scaffold increment. Astro's own tsconfig (extends astro/tsconfigs/strict) + the DOM/JSX island config join when the news renderer is built (ADR-0004, ARC-23).",
+  "//": "SSR + React-islands package: the DOM libs. Astro's own tsconfig (astro/tsconfigs/strict) joins when the renderer is built. Type-checked directly by the gate.",
   "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"]
+  },
   "include": ["src"]
 }

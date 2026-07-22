@@ -1,6 +1,0 @@
-{
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "//": "The type-hygiene GATE target (npm run typecheck). Aggregates every source root so `tsc -p tsconfig.json` type-checks the whole workspace with alias resolution, no emit (build tools — Vite/tsx/Astro — emit). Per-package tsconfig.json files exist for editors/build tools.",
-  "extends": "./tsconfig.base.json",
-  "include": ["shared/src", "backend/src", "client/src", "news/src"]
-}

@@ -5,10 +5,8 @@
  * (PIPE-*), persistence via Drizzle against Postgres + pgvector (ARC-4),
  * realtime WebSocket push, auth (BetterAuth), and the ports-and-adapters
  * boundary to external services (ADR-0003). Modules land per capability as the
- * frontier is built; this seed only proves the `@shared` import path resolves
- * through the gate.
+ * frontier is built; this seeds the persistence layer.
  */
-import { SHARED_PACKAGE } from "@shared";
-
-/** The shared package this server binds its cross-boundary types to. */
-export const BACKEND_SHARED_BINDING = SHARED_PACKAGE;
+export { createDb, type Database } from "./db/client.js";
+export { toOrg } from "./db/map.js";
+export { type NewOrgRow, type OrgRow, orgs } from "./db/schema.js";
