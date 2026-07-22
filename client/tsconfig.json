@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "//": "Minimal for the scaffold increment. The DOM lib + JSX (React) config joins with the walking-skeleton increment (DEC-37 deliverable 5), when Vite + React + Tailwind + ShadCN are wired.",
+  "extends": "../tsconfig.base.json",
+  "include": ["src"]
+}

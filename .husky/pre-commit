@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
-# Documentation graph must be valid before any commit (DCX-14).
-# Engine is the pinned cortex dependency — no vendored copy (ADR-0001).
-npx cortex-docs-check
+# The full gate must pass before any commit (DCX-14 + DEC-37 gate-first):
+# docs graph, then strict types, then lint (no-any). Nothing lands red.
+# docs-check engine = the pinned cortex dependency, no vendored copy (ADR-0001).
+npx cortex-docs-check && npm run typecheck && npm run lint

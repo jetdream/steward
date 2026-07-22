@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "//": "Minimal for the scaffold increment. Astro's own tsconfig (extends astro/tsconfigs/strict) + the DOM/JSX island config join when the news renderer is built (ADR-0004, ARC-23).",
+  "extends": "../tsconfig.base.json",
+  "include": ["src"]
+}

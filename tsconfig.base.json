@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "//": "Strict type-hygiene baseline (constitution Code Standards, DEC-29, DEC-37 gate-first). Every package extends this. paths define the @client/@backend/@shared/@news aliases; they resolve relative to THIS file's directory (repo root) when inherited via extends.",
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2023"],
+    "types": [],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "paths": {
+      "@shared": ["./shared/src/index.ts"],
+      "@shared/*": ["./shared/src/*"],
+      "@backend": ["./backend/src/index.ts"],
+      "@backend/*": ["./backend/src/*"],
+      "@client": ["./client/src/index.ts"],
+      "@client/*": ["./client/src/*"],
+      "@news": ["./news/src/index.ts"],
+      "@news/*": ["./news/src/*"]
+    }
+  }
+}

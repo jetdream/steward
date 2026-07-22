@@ -1,0 +1,25 @@
+# Dev datastore (ARC-4: Postgres + pgvector) — realizes the DEC-36 / ADR-0007
+# self-contained development environment. `docker compose up -d` gives the
+# backend a local Postgres with the pgvector extension preinstalled.
+# Phase-1 prod bundles Postgres the same way (single instance); phase-2 swaps in
+# a managed provider (Q-15) behind the same connection port (ADR-0003).
+services:
+  db:
+    image: pgvector/pgvector:pg18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: steward
+      POSTGRES_PASSWORD: steward
+      POSTGRES_DB: steward
+    ports:
+      - "5432:5432"
+    volumes:
+      - steward-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U steward -d steward"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  steward-pgdata:

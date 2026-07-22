@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
-# Full gate before publishing (DCX-14). Typecheck + biome join here with the
-# code skeleton. Engine sourced from the pinned cortex dependency (ADR-0001).
-npx cortex-docs-check
+# Full gate before publishing (DCX-14 + DEC-37): docs graph, strict types, lint.
+# Mirrors the pre-commit gate and CI. Engine = pinned cortex dependency (ADR-0001).
+npx cortex-docs-check && npm run typecheck && npm run lint

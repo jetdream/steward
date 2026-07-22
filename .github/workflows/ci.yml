@@ -1,0 +1,26 @@
+# App CI gate (DEC-37 deliverable 2: the type-hygiene gate runs in the pre-commit
+# hook AND app CI). Mirrors `npm run gate`: docs graph, then types, then lint.
+# A red graph, a type error, or a lint error fails the build — nothing merges dirty.
+name: gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: docs graph (cortex docs-check)
+        run: npm run docs:check
+      - name: typecheck (tsc, strict)
+        run: npm run typecheck
+      - name: lint (biome, no-any)
+        run: npm run lint

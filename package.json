@@ -5,12 +5,24 @@
   "engines": {
     "node": ">=24"
   },
+  "workspaces": [
+    "shared",
+    "backend",
+    "client",
+    "news"
+  ],
   "scripts": {
     "docs:check": "cortex-docs-check",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "gate": "npm run docs:check && npm run typecheck && npm run lint",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
     "cortex": "github:DiffCo/cortex#v0.21.0",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "typescript": "^7.0.2"
   }
 }
