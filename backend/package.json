@@ -10,12 +10,14 @@
     "@opentelemetry/sdk-node": "^0.221.0",
     "@steward/shared": "*",
     "@trpc/server": "^11.18.0",
+    "better-auth": "^1.6.24",
     "drizzle-orm": "^0.45.2",
     "postgres": "^3.4.9",
     "superjson": "^2.2.6",
     "ws": "^8.21.1"
   },
   "devDependencies": {
+    "@better-auth/cli": "^1.4.21",
     "@types/ws": "^8.18.1"
   }
 }
