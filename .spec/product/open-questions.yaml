@@ -192,3 +192,20 @@ items:
       phase-1 blocker — ports & adapters (ADR-0003) keep domain code
       provider-agnostic; choose when phase-2 scaling is actually needed.
       Cloudflare stays the CDN + R2 blob regardless (ADR-0007).
+
+  Q-16:
+    v: 1
+    status: open
+    decidable-by: user
+    title: Vertical build order once the foundation phase lands
+    statement: >-
+      DEC-37 records the foundation-first pre-code phase but deliberately does NOT
+      pick the first feature vertical or the fan-out shape. Once the scaffold +
+      type-gate + @shared type spine + walking skeleton exist, decide: (a) WHICH
+      capability is built first off the 110-spec frontier, and (b) LAYER-FIRST (all
+      shared types/schema, then auth + tenant-confinement ACC-3, then design-system
+      primitives DSS, then feature verticals) vs VERTICAL-SLICE (one capability
+      end-to-end at a time). Deferred by the founder at the spec-complete boundary
+      (2026-07-22) — decide with the substrate in hand, not before. Note:
+      tenant-confinement (ACC-3) and the design-system primitives (DSS) are
+      cross-cutting and are likely foundational regardless of the choice.

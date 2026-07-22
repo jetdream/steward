@@ -15,6 +15,43 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-37:
+    v: 1
+    date: 2026-07-22
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0002, ADR-0007, DEC-29, DEC-36, ARC-1, Q-16]
+    title: Pre-code foundation phase — scaffold + type-gate + @shared type spine + AX machinery + walking skeleton land before any feature; vertical order deferred
+    statement: >-
+      Sequencing decision taken at the spec-complete / zero-code boundary (547 IDs,
+      a 110-spec ready frontier, 0 dirty). NO feature spec on the frontier may be
+      realized until a FOUNDATION PHASE lands first — recorded now so an agent does
+      not pull a feature off the flat frontier into a bare tree. The foundation phase
+      is FIVE deliverables, each REALIZING existing governance (no new behavior spec):
+      (1) REPO SCAFFOLD — the four source roots (@client / @backend / @shared / @news,
+      per DEC-36 / ADR-0002) with tsconfig path aliases, biome, Vite, Drizzle, and a
+      dev `docker compose` bundling Postgres + pgvector (ADR-0007 dev env). (2) THE
+      TYPE-HYGIENE GATE WIRED FIRST — strict `tsc` + biome + no-`any` in the pre-commit
+      hook AND app CI (constitution "types/biome checked before commit"; the Stage-1 CI
+      of .spec/CLAUDE.md) — BEFORE feature code, so a green gate is never retrofitted
+      onto an already-dirty tree. (3) THE @shared TYPE SPINE as single source — Drizzle
+      schema inferred from the data model (DM-*), Zod entity schemas, branded IDs
+      (DEC-29 conventions) — so verticals IMPORT shapes and never reinvent them.
+      (4) AX MACHINERY turned on at scaffold time — a CLAUDE.md per source folder
+      (constitution) + the cortex-managed folder-context blocks (the plugin's
+      read-time context injection) + PATH-SCOPED conventions
+      authored via /cortex:conventions (the conventions register itself defers the
+      client/backend/shared blocks "until src/ exists"). (5) A WALKING SKELETON — one
+      thin end-to-end slice (dev-login → app shell → a tRPC call → a Postgres + pgvector
+      round-trip → one WebSocket push → an OTel span) proving the whole stack composes
+      before fan-out. RATIONALE: at this boundary the cheap-now / expensive-to-retrofit
+      items are the gate, the shared type spine, the per-folder AX context, and proof
+      the stack integrates. The design gate already swept the pre-code open questions:
+      Q-14 is resolved (DEC-35), Q-15 is explicitly not a phase-1 blocker, and the rest
+      (Q-1..Q-7, Q-9, Q-13) are GTM / metric-driven and resolve from cohort-1 data — so
+      no question needed forcing here, and "governance-first" collapsed to this decision
+      alone. DEFERRED: the vertical BUILD ORDER (which capability first, and layer-first
+      vs vertical-slice) is left open as Q-16, decidable once the substrate exists —
+      foundation-first does not by itself pick the first feature.
   DEC-36:
     v: 1
     date: 2026-07-22
