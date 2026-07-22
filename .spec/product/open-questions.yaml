@@ -195,8 +195,13 @@ items:
 
   Q-16:
     v: 1
-    status: open
+    status: resolved
     decidable-by: user
+    resolution: >-
+      RESOLVED (DEC-38, 2026-07-22): HYBRID build order — real auth + ACC-3 org
+      confinement first, then feature verticals as slices pulling DSS primitives as
+      needed. FIRST capability = accounts/identity (ACCS): BetterAuth replaces the
+      skeleton dev-session seam, Org/User/Membership, server-side confinement.
     title: Vertical build order once the foundation phase lands
     statement: >-
       DEC-37 records the foundation-first pre-code phase but deliberately does NOT

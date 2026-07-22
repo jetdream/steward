@@ -15,6 +15,27 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-38:
+    v: 1
+    date: 2026-07-22
+    by: founder (shpin.p@diffco.us)
+    binds: [Q-16, ACC-3]
+    title: Vertical build order — hybrid, accounts/identity (ACCS) first
+    statement: >-
+      Resolves Q-16 now that the DEC-37 foundation phase is complete (main@0660bb2).
+      BUILD ORDER = HYBRID: build the unavoidable, security-critical substrate
+      (real auth + server-side org confinement) FIRST, then feature capabilities as
+      vertical slices that each pull the design-system primitives (DSS) they need —
+      rather than building the entire design system or a whole vertical up front.
+      FIRST CAPABILITY = ACCOUNTS/IDENTITY (ACCS): stand up real BetterAuth (Google
+      sign-in + dev email-only login, SEC-7) REPLACING the walking-skeleton's
+      dev-session cookie seam, the Org/User/Membership model (DM-1/15/16, ACC-1/2),
+      and ACC-3 server-side active-org confinement enforced on every request. This is
+      first because everything else needs a real authenticated, org-scoped context,
+      and the skeleton's stubbed session is a known seam to close. DSS primitives are
+      pulled as the first UI-bearing vertical needs them (not a big-bang DS build).
+      Tenant confinement (ACC-3) is treated as foundational and lands with ACCS, not
+      bolted on later.
   DEC-37:
     v: 1
     date: 2026-07-22
