@@ -4,6 +4,20 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@steward/shared": "*"
+    "@steward/shared": "*",
+    "@tanstack/react-query": "^5.101.4",
+    "@trpc/client": "^11.18.0",
+    "@trpc/tanstack-react-query": "^11.18.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "superjson": "^2.2.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.1.5"
   }
 }

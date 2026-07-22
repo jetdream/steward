@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "//": "Thin root config: provides the @client/@backend/@shared/@news path aliases to editors and to tsx at runtime (it auto-discovers this file at the repo root). It checks NOTHING itself (files: []) — the type-hygiene GATE is the per-package `tsc -p <pkg>/tsconfig.json` chain (npm run typecheck).",
+  "extends": "./tsconfig.base.json",
+  "files": []
+}

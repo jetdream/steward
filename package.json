@@ -19,6 +19,7 @@
     "gate": "npm run docs:check && npm run typecheck && npm run lint",
     "db:generate": "cd backend && drizzle-kit generate",
     "db:migrate": "cd backend && drizzle-kit migrate",
+    "dev:api": "tsx watch backend/src/server.ts",
     "infra:up": "docker compose -f .coder/postgres/docker-compose.yml up -d && docker compose -f .coder/minio/docker-compose.yml up -d && docker compose -f .coder/grafana/docker-compose.yml up -d",
     "infra:down": "docker compose -f .coder/postgres/docker-compose.yml down && docker compose -f .coder/minio/docker-compose.yml down && docker compose -f .coder/grafana/docker-compose.yml down",
     "dev:playwright:build": "docker compose -f .coder/playwright/docker-compose.yml build",
@@ -32,6 +33,7 @@
     "cortex": "github:DiffCo/cortex#v0.21.0",
     "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
+    "tsx": "^4.23.1",
     "typescript": "^7.0.2"
   }
 }
