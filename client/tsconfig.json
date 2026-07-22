@@ -1,9 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "//": "Browser package: the DOM libs. React JSX config joins with the walking-skeleton increment (Vite + React). Type-checked directly by the gate.",
+  "//": "Browser package (bundler resolution — Vite). Node types cover vite.config.ts and the @backend AppRouter type import. Type-checked directly by the gate.",
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["ES2023", "DOM", "DOM.Iterable"]
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.ts"]
 }

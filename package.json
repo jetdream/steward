@@ -19,7 +19,10 @@
     "gate": "npm run docs:check && npm run typecheck && npm run lint",
     "db:generate": "cd backend && drizzle-kit generate",
     "db:migrate": "cd backend && drizzle-kit migrate",
+    "dev": "concurrently -k -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
     "dev:api": "tsx watch backend/src/server.ts",
+    "dev:web": "npm run dev -w @steward/client",
+    "build:web": "npm run build -w @steward/client",
     "infra:up": "docker compose -f .coder/postgres/docker-compose.yml up -d && docker compose -f .coder/minio/docker-compose.yml up -d && docker compose -f .coder/grafana/docker-compose.yml up -d",
     "infra:down": "docker compose -f .coder/postgres/docker-compose.yml down && docker compose -f .coder/minio/docker-compose.yml down && docker compose -f .coder/grafana/docker-compose.yml down",
     "dev:playwright:build": "docker compose -f .coder/playwright/docker-compose.yml build",
@@ -30,6 +33,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.5",
     "@types/node": "^26.1.1",
+    "concurrently": "^10.0.3",
     "cortex": "github:DiffCo/cortex#v0.21.0",
     "drizzle-kit": "^0.31.10",
     "husky": "^9.1.7",
