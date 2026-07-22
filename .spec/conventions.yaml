@@ -8,9 +8,9 @@ decided-by: DEC-29
 # conventions hook, never a roll-up node. Founded from the constitution's Code
 # Standards (root CLAUDE.md, DEC-29). Mechanical rules stay in tsc/biome; product
 # principles stay in values (VAL-*) / guardrails (GR-*) — not restated here.
-# All blocks are `global` for now: with no src/ yet, path-scoped (client/backend/
-# shared) blocks would match nothing — add them via /cortex:conventions once the
-# source tree exists (register a scope-vocabulary + learning-scopes path map then).
+# `global` applies everywhere; the path-scoped blocks (shared/backend/client/news)
+# are routed to a file by the registry `learning-scopes` path map and surfaced by
+# the edit-time hook. Added with the source tree in the DEC-37 foundation phase.
 intent: >-
   Type-first discipline is the house style: the type system, inferred from one
   source per concern, is the contract — hand-written duplicate shapes and
@@ -40,3 +40,45 @@ scopes:
         so the schema is the one source and the TS type follows it.
       - Define key entities as a Zod schema with an inferred type, and reuse that
         schema for boundary validation rather than writing a parallel validator.
+  shared:
+    must: |
+      - `@shared` stays dependency-light — it is imported by `@client` and
+        `@news` (browser / SSR) as well as `@backend`. Add only pure,
+        framework-free deps here (Zod is fine); never a server/Node-only or
+        heavy runtime dependency.
+    should: |
+      - Construct a branded ID only by parsing its schema (e.g. `OrgId.parse`),
+        never a bare cast — the parse is the one sanctioned place a raw string
+        becomes an ID.
+  backend:
+    must: |
+      - Every client-facing operation is a tRPC procedure; anything org-scoped
+        uses `protectedProcedure` and enforces active-org confinement
+        server-side (ACC-3) — never trust a client-supplied orgId.
+      - Map Drizzle rows to `@shared` entities at the boundary; never return a
+        raw persistence row type across the API (the row type is a backend-
+        internal detail).
+      - Reach an external service ONLY through its ADR-0003 port/adapter — never
+        call a vendor SDK from domain/business code.
+    should: |
+      - Import `./otel` before any instrumented module (it must patch first).
+      - A fallible outbound call (publish, cache purge, webhook) must surface its
+        failure loudly — never swallow it (SEC-8 takedown is the sharp case).
+  client:
+    must: |
+      - All backend access goes through a domain-specific API hook in
+        `src/api/*` (a `useX` hook); components never call `useTRPC`, the tRPC
+        client, or `fetch` directly (constitution "Client").
+      - Build UI only on a screen that has passed the design gate (the experience
+        spine + the design system, GR-7) — the skeleton App shell is not that.
+    should: |
+      - Resolve visual values from the steward theme tokens (DS-1/DS-3/DS-4);
+        never hard-code a colour, radius, or type value.
+  news:
+    must: |
+      - `@news` is a separate SSR deployable: it may import `@shared` but never
+        `@client`/`@backend` application code.
+      - Org branding uses ONLY the DS-8 sanctioned slots (name / logo / accent) —
+        no per-org typography or invented values (GR-7).
+    should: |
+      - Keep pages SEO-first: server-rendered, indexable, with Open Graph meta.

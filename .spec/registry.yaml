@@ -12,6 +12,23 @@ filename-owned: [ADR]
 # governed-item link, and a resolved INC carries its own `resolution`).
 extra-fields:
   decisions: [binds]
+# Code folders that receive a managed `cortex:folder-context` block in their
+# CLAUDE.md, materialized by `cortex context` from the specs their code realizes
+# (@implements markers). Populates as capability verticals land — the skeleton
+# code has no markers yet. Turned on by the DEC-37 foundation phase.
+code-paths: [shared, backend, client, news]
+# Path-prefix -> scope tags: the edit-time hooks surface scope-matched conventions
+# (must/should) and learnings (gotchas/dead-ends) when a file under a prefix is edited.
+learning-scopes:
+  shared: [shared]
+  backend: [backend]
+  client: [client]
+  news: [news]
+  .spec: [docs-format, spec-authoring, process]
+# Controlled vocabulary for `scope` tags (the scope-vocabulary lint): learnings
+# items and conventions scopes may only use these — the design/methodology tags
+# (cortex-extraction era) plus the four code-layer tags added with the tree (DEC-37).
+scope-vocabulary: [agents, architecture, cascade, change-request, claude-code, context, design, docs-format, enforcement, git, guardrails, hooks, id-grammar, lint, llm, nodejs, parser, process, review, security, spec-authoring, testing, tooling, yaml, shared, backend, client, news]
 prefixes:
   VIS: product/vision.yaml
   G: product/goals.yaml
