@@ -66,6 +66,16 @@ Do not duplicate the documentation on implementation details - maintain single s
 
 Documentation and comments must use mermaid diagrams
 
+## Version control
+
+Trunk-based. `main` is the always-green single source of truth: every commit leaves the docs graph green (the pre-commit hook runs `docs-check`; typecheck + biome join it once code exists). Nothing lands on `main` except by integrating a finished branch.
+
+- Branches: short-lived and purpose-named (e.g. `foundation/scaffold`, `feat/<capability>`), cut from `main`, merged back only once green and — for a spec — challenger-passed.
+- Commits: atomic and spec-first — one governance/spec unit, citing its `DEC-*`/spec IDs in the subject; spec + code + tests land together; any `LRN-*` learning is deposited in the same commit.
+- Integrate to `main` by fast-forward when possible (keep history linear); never force-push or rewrite pushed history. Tag milestone baselines (e.g. `baseline/pre-code`, the spec-complete/zero-code line).
+
+Adopted 2026-07-22 at the spec-complete baseline; supports the DEC-37 foundation-phase rollout.
+
 ## Claude Code Harness
 
 ### SEARCH TOOLS
