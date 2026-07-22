@@ -2,18 +2,20 @@
  * @module @shared
  *
  * Cross-boundary types and pure helpers shared by @backend, @client, and @news
- * (constitution "Code Standards"): the branded-ID registry, the fixed domain
- * enums, the Zod entity schemas + inferred types, and the boundary-parse helper.
- * The other roots IMPORT these; they never redefine them. Persistence row types
- * (Drizzle-inferred) stay in @backend and are mapped to these entities at the
- * server boundary (DEC-29).
+ * (constitution "Code Standards"). Entity DEFINITIONS are the Drizzle tables in
+ * ./db/schema (the single source, DEC-39); this client-facing barrel re-exports
+ * the branded IDs, domain enums, value objects, the boundary-parse helper, and
+ * entity TYPES (erased at runtime — the client bundle stays free of drizzle-orm).
+ * The tables + drizzle-zod validators live under ./db/* and are imported by
+ * @backend (which owns the DB connection, queries, and migrations).
  *
  * Architecture: no runtime container of its own — a code package serving
  * ARC-2 (@client), ARC-3 (@backend), and ARC-23 (@news).
  */
 
 export * from "./entities/channel-connection.js";
-export * from "./entities/org.js";
+export * from "./entities/news-config.js";
+export type { Org } from "./entities/org.js";
 export * from "./enums.js";
 export * from "./ids.js";
 export * from "./parse.js";

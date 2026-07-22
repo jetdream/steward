@@ -34,18 +34,21 @@ scopes:
       - Don't redefine an essentially-identical shape — derive it with the
         Property Selection utility types (`Pick`, `Omit`, `Partial`) and unions,
         so one change propagates (DRY, VAL-3 — do not over-abstract either).
-      - Prefer type INFERENCE from the single source of a concern over
-        hand-written types: Drizzle-inferred row/insert types for persistence
-        (ADR-0002, DM entities), and `z.infer<>` for a validated entity's type —
-        so the schema is the one source and the TS type follows it.
-      - Define key entities as a Zod schema with an inferred type, and reuse that
-        schema for boundary validation rather than writing a parallel validator.
+      - ONE definition per entity: the Drizzle table in `@shared` is the single
+        source (DEC-39). Entity TYPES (`InferSelectModel`) and Zod validators are
+        DERIVED from the table (drizzle-zod), never hand-written in parallel — a
+        second declaration of an entity's shape is the smell. Client-facing shapes
+        that omit server-only/secret fields are DERIVED via `Omit`/`.omit()`.
+      - Prefer type INFERENCE from that single source over hand-written types, so
+        the schema is the one source and every TS type + validator follows it.
   shared:
     must: |
-      - `@shared` stays dependency-light — it is imported by `@client` and
-        `@news` (browser / SSR) as well as `@backend`. Add only pure,
-        framework-free deps here (Zod is fine); never a server/Node-only or
-        heavy runtime dependency.
+      - `@shared` owns the entity DEFINITIONS as the single source (DEC-39): the
+        Drizzle tables (incl. the BetterAuth-generated ones) plus the types/Zod
+        derived from them. It may depend on drizzle-orm + drizzle-zod (pure schema,
+        no DB handle) and Zod — but NOT on a DB connection, a server/Node-only API,
+        or a UI framework: it is imported by `@client` and `@news` (browser / SSR)
+        too. The connection, queries, and migrations live in `@backend`.
     should: |
       - Construct a branded ID only by parsing its schema (e.g. `OrgId.parse`),
         never a bare cast — the parse is the one sanctioned place a raw string

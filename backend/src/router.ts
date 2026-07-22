@@ -7,11 +7,10 @@
  */
 import { randomUUID } from "node:crypto";
 import { setTimeout as sleep } from "node:timers/promises";
+import { orgs } from "@shared/db/schema.js";
 import { TRPCError } from "@trpc/server";
 import { sql } from "drizzle-orm";
 import { z } from "zod";
-import { toOrg } from "./db/map.js";
-import { orgs } from "./db/schema.js";
 import { protectedProcedure, publicProcedure, router } from "./trpc.js";
 
 const slugify = (s: string): string =>
@@ -38,8 +37,9 @@ export const appRouter = router({
   /** Drizzle write+read round-trip against Postgres (DM-1 orgs). */
   org: router({
     list: protectedProcedure.query(async ({ ctx }) => {
-      const rows = await ctx.db.select().from(orgs);
-      return rows.map(toOrg);
+      // Rows are the Org entity directly — the table (@shared/db/schema) is the
+      // single source, so no row->entity mapping (DEC-39).
+      return ctx.db.select().from(orgs);
     }),
     create: protectedProcedure
       .input(z.object({ name: z.string().min(1) }))
@@ -53,7 +53,7 @@ export const appRouter = router({
           })
           .returning();
         if (!row) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "insert failed" });
-        return toOrg(row);
+        return row;
       }),
   }),
 

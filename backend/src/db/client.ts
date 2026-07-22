@@ -4,9 +4,10 @@
  * on import; testable). The Postgres provider is swappable behind this seam
  * (ADR-0003): dev/phase-1 docker-compose Postgres, phase-2 managed (Q-15).
  */
+
+import * as schema from "@shared/db/schema.js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import * as schema from "./schema.js";
 
 /** Create the schema-aware Drizzle handle from a Postgres connection string. */
 export function createDb(connectionString: string) {

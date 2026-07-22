@@ -9,15 +9,21 @@ by `ARC-2` (Client / `@client`), `ARC-3` (Backend / `@backend`), and `ARC-23`
 (Public News Renderer / `@news`). Import via the `@shared` alias (tsconfig `paths`;
 bundler/loader aliases join per consumer).
 
-**What it will hold** (grows by DEC-37 deliverable 3 — the type spine):
-- Drizzle-inferred row/insert types for the persisted model (`DM-*`), so the
-  schema is the one source and TS types follow it.
-- Zod entity schemas with inferred types, reused for boundary validation
-  (no unsafe parsing at any edge).
-- The branded-ID registry, built on the `Brand<Base, Name>` primitive seeded in
-  `src/index.ts`.
+**What it holds** (the type spine — DEC-37 (3), single-source per DEC-39):
+- **`db/schema.ts`** — the Drizzle tables: the ONE definition of each entity's
+  shape (`DM-*`). Entity types + validators are derived from these, never
+  re-declared. (BetterAuth's generated tables join here with the ACCS wiring.)
+- **`db/validators.ts`** — Zod validators derived from the tables (drizzle-zod).
+- **`entities/`** — entity TYPES (`InferSelectModel`, e.g. `Org`) + value objects
+  (e.g. `NewsConfig`); the branded-ID registry (`ids.ts`); the domain enums
+  (`enums.ts`); the boundary-parse helper (`parse.ts`).
 
-**Structure.** `src/` — folder-module layout; `src/index.ts` is the package entry.
+**Structure.** `src/index.ts` is the client-facing barrel: branded IDs, enums,
+value objects, the parse helper, and entity TYPES (erased at runtime, so the
+client bundle stays free of drizzle-orm). Tables + validators live under `src/db/*`
+and are imported by `@backend`.
 
-> Convention: keep this package free of runtime/framework dependencies — it is
-> imported by every root, including the SSR news renderer.
+> Convention (DEC-39): `@shared` may depend on drizzle-orm + drizzle-zod + Zod
+> (pure schema definitions), but NOT on a DB connection, a server/Node-only API,
+> or a UI framework — it is imported by `@client` and `@news` too. The connection,
+> queries, and migrations live in `@backend`.

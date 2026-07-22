@@ -8,6 +8,4 @@
  * `AppRouter` is the API contract type the client imports.
  */
 export { createDb, type Database } from "./db/client.js";
-export { toOrg } from "./db/map.js";
-export { type NewOrgRow, type OrgRow, orgs } from "./db/schema.js";
 export type { AppRouter } from "./router.js";

@@ -15,6 +15,29 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-39:
+    v: 1
+    date: 2026-07-22
+    by: founder (shpin.p@diffco.us)
+    binds: [DEC-29]
+    title: Type architecture — Drizzle schema in @shared as the single entity source of truth
+    statement: >-
+      Refines the DEC-29 type split. That split put Drizzle tables in @backend and
+      hand-written Zod ENTITY schemas in @shared — which duplicated each entity
+      (the founder flagged `organization` defined twice: a backend Drizzle table AND
+      a @shared Zod `Org`). DECISION: the Drizzle table is the ONE definition and it
+      lives in @shared (including the BetterAuth-generated tables). Entity TYPES
+      (`InferSelectModel`) and Zod validators are DERIVED from the tables (drizzle-zod)
+      — a single source, exposed to the client through @shared, never re-declared.
+      Client-facing shapes that must exclude server-only / secret fields (e.g. the
+      ChannelConnection OAuth token, SEC-10) are DERIVED via `Omit` / select-schema
+      `.omit()` — still single-sourced. @shared therefore takes a drizzle-orm +
+      drizzle-zod dependency (pure schema definitions, no DB handle); the DB
+      CONNECTION, queries, and migrations stay in @backend. Supersedes the earlier
+      "@shared stays free of any heavy runtime dep" convention wording (conventions
+      updated). Cross-package/tooling imports of the schema resolve via the
+      @steward/shared package exports (works in every loader — tsx, drizzle-kit,
+      the better-auth CLI) rather than only the @shared tsconfig alias.
   DEC-38:
     v: 1
     date: 2026-07-22
