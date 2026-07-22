@@ -3,7 +3,16 @@
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/dist", "!design", "!**/*.astro"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/drizzle",
+      "!design",
+      "!.coder",
+      "!.vscode",
+      "!.mcp.json",
+      "!**/*.astro"
+    ]
   },
   "formatter": {
     "enabled": true,

@@ -1,0 +1,10 @@
+{
+    "workbench.colorTheme": "Visual Studio Dark",
+    "claudeCode.preferredLocation": "sidebar",
+
+    "workbench.colorCustomizations": {
+      "titleBar.activeBackground": "#1a8fd1",
+      "titleBar.activeForeground": "#ffffff",
+      "titleBar.inactiveBackground": "#1a8fd1cc"
+    },
+}

@@ -1,0 +1,24 @@
+services:
+  lgtm:
+    image: grafana/otel-lgtm:latest
+    restart: unless-stopped
+    ports:
+      # Grafana UI (remapped from 3000 to 3030 to avoid conflicting with the
+      # Dialectica dev server, which also listens on 3000)
+      - "127.0.0.1:3030:3000"
+      # OTLP gRPC
+      - "127.0.0.1:4317:4317"
+      # OTLP HTTP
+      - "127.0.0.1:4318:4318"
+      # Tempo HTTP (exposes /api/mcp used by Tempo's MCP server)
+      - "127.0.0.1:3200:3200"
+    environment:
+      - GF_PATHS_DATA=/data/grafana
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    volumes:
+      - lgtm-data:/data
+
+volumes:
+  lgtm-data:

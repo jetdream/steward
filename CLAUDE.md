@@ -40,6 +40,17 @@ Four top level src folders:
 
 Folder-module general structure with dedicated shared folder for cross-modules.
 
+## Development infrastructure
+
+Local dev infra lives in `.coder/` as independent Docker Compose stacks — the self-contained dev environment of DEC-36 / ADR-0007. `./.coder/setup.sh` provisions the whole environment (Node 24 toolchain, `npm ci`, the stacks below, `.env` from `.env.example`, DB migrations); it is idempotent. See README.md for details.
+
+- **Postgres 18 + pgvector** (`.coder/postgres`, ARC-4) — `postgres://user:password@localhost:5432/main`; the dev DB. Drizzle Gateway DB GUI on `:4983`.
+- **MinIO** (`.coder/minio`) — S3-compatible blob store; the dev adapter for the ADR-0003 blob port (prod = Cloudflare R2).
+- **Grafana LGTM** (`.coder/grafana`) — the OpenTelemetry backend for dev (OTLP `:4318`).
+- **Playwright** (`.coder/playwright`) — headed Chromium over CDP `:9222` for AI testing via the Playwright MCP; `.mcp.json` also wires context7 (library docs).
+
+Drive it with `npm run infra:up` / `infra:down`, `npm run db:generate` / `db:migrate`, `npm run dev:playwright`. Never add a root `docker-compose.yml` — dev services are the `.coder` stacks.
+
 ## Architectural principles
 Do not over-abstract where is not necessary and project will not benefit from such abstraction.
 Always maintain DRY (Do not Repeat Yourself) principle and separation of concerns.

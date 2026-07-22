@@ -7,5 +7,9 @@ dist
 .env.*
 !.env.example
 
+# MCP config carries an API key — commit the sanitized .mcp.json.example instead
+.mcp.json
+!.mcp.json.example
+
 # cortex graph cache (CTXS-10) — a disposable generated artifact, never committed
 .spec/.cache/

@@ -1,0 +1,351 @@
+#!/bin/bash
+
+SETUP_LOG="/tmp/setup-full.log"
+SETUP_DIR="$(dirname "$0")"
+
+# Tee all output to a log file for failure reporting
+exec > >(tee -a "$SETUP_LOG") 2>&1
+
+on_failure() {
+  local exit_code=$?
+  if [ $exit_code -ne 0 ]; then
+    echo "❌ Setup failed with exit code $exit_code. Check $SETUP_LOG for details."
+    # TODO: replace with Slack notification
+  fi
+}
+trap on_failure EXIT
+
+set -e
+
+# ─── Helpers ──────────────────────────────────────────────────────────────────
+
+# Source NVM into the current shell. Safe to call before nvm is installed.
+load_nvm() {
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] || return 0
+  \. "$NVM_DIR/nvm.sh" || true
+}
+
+# upsert_env <file> <KEY> <VALUE> — set KEY=VALUE in file, replacing existing line.
+upsert_env() {
+  local file="$1" key="$2" value="$3"
+  mkdir -p "$(dirname "$file")"
+  if [ -f "$file" ] && grep -q "^${key}=" "$file"; then
+    sed -i "s|^${key}=.*|${key}=${value}|" "$file"
+  else
+    echo "${key}=${value}" >> "$file"
+  fi
+}
+
+# Expand {{port}} in $VSCODE_PROXY_URI and strip trailing slash.
+url_for_port() {
+  echo "$VSCODE_PROXY_URI" | sed "s/{{port}}/$1/" | sed 's|/$||'
+}
+
+host_from_url() {
+  echo "$1" | sed -E 's|^https?://||' | sed 's|/.*$||'
+}
+
+# Parallel arrays tracking backgrounded setup tracks.
+TRACK_NAMES=()
+TRACK_PIDS=()
+TRACK_LOGS=()
+
+# run_track <name> <function> — run <function> in a subshell, capture log, track PID.
+run_track() {
+  local name="$1" fn="$2"
+  local log="/tmp/setup-track-${name}.log"
+  ( set -e; "$fn" ) > "$log" 2>&1 &
+  TRACK_NAMES+=("$name")
+  TRACK_PIDS+=("$!")
+  TRACK_LOGS+=("$log")
+}
+
+# ─── Track definitions ────────────────────────────────────────────────────────
+
+track_node() {
+  echo "📥 [node] Installing Node.js toolchain..."
+
+  if [ ! -d "$HOME/.nvm" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  fi
+  load_nvm
+
+  # Source NVM in all future shells
+  if ! grep -q "NVM_DIR" ~/.bashrc; then
+    cat >> ~/.bashrc <<'BASHRC'
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+BASHRC
+  fi
+
+  # Prefer .nvmrc, else the engines minimum (22)
+  local node_version="22"
+  if [ -f ".nvmrc" ]; then
+    node_version=$(cat .nvmrc)
+    echo "📄 [node] Found .nvmrc: Using Node $node_version"
+  fi
+
+  echo "📦 [node] Installing Node.js $node_version..."
+  nvm install "$node_version"
+  nvm use "$node_version"
+  nvm alias default "$node_version"
+
+  echo "📦 [node] Enabling pnpm via corepack..."
+  corepack enable pnpm
+
+  # Expose node/npm/npx/pnpm to already-open terminals via ~/.local/bin (which is
+  # on PATH from the coder_agent env). Bash resolves uncached commands by walking
+  # PATH on every invocation, so a fresh symlink is picked up instantly.
+  local node_bin
+  node_bin="$(dirname "$(nvm which "$node_version")")"
+  local cmd
+  for cmd in node npm npx; do
+    ln -sf "$node_bin/$cmd" "$HOME/.local/bin/$cmd"
+  done
+  ln -sf "$(command -v pnpm)" "$HOME/.local/bin/pnpm"
+
+  # Initialize pnpm global bin dir (sets PNPM_HOME, required before any `pnpm add -g`)
+  pnpm setup --force
+  # Source the updated env immediately so PNPM_HOME and PATH are live in this subshell
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  export PATH="$PNPM_HOME:$PATH"
+
+  echo "📦 [node] Installing dependencies (pnpm install --frozen-lockfile)..."
+  # --frozen-lockfile: equivalent of npm ci — fails if pnpm-lock.yaml is out of
+  # sync with package.json, preventing stale transitive deps across reboots
+  pnpm install --frozen-lockfile
+
+  # TypeScript LSP for Claude Code LSP integration
+  # (see https://karanbansal.in/blog/claude-code-lsp/)
+  pnpm add -g typescript-language-server typescript
+
+  # Chrome for the PPTX→PNG rasterizer. pnpm does NOT run dependencies'
+  # postinstall scripts, so Puppeteer never auto-downloads its pinned Chrome —
+  # the browser must be fetched explicitly here. Idempotent: the CLI resolves
+  # the version pinned by the installed puppeteer and skips if already cached
+  # (~/.cache/puppeteer). Runtime libs are installed by track_apt.
+  echo "📦 [node] Installing Puppeteer Chrome for the rasterizer..."
+  pnpm --filter @rawi/engine exec puppeteer browsers install chrome
+
+  echo "✅ [node] Toolchain ready"
+}
+
+track_claude() {
+  echo "📥 [claude] Installing Claude Code..."
+  curl -fsSL https://claude.ai/install.sh | bash
+
+  # uv (provides uvx) — required by the Grafana MCP server in .mcp.json
+  if ! command -v uvx >/dev/null 2>&1; then
+    echo "📥 [claude] Installing uv/uvx..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  fi
+
+  # Local project-links extension (status bar quick-links to app/db/grafana/issue)
+  source "$SETUP_DIR/install-vscode-extension.sh"
+  install_local_extension "$(pwd)/.vscode/project-links" "project-links" "0.1.0"
+
+  # anthropic.claude-code is installed AFTER the CLI so the extension version
+  # matches the CLI version — prevents the extension lagging behind the CLI.
+  local cli_version
+  cli_version=$(claude --version 2>/dev/null | grep -oP '[\d]+\.[\d]+\.[\d]+' | head -1 || echo "")
+  if [ -n "$cli_version" ]; then
+    echo "📦 [claude] Installing claude-code extension v${cli_version} (matching CLI)..."
+    code-server --install-extension "anthropic.claude-code@${cli_version}" 2>/dev/null \
+      || code-server --install-extension anthropic.claude-code
+  else
+    code-server --install-extension anthropic.claude-code
+  fi
+
+  code-server --install-extension eamodio.gitlens
+  echo "✅ [claude] Ready"
+}
+
+track_databases() {
+  echo "🐳 [databases] Starting Postgres + MinIO + Presenton + Markitdown..."
+  local compose
+  for compose in \
+    .coder/postgres/docker-compose.yml \
+    .coder/minio/docker-compose.yml \
+    .coder/presenton/docker-compose.yml \
+    .coder/markitdown/docker-compose.yml
+  do
+    docker compose -f "$compose" up -d
+  done
+  echo "✅ [databases] Ready"
+}
+
+track_grafana() {
+  echo "📊 [grafana] Starting Grafana LGTM..."
+  docker compose -f .coder/grafana/docker-compose.yml up -d
+  echo "✅ [grafana] Ready (UI: http://localhost:3030, OTLP: http://localhost:4318)"
+}
+
+# Installs all apt packages in one track. Kept single-track on purpose: parallel
+# apt-get runs collide on the dpkg lock, so psql + the headless-Chrome runtime
+# libraries are installed together here rather than in separate tracks.
+track_apt() {
+  echo "🔌 [apt] Installing psql + headless-Chrome runtime libraries..."
+
+  # Shared libraries the Puppeteer-downloaded Chrome binary dynamically links
+  # against (PPTX→PNG rasterizer, packages/engine/src/design/pptx-render-browser.ts).
+  # The Chrome binary itself is fetched in track_node; without these libs it
+  # fails to launch with "libatk-1.0.so.0: cannot open shared object file".
+  local chrome_libs=(
+    libatk1.0-0 libatk-bridge2.0-0 libatspi2.0-0 libcups2 libgbm1 libasound2
+    libcairo2 libpango-1.0-0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2
+    libxkbcommon0 libnss3 libnspr4 libxshmfence1 fonts-liberation
+  )
+
+  local pkgs=("${chrome_libs[@]}")
+  command -v psql >/dev/null || pkgs+=(postgresql-client)
+
+  sudo apt-get update -qq
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq "${pkgs[@]}"
+  echo "✅ [apt] Ready"
+}
+
+# ─── Initial setup ────────────────────────────────────────────────────────────
+
+# ─── Team default dotfiles (seed) ────────────────────────────────────────────
+# Repo-shipped baseline: applied to every workspace before personal overrides.
+# Personal-load runs after this, so any file a dev has customized in their
+# personal repo overwrites the team default.
+cp -rT "$SETUP_DIR/dotfiles/" "$HOME/"
+
+# ─── Personal state (per-developer overlay) ──────────────────────────────────
+# Restored from the developer's private DiffCo/diffco-coder-dotfiles-<owner>
+# repo (auto-created on first `personal-save`). See .coder/personal-sync.sh.
+bash "$SETUP_DIR/personal-sync.sh" load || echo "⚠️  personal-sync load failed; continuing"
+
+# Install the `claude` auto-checkpoint wrapper + personal-load/save aliases.
+if ! grep -q "personal-sync (injected)" ~/.bashrc 2>/dev/null; then
+  bash "$SETUP_DIR/personal-sync.sh" wrap >> ~/.bashrc
+fi
+
+# Configure git to use gh as the credential helper
+gh auth setup-git
+
+mkdir -p "$HOME/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Persist PATH + 'pr' alias for future shells
+if ! grep -q "alias pr=" ~/.bashrc; then
+  echo "alias pr='gh pr create --title \"feat: completion of issue #${CODER_ISSUE_ID}\" --body \"Closes #${CODER_ISSUE_ID}\"'" >> ~/.bashrc
+fi
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+
+# ─── Backend .env ─────────────────────────────────────────────────────────────
+
+BACKEND_ENV=".env"
+if [ ! -f "$BACKEND_ENV" ]; then
+  echo "🔑 Generating $BACKEND_ENV..."
+  cp .env.example "$BACKEND_ENV"
+
+  upsert_env "$BACKEND_ENV" SESSION_SECRET      "$(openssl rand -base64 32)"
+  upsert_env "$BACKEND_ENV" FILE_PREVIEW_SECRET "$(openssl rand -base64 32)"
+fi
+
+# ─── Workspace-aware URLs (from VSCODE_PROXY_URI set by code-server/Coder) ────
+
+BASE_URL="$(url_for_port 3000)"
+upsert_env "$BACKEND_ENV" FRONTEND_URL "$BASE_URL"           # API CORS origin
+# The web app reaches the API same-origin via the Vite dev-server proxy (/trpc incl. WS,
+# /api/chat, /uploads), so no client API-URL env var is needed. Set VITE_WS_URL only to point
+# the tRPC subscription socket at a non-same-origin API.
+echo "🌐 FRONTEND_URL set to ${BASE_URL}"
+
+# Wire local MinIO as the S3 backend.
+# The API server talks to MinIO directly via localhost (not the Coder proxy,
+# which doesn't speak S3 protocol and returns 302 redirects).
+# Pre-signed URLs for browser downloads need a separate public endpoint if needed.
+upsert_env "$BACKEND_ENV" S3_ENDPOINT    "http://localhost:9000"
+upsert_env "$BACKEND_ENV" S3_BUCKET      "rawi-dev"
+upsert_env "$BACKEND_ENV" S3_ACCESS_KEY  "rawi"
+upsert_env "$BACKEND_ENV" S3_SECRET_KEY  "rawipassword"
+
+# Symlink the single root .env into workspaces that load dotenv from their own
+# CWD (drizzle-kit reads packages/db/.env; tsx in apps/api reads apps/api/.env).
+# Without these, DATABASE_URL is missing for `drizzle-kit migrate` and the API
+# silently falls back to the hardcoded default — and AI_GATEWAY_API_KEY /
+# AI_ANTHROPIC_API_KEY aren't loaded at all.
+ln -sfn ../../.env packages/db/.env
+ln -sfn ../../.env apps/api/.env
+
+DRIZZLE_URL="$(url_for_port 4983)"
+GRAFANA_URL="$(url_for_port 3030)"
+PLAYWRIGHT_URL="$(url_for_port 6080)"
+MINIO_URL="$(url_for_port 9001)"
+LINEAR_ISSUE_URL="https://linear.app/diffco/issue/${CODER_ISSUE_ID}"
+
+export BASE_URL DRIZZLE_URL GRAFANA_URL MINIO_URL LINEAR_ISSUE_URL PLAYWRIGHT_URL CODER_ISSUE_ID
+LINKS_PROTO_FILE=".vscode/project-links.proto.json"
+LINKS_FILE=".vscode/project-links.json"
+if [ -f "$LINKS_PROTO_FILE" ]; then
+  envsubst < "$LINKS_PROTO_FILE" > "$LINKS_FILE"
+  echo "🔗 Project links configured"
+fi 
+
+
+# ─── Parallel tracks ──────────────────────────────────────────────────────────
+
+echo "🚀 Starting parallel setup..."
+
+run_track node      track_node
+run_track claude    track_claude
+run_track databases track_databases
+run_track grafana   track_grafana
+run_track apt       track_apt
+
+echo "⏳ Waiting for parallel setup to complete..."
+TRACK_FAILED=()
+for i in "${!TRACK_PIDS[@]}"; do
+  if ! wait "${TRACK_PIDS[$i]}"; then
+    TRACK_FAILED+=("${TRACK_NAMES[$i]}")
+  fi
+done
+
+for i in "${!TRACK_NAMES[@]}"; do
+  echo ""
+  echo "=== Track: ${TRACK_NAMES[$i]} ==="
+  cat "${TRACK_LOGS[$i]}"
+done
+
+if [ ${#TRACK_FAILED[@]} -gt 0 ]; then
+  echo "❌ Setup tracks failed: ${TRACK_FAILED[*]}"
+  exit 1
+fi
+
+load_nvm
+
+# ─── Database migrate + seed ──────────────────────────────────────────────────
+# Runs sequentially after parallel tracks: needs both pnpm (track_node) and a
+# healthy Postgres (track_databases). drizzle-kit migrate is idempotent; the
+# seed only runs when the projects table is empty so workspace re-runs don't
+# accumulate duplicates.
+
+echo "🗄️  [db] Waiting for Postgres to accept connections..."
+PG_COMPOSE=".coder/postgres/docker-compose.yml"
+for _ in $(seq 1 60); do
+  if docker compose -f "$PG_COMPOSE" exec -T postgres pg_isready -U user -d main >/dev/null 2>&1; then
+    break
+  fi
+  sleep 1
+done
+
+echo "🗄️  [db] Applying migrations..."
+pnpm --filter @rawi/db migrate
+
+PROJECT_COUNT=$(docker compose -f "$PG_COMPOSE" exec -T postgres \
+  psql -U user -d main -tAc "SELECT count(*) FROM projects" 2>/dev/null | tr -d '[:space:]')
+if [ "${PROJECT_COUNT:-0}" = "0" ]; then
+  echo "🗄️  [db] Seeding (projects table is empty)..."
+  pnpm --filter @rawi/db seed
+else
+  echo "🗄️  [db] Skipping seed (${PROJECT_COUNT} project(s) already present)"
+fi
+
+# TODO: notify that environment is ready (Slack)
+
+echo "✅ Setup complete. Ready to code!"

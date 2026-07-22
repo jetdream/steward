@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg18
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: main
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      # PG18+ Docker images store data under /var/lib/postgresql/<major>; the mount
+      # is at /var/lib/postgresql (NOT .../data, which is the pre-18 convention).
+      - pgdata:/var/lib/postgresql
+      - ./init-db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d main"]
+      interval: 1s
+      timeout: 5s
+      retries: 50
+
+  # https://gateway.drizzle.team/docs/how-it-works
+  drizzle-gateway:
+    image: ghcr.io/drizzle-team/gateway:latest
+    restart: always
+    ports:
+      - "127.0.0.1:4983:4983"
+    environment:
+      PORT: 4983
+      STORE_PATH: /app
+#      MASTERPASS: your_master_password
+    volumes:
+      - ./drizzle-gateway:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+#  drizzle-gateway:

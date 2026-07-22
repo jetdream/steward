@@ -1,0 +1,22 @@
+{
+  "id": "dae4004b-3566-4546-acee-6d78aacdc932",
+  "slots": [
+    [
+      "1f6fab1c-8b02-4ccb-9f68-67a4f3fcdca0",
+      {
+        "id": "1f6fab1c-8b02-4ccb-9f68-67a4f3fcdca0",
+        "name": "Steward",
+        "dialect": "postgresql",
+        "credentials": {
+          "host": "postgres",
+          "port": "5432",
+          "user": "user",
+          "password": "password",
+          "database": "main",
+          "ssl": false
+        }
+      }
+    ]
+  ],
+  "name": "Ambitious Psynapse"
+}

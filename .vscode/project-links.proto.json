@@ -1,0 +1,39 @@
+{
+  "links": [
+    {
+      "label": "$(issues) ${CODER_ISSUE_ID}",
+      "url": "${LINEAR_ISSUE_URL}",
+      "priority": 97,
+      "external": true
+    },
+    {
+      "label": "$(link-external) Playwright",
+      "url": "${PLAYWRIGHT_URL}",
+      "priority": 99,
+      "external": true
+    },
+    {
+      "label": "$(database) Drizzle",
+      "url": "${DRIZZLE_URL}",
+      "priority": 99
+    },
+    {
+      "label": "$(graph) Grafana",
+      "url": "${GRAFANA_URL}",
+      "priority": 96,
+      "external": true
+    },
+    {
+      "label": "$(archive) MinIO",
+      "url": "${MINIO_URL}",
+      "priority": 95,
+      "external": true
+    },
+    {
+      "label": "$(link-external) App (tab)",
+      "url": "${BASE_URL}",
+      "priority": 98,
+      "external": true
+    }
+  ]
+}

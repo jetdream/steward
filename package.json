@@ -17,8 +17,13 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "gate": "npm run docs:check && npm run typecheck && npm run lint",
-    "db:generate": "drizzle-kit generate --config=backend/drizzle.config.ts",
-    "db:migrate": "drizzle-kit migrate --config=backend/drizzle.config.ts",
+    "db:generate": "cd backend && drizzle-kit generate",
+    "db:migrate": "cd backend && drizzle-kit migrate",
+    "infra:up": "docker compose -f .coder/postgres/docker-compose.yml up -d && docker compose -f .coder/minio/docker-compose.yml up -d && docker compose -f .coder/grafana/docker-compose.yml up -d",
+    "infra:down": "docker compose -f .coder/postgres/docker-compose.yml down && docker compose -f .coder/minio/docker-compose.yml down && docker compose -f .coder/grafana/docker-compose.yml down",
+    "dev:playwright:build": "docker compose -f .coder/playwright/docker-compose.yml build",
+    "dev:playwright": "docker compose -f .coder/playwright/docker-compose.yml up -d",
+    "dev:playwright:stop": "docker compose -f .coder/playwright/docker-compose.yml down",
     "prepare": "husky"
   },
   "devDependencies": {
