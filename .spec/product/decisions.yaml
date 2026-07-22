@@ -15,6 +15,40 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-36:
+    v: 1
+    date: 2026-07-22
+    by: founder (shpin.p@diffco.us)
+    binds: [CON-3, ADR-0002, ADR-0004, ADR-0007, SEC-11]
+    title: Deployment topology & environments — Docker Compose now, managed later, Cloudflare CDN
+    statement: >-
+      Resolves CON-3 (the deployment gap), concretizing the ADR-0003 shapes. DEV
+      stays self-contained/zero-cloud. PHASE-1 PROD (cohort 1): self-hosted
+      SINGLE INSTANCE via `docker compose` — a bundle of the app (backend + SPA),
+      the news renderer, and BUNDLED Postgres. PHASE-2 PROD (later, when scaling
+      is actually needed): horizontally-scalable managed — GCP Cloud Run +
+      Cloud SQL OR DigitalOcean (provider left OPEN, decidable later — not a
+      phase-1 blocker; ports & adapters keeps domain code provider-agnostic).
+      CLOUDFLARE CDN fronts static prod assets AND the public news surface (edge
+      cache + tag-based purge = ADR-0004's immediate-takedown mechanism, now
+      concrete); Cloudflare R2 stays the blob adapter (already ADR-0003). NEWS
+      RENDERER becomes a 4th top-level source package `@news` (the ADR-0004 Astro
+      + React-islands SSR deployable, ARC-23) — amends the constitution's "three
+      src folders" to four (client/backend/shared/news) and ADR-0002's source
+      layout. ENVIRONMENTS: `development` (dev-login enabled, SEC-7) and
+      `production`; the internal ops/admin console is enabled by a config FLAG,
+      not a separate cluster (satisfies SEC-11 "disabled outside the ops
+      environment" simply for phase-1) — recorded as SEC-11 v4 with the accepted
+      single-instance isolation reduction. PHASE-1 DATA DURABILITY is an obligation
+      NOW (confidential org data in the bundled Postgres, SEC-4): scheduled
+      `pg_dump` → Cloudflare R2 + a restore path (minimal, no extra infra); only
+      residency + uptime-SLO defer to the phase-2 provider (Q-15). The Cloudflare
+      Cache-Tags purge is a fallible outbound API call (IG-11), so the SEC-8
+      immediate-takedown obligation is enforced in PUBS-1/NWSS-1 acceptance (purge
+      failure fails the takedown loudly). Recorded in a new deployment-topology
+      ADR building on ADR-0003; ADR-0004 amended for the concrete Cloudflare CDN.
+      (Backup posture + the SEC-11/SEC-8 enforcement cascades were added
+      post-challenger — deployment-2026-07-22-r1.md — in the same change.)
   DEC-35:
     v: 1
     date: 2026-07-21
@@ -59,7 +93,7 @@ items:
       impersonation act-as-org with a reason-gated entry + persistent banner +
       time-box (XADM-6), the org activity-ledger audit (XADM-10), and billing +
       KPI health (XADM-13) — internal-only, lower-fidelity than the founder spine
-      (the XOPS/DEC-8 precedent), governed by SEC-11 v3 / ADR-0006. Adds the
+      (the XOPS/DEC-8 precedent), governed by SEC-11 v4 / ADR-0006. Adds the
       founder-facing multi-seat team surface (XB-4/5/6, serving ACC-4, P2) in the
       Controls area, on the founder-spine card system. Passed the Product-Designer
       challenger (r1 fail → r2 pass; record

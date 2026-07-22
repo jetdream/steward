@@ -11,7 +11,7 @@ status: approved
 # founder-facing. Grounded on the steward design system (GR-7, DS-*) but lower
 # fidelity than the founder spine (the XOPS/DEC-8 precedent — internal tools earn
 # less design investment). Reaches `approved` via the Product-Designer challenger
-# + a HITL DEC. Access is governed (SEC-11 v3, ADR-0006): reason-gated, audited,
+# + a HITL DEC. Access is governed (SEC-11 v4, ADR-0006): reason-gated, audited,
 # ops-environment only.
 intent: >-
   How DiffCo staff run and support the platform across all orgs. Four journeys —

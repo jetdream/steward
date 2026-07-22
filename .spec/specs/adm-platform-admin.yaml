@@ -17,7 +17,7 @@ challenge:
     cross-cutting obligation, rendering tracked to PUBS-3/experience). r4 PASS
     (one non-blocking acceptance split applied). GR-3/GR-8 holds fire and may be
     cleared by staff-as-founder (DEC-32 full parity, no bypass); full audit +
-    reason-gate (SEC-11 v3); honest G-2 (LRN-24).
+    reason-gate (SEC-11 v4); honest G-2 (LRN-24).
     FINALIZATION (DEC-35, v2, record r6): the two-role change (admin/support,
     admin-only staff management, seed admin, shadcn+tokens console / GR-7 v3)
     took two more fails on the SAME incomplete-cascade class — propagated up

@@ -7,6 +7,11 @@ status: approved
 # Backed by ADR-0002 (stack), ADR-0003 (portability), ADR-0004 (news renderer).
 # Amended 2026-07-19: ARC-11 → v2 (MEM surfaces) and ARC-26 Content Topics added
 # (DEC-23), reviewed via the MEM + TOP spec challenges.
+# Amended 2026-07-22: ARC-1 → v2 (4th source root @news + concrete deployment
+# topology), ARC-23 → v2 (@news package + Cloudflare CDN front), and ARC-18 → v2
+# (news purge is a fallible Cloudflare Cache-Tags outbound call, not a local no-op);
+# new IG-11 (Cloudflare CDN adapter). Deployment delta DEC-36/ADR-0007; challenger
+# pass-with-nits (fixes applied): specs/challenges/deployment-2026-07-22-r2.md.
 
 intent: >-
   Technical module map for the core loop described in product/overview.md.
@@ -22,26 +27,38 @@ intent: >-
 
 items:
   ARC-1:
-    v: 1
+    v: 2
     kind: c4-context
     title: Steward System
     body: |
       The Steward system in its environment: a browser client, a NodeJS
       backend, and a Postgres + pgvector datastore, wired by tRPC + WebSocket.
 
-      Layout — Three source roots per the constitution: client (@client),
-      backend (@backend), shared (@shared) — with folder-modules per capability
-      and a dedicated shared folder for cross-module code. Every module folder
-      carries a CLAUDE.md (purpose, implemented spec IDs, structure,
-      dependencies, optional module-scoped principles and Gotchas). All
-      client→backend calls go through domain-specific API React hooks; realtime
-      updates arrive over WebSocket with light payloads. Channel adapters are
-      isolated per platform so a policy change on one channel never blocks the
-      others (R-6) — one instance of the general ports-&-adapters principle
-      (ADR-0003): jobs, blob storage, email, the publishing transport, and
-      LLM/search each sit behind a domain-defined port with environment-selected
-      adapters (self-contained dev → single instance → cloud), so domain code
-      never imports a vendor SDK directly.
+      Layout — Four source roots per the constitution: client (@client),
+      backend (@backend), shared (@shared), and news (@news — the public news
+      SSR renderer ARC-23, a separate deployable; DEC-36/ADR-0007) — with
+      folder-modules per capability and a dedicated shared folder for
+      cross-module code. Every module folder carries a CLAUDE.md (purpose,
+      implemented spec IDs, structure, dependencies, optional module-scoped
+      principles and Gotchas). All client→backend calls go through
+      domain-specific API React hooks; realtime updates arrive over WebSocket
+      with light payloads. Channel adapters are isolated per platform so a
+      policy change on one channel never blocks the others (R-6) — one instance
+      of the general ports-&-adapters principle (ADR-0003): jobs, blob storage,
+      email, the publishing transport, the CDN (IG-11), and LLM/search each sit
+      behind a domain-defined port with environment-selected adapters
+      (self-contained dev → single instance → cloud), so domain code never
+      imports a vendor SDK directly.
+
+      Deployment topology (DEC-36/ADR-0007, concretizing ADR-0003's shapes):
+      DEV is self-contained/zero-cloud; PHASE-1 PROD is a self-hosted single
+      instance via `docker compose` bundling the app (@backend + built @client),
+      the @news renderer, and Postgres + pgvector; PHASE-2 PROD (later) is
+      horizontally-scalable managed (GCP Cloud Run + Cloud SQL or DigitalOcean —
+      provider open, Q-15). Cloudflare fronts prod static assets + the news
+      surface as the CDN (IG-11) and R2 as the Blob store (IG-10). Environments
+      are `development` (dev-login on, SEC-7) and `production`; the internal
+      ops/admin console is a config-flag, not a separate cluster (SEC-11).
 
       Module map (SHARED is @shared source compiled into both client and
       backend — a shared library, not a runtime container — so it is kept in
@@ -260,7 +277,7 @@ items:
       DEC-16.)
 
   ARC-18:
-    v: 1
+    v: 2
     kind: c4-component
     title: Publisher + Channel Adapters
     parent: ARC-3
@@ -269,14 +286,17 @@ items:
       channel-profile configuration, isolated so one platform's change never
       blocks the others (R-6). The org news page is an additional publishing
       destination (NWS-1) — additive to, never part of, PUB-1's four launch
-      channels — but it is NOT symmetric with the social adapters: social
-      adapters make outbound third-party API calls, whereas "publishing" to the
-      news page only sets the article's publish-state in our DB and purges the
-      renderer's cache tag (ADR-0004, SEC-8). The public renderer (ARC-23) then
-      pulls published articles downstream via the backend read-API — the
-      renderer is downstream of the data, not pushed to by the publisher.
-      Social variants may carry the published article link (NWS-5). See the
-      integrations register.
+      channels — but it is NOT symmetric with the social adapters: a social
+      adapter PUSHES content to a third-party platform, whereas "publishing" to
+      the news page sets the article's publish-state in our DB (in-process) and
+      then PURGES the renderer's cache tag via the Cloudflare Cache-Tags API
+      (IG-11, DEC-36) — itself a fallible outbound call, so a purge failure fails
+      the operation loudly (PUBS-1/NWSS-1 acceptance, SEC-8), NOT a local/reliable
+      no-op as the pre-Cloudflare design assumed. The asymmetry is that the public
+      renderer (ARC-23) PULLS published articles downstream via the backend
+      read-API — the renderer is downstream of the data, not pushed to by the
+      publisher. Social variants may carry the published article link (NWS-5).
+      See the integrations register (IG-11).
 
   ARC-19:
     v: 1
@@ -313,17 +333,21 @@ items:
       operator alerting.
 
   ARC-23:
-    v: 1
+    v: 2
     kind: c4-container
     title: Public News Renderer
     parent: ARC-1
     body: |
-      A separate SEO-first SSR/SSG deployable (Astro + React islands, ADR-0004)
-      serving the org news site (NWS-1..6) to the public reader persona
-      (journey XN-1). Reads published article/topic data from the backend
-      read-API and images via the Blob port (ADR-0003); renders the DS-8
+      A separate SEO-first SSR/SSG deployable (Astro + React islands, ADR-0004),
+      packaged as the 4th source root **@news** (DEC-36/ADR-0007) — reuses
+      @shared types + the DS-8 tokens (CSS custom properties) and builds/deploys
+      as its own container. Serves the org news site (NWS-1..6) to the public
+      reader persona (journey XN-1). Reads published article/topic data from the
+      backend read-API and images via the Blob port (ADR-0003); renders the DS-8
       org-branded template. Isolated from the authenticated SPA so its
-      caching/SEO/rate-limit posture (SEC-8) is independent. Resolves the
+      caching/SEO/rate-limit posture (SEC-8) is independent. Fronted in prod by
+      the Cloudflare CDN (IG-11) with per-article cache-tag purge on
+      publish/edit/unpublish/takedown (SEC-8 immediate-takedown). Resolves the
       DEC-10 URL routing (dev path / prod dedicated domain / org subdomain).
 
   ARC-24:

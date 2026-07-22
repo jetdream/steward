@@ -3,10 +3,10 @@ prefix: NWSS
 title: Org News Site — behavior
 status: approved
 challenge:
-  date: 2026-07-19
-  by: cortex:architect-challenger (r1 single pass + product-designer lens → r2 delta)
+  date: 2026-07-22
+  by: cortex:architect-challenger (r1 single pass + product-designer lens → r2 delta → NWSS-1 v2 news-purge-failure delta re-challenged in the deployment r2 pass)
   verdict: pass
-  record: .spec/specs/challenges/nws-news-site-2026-07-19-r2.md
+  record: .spec/specs/challenges/nws-news-site-2026-07-22-r3.md
   summary: >-
     r1 FAILED on one high — NWSS-4 wired the PUBLIC org-domain rail to the RAW
     active agenda (TOPS-4 getAgenda), leaking forward editorial INTENT to donors
@@ -20,6 +20,12 @@ challenge:
     TOPS-4 caller list swept (publish-scoped NWS reader), DM-5/DM-13 linkage named,
     DS-4 a11y acceptance added. r2 delta verified all against live text and passed;
     residual = a code-time DM-5 field note for the type/agenda-topic linkage.
+    NWSS-1 -> v2 (2026-07-22, deployment delta DEC-36): the takedown cache-purge is
+    a fallible Cloudflare Cache-Tags outbound call (IG-11), so acceptance now
+    requires a purge FAILURE to fail the takedown loudly (retry + operator alert;
+    the article stays reported-live until purge confirmed — never silently served
+    after recall, SEC-8); the "not an outbound API call" wording was corrected.
+    Delta-re-challenged in the deployment r2 pass (pass-with-nits, fixes applied).
 intent: >-
   Exact behavior of the org news site (register nws-news-site.yaml) — Steward's
   first PUBLIC, donor-facing surface and the "published with Steward" growth loop:
@@ -41,8 +47,9 @@ design: >-
   master story IS the article, no separate entity) via the backend read-API; it is
   downstream of the data, never pushed to. "Publishing" to news is the ASYMMETRIC
   destination (ARC-18, PUBS-1): it sets the article's publish-state and PURGES the
-  renderer cache tag (ADR-0004) — not an outbound third-party API call — so
-  takedown is immediate DESPITE CDN caching (SEC-8). The address is per-org
+  renderer cache tag via the Cloudflare Cache-Tags API (IG-11, ADR-0004) — a
+  fallible outbound call whose failure fails the takedown loudly (NWSS-1
+  acceptance) — so takedown is immediate DESPITE CDN caching (SEC-8). The address is per-org
   newsConfig (DM-1, DEC-10): dev app-path, prod dedicated Steward news domain, or
   the org's own subdomain (NWSS-6). The front-page org-domain rail REUSES the
   active TOP-4 editorial agenda (TOPS-4 getAgenda) — one source, not a second
@@ -78,7 +85,7 @@ interfaces: >-
 
 items:
   NWSS-1:
-    v: 1
+    v: 2
     title: Hosted news page per org — lifecycle + takedown
     implements: [NWS-1]
     statement: >-
@@ -88,13 +95,18 @@ items:
       upgrade to its own subdomain (NWSS-6). The address is RESERVED and served
       while the org's account is active (Q-11). Articles publish through a standard
       channel adapter (ARC-18), ADDITIVE to — never part of — PUB-1's four launch
-      channels; the news "publish" is ASYMMETRIC (sets DM-5 publish-state + purges
-      the renderer cache tag, ADR-0004, not an outbound API call). TAKEDOWN: an
+      channels; the news "publish" is ASYMMETRIC (sets DM-5 publish-state +
+      purges the renderer cache tag via the Cloudflare Cache-Tags API — a fallible
+      outbound call, IG-11/DEC-36). TAKEDOWN: an
       article can be UNPUBLISHED (DM-5 published -> unpublished, news-only —
       social variants delete natively, PUBS-1); the founder-initiated takedown
-      ACTION is owned HERE, executed via the ARC-18 cache-purge MECHANISM so it is
-      IMMEDIATE despite CDN caching (SEC-8) — this resolves the PUBS-1
-      news-takedown open-question. Route afterlife follows SEC-8's trichotomy:
+      ACTION is owned HERE, executed via the ARC-18/IG-11 cache-purge MECHANISM so
+      it is IMMEDIATE despite CDN caching (SEC-8) — this resolves the PUBS-1
+      news-takedown open-question. Because the purge is a fallible outbound call, a
+      purge failure FAILS THE TAKEDOWN LOUDLY (retries + operator alert, PUBS-1);
+      the article is treated as STILL-LIVE and never reported taken-down until the
+      purge is confirmed — a recalled article is never silently left served.
+      Route afterlife follows SEC-8's trichotomy:
       while the account is ACTIVE or TOMBSTONED, a recalled/unpublished route
       serves the warm org-branded "not here" page (XN-2); only after a BIL-2 HARD
       DELETION (org data + branding removed, SEC-4) does the slug return a generic
@@ -103,8 +115,10 @@ items:
       publishing an article makes it live with the cache purged; unpublishing it
       takes it down immediately (cache purged) and serves the org-branded not-here
       page while active or tombstoned (generic 410 only after a BIL-2 hard
-      deletion); the news destination is never counted among PUB-1's four social
-      channels.
+      deletion); a cache-purge FAILURE (Cloudflare Cache-Tags API, IG-11) fails the
+      takedown loudly — retries, alerts operators, and the article stays reported
+      live until the purge confirms, never silently served after recall (SEC-8);
+      the news destination is never counted among PUB-1's four social channels.
   NWSS-2:
     v: 1
     title: SEO-first and shareable

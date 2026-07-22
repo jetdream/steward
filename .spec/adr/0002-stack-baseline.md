@@ -48,8 +48,11 @@ Adopt and record the constitution-fixed stack as the baseline:
 - **LLM**: Vercel AI SDK (provider-abstracted; model selection deferred to
   the skeleton).
 - **Observability**: OpenTelemetry, LGTM stack in dev.
-- **Source layout**: three roots — `@client`, `@backend`, `@shared` —
-  folder-modules per capability, shared package for cross-boundary types.
+- **Source layout**: `@client`, `@backend`, `@shared` — folder-modules per
+  capability, shared package for cross-boundary types.
+  *(Amended 2026-07-22, DEC-36/ADR-0007: a 4th root `@news` is added — the public
+  news SSR renderer (Astro + React islands, ADR-0004), a separate deployable that
+  reuses `@shared` + the DS-8 tokens. Originally three roots.)*
 
 ## Consequences
 

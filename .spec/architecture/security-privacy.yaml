@@ -135,7 +135,7 @@ items:
       org's channel-publishing credentials, not the founder's login.
 
   SEC-11:
-    v: 3
+    v: 4
     kind: posture
     title: Operator & platform-staff access, impersonation & audit
     body: |
@@ -153,7 +153,17 @@ items:
       IDENTITY is not surfaced to the founder, but a neutral "a Steward support
       action" marker AND the results ARE shown on the founder's own surfaces (the
       VAL-3 carve-out, DEC-31 refined by DEC-33 — v3: the marker replaces full
-      silence). The console is disabled outside the ops environment.
-      Founder-ratified: DEC-27 (the operator posture) + DEC-32 (this
-      identity/impersonation model) + DEC-33 (the founder-facing support marker). The audit log + reason prompt + ledger
-      are first-class parts of the ops module (ARC-22), not add-ons.
+      silence). ENVIRONMENT GATING (v4, DEC-36/ADR-0007): the deployment model is
+      `development` / `production` only (no separate ops environment/cluster) — the
+      ops/admin console is gated by a CONFIG FLAG that is OFF unless explicitly
+      enabled, and is never enabled in a public/reader-only deployment. This is a
+      CONSCIOUS defense-in-depth reduction for phase-1 simplicity: when the flag is
+      on, the console runs in the same single instance as the founder app and the
+      public news surface, so deployment/network isolation is NOT a barrier — the
+      access control is carried ENTIRELY by the app-level role (least-privilege),
+      the reason-gate, and the full audit trail (unchanged). The phase-1
+      single-instance blast radius is in scope for the deferred SEC threat-model
+      pass. Founder-ratified: DEC-27 (the operator posture) + DEC-32 (this
+      identity/impersonation model) + DEC-33 (the founder-facing support marker) +
+      DEC-36 (the config-flag environment model). The audit log + reason prompt +
+      ledger are first-class parts of the ops module (ARC-22), not add-ons.

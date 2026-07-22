@@ -20,3 +20,6 @@ Use [TEMPLATE.md](TEMPLATE.md).
 | [ADR-0002](0002-stack-baseline.md) | Consolidated stack baseline | accepted |
 | [ADR-0003](0003-deployment-portability.md) | Deployment portability via ports & adapters | accepted |
 | [ADR-0004](0004-news-site-rendering.md) | Public news-site rendering & hosting | accepted |
+| [ADR-0005](0005-operator-access-model.md) | Operator access & audit model | superseded |
+| [ADR-0006](0006-identity-impersonation-model.md) | Accounts, identity, impersonation & activity-ledger model | accepted |
+| [ADR-0007](0007-deployment-topology.md) | Deployment topology & environments | accepted |

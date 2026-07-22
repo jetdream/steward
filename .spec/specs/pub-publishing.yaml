@@ -3,10 +3,10 @@ prefix: PUBS
 title: Publishing — behavior
 status: approved
 challenge:
-  date: 2026-07-19
-  by: cortex:architect-challenger (r1 single pass → r2/r3 delta [PUBS-1 v2 subscription gate])
+  date: 2026-07-22
+  by: cortex:architect-challenger (r1 single pass → r2/r3 delta [PUBS-1's v2 subscription gate] → v3 news-purge-failure delta re-challenged in the deployment r2 pass)
   verdict: pass
-  record: .spec/specs/challenges/pub-publishing-2026-07-19-r3.md
+  record: .spec/specs/challenges/pub-publishing-2026-07-22-r4.md
   summary: >-
     r1 passed (no high): AUT-1 veto deferral honest, news-destination asymmetry +
     DM-5 recital + GR-6-sole-guardrail held; fixes — positive connection gate
@@ -19,7 +19,13 @@ challenge:
     PUBLISHING-ELIGIBLE = active OR payment-failure grace (publishing UNAFFECTED,
     XB-2); cancelled or grace-expired (lapsed) does NOT publish (durable BILS-2
     stop, re-subscribe only). XB-2 added to constrained-by; DM-11 -> v2 with the
-    status vocabulary; acceptance covers grace-continues / lapsed-stops.
+    status vocabulary; acceptance covers grace-continues / lapsed-stops. PUBS-1 ->
+    v3 (2026-07-22, deployment delta DEC-36): the news cache-purge is a fallible
+    Cloudflare Cache-Tags outbound call (IG-11), so acceptance now requires a
+    purge FAILURE to fail the operation loudly (retry + operator alert; the article
+    stays reported-live until purge confirmed — never silently served after recall,
+    SEC-8); the "not an outbound API call" wording was corrected. Delta-re-challenged
+    in the deployment r2 pass (pass-with-nits, fixes applied).
 intent: >-
   Exact behavior of publishing (register pub-publishing.yaml): approved variants
   reach the four launch channels through official APIs at engagement-optimal
@@ -43,8 +49,11 @@ design: >-
   (DM-14) for credentials + health and drives the per-variant delivery lifecycle
   (DM-5: pending -> scheduled -> published; paused via AUT-3). The org NEWS PAGE
   is an additional, ASYMMETRIC destination (NWS-1, renderer ARC-23, ADR-0004):
-  "publishing" there sets the article's publish-state and purges the renderer
-  cache tag — not an outbound third-party API call (ARC-18). Failures retry with
+  "publishing" there sets the article's publish-state (in-process) and purges the
+  renderer cache tag via the Cloudflare Cache-Tags API (IG-11, DEC-36) — a
+  fallible outbound call whose failure must fail the takedown loudly (PUBS-1
+  acceptance, SEC-8), no longer the "no outbound API" shortcut the pre-Cloudflare
+  design assumed. Failures retry with
   backoff and alert OPERATORS via failure queues (OPS-1); the founder is bothered
   ONLY when action is needed (MEM-2, PUB-1 acceptance). The publish log (PUBS-3)
   is the VAL-3 "everything auto-done is logged and visible" record, surfaced in
@@ -71,12 +80,13 @@ interfaces: >-
   via the official channel adapter [IG-1 / IG-2; reads DM-14; DM-5 -> published;
   writes the PUBS-3 log]; pause(scope) / killSwitch() -> halt delivery [AUT-3];
   publishLog(org) -> the record [UX-4 / XG-4]. News-destination publish sets the
-  article publish-state + purges the renderer cache tag (ARC-23, ADR-0004) rather
-  than calling an outbound API. Exact adapter/tRPC signatures live in code.
+  article publish-state + purges the renderer cache tag via the Cloudflare
+  Cache-Tags API (IG-11, ARC-23, ADR-0004); a purge failure fails the operation
+  loudly (PUBS-1 acceptance, SEC-8). Exact adapter/tRPC signatures live in code.
 
 items:
   PUBS-1:
-    v: 2
+    v: 3
     title: Channels at launch — official APIs, scheduled delivery
     implements: [PUB-1]
     statement: >-
@@ -102,7 +112,8 @@ items:
       retry with backoff and alert OPERATORS via failure queues (OPS-1); the
       founder is alerted ONLY when action is needed (MEM-2). The org news page is
       an additional, asymmetric destination (NWS-1, ARC-23): publishing there sets
-      publish-state + purges the renderer cache (not an outbound API call, ARC-18).
+      publish-state + purges the renderer cache tag via the Cloudflare Cache-Tags
+      API (IG-11, DEC-36) — a fallible outbound call, NOT an in-process write.
       Delivery also honors the AUT-1 TL1 veto window (its hold/takedown mechanics
       are AUT-1's to define — open-questions). Flexibility: HARD (PUB-1) —
       official-API-only and the pause/kill gate are non-negotiable.
@@ -112,7 +123,11 @@ items:
       not post (surfaces the needs-you card); the kill switch halts all posting
       instantly (AUT-3); a payment-failure GRACE-period org CONTINUES to publish
       (XB-2); only a CANCELLED or post-grace-LAPSED org stops publishing, restored
-      only by re-subscribe (not an un-pause).
+      only by re-subscribe (not an un-pause); a NEWS cache-purge failure (Cloudflare
+      Cache-Tags API, IG-11) FAILS THE OPERATION LOUDLY — it retries and alerts
+      operators, and the affected article is treated as still-live (never reported
+      taken-down) until the purge is confirmed, so a recalled article is never
+      silently left served (SEC-8).
   PUBS-2:
     v: 1
     title: Per-channel technical profiles

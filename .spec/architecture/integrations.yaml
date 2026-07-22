@@ -105,3 +105,18 @@ items:
       Cloudflare R2 in prod (zero egress), MinIO/filesystem in self-contained
       dev. Serves the media library (DM-4) and the public renderer's images
       (ARC-23).
+
+  IG-11:
+    v: 1
+    kind: integration
+    title: CDN (Cloudflare)
+    body: |
+      Prod edge cache for static assets AND the public news surface (ARC-23,
+      DEC-36/ADR-0007). Behind a domain-defined CDN port (ADR-0003 pattern):
+      Cloudflare in prod, a no-op pass-through in self-contained dev. Cache
+      entries are keyed by per-article **cache tags**; publish/edit/unpublish/
+      takedown calls the **Cloudflare Cache-Tags purge API** to evict the tag —
+      the concrete mechanism behind ADR-0004's tag-based purge and SEC-8's
+      "aggressively cacheable yet immediate takedown". Auth = a scoped API token
+      (zone cache-purge only). Failure mode: a purge failure must fail the
+      takedown loudly (SEC-8) — never silently leave a recalled article served.

@@ -57,6 +57,10 @@ else (ADR-0003) — Blob for images, the backend read-API for article/topic data
   makes SEC-8's "aggressively cacheable" and "takedown is immediate"
   simultaneously true — SSR alone only helps cache *misses*). Optional static
   pre-render remains a pure performance optimization under the same purge.
+  *(Amended 2026-07-22, DEC-36/ADR-0007: the CDN is concretely **Cloudflare** —
+  the tag-based purge is the Cloudflare Cache-Tags API (IG-11); the renderer is
+  the 4th source package `@news`. This ADR left the CDN vendor and package name
+  open; ADR-0007 fixes both without changing the rendering path chosen here.)*
 - **URL routing (DEC-10)**: dev → `<app>/news/<org-slug>`; prod → a dedicated
   Steward news domain by org slug; org may bind its own `news.<org-domain>`
   (NWS-6) — the renderer resolves org-by-host/path uniformly.

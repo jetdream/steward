@@ -383,7 +383,7 @@ items:
     v: 1
     type: pattern
     scope: [spec-authoring, process]
-    source: PUBS-1 v2 + APRS-1 v3 re-challenges (P1b, 2026-07-20)
+    source: PUBS-1's v2 + APRS-1 v3 re-challenges (P1b, 2026-07-20)
     title: Adding NEW behavior to an already-approved spec needs a delta re-challenge, not the additive-enumeration in-band shortcut
     statement: >-
       During P1a a few approved specs were bumped for purely ADDITIVE-CLARIFYING
@@ -391,12 +391,12 @@ items:
       shared budget) and kept approved on the strength of the CONSUMING spec's
       challenger reviewing the delta in-band. That shortcut does NOT extend to a NEW
       BEHAVIOR. In P1b, closing the BIL->PUB gap added a real publishing gate
-      (PUBS-1 v2, active-Subscription) and the OPS QA hold added a readyStack filter
+      (in PUBS-1's v2, active-Subscription) and the OPS QA hold added a readyStack filter
       (APRS-1 v3) — both to already-approved specs, both re-pinned + green. The
       consuming challengers (BIL, OPS) FLAGGED each as an un-challenged behavior
       change on an approved spec (a silent gate-bypass class the lint can't catch:
       it checks pin freshness, not that the challenge record post-dates the item
-      version). Both then FAILED their own delta re-challenge (PUBS-1 v2's grace
+      version). Both then FAILED their own delta re-challenge (PUBS-1's v2 grace
       wording was backwards; APRS-1 v3 lacked an acceptance clause). Lesson: when a
       downstream change adds behavior to an approved spec, REGRESS that spec to
       draft and delta-re-challenge the bumped item BEFORE re-approving — reserve the

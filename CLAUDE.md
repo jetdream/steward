@@ -32,10 +32,11 @@ Follow strict type hygiene, including:
 - No unsafe json/yaml parsing - use Zod for type checking
 
 ## Project structure
-Three top level src folders:
+Four top level src folders:
 - client - TS alias @client
 - backend - TS alias @backend
 - shared - TS alias @shared
+- news - TS alias @news (the public news SSR renderer — Astro + React islands, a separate deployable; ADR-0004/ADR-0007/DEC-36)
 
 Folder-module general structure with dedicated shared folder for cross-modules.
 

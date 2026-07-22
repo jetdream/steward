@@ -35,15 +35,21 @@ items:
       Meta app review + business verification gate cohort-1 activation (A-1).
 
   CON-3:
-    v: 1
+    v: 2
     category: deployment
-    title: Deployment target not yet specified
+    title: Deployment topology & environments
     statement: >-
-      Hosting / environment / region / data-residency requirements have not
-      been provided. Recorded as a known gap (open Q for the design pass); to
-      be filled during intake before architecture decisions that depend on it
-      (data residency, backup, uptime SLOs) are made. Placeholder so the gap
-      is explicit, not silently assumed.
+      RESOLVED (DEC-36, ADR-0007). Dev: self-contained/zero-cloud. Phase-1 prod:
+      self-hosted single instance via `docker compose` (app + `@news` renderer +
+      bundled Postgres). Phase-2 prod (later): horizontally-scalable managed —
+      GCP Cloud Run + Cloud SQL OR DigitalOcean (provider open, Q-15). Cloudflare
+      CDN fronts static prod assets + the news surface (edge cache + tag-purge);
+      Cloudflare R2 is the blob store. Environments = development (dev-login on,
+      SEC-7) / production; the ops/admin console is config-flag-gated (SEC-11).
+      PHASE-1 data durability is an obligation NOW (confidential org data, SEC-4,
+      in the bundled Postgres): scheduled `pg_dump` → Cloudflare R2 with a bounded
+      retention window + a restore path (ADR-0007). Only residual DATA-RESIDENCY /
+      UPTIME-SLO decisions ride with the phase-2 provider (Q-15) — not backup.
 
   CON-4:
     v: 1

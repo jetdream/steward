@@ -176,3 +176,19 @@ items:
       the steward theme tokens (DS-1/DS-3/DS-4) — NO DS-trio extension. GR-7 → v3
       scopes the inventory-reuse clause to founder/public surfaces; internal
       tools conform via tokens only. The XADM screens are updated accordingly.
+
+  Q-15:
+    v: 1
+    status: open
+    decidable-by: user
+    title: Phase-2 managed hosting provider
+    statement: >-
+      Phase-1 prod is self-hosted single-instance Docker Compose (ADR-0007). The
+      phase-2 horizontally-scalable managed shape (ADR-0003 shape 3) is decided in
+      kind but not in provider: GCP (Cloud Run + Cloud SQL for Postgres) OR
+      DigitalOcean. Includes the data-residency / uptime-SLO decisions
+      (CON-3 residual) that ride with the provider. Backup is NOT here — phase-1
+      already carries a durability posture (`pg_dump` → R2, ADR-0007/CON-3). NOT a
+      phase-1 blocker — ports & adapters (ADR-0003) keep domain code
+      provider-agnostic; choose when phase-2 scaling is actually needed.
+      Cloudflare stays the CDN + R2 blob regardless (ADR-0007).

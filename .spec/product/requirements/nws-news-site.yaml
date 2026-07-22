@@ -33,11 +33,11 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Covered by NWSS-1 (approved, challenge r2 pass): per-org hosted page
+        Covered by NWSS-1 (approved, challenge r3 pass — v2 news-purge-failure): per-org hosted page
         (DM-1 newsConfig, DEC-10), asymmetric publish (state + cache purge, ARC-18/
         ADR-0004), founder-owned takedown with SEC-8's active/tombstoned/deleted
         trichotomy. Realization pending code.
-      against: [NWSS-1@1, G-1@1, G-4@1]
+      against: [NWSS-1@2, G-1@1, G-4@1]
 
   NWS-2:
     v: 1
