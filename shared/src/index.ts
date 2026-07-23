@@ -16,6 +16,7 @@
 export * from "./entities/channel-connection.js";
 export type { MemoryEntry, MemoryEntryView } from "./entities/memory-entry.js";
 export * from "./entities/memory-source.js";
+export type { ModelCall } from "./entities/model-call.js";
 export type { Org } from "./entities/org.js";
 export * from "./enums.js";
 export * from "./ids.js";

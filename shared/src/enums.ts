@@ -83,3 +83,24 @@ export type TopicProvenance = z.infer<typeof TopicProvenance>;
 /** DM-4 MediaAsset provenance. */
 export const MediaProvenance = z.enum(["upload", "harvested"]);
 export type MediaProvenance = z.infer<typeof MediaProvenance>;
+
+/**
+ * DM-19 ModelCall.operation — the LLM/search port operations (PIPE-4/PIPE-5). A
+ * `const` tuple: the ONE source, consumed by the Zod enum + the drizzle
+ * `model_call.operation` column so the column stays a narrow union.
+ */
+export const modelCallOperations = [
+  "generate",
+  "generateObject",
+  "classify",
+  "embed",
+  "groundedSearch",
+  "chatStep",
+] as const;
+export const ModelCallOperation = z.enum(modelCallOperations);
+export type ModelCallOperation = z.infer<typeof ModelCallOperation>;
+
+/** DM-19 ModelCall.outcome — how the port call resolved (PIPE-6 reliability). */
+export const modelCallOutcomes = ["ok", "error"] as const;
+export const ModelCallOutcome = z.enum(modelCallOutcomes);
+export type ModelCallOutcome = z.infer<typeof ModelCallOutcome>;

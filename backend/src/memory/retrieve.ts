@@ -16,6 +16,7 @@
 import type { MemoryEntry, OrgId } from "@shared";
 import { memoryEntry } from "@shared/db/schema.js";
 import { and, cosineDistance, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
+import { withObsContext } from "../observability/context.js";
 import type { MemoryDeps } from "./write.js";
 
 /** Default number of grounding neighbours returned for a slot. */
@@ -75,7 +76,9 @@ export async function retrieveContext(
 
   let grounding: MemoryEntry[] = [];
   if (slot && slot.trim().length > 0) {
-    const queryVec = await llm.embed(slot, "RETRIEVAL_QUERY");
+    const queryVec = await withObsContext({ orgId, skill: "retrieve-memory" }, () =>
+      llm.embed(slot, "RETRIEVAL_QUERY"),
+    );
     const distance = cosineDistance(memoryEntry.embedding, queryVec);
     grounding = await db
       .select()

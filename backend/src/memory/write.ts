@@ -12,6 +12,7 @@ import { randomUUID } from "node:crypto";
 import type { MemoryEntry, MemoryEntryKind, MemorySource, OrgId } from "@shared";
 import { memoryEntry } from "@shared/db/schema.js";
 import { and, eq, isNull } from "drizzle-orm";
+import { withObsContext } from "../observability/context.js";
 import type { EmbedTaskType, LlmPort } from "../ports/llm.js";
 import { normalize, subjectKey } from "./subject-key.js";
 
@@ -71,23 +72,27 @@ export async function writeMemory(
   rawInput: string,
   ctx: WriteContext,
 ): Promise<MemoryEntry[]> {
-  const candidates = await deps.llm.extractEntries(rawInput, {
-    correctionChannel: ctx.correctionChannel,
-  });
-
-  const results: MemoryEntry[] = [];
-  for (const cand of candidates) {
-    const kind = applyCorrectionPolicy(cand.kind, cand.content, ctx.correctionChannel);
-    const key = subjectKey(kind, cand.subject, cand.content);
-    const entry = await upsertEntry(deps, ctx, {
-      kind,
-      subject: cand.subject,
-      content: cand.content,
-      subjectKey: key,
+  // Attribute every LLM call in this write (extraction + per-entry embedding) to
+  // the org + skill for observability (PIPE-5) — the instrumented port reads this.
+  return withObsContext({ orgId: ctx.orgId, skill: "extract-memory" }, async () => {
+    const candidates = await deps.llm.extractEntries(rawInput, {
+      correctionChannel: ctx.correctionChannel,
     });
-    results.push(entry);
-  }
-  return results;
+
+    const results: MemoryEntry[] = [];
+    for (const cand of candidates) {
+      const kind = applyCorrectionPolicy(cand.kind, cand.content, ctx.correctionChannel);
+      const key = subjectKey(kind, cand.subject, cand.content);
+      const entry = await upsertEntry(deps, ctx, {
+        kind,
+        subject: cand.subject,
+        content: cand.content,
+        subjectKey: key,
+      });
+      results.push(entry);
+    }
+    return results;
+  });
 }
 
 /** MEMS-2: merge an identical restatement, supersede a correction, else insert. */

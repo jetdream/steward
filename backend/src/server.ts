@@ -31,7 +31,7 @@ const db = createDb(databaseUrl);
 const auth = createAuth(db);
 // LLM port: real Vertex/Gemini when VERTEX_AI_KEY is set, else the keyless dev
 // stub (ADR-0003/ADR-0008). Memory (ARC-11) is the shared brain over both.
-const llm = createLlmPort();
+const llm = createLlmPort({ db });
 const memory = createMemory(db, llm);
 const ctx = makeContext(db, auth, memory);
 console.log(`@backend LLM adapter: ${llm.name}`);

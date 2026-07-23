@@ -15,6 +15,13 @@
       "when": 1784774518091,
       "tag": "0001_square_changeling",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784791315824,
+      "tag": "0002_married_red_wolf",
+      "breakpoints": true
     }
   ]
 }
