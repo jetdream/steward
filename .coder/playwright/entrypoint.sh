@@ -78,6 +78,8 @@ runuser -u pwuser -- env \
   GOOGLE_DEFAULT_CLIENT_ID=no \
   GOOGLE_DEFAULT_CLIENT_SECRET=no \
   /ms-playwright/chromium-1169/chrome-linux/chrome \
+    --no-sandbox \
+    --disable-dev-shm-usage \
     --disable-gpu \
     --no-first-run \
     --no-default-browser-check \

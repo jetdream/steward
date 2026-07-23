@@ -19,9 +19,19 @@ export const devOtpStore = new Map<string, string>();
 
 /** Build the BetterAuth instance over the shared Drizzle handle. */
 export function createAuth(db: Database) {
+  // Origins allowed for auth requests + cookies. In the Coder workspace the app is
+  // served from the external FQDN (BETTER_AUTH_URL / FRONTEND_URL); localhost covers
+  // plain local dev.
+  const trustedOrigins = [
+    process.env.BETTER_AUTH_URL,
+    process.env.FRONTEND_URL,
+    "http://localhost:3000",
+  ].filter((origin): origin is string => Boolean(origin));
+
   return betterAuth({
     baseURL: process.env.BETTER_AUTH_URL ?? "http://localhost:3001",
     secret: process.env.BETTER_AUTH_SECRET ?? "dev-insecure-secret",
+    trustedOrigins,
     database: drizzleAdapter(db, { provider: "pg", schema: authSchema }),
     socialProviders: {
       // Google sign-in (production). Wired now; credentials come from env — the

@@ -2,6 +2,9 @@ node_modules
 dist
 *.tsbuildinfo
 
+# Playwright MCP test artifacts (snapshots, console logs, screenshots)
+.playwright-mcp/
+
 # local env / secrets — never committed
 .env
 .env.*

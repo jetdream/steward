@@ -17,6 +17,11 @@ export default defineConfig({
     },
   },
   server: {
+    // Bind 0.0.0.0 so the Coder proxy / the Playwright container's Caddy can reach
+    // the dev server via host.docker.internal; allow the workspace's external host
+    // (Vite blocks unknown Host headers by default). Dev only — gated by Coder auth.
+    host: true,
+    allowedHosts: [".coder.bpms.dev", "localhost"],
     port: 3000,
     proxy: {
       "/trpc": {
