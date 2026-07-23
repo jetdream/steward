@@ -15,6 +15,48 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-41:
+    v: 1
+    date: 2026-07-23
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0003, ADR-0008, ADR-0009, ADR-0010, PIPE-1, G-2]
+    title: AI subsystem architected as an evaluated agent runtime — foundational AI phase before GEN
+    statement: >-
+      The AI subsystem — the product's core — must be deliberately architected for
+      reliability, observability, and TESTABILITY before more of it is built on the
+      go. Today it is a principle (PIPE-1 "one brain, several skills") plus
+      per-capability prose: prompts, tools, model-routing, an agent runtime, evals,
+      LLM observability, LLM reliability, and cost tracking are unspecified or
+      placeholder, and none are built. Four founder decisions (2026-07-23) shape it:
+      (1) AGENT RUNTIME WEIGHT = a FULL agent framework (a bounded multi-step
+      tool-calling runtime), not the thin declarative layer. This deliberately
+      REVISITS ADR-0003's "reject a heavy orchestration layer up front" clause with
+      new information (the AI is the core and needs first-class runtime governance);
+      ADR-0009 amends THAT CLAUSE ONLY — the rest of ADR-0003 (ports & adapters,
+      self-contained dev, the job/queue seam) stands, so ADR-0009 does not supersede
+      ADR-0003 and triggers no citing-spec cascade. Consequence accepted: a
+      multi-step agent is harder to regression-test (trajectories, compounding
+      non-determinism, cost), so the runtime is BOUNDED by construction (per-skill
+      allowed-tools / max-steps / cost-budget / termination) and the eval framework
+      scores trajectories, not only final output.
+      (2) EVAL HARNESS = a bespoke in-repo runner (datasets as versioned artifacts +
+      a scorer), no external eval SaaS — honoring ADR-0003 self-contained dev.
+      (3) SEQUENCING = a FOUNDATIONAL AI PHASE lands before the first heavy
+      generation vertical (GEN), mirroring the DEC-37 foundation-first move, so GEN
+      and every later skill are built on the runtime and evaluated from day one.
+      (4) REGRESSION GATE = TIERED — keyless deterministic + dev-stub tests on every
+      commit (CI stays self-contained); the full keyed LLM eval runs on any harness
+      artifact change (prompt / tool / model) and on demand, as a champion-vs-
+      challenger comparison that BLOCKS a change that regresses the suite. This is
+      the operational form of "updating the agentic harness must not degrade agent
+      performance."
+      AUTHORIZES: ADR-0009 (agent runtime & harness model, amending ADR-0003),
+      ADR-0010 (AI evaluation & regression framework), and a new cross-cutting
+      AI-evaluation requirement register scoped as VERIFICATION/ASSURANCE
+      (traceable to the DEC-3 governance lineage + the goals' outcome tier, NOT a
+      product capability on the G-2 approval-rate path — it tests that we produce
+      good drafts, it does not produce them) — each challenger-gated at its design
+      gate before code. Cost bounds tie to the PIPE-1 <$25/org/mo COGS target.
   DEC-40:
     v: 1
     date: 2026-07-23

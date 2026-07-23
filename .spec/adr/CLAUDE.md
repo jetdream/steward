@@ -24,3 +24,5 @@ Use [TEMPLATE.md](TEMPLATE.md).
 | [ADR-0006](0006-identity-impersonation-model.md) | Accounts, identity, impersonation & activity-ledger model | accepted |
 | [ADR-0007](0007-deployment-topology.md) | Deployment topology & environments | accepted |
 | [ADR-0008](0008-llm-model-selection.md) | LLM & embedding model selection — Google Vertex AI (Gemini) | accepted |
+| [ADR-0009](0009-agent-runtime.md) | Agent runtime & harness model (amends ADR-0003 orchestration clause) | accepted |
+| [ADR-0010](0010-ai-evaluation-framework.md) | AI evaluation & regression-testing framework | accepted |

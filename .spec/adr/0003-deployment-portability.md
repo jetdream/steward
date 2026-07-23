@@ -34,6 +34,11 @@ decided ad hoc per feature.
 2. **A heavy orchestration layer** (e.g. Temporal, a service mesh) up front.
    Solves portability but is far more than a two-engineer, 12-week team should
    operate; premature. Rejected (may revisit at real scale).
+   *(Amended 2026-07-23, DEC-41 / ADR-0009 [accepted]: this "no heavy
+   orchestration up front" stance is revisited for the AI subsystem specifically
+   — the product's core — which adopts a bounded agent runtime (ADR-0009). It
+   amends ONLY this clause; the ports & adapters principle, self-contained dev,
+   and the Job/Queue seam below stand unchanged.)*
 3. **Ports & adapters (hexagonal), thin (chosen).** Each infra concern is a
    narrow domain-defined **port** (a TypeScript interface in `@shared`/backend);
    concrete **adapters** implement it; the active adapter is selected by
