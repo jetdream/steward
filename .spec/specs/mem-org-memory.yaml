@@ -110,6 +110,7 @@ items:
     v: 2
     title: Write path and entry taxonomy
     implements: [MEM-1]
+    assurance: verified
     statement: >-
       WRITE TRIGGERS — each of these events produces one or more MemoryEntry
       writes (DM-2), every write carrying its entry type, source (the
@@ -147,6 +148,7 @@ items:
     v: 1
     title: Supersession, dedup, and conflict precedence
     implements: [MEM-1]
+    assurance: verified
     statement: >-
       NEVER OVERWRITE — a correction SUPERSEDES the entry it corrects: the
       prior version is retained with supersededAt/supersededBy and its
@@ -214,6 +216,7 @@ items:
     v: 1
     title: Grounded retrieval and empty-memory behavior
     implements: [MEM-1]
+    assurance: verified
     statement: >-
       retrieveContext(slot) returns a grounded package: embedding-retrieved
       facts / stories / people / programs / events relevant to the slot, PLUS
@@ -232,6 +235,7 @@ items:
     v: 1
     title: Interrupt-or-assume decision
     implements: [MEM-2]
+    assurance: verified
     statement: >-
       Before surfacing ANY question to the founder, shouldAsk(unknown)
       classifies it into exactly one of the three MEM-2 interrupt-allowed
@@ -265,6 +269,7 @@ items:
     v: 1
     title: Never-ask-twice — the asked-set
     implements: [MEM-2]
+    assurance: verified
     statement: >-
       The system maintains, per org, the set of already-resolved unknowns
       (answered, declined, or assumed); an unknown already in that set is never

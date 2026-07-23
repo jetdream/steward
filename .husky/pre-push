@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
-# Full gate before publishing (DCX-14 + DEC-37): docs graph, strict types, lint.
-# Mirrors the pre-commit gate and CI. Engine = pinned cortex dependency (ADR-0001).
-npx cortex-docs-check && npm run typecheck && npm run lint
+# Full gate before publishing (DCX-14 + DEC-37): docs graph, strict types, lint,
+# then the acceptance harness (EVS-1 / EVAL-4, DEC-41). STEWARD_GATE=1 makes the
+# keyless deterministic tier REQUIRE its dev-stub integration env (DATABASE_URL) —
+# it fails loudly, never silently narrows to unit-only, if the DB is unavailable
+# (start .coder/postgres). The keyed LLM eval is NOT run here (harness-change/CI).
+# Engine = pinned cortex dependency (ADR-0001).
+npx cortex-docs-check && npm run typecheck && npm run lint && STEWARD_GATE=1 npm test

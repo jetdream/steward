@@ -84,6 +84,7 @@ prefixes:
   DSS: specs/ds-design-system.yaml   # design-system component contracts (trio artifact 2, method/ui.md §5)
   ACCS: specs/acc-accounts-identity.yaml
   ADMS: specs/adm-platform-admin.yaml
+  EVS: specs/eval-ai-evaluation.yaml   # AI evaluation & regression — behavior spec (ADR-0010)
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   # experience spine split by domain (DEC-28, 2026-07-20); EXP/spine.yaml retired

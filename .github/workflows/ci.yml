@@ -1,6 +1,8 @@
-# App CI gate (DEC-37 deliverable 2: the type-hygiene gate runs in the pre-commit
-# hook AND app CI). Mirrors `npm run gate`: docs graph, then types, then lint.
-# A red graph, a type error, or a lint error fails the build — nothing merges dirty.
+# App CI gate (DEC-37 deliverable 2 + EVS-1/EVAL-4 acceptance harness, DEC-41):
+# docs graph, strict types, lint, then the keyless deterministic test tier. A red
+# graph, a type error, a lint error, or a failing test fails the build — nothing
+# merges dirty. The keyed LLM eval (EVAL-2) is NOT run here — it runs on a
+# harness-artifact change, against a keyed env (ADR-0010 §5).
 name: gate
 
 on:
@@ -11,6 +13,24 @@ on:
 jobs:
   gate:
     runs-on: ubuntu-latest
+    # pgvector Postgres for the dev-stub integration tier — matches .coder dev
+    # (pgvector/pgvector:pg18). STEWARD_GATE makes a missing DB a loud failure,
+    # never a silent unit-only narrowing (EVS-1).
+    services:
+      postgres:
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: main
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U user -d main"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      DATABASE_URL: postgres://user:password@localhost:5432/main
+      STEWARD_GATE: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -24,3 +44,7 @@ jobs:
         run: npm run typecheck
       - name: lint (biome, no-any)
         run: npm run lint
+      - name: db migrate (schema for the integration tier)
+        run: npm run db:migrate
+      - name: acceptance harness (keyless deterministic tier, no LLM key)
+        run: npm test

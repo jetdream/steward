@@ -17,6 +17,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "gate": "npm run docs:check && npm run typecheck && npm run lint",
+    "test": "tsx --env-file-if-exists=.env --test \"{shared,backend,client,news}/src/**/*.test.ts\"",
     "db:generate": "cd backend && drizzle-kit generate",
     "db:migrate": "cd backend && drizzle-kit migrate",
     "dev": "concurrently -k -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
