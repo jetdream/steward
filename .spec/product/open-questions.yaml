@@ -10,6 +10,30 @@ intent: >-
   where the decision landed.
 
 items:
+  Q-17:
+    v: 1
+    status: open
+    decidable-by: user
+    title: Cortex method gap — no outcome-protector / assurance linkage for requirements
+    statement: >-
+      Surfaced by the AI-evaluation register (EVAL, DEC-41/ADR-0010). Cortex's
+      requirements model requires every requirement to serve a goal via COVERAGE
+      (the requirement-serves-a-goal lints, register-level + per-item = "must serve
+      >=1 goal"), and coverage means the capability critical PATH that produces the
+      metric's subject (goals.yaml). It has NO
+      edge for a requirement that PROTECTS an outcome's durability without being
+      on the produce-path — e.g. a build-time regression/eval gate, or other
+      assurance/verification obligation. Consequence: EVAL-1..4 had to borrow a
+      G-2 coverage `against` pin (classed as a "durability floor" beside OPS-1),
+      which slightly overloads "coverage". Same CLASS of method gap this project
+      previously surfaced upstream and got fixed (the goal outcome-tier assertion,
+      DEC-11/DEC-13). Candidate fix (in cortex, the ~/cortex plugin): add a
+      non-coverage `protects`/outcome-serves edge so an assurance requirement can
+      link to a goal's outcome tier without entering its coverage set; then re-link
+      EVAL and drop the borrowed pin. Decidable-by user (cortex maintainer);
+      revisit when cortex is next iterated. Not a Steward blocker — the borrowed
+      pin is honest + documented in G-2's coverage.reasoning.
+
   Q-1:
     v: 1
     status: open

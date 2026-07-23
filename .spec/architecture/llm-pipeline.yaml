@@ -92,3 +92,76 @@ items:
       TL1 veto model (default publish-then-takedown, opt-in hold-then-publish).
       (v2: DEC-26 + AUT-2 replaced the v1 "forced human approval routing" — external
       is TL1-capped auto-publish under the veto model, not forced approval.)
+
+  PIPE-4:
+    v: 1
+    kind: pipeline
+    title: Agent Runtime & harness model
+    body: |
+      Realizes ADR-0009 (DEC-41). The runtime (ARC-27) is the single home for
+      every LLM interaction; "one brain, several skills" (PIPE-1) becomes a real
+      component rather than per-capability wiring. Three parts:
+
+      - LLM/SEARCH PORT (ADR-0003 instance, provider = Gemini per ADR-0008). One
+        contract for the whole subsystem: generate / generateObject (structured)
+        / classify / embed / groundedSearch (Gemini + Google-Search grounding,
+        IG-3) / chatStep (one tool-calling turn). Adapters stay dumb (Vertex +
+        the keyless dev stub); no vendor type escapes the port.
+      - SKILL = a VERSIONED HARNESS: promptRef (a versioned prompt template) +
+        tools (a subset of the tool registry) + model/params (the ADR-0008
+        flash-vs-pro routing lives here, per skill) + retrievalPolicy (MEMS-4
+        grounding + the always-on rule/taboo overlay) + guardrailChain (PIPE-2) +
+        agentPolicy. Prompts + tool schemas are versioned artifacts; a harness
+        manifest maps skill -> its versions. The docs-graph cascade cannot see
+        prompt files, so enforcement is a CI manifest-hash check that fails a
+        harness change lacking a passing keyed eval on record (ADR-0010).
+      - RUNTIME ASSEMBLER + BOUNDED LOOP: turns (skill, orgContext) into a
+        grounded, guarded execution — a single call or a bounded tool-calling
+        loop (plan -> call tool -> observe -> repeat -> finalize). BOUNDED BY THE
+        agentPolicy: hard maxSteps, a per-invocation token/cost budget (tied to
+        the PIPE-1 COGS target), an explicit termination condition, and a
+        whitelisted tool set — unbounded loops are structurally impossible. A
+        tool is a backend module operation exposed to the model by schema; a tool
+        call inherits org confinement (ACC-3) and the guardrail chain exactly as
+        a direct call. maxSteps=1 degenerates the loop to a single-shot skill, so
+        simple skills carry no loop overhead.
+
+  PIPE-5:
+    v: 1
+    kind: pipeline
+    title: Observability & cost
+    body: |
+      Realizes PIPE-1's "everything logged … for ops QA (OPS-1) and cost tracking
+      … COGS <$25/org/month", which had no schema. Every port call is:
+      - TRACED as an OpenTelemetry span (the tRPC-span child) carrying attributes
+        org, skill, model, prompt-version, operation, tokensIn/Out, costUsd,
+        latencyMs, and the guardrail verdicts. Requires adding an OTel
+        MeterProvider (today only traces/Tempo are wired) so a COGS metric has a
+        home.
+      - LOGGED as a MODELCALL record (DM-19) per org — the per-call grain PIPE-1
+        needs; an ActivityEvent (DM-17) may aggregate several ModelCall rows. This
+        is the substrate for the ADR-0010 trajectory scoring (steps/tokens/cost)
+        and the OPSS-1 model-call QA.
+      - COSTED: token usage (currently discarded by the adapter) is captured and
+        priced into a per-org COGS metric with budget alerting against the target;
+        the per-skill agentPolicy cost budget is the per-invocation ceiling.
+      SEC-4: whether a ModelCall stores raw prompt/response CONTENT (vs. metadata
+      + refs) is an org-confidential-data decision — content, if stored, is
+      org-scoped and purged on BIL-2 like all org data; the eval datasets take
+      only de-identified cases (ADR-0010 storage split).
+
+  PIPE-6:
+    v: 1
+    kind: pipeline
+    title: LLM reliability
+    body: |
+      The LLM port is a network dependency with no error handling today. The
+      runtime wraps every call with retry-with-backoff on transient failure, a
+      timeout, and a circuit-breaker per provider; a hard failure surfaces to the
+      operator failure queue (OPSS-2) and, where founder action is needed, a
+      needs-you card (never a silent dead skill). This is the LLM-call resilience
+      the AI substrate needs up front; the DURABLE job/queue substrate (pg-boss,
+      transactional enqueue — ADR-0003) lands with generation/publishing
+      scheduling (GEN/PUB), not here. The GR-3/GR-8 human-escalation backstops
+      (PIPE-2) are the reliability guarantee on OUTPUT safety; PIPE-6 is the
+      reliability of the CALL itself.

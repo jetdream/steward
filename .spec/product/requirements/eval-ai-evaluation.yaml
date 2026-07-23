@@ -1,0 +1,113 @@
+kind: requirements
+prefix: EVAL
+title: AI Evaluation & Regression
+status: approved
+serves: [G-2]
+# Authorized + ratified by DEC-41 (ADR-0010). VERIFICATION / ASSURANCE register:
+# it does NOT produce drafts — it is a BUILD-TIME regression / DURABILITY FLOOR
+# that keeps a prompt/tool/model change from silently degrading approval-quality.
+# It serves G-2 as that durability floor and is pinned in G-2's coverage `against`
+# beside the OPS-1 quality floor (OPS-1 = runtime per-draft QA; EVAL = build-time
+# regression gate — one notch further off the runtime generate→approve path).
+# It is admitted to coverage only because the cortex requirements model requires
+# every requirement to serve a goal via coverage (the requirement-must-serve-a-goal
+# lint) and has NO outcome-protector edge — a method gap logged as Q-17; the honest
+# classification lives in
+# G-2's coverage.reasoning (dated DEC-41 clause). It never substitutes for the G-2
+# FIELD metric (a real cohort measurement on the OPSS-1 pre-QA basis) — the eval
+# proxy is a leading indicator only (ADR-0010 §4). No user journey (assurance, not
+# a product surface) — the journey sweep listing is expected, not a gap. Behavior
+# spec (EVALS) + code arrive in the Phase-B build; approval here rests on HITL
+# ratification (DEC-41) + honest linkage, not on that downstream spec.
+# Design gate: cortex:architect-challenger, 2026-07-23 (delta over ADR-0009/0010),
+# r-fail ×2 on the linkage → option (A) durability-floor pin → pass.
+intent: >-
+  How Steward guarantees its AI does not regress. Every AI skill (ARC-27) runs a
+  versioned harness; a change to any prompt, tool, or model must be shown NOT to
+  degrade the agent before it ships. This register states that guarantee as
+  testable requirements: per-skill eval datasets with numeric targets, a
+  champion-vs-challenger regression gate on any harness change, trajectory + cost
+  bounds for the bounded agent, and the assurance substrate (a real test runner +
+  the executable acceptance harness) that DEC-3 assumes but that does not yet
+  exist. Realized by the bespoke in-repo eval framework (ADR-0010) over the agent
+  runtime (ADR-0009); the human cohort-1 QA gate (OPSS-1) is complementary — it
+  gates OUTPUT before the founder sees it, while EVAL gates HARNESS CHANGES.
+items:
+  EVAL-1:
+    v: 1
+    decided-by: DEC-41
+    priority: P0
+    title: Per-skill eval datasets with numeric targets
+    statement: >-
+      Every AI skill shall have a VERSIONED eval dataset — a golden set
+      (representative inputs + expected-good signals) and labeled ADVERSARIAL
+      sets (the taboo-violating, fabricated-extraction, sensitive-topic, and
+      off-mission cases the capability specs already reference as "labeled
+      catch-rate tests": MEMS-3, CHTS-1, TOPS-1, ONBS-2, INTS-1). Each catch-rate
+      acceptance names its dataset and a concrete NUMERIC target (today all
+      placeholders). Datasets obey the ADR-0010 storage split: the in-repo,
+      versioned set holds only synthetic / curated / de-identified cases; real
+      org-sourced cases live in the org-scoped, deletable store (SEC-4/BIL-2),
+      never in git.
+    acceptance: >-
+      Each shipped skill has a versioned dataset with a stated numeric target;
+      no in-repo dataset case contains raw org-confidential content; a spec's
+      catch-rate acceptance resolves to a real dataset + number, not a placeholder.
+  EVAL-2:
+    v: 1
+    decided-by: DEC-41
+    priority: P0
+    flexibility: hard
+    title: The regression gate — a harness change proves non-degradation
+    statement: >-
+      A change to any harness artifact (a prompt / tool / model / agentPolicy
+      version, detected via the ARC-27 harness manifest) shall not ship until a
+      CHAMPION-VS-CHALLENGER evaluation shows no tracked metric regresses beyond
+      tolerance and every catch-rate holds at or above its target. Enforcement is
+      an executable CI check (a manifest-hash diff that fails a harness change
+      with no passing keyed eval on record) — teeth, not discipline (DEC-3). The
+      hard blocking authority is the deterministic + catch-rate tiers plus the
+      GR-3/GR-8 escalation-fired checks; the LLM-judge / approve-without-edit
+      proxy is CALIBRATED against human labels and is never a sole, uncalibrated
+      blocking authority, and eval runs are repeatability-controlled (pinned
+      decode params + N-sample aggregation).
+    acceptance: >-
+      A prompt/model/tool change that lowers a catch-rate below target, or worsens
+      a tracked metric beyond tolerance, is blocked by CI; a change with no
+      recorded passing keyed eval for its manifest cannot merge; an uncalibrated
+      judge score alone never blocks or passes a change.
+  EVAL-3:
+    v: 1
+    decided-by: DEC-41
+    priority: P0
+    title: Bounded-agent trajectory & cost verification
+    statement: >-
+      For a multi-step Skill (ADR-0009 bounded agent loop), evaluation shall score
+      the TRAJECTORY, not only the final output: tool-choice correctness, step
+      count / efficiency, termination safety, and cost-per-task. The agentPolicy
+      bounds (maxSteps, cost budget, termination) shall be asserted by tests, and
+      a change that makes the agent wander (more steps or cost for the same result)
+      is a detectable regression under EVAL-2. Per-invocation cost stays within the
+      skill's budget, tied to the PIPE-1 COGS target.
+    acceptance: >-
+      A harness change that increases mean steps or cost-per-task beyond tolerance
+      is flagged as a regression even when final-output quality is unchanged; an
+      agent run cannot exceed its maxSteps or cost budget.
+  EVAL-4:
+    v: 1
+    decided-by: DEC-41
+    priority: P0
+    title: The assurance substrate — runner, markers, executable acceptance harness
+    statement: >-
+      The project shall have a real automated-test substrate: a test runner, the
+      @verifies / @validates evidence markers turned on (the cortex assurance
+      ladder — a spec-element at assurance `verified` is backed by a @verifies
+      test), and the EXECUTABLE ACCEPTANCE HARNESS that .spec/CLAUDE.md and DEC-3
+      already assume runs but that does not exist today. The gate is TIERED
+      (DEC-41): the keyless deterministic + dev-stub tier is the every-commit /
+      pre-push acceptance harness (CI stays self-contained, ADR-0003); the keyed
+      LLM eval (EVAL-2) runs on harness change / on demand, never on every push.
+    acceptance: >-
+      A test runner executes in CI; a spec-element at assurance `verified` without
+      a @verifies test is reported by the gate; the pre-push acceptance harness
+      runs the keyless deterministic tier and no live-model eval.

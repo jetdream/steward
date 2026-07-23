@@ -388,3 +388,21 @@ items:
       Content Engine's planner (ARC-15, GEN-1). Founder-facing surfaces (the
       proposal card in the colleague-moves-first journey, the agenda view in
       How I write) are a fast-follow experience addition.
+
+  ARC-27:
+    v: 1
+    kind: c4-component
+    title: Agent Runtime
+    parent: ARC-3
+    body: |
+      The AI agent runtime (ADR-0009, DEC-41) — the single component that owns
+      "assemble prompt + tools + model + retrieval + guardrails for skill X" and
+      runs it. It hosts the LLM/search port (PIPE-4), the Skill/harness registry,
+      the bounded tool-calling loop, the reusable VAL guardrail pipeline (PIPE-2),
+      and the per-call observability + reliability wrap (PIPE-5/PIPE-6). Every
+      other backend AI module (Memory ARC-11 extraction, Content Engine ARC-15,
+      Chat+Interviewer ARC-13, Strategy ARC-14, Radar ARC-16, Topics ARC-26)
+      runs its LLM work as a Skill on this runtime rather than calling a provider
+      directly — the "one brain, several skills" principle (PIPE-1) made a real
+      component. The AI-evaluation framework (ADR-0010) executes a Skill's harness
+      through this runtime to score + gate it.

@@ -285,8 +285,10 @@ items:
       action or reason-gated confidential READ that is not impersonation (e.g. a
       lifecycle action ADM-4, or opening the ledger/health view) — so SEC-11's
       "no un-logged raw browse" has a representable entry; `staff-act-as` covers
-      actions taken while impersonating the owner (ADM-2). Generalizes the PIPE-1 model-call log into
-      ONE org observability record and is the substrate the impersonation
+      actions taken while impersonating the owner (ADM-2). Aggregates model-call
+      ACTIVITY into the org activity ledger (the per-call grain — tokens / cost /
+      trajectory — lives in DM-19 ModelCall; one ActivityEvent may aggregate
+      several ModelCall rows) and is the substrate the impersonation
       carve-out (VAL-3, DEC-31) is audited against. Owned by Org (DM-1); read by
       platform staff (ADM-3) and the KPI dashboard (ADM-6). Staff-act-as
       attribution is never surfaced on founder surfaces (VAL-3), only the
@@ -311,3 +313,29 @@ items:
       erDiagram
         USER ||--o{ SUPPORT_SESSION : "staff opens"
         ORG ||--o{ SUPPORT_SESSION : "targeted by"
+
+  DM-19:
+    v: 1
+    kind: data-entity
+    title: ModelCall
+    body: |
+      The per-call observability + cost record for one LLM/search port
+      invocation (PIPE-5, ADR-0010) — the concrete grain PIPE-1's "all model
+      calls logged per org … for ops QA (OPS-1) and cost tracking" needs, which
+      DM-17 (occurrence-level, no cost fields) does not carry. Fields: orgId,
+      timestamp, skill (the ARC-27 Skill id), promptVersion, model, operation
+      (generate | generateObject | classify | embed | groundedSearch | chatStep),
+      tokensIn, tokensOut, costUsd, latencyMs, guardrailVerdicts (the PIPE-2
+      pass/regenerate/escalate outcomes + which fired), and — for a bounded
+      multi-step Skill run — a trajectory ref (run id + step index) so the
+      ADR-0010 trajectory scoring can reconstruct tool-choice/steps/cost. Owned
+      by Org (DM-1); a DM-17 ActivityEvent (e.g. "generate draft") may aggregate
+      several ModelCall rows. Feeds the per-org COGS metric (PIPE-5), the eval
+      framework (ADR-0010), and OPSS-1 QA. Raw prompt/response CONTENT is
+      org-confidential (SEC-4): stored (if at all) org-scoped and hard-deleted on
+      a BIL-2 account deletion, never committed to the in-repo eval datasets
+      (ADR-0010 storage split). Concrete field lists live in @shared types.
+
+      erDiagram
+        ORG ||--o{ MODEL_CALL : records
+        ACTIVITY_EVENT ||--o{ MODEL_CALL : "aggregates"

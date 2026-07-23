@@ -62,6 +62,7 @@ prefixes:
   BOT: product/requirements/bot-messenger-ingestion.yaml
   ACC: product/requirements/acc-accounts-identity.yaml
   ADM: product/requirements/adm-platform-admin.yaml
+  EVAL: product/requirements/eval-ai-evaluation.yaml   # AI evaluation/regression — verification/assurance (ADR-0010, DEC-41)
   # specs (behavior) — one spec register per capability, prefix = <REQ>S
   MEMS: specs/mem-org-memory.yaml
   STRS: specs/str-posting-strategy.yaml
