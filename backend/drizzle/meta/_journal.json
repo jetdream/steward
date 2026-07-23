@@ -8,6 +8,13 @@
       "when": 1784768792788,
       "tag": "0000_organic_colossus",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784774518091,
+      "tag": "0001_square_changeling",
+      "breakpoints": true
     }
   ]
 }

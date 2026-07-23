@@ -9,6 +9,7 @@ import type { CreateWSSContextFnOptions } from "@trpc/server/adapters/ws";
 import { fromNodeHeaders } from "better-auth/node";
 import type { Auth } from "./auth/auth.js";
 import type { Database } from "./db/client.js";
+import type { Memory } from "./memory/index.js";
 
 /** The `{ session, user }` object BetterAuth returns, or null when signed out. */
 export type SessionResult = Awaited<ReturnType<Auth["api"]["getSession"]>>;
@@ -16,6 +17,8 @@ export type SessionResult = Awaited<ReturnType<Auth["api"]["getSession"]>>;
 export interface Context {
   db: Database;
   auth: Auth;
+  /** The org-memory read/write layer (ARC-11) — the shared brain (PIPE-1). */
+  memory: Memory;
   /** Web `Headers` for the request — passed to `auth.api.*` calls. */
   headers: Headers;
   session: SessionResult;
@@ -23,11 +26,12 @@ export interface Context {
   appendCookies: ((cookies: string[]) => void) | null;
 }
 
-/** Build the HTTP + WS context factories over a shared db handle and auth instance. */
-export function makeContext(db: Database, auth: Auth) {
+/** Build the HTTP + WS context factories over shared db, auth, and memory services. */
+export function makeContext(db: Database, auth: Auth, memory: Memory) {
   const base = async (headers: Headers) => ({
     db,
     auth,
+    memory,
     headers,
     session: await auth.api.getSession({ headers }),
   });

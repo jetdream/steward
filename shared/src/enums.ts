@@ -55,8 +55,12 @@ export type ActorKind = z.infer<typeof ActorKind>;
 export const ExternalItemDisposition = z.enum(["worth-a-post", "saved-for-later", "not-for-us"]);
 export type ExternalItemDisposition = z.infer<typeof ExternalItemDisposition>;
 
-/** DM-2 MemoryEntry.kind (MEM-1). */
-export const MemoryEntryKind = z.enum([
+/**
+ * DM-2 MemoryEntry.kind (MEM-1) — the seven types as a `const` tuple: the ONE
+ * source, consumed by both the Zod enum (boundary validation) and the drizzle
+ * `memory_entry.kind` column (db/memory.ts) so the column stays a narrow union.
+ */
+export const memoryEntryKinds = [
   "fact",
   "story",
   "styleRule",
@@ -64,7 +68,8 @@ export const MemoryEntryKind = z.enum([
   "person",
   "program",
   "event",
-]);
+] as const;
+export const MemoryEntryKind = z.enum(memoryEntryKinds);
 export type MemoryEntryKind = z.infer<typeof MemoryEntryKind>;
 
 /** DM-13 Topic.status — the active set is the editorial agenda (TOP-4). */

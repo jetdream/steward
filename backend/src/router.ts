@@ -4,6 +4,8 @@
  * the API contract type the client imports.
  */
 import { authRouter } from "./routers/auth.js";
+import { memoryRouter } from "./routers/memory.js";
+import { onboardingRouter } from "./routers/onboarding.js";
 import { orgRouter } from "./routers/org.js";
 import { pingRouter } from "./routers/ping.js";
 import { systemRouter } from "./routers/system.js";
@@ -12,6 +14,8 @@ import { router } from "./trpc.js";
 export const appRouter = router({
   auth: authRouter,
   org: orgRouter,
+  memory: memoryRouter,
+  onboarding: onboardingRouter,
   system: systemRouter,
   ping: pingRouter,
 });

@@ -11,3 +11,4 @@
  * (onboarding/news) — NOT a separate profile table.
  */
 export * from "./auth-schema.js";
+export * from "./memory.js";

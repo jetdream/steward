@@ -10,9 +10,11 @@ import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { applyWSSHandler } from "@trpc/server/adapters/ws";
 import { fromNodeHeaders } from "better-auth/node";
 import { WebSocketServer } from "ws";
+import { createLlmPort } from "./adapters/llm/index.js";
 import { createAuth } from "./auth/auth.js";
 import { makeContext } from "./context.js";
 import { createDb } from "./db/client.js";
+import { createMemory } from "./memory/index.js";
 import { appRouter } from "./router.js";
 
 try {
@@ -27,7 +29,12 @@ const port = Number(process.env.API_PORT ?? 3001);
 
 const db = createDb(databaseUrl);
 const auth = createAuth(db);
-const ctx = makeContext(db, auth);
+// LLM port: real Vertex/Gemini when VERTEX_AI_KEY is set, else the keyless dev
+// stub (ADR-0003/ADR-0008). Memory (ARC-11) is the shared brain over both.
+const llm = createLlmPort();
+const memory = createMemory(db, llm);
+const ctx = makeContext(db, auth, memory);
+console.log(`@backend LLM adapter: ${llm.name}`);
 
 /** Convert a Node request to a Web `Request` (buffering the body) for auth.handler. */
 async function toWebRequest(req: IncomingMessage): Promise<Request> {
