@@ -11,7 +11,9 @@ status: approved
 intent: >-
   From PRD §9. Vercel AI SDK — its provider abstraction is an instance of the
   ADR-0003 ports principle (LLM/search behind a port; providers swappable).
-  Model choices get an ADR when the skeleton lands (deferred). Modelled as one
+  Model choices are recorded in ADR-0008 (Google Vertex AI / Gemini;
+  embeddings at dim 1536; DEC-40) — the deferred model-selection ADR, landed
+  with the brain spine. Modelled as one
   pipeline (its grounding/guardrail principles in the body) with a
   pipeline-stage per generation flow.
 

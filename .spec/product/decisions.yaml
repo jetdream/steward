@@ -15,6 +15,28 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-40:
+    v: 1
+    date: 2026-07-23
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0008, ADR-0002, PIPE-1, DM-2]
+    title: LLM & embedding model selection — Google Vertex AI (Gemini), embeddings at dim 1536
+    statement: >-
+      Resolves the model-selection choice ADR-0002 and llm-pipeline.yaml (PIPE-1)
+      deliberately deferred "to the skeleton". Now that the skeleton (walking
+      skeleton + ACCS) has landed and the brain spine (ARC-11 Memory / ARC-12
+      Onboarding) is the first capability needing generation + embeddings, the
+      founder selects GOOGLE VERTEX AI / GEMINI as the v1 provider behind the
+      ADR-0003 LLM port: generation/extraction on gemini-2.5-flash (pro reserved
+      for quality-critical slots), embeddings on gemini-embedding-2 pinned to 1536
+      dimensions. This binds the DM-2 MemoryEntry embedding column to vector(1536)
+      — a one-way-door (changing dimension later means re-embedding every org's
+      corpus), which is why it is a recorded decision. Wired via VERTEX_AI_KEY
+      (+ project/location) in env; a deterministic keyless dev fallback keeps
+      self-contained dev + CI runnable without a GCP account (ADR-0003). Provider
+      is swappable by configuration through the port; the technical rationale and
+      alternatives are in ADR-0008. Consolidates the Gemini engine already named
+      for Radar grounding (IG-3).
   DEC-39:
     v: 1
     date: 2026-07-22

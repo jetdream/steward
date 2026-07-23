@@ -23,3 +23,4 @@ Use [TEMPLATE.md](TEMPLATE.md).
 | [ADR-0005](0005-operator-access-model.md) | Operator access & audit model | superseded |
 | [ADR-0006](0006-identity-impersonation-model.md) | Accounts, identity, impersonation & activity-ledger model | accepted |
 | [ADR-0007](0007-deployment-topology.md) | Deployment topology & environments | accepted |
+| [ADR-0008](0008-llm-model-selection.md) | LLM & embedding model selection — Google Vertex AI (Gemini) | accepted |
