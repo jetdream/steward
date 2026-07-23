@@ -30,6 +30,7 @@ Follow strict type hygiene, including:
 - Use type inference from Drizzle types
 - Use Zod type definition with inference for key entities
 - No unsafe json/yaml parsing - use Zod for type checking
+- DB-stored JSON/JSONB fields must be natively mapped to TypeScript types using Drizzle
 
 ## Project structure
 Four top level src folders:

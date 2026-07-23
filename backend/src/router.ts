@@ -9,7 +9,7 @@
  * (ACC-3), never a client-supplied id. `system`/`ping` remain from the skeleton.
  */
 import { setTimeout as sleep } from "node:timers/promises";
-import type { Org } from "@steward/shared";
+import type { Org } from "@shared";
 import { TRPCError } from "@trpc/server";
 import { sql } from "drizzle-orm";
 import { z } from "zod";

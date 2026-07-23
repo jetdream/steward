@@ -67,6 +67,12 @@ scopes:
       - Import `./otel` before any instrumented module (it must patch first).
       - A fallible outbound call (publish, cache purge, webhook) must surface its
         failure loudly — never swallow it (SEC-8 takedown is the sharp case).
+      - Import cross-package via the `@shared` alias by default. The ONE exception
+        is a Drizzle SCHEMA-VALUE import in a file the better-auth CLI must load to
+        generate the schema (the auth config + the db client): use the
+        `@steward/shared/db/*` package export there, because that CLI resolves Node
+        packages, not the tsconfig `@shared` alias (which can't be a bare package
+        name). Type-only imports always use `@shared`.
   client:
     must: |
       - All backend access goes through a domain-specific API hook in
