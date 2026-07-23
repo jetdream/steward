@@ -7,22 +7,29 @@ architecture — no behaviour spec of its own.
 
 | File | Realizes |
 |---|---|
-| `instrument.ts` | PIPE-5/PIPE-6 — wraps an `LlmPort`: OTel span + COGS metric + DM-19 ModelCall row + retry/timeout/circuit-breaker, per call, best-effort |
+| `instrument.ts` | PIPE-5/PIPE-6 — adapts a `RawLlmAdapter` → `LlmPort`, adding COST + the DM-19 ModelCall row + retry/timeout/circuit-breaker, per call, best-effort |
 | `resilience.ts` | PIPE-6 — retry-with-backoff + timeout + per-provider circuit-breaker (injectable clock ⇒ unit-testable) |
 | `cost.ts` | PIPE-5 — per-model price table + token estimator → per-call cost (COGS) |
-| `context.ts` | PIPE-5 — AsyncLocalStorage obs context (org + skill + trajectory); set by callers, read by `instrument.ts` |
+| `context.ts` | PIPE-5 — AsyncLocalStorage obs context (org + skill + trajectory); set by callers, read by `instrument.ts` AND fed to the SDK telemetry `metadata` |
 | `model-call.ts` | DM-19 ModelCall writer |
 
 **Boundaries.**
+- **TRACING is the provider SDK's job, not ours.** The Vercel AI SDK emits OTel
+  spans (GenAI conventions + real token usage) via its built-in `telemetry`; we
+  do NOT hand-instrument LLM spans. `instrument.ts` only adds what the SDK
+  doesn't: cost, the ModelCall row, and reliability. The dev stub makes no
+  provider call, so it emits no span (fine — it's a keyless stand-in).
 - Wrapping is transparent: the public `LlmPort` signature is unchanged; callers
-  set an obs context (`withObsContext`) around their LLM work and the wrapper
-  attributes the call. No obs context ⇒ no ModelCall row (span+metric only).
-- **Best-effort telemetry**: a span/metric/ModelCall failure must NEVER break the
-  underlying LLM call (all logging is `try`-guarded).
-- Cost is currently ESTIMATED from text length; exact provider usage (when a
-  keyed adapter surfaces it) will override it. The OTel MeterProvider export is a
-  follow-up — the metric API records now (no-op until a provider is registered),
-  and the DM-19 rows are the durable COGS substrate (query `SUM(cost_usd)` per org).
+  set an obs context (`withObsContext`) around their LLM work — it feeds both the
+  SDK telemetry `metadata` (org/skill) and the ModelCall row. No obs context ⇒ no
+  ModelCall row.
+- **Best-effort logging**: a ModelCall write failure must NEVER break the
+  underlying LLM call (`try`-guarded).
+- Cost uses the SDK's REAL reported usage (the dev stub reports synthetic usage
+  at $0). The OTel MeterProvider export for a live COGS metric is a follow-up;
+  the DM-19 rows are the durable COGS substrate (query `SUM(cost_usd)` per org).
+- SEC-4: prompt/response CONTENT is kept off the SDK spans (`recordInputs/
+  recordOutputs` off) and is not stored on ModelCall.
 
 **Gotcha.** ModelCall is org-scoped (DM-19); the org comes from the ALS obs
 context, not the port signature. The ARC-27 runtime (B5) sets the same context

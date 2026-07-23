@@ -21,8 +21,11 @@ import {
   type EmbedTaskType,
   type ExtractedEntry,
   type ExtractionContext,
-  type LlmPort,
+  type RawLlmAdapter,
 } from "../../ports/llm.js";
+
+/** Synthetic token estimate for the free dev path (~4 chars/token). */
+const estTokens = (text: string): number => Math.ceil(text.length / 4);
 
 /** A stable 32-bit FNV-1a hash (deterministic across processes; no Math.random). */
 function fnv1a(text: string): number {
@@ -69,15 +72,30 @@ function classify(rawInput: string, context: ExtractionContext): ExtractedEntry 
   return { kind: "fact", content };
 }
 
-/** The keyless dev/CI adapter. */
-export const devStubLlm: LlmPort = {
+/**
+ * The keyless dev/CI adapter (RawLlmAdapter). Emits no OTel telemetry (it makes
+ * no provider call) and reports synthetic usage priced at 0 (dev is free), so
+ * the observability pipeline is exercised with non-zero token counts + a real
+ * (zero-cost) ModelCall row on the tested path.
+ */
+export const devStubLlm: RawLlmAdapter = {
   name: "dev-stub",
-  async extractEntries(rawInput, context) {
+  async extract(rawInput, context) {
     const trimmed = rawInput.trim();
-    if (trimmed.length === 0) return [];
-    return [classify(trimmed, context)];
+    const entries = trimmed.length === 0 ? [] : [classify(trimmed, context)];
+    return {
+      entries,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(trimmed),
+        tokensOut: estTokens(JSON.stringify(entries)),
+      },
+    };
   },
   async embed(text, _taskType: EmbedTaskType) {
-    return hashEmbedding(text);
+    return {
+      vector: hashEmbedding(text),
+      usage: { model: "dev-stub", tokensIn: estTokens(text), tokensOut: 0 },
+    };
   },
 };

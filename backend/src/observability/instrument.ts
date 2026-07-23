@@ -1,124 +1,91 @@
 /**
  * @module @backend/observability/instrument
  *
- * Wraps an LlmPort so EVERY call is observed (PIPE-5) and resilient (PIPE-6),
- * without changing the port's public signature. Per call it: runs under the
- * retry/timeout/circuit-breaker (resilience.ts); opens an OpenTelemetry span with
- * org/skill/model/token/cost/latency attributes; records the COGS metric; and
- * writes a DM-19 ModelCall row (when a DB + an obs context with an org are
- * present). Logging is BEST-EFFORT — a telemetry failure never breaks the LLM
- * call. Org/skill come from the AsyncLocalStorage obs context (context.ts).
+ * Adapts a RawLlmAdapter → the clean LlmPort, adding the two things the provider
+ * telemetry does NOT do: COST (no pricing) + the DM-19 ModelCall product row
+ * (PIPE-5), and the reliability wrap (PIPE-6, retry/timeout/circuit-breaker).
+ *
+ * TRACING is NOT done here — the provider adapter emits OpenTelemetry spans via
+ * the Vercel AI SDK's built-in `telemetry` (GenAI conventions), so we do not
+ * hand-instrument spans (the dev stub, making no provider call, emits none).
+ * ModelCall uses the adapter's REAL reported token usage; org/skill come from the
+ * AsyncLocalStorage obs context. Logging is BEST-EFFORT — a ModelCall write
+ * failure never breaks the LLM call.
  */
-import { metrics, SpanStatusCode, trace } from "@opentelemetry/api";
-import type { ModelCallOperation } from "@shared";
+
+import type { ModelCallOperation, ModelCallOutcome } from "@shared";
 import type { Database } from "../db/client.js";
-import type { LlmPort } from "../ports/llm.js";
+import type { LlmPort, LlmUsage, RawLlmAdapter } from "../ports/llm.js";
 import { currentObsContext } from "./context.js";
-import { costUsd, estimateTokens } from "./cost.js";
+import { costUsd } from "./cost.js";
 import { recordModelCall } from "./model-call.js";
 import { createResilience } from "./resilience.js";
 
-const tracer = trace.getTracer("steward-llm");
-const meter = metrics.getMeter("steward-llm");
-// No-ops until a MeterProvider is registered (otel.ts, follow-up) — safe to record now.
-const costHist = meter.createHistogram("steward.llm.cost_usd", {
-  description: "Estimated LLM cost per call (USD)",
-});
-const latencyHist = meter.createHistogram("steward.llm.latency_ms", {
-  description: "LLM call latency (ms)",
-});
-
-/** Dependencies for instrumentation — db is optional (omit ⇒ spans+metrics only, no ModelCall rows). */
+/** Dependencies — db optional (omit ⇒ resilience only, no ModelCall rows, e.g. unit tests). */
 export interface InstrumentDeps {
   db?: Database;
   resilience?: ReturnType<typeof createResilience>;
 }
 
-/** Wrap an LlmPort with observability + resilience (PIPE-5/PIPE-6). */
-export function instrumentLlm(inner: LlmPort, deps: InstrumentDeps = {}): LlmPort {
+/** Adapt + observe + protect a RawLlmAdapter as an LlmPort (PIPE-5/PIPE-6). */
+export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {}): LlmPort {
   const res = deps.resilience ?? createResilience();
 
-  async function observe<T>(
+  async function observe<V>(
     operation: ModelCallOperation,
-    inputText: string,
-    run: () => Promise<T>,
-    outputText: (result: T) => string,
-  ): Promise<T> {
+    run: () => Promise<{ value: V; usage: LlmUsage }>,
+  ): Promise<V> {
     const ctx = currentObsContext();
-    const model = inner.name;
     const start = Date.now();
-    return tracer.startActiveSpan(`llm.${operation}`, async (span) => {
-      let outcome: "ok" | "error" = "ok";
-      let result: T | undefined;
-      let thrown: unknown;
-      try {
-        result = await res.run(model, run);
-        return result;
-      } catch (err) {
-        outcome = "error";
-        thrown = err;
-        throw err;
-      } finally {
-        const latencyMs = Date.now() - start;
-        const tokensIn = estimateTokens(inputText);
-        const tokensOut =
-          outcome === "ok" && result !== undefined ? estimateTokens(outputText(result)) : 0;
-        const cost = costUsd(model, tokensIn, tokensOut);
-        const skill = ctx?.skill ?? "unknown";
-        span.setAttributes({
-          "llm.operation": operation,
-          "llm.model": model,
-          "llm.skill": skill,
-          "llm.tokens_in": tokensIn,
-          "llm.tokens_out": tokensOut,
-          "llm.cost_usd": cost,
-          "llm.latency_ms": latencyMs,
-          ...(ctx?.orgId ? { "org.id": ctx.orgId } : {}),
-        });
-        if (thrown instanceof Error) span.recordException(thrown);
-        span.setStatus({ code: outcome === "ok" ? SpanStatusCode.OK : SpanStatusCode.ERROR });
-        costHist.record(cost, { model, skill, operation });
-        latencyHist.record(latencyMs, { model, skill, operation });
-        if (deps.db && ctx?.orgId) {
-          try {
-            await recordModelCall(deps.db, {
-              orgId: ctx.orgId,
-              skill,
-              model,
-              operation,
-              tokensIn,
-              tokensOut,
-              costUsd: cost,
-              latencyMs,
-              outcome,
-              promptVersion: ctx.promptVersion,
-              runId: ctx.runId,
-              stepIndex: ctx.stepIndex,
-            });
-          } catch {
-            // best-effort: a ModelCall write failure must never break the LLM call.
-          }
+    let outcome: ModelCallOutcome = "ok";
+    let usage: LlmUsage | undefined;
+    try {
+      const r = await res.run(adapter.name, run);
+      usage = r.usage;
+      return r.value;
+    } catch (err) {
+      outcome = "error";
+      throw err;
+    } finally {
+      const latencyMs = Date.now() - start;
+      const model = usage?.model ?? adapter.name;
+      const tokensIn = usage?.tokensIn ?? 0;
+      const tokensOut = usage?.tokensOut ?? 0;
+      // Record a ModelCall only when an org-scoped obs context + a DB are present.
+      if (deps.db && ctx?.orgId) {
+        try {
+          await recordModelCall(deps.db, {
+            orgId: ctx.orgId,
+            skill: ctx.skill,
+            model,
+            operation,
+            tokensIn,
+            tokensOut,
+            costUsd: costUsd(model, tokensIn, tokensOut),
+            latencyMs,
+            outcome,
+            promptVersion: ctx.promptVersion,
+            runId: ctx.runId,
+            stepIndex: ctx.stepIndex,
+          });
+        } catch {
+          // best-effort: a ModelCall write failure must never break the LLM call.
         }
-        span.end();
       }
-    });
+    }
   }
 
   return {
-    name: inner.name,
+    name: adapter.name,
     extractEntries: (raw, context) =>
-      observe(
-        "generateObject",
-        raw,
-        () => inner.extractEntries(raw, context),
-        (r) => JSON.stringify(r),
-      ),
+      observe("generateObject", async () => {
+        const { entries, usage } = await adapter.extract(raw, context);
+        return { value: entries, usage };
+      }),
     embed: (text, taskType) =>
-      observe(
-        "embed",
-        text,
-        () => inner.embed(text, taskType),
-        () => "",
-      ),
+      observe("embed", async () => {
+        const { vector, usage } = await adapter.embed(text, taskType);
+        return { value: vector, usage };
+      }),
   };
 }

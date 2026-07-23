@@ -1,28 +1,33 @@
 /**
  * @module @backend/adapters/llm/vertex
  *
- * The Google Vertex AI / Gemini adapter for the LLM port (ADR-0008, DEC-40) —
- * the v1 real provider. Generation/extraction on `gemini-2.5-flash`
+ * The Google Vertex AI / Gemini adapter (ADR-0008, DEC-40) — the v1 real
+ * provider, a RawLlmAdapter. Generation/extraction on `gemini-2.5-flash`
  * (structured output via `generateObject`); embeddings on `gemini-embedding-2`
- * pinned to 1536 dims with asymmetric retrieval task types. Reached only via
- * the ADR-0003 port; no vendor type escapes this file.
+ * pinned to 1536 dims. Reached only via the ADR-0003 port; no vendor type
+ * escapes this file.
  *
- * Auth/config from env (the founder supplies real GCP creds — this keyed path
- * is intentionally UNTESTED for now, like Google OAuth): `VERTEX_AI_KEY`
- * (→ provider `apiKey`), `GOOGLE_VERTEX_PROJECT`, `GOOGLE_VERTEX_LOCATION`. When
- * `VERTEX_AI_KEY` is absent the composition root selects the keyless dev stub
- * instead (adapters/llm/index.ts).
+ * TRACING is the AI SDK's built-in OpenTelemetry `telemetry` (GenAI semantic
+ * conventions) — we do NOT hand-instrument spans (PIPE-5). `recordInputs/
+ * recordOutputs: false` keeps prompt/response CONTENT off the spans (SEC-4);
+ * `functionId`/`metadata` carry the skill + org from the obs context. Real token
+ * `usage` is returned to the wrapper for cost + the DM-19 ModelCall (PIPE-5).
+ *
+ * Auth/config from env (the founder supplies real GCP creds — this keyed path is
+ * intentionally UNTESTED for now, like Google OAuth): `VERTEX_AI_KEY`,
+ * `GOOGLE_VERTEX_PROJECT`, `GOOGLE_VERTEX_LOCATION`.
  */
 import { createVertex } from "@ai-sdk/google-vertex";
 import { MemoryEntryKind } from "@steward/shared";
-import { embed, generateObject } from "ai";
+import { embed as aiEmbed, generateObject } from "ai";
 import { z } from "zod";
+import { currentObsContext } from "../../observability/context.js";
 import {
   EMBEDDING_DIM,
   type EmbedTaskType,
   type ExtractedEntry,
   type ExtractionContext,
-  type LlmPort,
+  type RawLlmAdapter,
 } from "../../ports/llm.js";
 
 const EXTRACT_MODEL = "gemini-2.5-flash";
@@ -39,11 +44,22 @@ const extractionSchema = z.object({
   ),
 });
 
+/** AI SDK telemetry settings for a call — spans on, CONTENT off (SEC-4), org/skill tagged. */
+function telemetryFor(fallbackFn: string) {
+  const ctx = currentObsContext();
+  return {
+    functionId: ctx?.skill ?? fallbackFn,
+    recordInputs: false,
+    recordOutputs: false,
+    metadata: ctx?.orgId ? { orgId: ctx.orgId } : {},
+  };
+}
+
 /**
- * Build the Vertex-backed LLM port. Throws if `VERTEX_AI_KEY` is unset — callers
+ * Build the Vertex-backed adapter. Throws if `VERTEX_AI_KEY` is unset — callers
  * (adapters/llm/index.ts) only construct this when a key is present.
  */
-export function createVertexLlm(): LlmPort {
+export function createVertexLlm(): RawLlmAdapter {
   const apiKey = process.env.VERTEX_AI_KEY;
   if (!apiKey) throw new Error("createVertexLlm: VERTEX_AI_KEY is not set");
 
@@ -56,10 +72,11 @@ export function createVertexLlm(): LlmPort {
 
   return {
     name: "vertex:gemini",
-    async extractEntries(rawInput, context: ExtractionContext): Promise<ExtractedEntry[]> {
-      const { object } = await generateObject({
+    async extract(rawInput, context: ExtractionContext) {
+      const { object, usage } = await generateObject({
         model: vertex(EXTRACT_MODEL),
         schema: extractionSchema,
+        telemetry: telemetryFor("extract-memory"),
         system:
           "You extract an org's durable knowledge into typed Memory entries. " +
           "Classify each into exactly one kind: fact, story, styleRule, taboo, person, program, event. " +
@@ -70,21 +87,32 @@ export function createVertexLlm(): LlmPort {
             ? "This input is an EXPLICIT correction/instruction — prefer styleRule or taboo over a bare fact.\n\n"
             : "") + rawInput,
       });
-      // Normalize: drop an absent subject rather than carry an explicit
-      // `undefined` (exactOptionalPropertyTypes).
-      return object.entries.map((e) => {
+      // Drop an absent subject rather than carry an explicit undefined (exactOptional).
+      const entries = object.entries.map((e) => {
         const entry: ExtractedEntry = { kind: e.kind, content: e.content };
         if (e.subject !== undefined) entry.subject = e.subject;
         return entry;
       });
+      return {
+        entries,
+        usage: {
+          model: EXTRACT_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
     },
-    async embed(text, taskType: EmbedTaskType): Promise<number[]> {
-      const { embedding } = await embed({
+    async embed(text, taskType: EmbedTaskType) {
+      const { embedding, usage } = await aiEmbed({
         model: vertex.embeddingModel(EMBED_MODEL),
         value: text,
+        telemetry: telemetryFor("embed-memory"),
         providerOptions: { vertex: { outputDimensionality: EMBEDDING_DIM, taskType } },
       });
-      return embedding;
+      return {
+        vector: embedding,
+        usage: { model: EMBED_MODEL, tokensIn: usage.tokens ?? 0, tokensOut: 0 },
+      };
     },
   };
 }

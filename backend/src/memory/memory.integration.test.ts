@@ -47,9 +47,11 @@ const llm: LlmPort = {
       override = null;
       return o;
     }
-    return devStubLlm.extractEntries(raw, ctx);
+    return (await devStubLlm.extract(raw, ctx)).entries;
   },
-  embed: (t, k) => devStubLlm.embed(t, k),
+  async embed(t, k) {
+    return (await devStubLlm.embed(t, k)).vector;
+  },
 };
 
 let db: Database;

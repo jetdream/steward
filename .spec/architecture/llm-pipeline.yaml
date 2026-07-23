@@ -133,18 +133,21 @@ items:
     body: |
       Realizes PIPE-1's "everything logged … for ops QA (OPS-1) and cost tracking
       … COGS <$25/org/month", which had no schema. Every port call is:
-      - TRACED as an OpenTelemetry span (the tRPC-span child) carrying attributes
-        org, skill, model, prompt-version, operation, tokensIn/Out, costUsd,
-        latencyMs, and the guardrail verdicts. Requires adding an OTel
-        MeterProvider (today only traces/Tempo are wired) so a COGS metric has a
-        home.
+      - TRACED by the PROVIDER SDK's built-in OpenTelemetry telemetry — the Vercel
+        AI SDK emits GenAI-semantic-convention spans (`gen_ai.*` incl. real token
+        usage) once a tracer is registered; we do NOT hand-instrument LLM spans.
+        Prompt/response CONTENT is kept OFF the spans (`recordInputs/recordOutputs`
+        off) per SEC-4; `functionId`/`metadata` tag the skill + org. (An OTel
+        MeterProvider export for a live COGS metric is a follow-up; the ModelCall
+        rows are the durable COGS substrate meanwhile.)
       - LOGGED as a MODELCALL record (DM-19) per org — the per-call grain PIPE-1
         needs; an ActivityEvent (DM-17) may aggregate several ModelCall rows. This
         is the substrate for the ADR-0010 trajectory scoring (steps/tokens/cost)
         and the OPSS-1 model-call QA.
-      - COSTED: token usage (currently discarded by the adapter) is captured and
-        priced into a per-org COGS metric with budget alerting against the target;
-        the per-skill agentPolicy cost budget is the per-invocation ceiling.
+      - COSTED: the provider-reported token usage is priced (per-model table) into
+        the ModelCall row and aggregated to a per-org COGS figure (query
+        SUM(costUsd)); the keyless dev adapter reports synthetic usage at $0. The
+        per-skill agentPolicy cost budget is the per-invocation ceiling.
       SEC-4: whether a ModelCall stores raw prompt/response CONTENT (vs. metadata
       + refs) is an org-confidential-data decision — content, if stored, is
       org-scoped and purged on BIL-2 like all org data; the eval datasets take

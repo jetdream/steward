@@ -47,10 +47,10 @@ export interface ExtractionContext {
 }
 
 /**
- * The LLM port. Adapters are dumb: they translate to/from a vendor and return
- * plain data. All policy (dedup, supersede, rule-vs-fact, asked-set) lives in
- * @backend/memory, never here. The grounded-extraction guard + catch-rate
- * discipline (LRN-20) is applied by the caller, not asserted here.
+ * The LLM port — the CLEAN surface every brain module calls. Returns plain
+ * results; usage/cost/observability are handled by the instrumenting wrapper
+ * (observability/instrument.ts), not the caller. All policy (dedup, supersede,
+ * rule-vs-fact, asked-set) lives in @backend/memory, never here.
  */
 export interface LlmPort {
   /** A short label of the active adapter (for logs / ops — PIPE-1 "everything logged"). */
@@ -62,4 +62,29 @@ export interface LlmPort {
   extractEntries(rawInput: string, context: ExtractionContext): Promise<ExtractedEntry[]>;
   /** Embed text into an EMBEDDING_DIM-length vector for pgvector retrieval (MEMS-4). */
   embed(text: string, taskType: EmbedTaskType): Promise<number[]>;
+}
+
+/** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
+export interface LlmUsage {
+  /** The concrete model id used (e.g. "gemini-2.5-flash"), for the price table. */
+  model: string;
+  tokensIn: number;
+  tokensOut: number;
+}
+
+/**
+ * The RAW adapter surface (internal): the same operations, but each returns the
+ * value PLUS the provider-reported usage. The instrumenting wrapper adapts a
+ * RawLlmAdapter → LlmPort, computing cost + recording a DM-19 ModelCall from the
+ * usage while OpenTelemetry TRACING is emitted by the provider adapter itself
+ * (the Vercel AI SDK's built-in `telemetry`, GenAI conventions — we do not
+ * hand-instrument spans). Vertex + the keyless dev stub implement this.
+ */
+export interface RawLlmAdapter {
+  readonly name: string;
+  extract(
+    rawInput: string,
+    context: ExtractionContext,
+  ): Promise<{ entries: ExtractedEntry[]; usage: LlmUsage }>;
+  embed(text: string, taskType: EmbedTaskType): Promise<{ vector: number[]; usage: LlmUsage }>;
 }
