@@ -7,10 +7,11 @@
  *
  * This replaces the walking-skeleton's dev-session cookie seam (session.ts).
  */
+
+import * as authSchema from "@steward/shared/db/auth-schema";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, emailOTP, organization } from "better-auth/plugins";
-import * as authSchema from "../db/auth-schema.js";
 import type { Database } from "../db/client.js";
 
 /** Dev-only capture of the latest OTP per email (no email is sent in dev). */

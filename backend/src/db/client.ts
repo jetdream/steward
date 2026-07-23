@@ -5,7 +5,7 @@
  * (ADR-0003): dev/phase-1 docker-compose Postgres, phase-2 managed (Q-15).
  */
 
-import * as schema from "@shared/db/schema.js";
+import * as schema from "@steward/shared/db/schema";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 

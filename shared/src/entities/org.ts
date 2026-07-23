@@ -1,11 +1,16 @@
 /**
- * DM-1 Org — the cross-boundary entity type, DERIVED from the `orgs` table
- * (the single source, DEC-39). No hand-written field list: the table is the one
- * definition, and this type follows it. A type-only import, so importing `Org`
- * from @shared pulls no runtime code into the client bundle.
+ * DM-1 Org — the cross-boundary entity type, DERIVED from the single source
+ * (DEC-39): the BetterAuth `organization` table. No hand-written field list; a
+ * type-only import, so `Org` pulls no runtime code into the client bundle.
+ * Steward Org-level domain fields (donationUrl, news addressing) are added to
+ * `organization` via the plugin's `additionalFields` by their vertical, and will
+ * appear here automatically. `metadata` is BetterAuth-internal — not exposed.
  */
 import type { InferSelectModel } from "drizzle-orm";
-import type { orgs } from "../db/schema.js";
+import type { organization } from "../db/auth-schema.js";
 
-/** The Org entity as read from persistence (id, name, donationUrl, newsConfig, createdAt). */
-export type Org = InferSelectModel<typeof orgs>;
+/** An Org's cross-boundary fields, selected from the `organization` table. */
+export type Org = Pick<
+  InferSelectModel<typeof organization>,
+  "id" | "name" | "slug" | "logo" | "createdAt"
+>;

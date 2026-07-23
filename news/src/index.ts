@@ -9,5 +9,5 @@
  */
 import type { Org } from "@shared";
 
-/** What the renderer needs to address an org's page (id + news addressing). */
-export type NewsRenderTarget = Pick<Org, "id" | "newsConfig">;
+/** What the renderer needs to address an org's page (id + slug). */
+export type NewsRenderTarget = Pick<Org, "id" | "slug">;

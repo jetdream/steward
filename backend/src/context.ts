@@ -1,46 +1,48 @@
 /**
  * tRPC request context. Built per request (HTTP) or per socket (WS): it carries
- * the Drizzle handle and the resolved session. Over HTTP it can also set/clear the
- * session cookie on the response; over WS it is read-only (no response to write to).
+ * the Drizzle handle, the BetterAuth instance, the request headers (for auth.api
+ * calls), and the resolved BetterAuth session. Over HTTP it can append Set-Cookie
+ * headers to the response (the dev-login flow forwards BetterAuth's cookies).
  */
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
 import type { CreateWSSContextFnOptions } from "@trpc/server/adapters/ws";
+import { fromNodeHeaders } from "better-auth/node";
+import type { Auth } from "./auth/auth.js";
 import type { Database } from "./db/client.js";
-import {
-  type AppSession,
-  readCookie,
-  SESSION_COOKIE,
-  sessionCookieHeader,
-  signSession,
-  verifySession,
-} from "./session.js";
+
+/** The `{ session, user }` object BetterAuth returns, or null when signed out. */
+export type SessionResult = Awaited<ReturnType<Auth["api"]["getSession"]>>;
 
 export interface Context {
   db: Database;
-  session: AppSession | null;
-  /** Set/clear the session cookie — present over HTTP only (null over WS). */
-  setSession: ((session: AppSession | null) => void) | null;
+  auth: Auth;
+  /** Web `Headers` for the request — passed to `auth.api.*` calls. */
+  headers: Headers;
+  session: SessionResult;
+  /** Append Set-Cookie headers to the response — HTTP only (null over WS). */
+  appendCookies: ((cookies: string[]) => void) | null;
 }
 
-/** Build the HTTP + WS context factories over a shared db handle and signing secret. */
-export function makeContext(db: Database, secret: string) {
+/** Build the HTTP + WS context factories over a shared db handle and auth instance. */
+export function makeContext(db: Database, auth: Auth) {
+  const base = async (headers: Headers) => ({
+    db,
+    auth,
+    headers,
+    session: await auth.api.getSession({ headers }),
+  });
   return {
-    fromHttp({ req, res }: CreateHTTPContextOptions): Context {
+    async fromHttp({ req, res }: CreateHTTPContextOptions): Promise<Context> {
+      const headers = fromNodeHeaders(req.headers);
       return {
-        db,
-        session: verifySession(readCookie(req.headers.cookie, SESSION_COOKIE), secret),
-        setSession: (session) => {
-          const token = session ? signSession(session, secret) : null;
-          res.setHeader("Set-Cookie", sessionCookieHeader(token));
+        ...(await base(headers)),
+        appendCookies: (cookies) => {
+          for (const cookie of cookies) res.appendHeader("Set-Cookie", cookie);
         },
       };
     },
-    fromWs({ req }: CreateWSSContextFnOptions): Context {
-      return {
-        db,
-        session: verifySession(readCookie(req.headers.cookie, SESSION_COOKIE), secret),
-        setSession: null,
-      };
+    async fromWs({ req }: CreateWSSContextFnOptions): Promise<Context> {
+      return { ...(await base(fromNodeHeaders(req.headers))), appendCookies: null };
     },
   };
 }

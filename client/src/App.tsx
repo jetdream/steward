@@ -103,7 +103,7 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
         {list.data?.map((org) => (
           <li key={org.id} className="flex justify-between p-3 text-sm">
             <span>{org.name}</span>
-            <span className="font-mono text-neutral-400">/{org.newsConfig.slug}</span>
+            <span className="font-mono text-neutral-400">/{org.slug}</span>
           </li>
         ))}
       </ul>
@@ -124,7 +124,7 @@ export function App() {
   }
   return (
     <Shell>
-      <Dashboard email={me.data.email} onLogout={() => logout.mutate()} />
+      <Dashboard email={me.data.user.email} onLogout={() => logout.mutate()} />
     </Shell>
   );
 }
