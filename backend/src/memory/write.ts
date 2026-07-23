@@ -12,7 +12,7 @@ import { randomUUID } from "node:crypto";
 import type { MemoryEntry, MemoryEntryKind, MemorySource, OrgId } from "@shared";
 import { memoryEntry } from "@shared/db/schema.js";
 import { and, eq, isNull } from "drizzle-orm";
-import { withObsContext } from "../observability/context.js";
+import { runSkill } from "../harness/runtime.js";
 import type { EmbedTaskType, LlmPort } from "../ports/llm.js";
 import { normalize, subjectKey } from "./subject-key.js";
 
@@ -72,9 +72,10 @@ export async function writeMemory(
   rawInput: string,
   ctx: WriteContext,
 ): Promise<MemoryEntry[]> {
-  // Attribute every LLM call in this write (extraction + per-entry embedding) to
-  // the org + skill for observability (PIPE-5) — the instrumented port reads this.
-  return withObsContext({ orgId: ctx.orgId, skill: "extract-memory" }, async () => {
+  // Run as the "extract-memory" Skill (ARC-27): binds the org + skill + prompt
+  // version so every LLM call in this write (extraction + per-entry embedding) is
+  // attributed + cost-logged (PIPE-5).
+  return runSkill({ orgId: ctx.orgId, skillId: "extract-memory" }, async () => {
     const candidates = await deps.llm.extractEntries(rawInput, {
       correctionChannel: ctx.correctionChannel,
     });

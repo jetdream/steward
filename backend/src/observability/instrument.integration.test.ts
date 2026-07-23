@@ -10,6 +10,7 @@ import { modelCall, organization } from "@shared/db/schema.js";
 import { and, eq } from "drizzle-orm";
 import { devStubLlm } from "../adapters/llm/dev-stub.js";
 import { createDb, type Database } from "../db/client.js";
+import { runSkill } from "../harness/runtime.js";
 import { withObsContext } from "./context.js";
 import { instrumentLlm } from "./instrument.js";
 
@@ -67,3 +68,21 @@ test("PIPE-5: a call OUTSIDE an obs context records no row (un-attributed)", opt
   const rows = await db.select().from(modelCall).where(eq(modelCall.orgId, orgId));
   assert.equal(rows.length, 1); // still just the one from the previous test — none added
 });
+
+test(
+  "PIPE-4/5: runSkill carries the manifest prompt version onto the ModelCall",
+  opts,
+  async () => {
+    const port = instrumentLlm(devStubLlm, { db });
+    await runSkill({ orgId, skillId: "extract-memory" }, () =>
+      port.extractEntries("we run a weekend food bank", { correctionChannel: false }),
+    );
+    const rows = await db
+      .select()
+      .from(modelCall)
+      .where(and(eq(modelCall.orgId, orgId), eq(modelCall.operation, "generateObject")));
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0]?.skill, "extract-memory");
+    assert.equal(rows[0]?.promptVersion, "extract-memory@1");
+  },
+);

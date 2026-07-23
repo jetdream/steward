@@ -21,6 +21,7 @@ import { createVertex } from "@ai-sdk/google-vertex";
 import { MemoryEntryKind } from "@steward/shared";
 import { embed as aiEmbed, generateObject } from "ai";
 import { z } from "zod";
+import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
   EMBEDDING_DIM,
@@ -77,11 +78,9 @@ export function createVertexLlm(): RawLlmAdapter {
         model: vertex(EXTRACT_MODEL),
         schema: extractionSchema,
         telemetry: telemetryFor("extract-memory"),
-        system:
-          "You extract an org's durable knowledge into typed Memory entries. " +
-          "Classify each into exactly one kind: fact, story, styleRule, taboo, person, program, event. " +
-          "styleRule = a positive writing preference; taboo = a prohibition. " +
-          "Only assert what the input supports; never invent facts (ground strictly in the text).",
+        // The system prompt is the versioned harness artifact (PIPE-4), not an
+        // inline string — a change bumps its version + the manifest hash.
+        system: EXTRACT_MEMORY_PROMPT.system,
         prompt:
           (context.correctionChannel
             ? "This input is an EXPLICIT correction/instruction — prefer styleRule or taboo over a bare fact.\n\n"
