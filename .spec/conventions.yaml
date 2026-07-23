@@ -41,6 +41,9 @@ scopes:
         that omit server-only/secret fields are DERIVED via `Omit`/`.omit()`.
       - Prefer type INFERENCE from that single source over hand-written types, so
         the schema is the one source and every TS type + validator follows it.
+      - Keep modules focused and files small — one cohesive concern per file, split
+        before a file grows unwieldy (well under ~1000 lines). E.g. one router file
+        per capability under a `routers/` folder, composed by a thin root.
   shared:
     must: |
       - `@shared` owns the entity DEFINITIONS as the single source (DEC-39): the
