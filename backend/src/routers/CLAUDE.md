@@ -20,8 +20,9 @@ thin: they validate input (Zod), enforce org confinement via `orgProcedure`
 ## Folder spec context
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
-**Requirements this folder realizes** (32 — aggregated per register; detail: `cortex graph pack <ID>`):
+**Requirements this folder realizes** (35 — aggregated per register; detail: `cortex graph pack <ID>`):
 - Accounts & Identity — 5 requirement(s) realized here: ACC-1…ACC-5 (.spec/product/requirements/acc-accounts-identity.yaml)
+- Approval surface (Ready) & Composer — 3 requirement(s) realized here: APR-1…APR-5 (.spec/product/requirements/apr-approval-inbox.yaml)
 - Autonomy System — 2 requirement(s) realized here: AUT-1…AUT-3 (.spec/product/requirements/aut-autonomy.yaml)
 - Agentic Chat — 3 requirement(s) realized here: CHT-1…CHT-4 (.spec/product/requirements/cht-agentic-chat.yaml)
 - External Content Radar — 3 requirement(s) realized here: EXT-1…EXT-5 (.spec/product/requirements/ext-external-radar.yaml)
@@ -32,7 +33,7 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 - Publishing — 2 requirement(s) realized here: PUB-1…PUB-3 (.spec/product/requirements/pub-publishing.yaml)
 - Posting Strategy — 2 requirement(s) realized here: STR-1…STR-2 (.spec/product/requirements/str-posting-strategy.yaml)
 
-**Spec-elements:** ACCS-1, ONBS-1, AUTS-1, CHTS-1, INTS-1, MEMS-1, PUBS-1, EXTS-1, STRS-1, CHTS-2, GENS-2, INTS-2, ONBS-2, ACCS-2, EXTS-2, STRS-2, AUTS-3, GENS-3, ONBS-3, ACCS-3, PUBS-3, ONBS-4, CHTS-4, INTS-4, GENS-4, MEMS-4, GENS-5, MEMS-5, ONBS-5, EXTS-5, ONBS-6
+**Spec-elements:** APRS-1, ACCS-1, ONBS-1, AUTS-1, CHTS-1, INTS-1, MEMS-1, PUBS-1, EXTS-1, STRS-1, CHTS-2, GENS-2, INTS-2, ONBS-2, ACCS-2, EXTS-2, STRS-2, APRS-3, AUTS-3, GENS-3, ONBS-3, ACCS-3, PUBS-3, ONBS-4, CHTS-4, INTS-4, GENS-4, MEMS-4, APRS-5, GENS-5, MEMS-5, ONBS-5, EXTS-5, ONBS-6
 
 **Governed by:**
 - GR-1 — No outcome promises (.spec/product/guardrails.yaml)

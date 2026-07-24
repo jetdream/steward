@@ -3,6 +3,7 @@
  * file each under ./routers, so it stays modular as verticals land. `AppRouter` is
  * the API contract type the client imports.
  */
+import { approvalRouter } from "./routers/approval.js";
 import { authRouter } from "./routers/auth.js";
 import { autonomyRouter } from "./routers/autonomy.js";
 import { channelsRouter } from "./routers/channels.js";
@@ -34,6 +35,7 @@ export const appRouter = router({
   autonomy: autonomyRouter,
   channels: channelsRouter,
   publishing: publishingRouter,
+  approval: approvalRouter,
   system: systemRouter,
   ping: pingRouter,
 });
