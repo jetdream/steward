@@ -14,6 +14,7 @@ import { memoryRouter } from "./routers/memory.js";
 import { onboardingRouter } from "./routers/onboarding.js";
 import { orgRouter } from "./routers/org.js";
 import { pingRouter } from "./routers/ping.js";
+import { publishingRouter } from "./routers/publishing.js";
 import { radarRouter } from "./routers/radar.js";
 import { strategyRouter } from "./routers/strategy.js";
 import { systemRouter } from "./routers/system.js";
@@ -32,6 +33,7 @@ export const appRouter = router({
   radar: radarRouter,
   autonomy: autonomyRouter,
   channels: channelsRouter,
+  publishing: publishingRouter,
   system: systemRouter,
   ping: pingRouter,
 });
