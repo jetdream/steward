@@ -257,4 +257,21 @@ export const devStubLlm: RawLlmAdapter = {
       },
     };
   },
+  // Interviewer questions (INTS-1 plumbing): one deterministic open question per
+  // open gap, capped. Not a curious colleague — real conversational quality is the
+  // keyed path.
+  async interviewQuestions(input) {
+    const questions = input.openGaps.slice(0, Math.max(0, input.count)).map((g) => ({
+      gapCategory: g.category,
+      question: `Tell me a bit about your ${g.category} — ${g.why}`,
+    }));
+    return {
+      questions,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(JSON.stringify(input.openGaps)),
+        tokensOut: estTokens(JSON.stringify(questions)),
+      },
+    };
+  },
 };

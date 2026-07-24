@@ -8,6 +8,7 @@ import { draftStrategyEval } from "./draft-strategy.js";
 import { extractMemoryEval } from "./extract-memory.js";
 import { generateDraftEval } from "./generate-draft.js";
 import { identifyTopicsEval } from "./identify-topics.js";
+import { interviewQuestionsEval } from "./interview-questions.js";
 import { planCalendarEval } from "./plan-calendar.js";
 import { radarDiscoverEval } from "./radar-discover.js";
 
@@ -19,6 +20,7 @@ export const EVAL_SKILLS: SkillEvalDef<any, any>[] = [
   planCalendarEval,
   draftStrategyEval,
   radarDiscoverEval,
+  interviewQuestionsEval,
 ];
 
 export const EVAL_SKILL_IDS: string[] = EVAL_SKILLS.map((d) => d.skill);

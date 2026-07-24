@@ -17,6 +17,10 @@ import { EXTRACT_MEMORY_PROMPT, EXTRACT_MEMORY_PROMPT_REF } from "./prompts/extr
 import { GENERATE_DRAFT_PROMPT, GENERATE_DRAFT_PROMPT_REF } from "./prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT, GUARDRAIL_CHECK_PROMPT_REF } from "./prompts/guardrail-check.js";
 import { IDENTIFY_TOPICS_PROMPT, IDENTIFY_TOPICS_PROMPT_REF } from "./prompts/identify-topics.js";
+import {
+  INTERVIEW_QUESTIONS_PROMPT,
+  INTERVIEW_QUESTIONS_PROMPT_REF,
+} from "./prompts/interview-questions.js";
 import { PLAN_CALENDAR_PROMPT, PLAN_CALENDAR_PROMPT_REF } from "./prompts/plan-calendar.js";
 import { RADAR_DISCOVER_PROMPT, RADAR_DISCOVER_PROMPT_REF } from "./prompts/radar-discover.js";
 
@@ -107,6 +111,14 @@ export const HARNESS: Record<string, HarnessEntry> = {
     promptSystem: RADAR_DISCOVER_PROMPT.system,
     model: "gemini-2.5-flash",
     agentPolicy: { maxSteps: 1, costBudgetUsd: 0.08 },
+  },
+  "interview-questions": {
+    // The INTS-1 interviewer question authoring. Single-shot; the deterministic
+    // gap/asked-set gating + rate cap live in @backend/interviewer.
+    promptRef: INTERVIEW_QUESTIONS_PROMPT_REF,
+    promptSystem: INTERVIEW_QUESTIONS_PROMPT.system,
+    model: "gemini-2.5-flash",
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.03 },
   },
 };
 

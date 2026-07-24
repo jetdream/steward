@@ -244,6 +244,30 @@ export interface GroundedSearchResult {
   sources: string[];
 }
 
+/** An open gap the interviewer may ask about (INTS-1) — the ONBS-3 category + why it helps. */
+export interface InterviewGap {
+  category: string;
+  why: string;
+}
+
+/**
+ * Grounded input to the interviewer (INTS-1). The DOMAIN caller
+ * (@backend/interviewer) supplies the Memory grounding + the OPEN gaps (already
+ * filtered by the gap model + asked-set, so the Skill never re-asks) + the
+ * per-turn cap. The Skill authors open, story-seeking questions — never a form.
+ */
+export interface InterviewQuestionsInput {
+  grounding: string;
+  openGaps: InterviewGap[];
+  count: number;
+}
+
+/** One interviewer question tied to the gap category it fills (INTS-1). */
+export interface InterviewQuestion {
+  gapCategory: string;
+  question: string;
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -309,6 +333,13 @@ export interface LlmPort {
    * (provenance-bound + dereferenceable) before persisting.
    */
   groundedSearch(input: GroundedSearchInput): Promise<GroundedSearchResult>;
+  /**
+   * Author a few open, story-seeking interview questions for the OPEN gaps
+   * (INTS-1), grounded in Memory. Returns raw questions; the caller
+   * (@backend/interviewer) has already gated the gaps (asked-set/shouldAsk) and
+   * caps the count — this is the conversational-quality LLM step (LRN-20).
+   */
+  interviewQuestions(input: InterviewQuestionsInput): Promise<InterviewQuestion[]>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -344,4 +375,7 @@ export interface RawLlmAdapter {
   groundedSearch(
     input: GroundedSearchInput,
   ): Promise<{ result: GroundedSearchResult; usage: LlmUsage }>;
+  interviewQuestions(
+    input: InterviewQuestionsInput,
+  ): Promise<{ questions: InterviewQuestion[]; usage: LlmUsage }>;
 }

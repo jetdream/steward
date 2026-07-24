@@ -70,6 +70,9 @@ const llm: LlmPort = {
   async groundedSearch(input) {
     return (await devStubLlm.groundedSearch(input)).result;
   },
+  async interviewQuestions(input) {
+    return (await devStubLlm.interviewQuestions(input)).questions;
+  },
 };
 
 let db: Database;

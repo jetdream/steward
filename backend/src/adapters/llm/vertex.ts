@@ -26,6 +26,7 @@ import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT } from "../../harness/prompts/guardrail-check.js";
 import { IDENTIFY_TOPICS_PROMPT } from "../../harness/prompts/identify-topics.js";
+import { INTERVIEW_QUESTIONS_PROMPT } from "../../harness/prompts/interview-questions.js";
 import { PLAN_CALENDAR_PROMPT } from "../../harness/prompts/plan-calendar.js";
 import { RADAR_DISCOVER_PROMPT } from "../../harness/prompts/radar-discover.js";
 import { currentObsContext } from "../../observability/context.js";
@@ -41,6 +42,8 @@ import {
   type GroundedSearchInput,
   type GuardrailCheckInput,
   type GuardrailFinding,
+  type InterviewQuestion,
+  type InterviewQuestionsInput,
   type PlanSlotInput,
   type RawLlmAdapter,
   type SearchCandidate,
@@ -57,7 +60,23 @@ const TOPICS_MODEL = "gemini-2.5-flash";
 const PLAN_MODEL = "gemini-2.5-flash";
 const STRATEGY_MODEL = "gemini-2.5-flash";
 const SEARCH_MODEL = "gemini-2.5-flash";
+const INTERVIEW_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
+
+/** The structured interviewer questions the Skill returns (INTS-1). */
+const interviewSchema = z.object({
+  questions: z.array(z.object({ gapCategory: z.string(), question: z.string() })),
+});
+
+/** Assemble the interviewer prompt: what's known + the open gaps to ask about. */
+function interviewPrompt(input: InterviewQuestionsInput): string {
+  const gaps = input.openGaps.map((g) => `${g.category}: ${g.why}`).join("\n");
+  return (
+    `WHAT YOU ALREADY KNOW (org Memory):\n${input.grounding || "(very little yet)"}\n\n` +
+    `OPEN GAPS (ask about these; one question each):\n${gaps}\n\n` +
+    `Ask at most ${input.count} open, story-seeking questions.`
+  );
+}
 
 /** The structured discovery candidates the radar returns (EXTS-1). */
 const candidatesSchema = z.object({
@@ -455,6 +474,27 @@ export function createVertexLlm(): RawLlmAdapter {
           model: SEARCH_MODEL,
           tokensIn: (grounded.usage.inputTokens ?? 0) + (structured.usage.inputTokens ?? 0),
           tokensOut: (grounded.usage.outputTokens ?? 0) + (structured.usage.outputTokens ?? 0),
+        },
+      };
+    },
+    async interviewQuestions(input: InterviewQuestionsInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(INTERVIEW_MODEL),
+        schema: interviewSchema,
+        telemetry: telemetryFor("interview-questions"),
+        system: INTERVIEW_QUESTIONS_PROMPT.system,
+        prompt: interviewPrompt(input),
+      });
+      const questions: InterviewQuestion[] = object.questions.map((q) => ({
+        gapCategory: q.gapCategory,
+        question: q.question,
+      }));
+      return {
+        questions,
+        usage: {
+          model: INTERVIEW_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
         },
       };
     },

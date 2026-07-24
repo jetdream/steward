@@ -117,5 +117,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { result, usage } = await adapter.groundedSearch(input);
         return { value: result, usage };
       }),
+    interviewQuestions: (input) =>
+      observe("generateObject", async () => {
+        const { questions, usage } = await adapter.interviewQuestions(input);
+        return { value: questions, usage };
+      }),
   };
 }
