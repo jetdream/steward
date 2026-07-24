@@ -27,6 +27,7 @@ import {
   valOutcomes,
 } from "../enums.js";
 import { organization } from "./auth-schema.js";
+import { externalItem } from "./external-item.js";
 import { mediaAsset } from "./media-asset.js";
 
 export const contentItem = pgTable(
@@ -64,6 +65,10 @@ export const contentItem = pgTable(
     mediaAssetId: text("media_asset_id").references(() => mediaAsset.id, { onDelete: "set null" }),
     /** External-sourced content (GR-5 citation applies). */
     isExternal: boolean("is_external").notNull().default(false),
+    /** The Radar candidate this draft is sourced from (DM-8, EXTS-2 "sourced from"); null for internal. */
+    sourceExternalItemId: text("source_external_item_id").references(() => externalItem.id, {
+      onDelete: "set null",
+    }),
     /** Cohort-1 operator-QA gate (OPSS-1); `n/a` (default) once the per-org dial is off. */
     qaStatus: text("qa_status", { enum: qaStatuses }).notNull().default("n/a"),
     /**

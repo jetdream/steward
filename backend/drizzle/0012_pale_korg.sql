@@ -1,0 +1,2 @@
+ALTER TABLE "content_item" ADD COLUMN "source_external_item_id" text;--> statement-breakpoint
+ALTER TABLE "content_item" ADD CONSTRAINT "content_item_source_external_item_id_external_item_id_fk" FOREIGN KEY ("source_external_item_id") REFERENCES "public"."external_item"("id") ON DELETE set null ON UPDATE no action;

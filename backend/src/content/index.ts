@@ -31,6 +31,8 @@
  */
 
 export { type ContentEngine, createContentEngine } from "./engine.js";
+export type { ExternalSource } from "./external.js";
+export { draftExternalItem } from "./external.js";
 export type { GenerateDraftInput } from "./generate.js";
 export { assembleGrounding, draftForSlot, generateDraft } from "./generate.js";
 export { regenerateHint, resolveOutcome } from "./guardrails.js";

@@ -33,6 +33,19 @@ export async function persistCandidates(
   return db.insert(externalItem).values(rows).returning();
 }
 
+/** One ExternalItem, org-confined (ACC-3) — the EXTS-2 toDraft input. Null if not this org's. */
+export async function getExternalItem(
+  db: Database,
+  orgId: OrgId,
+  id: string,
+): Promise<ExternalItem | null> {
+  const [row] = await db
+    .select()
+    .from(externalItem)
+    .where(and(eq(externalItem.orgId, orgId), eq(externalItem.id, id)));
+  return row ?? null;
+}
+
 /** The Discoveries feed (EXT-5): an org's candidates, newest first. Pull-only (no counts). */
 export async function listDiscoveries(db: Database, orgId: OrgId): Promise<ExternalItem[]> {
   return db

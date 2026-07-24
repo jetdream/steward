@@ -5,14 +5,18 @@
  * port carries `{ db }` so the `radar-discover` ModelCall is cost-logged (PIPE-5).
  *
  * @implements EXTS-1 v1  (discover)
+ * @implements EXTS-2 v1  (toDraft — hand a worth-a-post candidate to the content engine)
  * @implements EXTS-5 v1  (discoveries / saved / triage)
  */
 import { ExternalItemDisposition, OrgId } from "@shared";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createLlmPort } from "../adapters/llm/index.js";
+import { draftExternalItem } from "../content/external.js";
 import type { Database } from "../db/client.js";
 import type { Memory } from "../memory/index.js";
 import { createRadar } from "../radar/index.js";
+import { getExternalItem } from "../radar/store.js";
 import { getAgenda } from "../topics/store.js";
 import { orgProcedure, router } from "../trpc.js";
 
@@ -49,4 +53,21 @@ export const radarRouter = router({
     .mutation(({ ctx, input }) =>
       radarFor(ctx).triage(OrgId.parse(ctx.orgId), input.id, input.disposition),
     ),
+
+  /** EXTS-2: hand a worth-a-post candidate to the content engine for an external draft (GR-5 cited). */
+  toDraft: orgProcedure
+    .input(z.object({ externalItemId: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      const orgId = OrgId.parse(ctx.orgId);
+      const item = await getExternalItem(ctx.db, orgId, input.externalItemId);
+      if (!item)
+        throw new TRPCError({ code: "NOT_FOUND", message: "external item not in this org" });
+      return draftExternalItem({ db: ctx.db, port: createLlmPort({ db: ctx.db }) }, orgId, {
+        id: item.id,
+        title: item.title,
+        summary: item.summary,
+        url: item.url,
+        source: item.source,
+      });
+    }),
 });

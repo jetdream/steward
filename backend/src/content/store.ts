@@ -25,6 +25,8 @@ export interface PersistDraftInput {
   result: DraftResult;
   /** External-sourced content (GR-5) — defaults to false. */
   isExternal?: boolean;
+  /** The Radar candidate this draft is sourced from (EXTS-2 "sourced from"), if external. */
+  sourceExternalItemId?: string;
   /** The plan-level calendar date (planner path); omitted for an ad-hoc draft. */
   scheduledFor?: Date;
 }
@@ -63,6 +65,7 @@ export async function persistDraft(db: Database, input: PersistDraftInput): Prom
       escalated: result.val.outcome === "escalate",
       valSummary: summarizeVal(result),
       isExternal: input.isExternal ?? false,
+      ...(input.sourceExternalItemId ? { sourceExternalItemId: input.sourceExternalItemId } : {}),
       ...(input.scheduledFor ? { scheduledFor: input.scheduledFor } : {}),
     })
     .returning();
