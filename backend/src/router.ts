@@ -7,6 +7,7 @@ import { authRouter } from "./routers/auth.js";
 import { chatRouter } from "./routers/chat.js";
 import { contentRouter } from "./routers/content.js";
 import { interviewerRouter } from "./routers/interviewer.js";
+import { mediaRouter } from "./routers/media.js";
 import { memoryRouter } from "./routers/memory.js";
 import { onboardingRouter } from "./routers/onboarding.js";
 import { orgRouter } from "./routers/org.js";
@@ -24,6 +25,7 @@ export const appRouter = router({
   interviewer: interviewerRouter,
   chat: chatRouter,
   content: contentRouter,
+  media: mediaRouter,
   strategy: strategyRouter,
   radar: radarRouter,
   system: systemRouter,

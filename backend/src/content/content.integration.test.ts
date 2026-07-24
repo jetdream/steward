@@ -68,7 +68,7 @@ test("persistDraft stores a generated master and reads it back org-scoped", opts
   });
   const stored = await persistDraft(db, { orgId, slot: cleanSlot, result });
 
-  assert.equal(stored.editorialState, "draft");
+  assert.equal(stored.editorialState, "awaiting_picture"); // GENS-4: no picture yet
   assert.equal(stored.contentType, "mission");
   assert.equal(stored.subject, cleanSlot.subject);
   assert.equal(stored.valOutcome, "pass");
@@ -113,7 +113,7 @@ test("getContentItem is org-confined — another org cannot read the row (ACC-3)
 });
 
 test("listContentItems returns the org's drafts newest-first", opts, async () => {
-  const rows = await listContentItems(db, orgId, "draft");
-  assert.ok(rows.length >= 3); // the drafts persisted by the tests above
-  assert.ok(rows.every((r) => r.orgId === orgId && r.editorialState === "draft"));
+  const rows = await listContentItems(db, orgId, "awaiting_picture");
+  assert.ok(rows.length >= 3); // the pictureless drafts persisted by the tests above (GENS-4)
+  assert.ok(rows.every((r) => r.orgId === orgId && r.editorialState === "awaiting_picture"));
 });

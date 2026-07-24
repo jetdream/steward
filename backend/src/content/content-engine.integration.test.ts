@@ -67,7 +67,7 @@ test("plan→generate→persist yields dated, grounded, quota-satisfying drafts"
   assert.equal(items.length, 6);
   for (const it of items) {
     assert.equal(it.orgId, orgId);
-    assert.equal(it.editorialState, "draft");
+    assert.equal(it.editorialState, "awaiting_picture"); // GENS-4: pictureless at generation
     assert.ok(it.scheduledFor instanceof Date); // dated by the planner
     assert.ok(it.body.length > 0); // generated (GENS-7)
     assert.ok(it.subject.length > 0); // agenda subject

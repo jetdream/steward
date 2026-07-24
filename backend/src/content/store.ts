@@ -13,6 +13,7 @@ import type { ContentItem, EditorialState, OrgId } from "@shared";
 import { contentItem } from "@shared/db/schema.js";
 import { and, desc, eq, gte, isNotNull } from "drizzle-orm";
 import type { Database } from "../db/client.js";
+import { editorialStateForDraft } from "../media/gate.js";
 import type { ContentSlot } from "../ports/llm.js";
 import type { HistorySlot } from "./planner.js";
 import type { DraftResult } from "./types.js";
@@ -36,7 +37,8 @@ function summarizeVal(result: DraftResult): string {
 }
 
 /**
- * Persist a generated draft as a DM-5 ContentItem (editorial state `draft`). An
+ * Persist a generated draft as a DM-5 ContentItem (editorial state `awaiting_picture`
+ * until a picture attaches — GENS-4). An
  * escalated VAL outcome (GR-3/GR-8) is recorded via `escalated` + `valSummary`;
  * the item still lands in `draft` (at TL0 every draft needs founder approval, so
  * escalation just records WHY it can never auto-advance). Returns the stored row.
@@ -48,7 +50,9 @@ export async function persistDraft(db: Database, input: PersistDraftInput): Prom
     .values({
       id: randomUUID(),
       orgId,
-      editorialState: "draft",
+      // GENS-4: a freshly-generated master carries no picture yet → awaiting_picture
+      // (the hard GEN-3 gate; attaching a picture clears it to draft — @backend/media).
+      editorialState: editorialStateForDraft(false),
       contentType: slot.type,
       subject: slot.subject,
       designation: slot.designation,
