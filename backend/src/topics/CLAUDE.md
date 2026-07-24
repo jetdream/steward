@@ -12,7 +12,7 @@ ARC-27/PIPE-4 substrate, evaluated day-one (ADR-0010).
 | File | Role | Spec |
 |---|---|---|
 | `identify.ts` | `deriveTopics` (Skill run + the guard, pure) · `applyEvidenceGuard` (deterministic) · `identifyForOrg` (MEMS listGrounding → identify seam) | `@implements TOPS-1 v1` |
-| `store.ts` | `persistTopics` (DM-13, active/system-derived, dedup by `topicKey`) · `getAgenda` / `activeTopics` · `topicKey` (canonical) | `@implements TOPS-1, TOPS-4 v1` |
+| `store.ts` | `persistTopics` (DM-13, active/system-derived, dedup by `topicKey`, saves the TOPS-2 research strategy) · `getAgenda` / `activeTopics` · `strategyFor` (the package the Radar discovers against) · `topicKey` (canonical) | `@implements TOPS-1, TOPS-2, TOPS-4 v1` |
 | `index.ts` | `createTopics({db, memory, port})` facade — `identify` + `getAgenda` | — |
 
 **Grounding + the guard (LRN-20).** Identification is a grounded LLM Skill:
@@ -29,10 +29,16 @@ judge, not built here.
 the agenda is drafted first, never a blank page. `getAgenda` returns the active
 set.
 
-**Deferred:** TOPS-2 research strategy (Radar), TOPS-3 proposals (PRO-4 budget +
-the XP-1 card), the `editAgenda` edit half of TOPS-4, and topic EVOLUTION
-(re-describe/retire via DM-13 supersession) — a re-run dedups by `topicKey`
-rather than diffing the set.
+**TOPS-2 research strategy.** Identification now ALSO authors a per-topic RESEARCH
+STRATEGY (query formulations + source hints + recency/locality/credibility
+filters) — an LLM step in the same `identify-topics` Skill — persisted on DM-13.
+The Radar (EXT-1) discovers AGAINST it: `radar`'s `agendaFor` passes each topic's
+`researchStrategy.queries` into `groundedSearch`. Triage-feedback refinement of
+the strategy (EXT-5 → tune queries) is the deeper loop (deferred).
+
+**Deferred:** TOPS-3 proposals (the proactive push + declined-suppression), the
+`editAgenda` edit half of TOPS-4, and topic EVOLUTION (re-describe/retire via
+DM-13 supersession) — a re-run dedups by `topicKey` rather than diffing the set.
 
 **Gotcha.** Any prompt/model change to the `identify-topics` Skill bumps the
 harness-manifest hash → the eval gate requires a fresh passing run.

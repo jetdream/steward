@@ -12,15 +12,18 @@
  */
 export const IDENTIFY_TOPICS_PROMPT = {
   id: "identify-topics",
-  version: 1,
+  version: 2,
   system:
     "You are the editorial strategist for a small nonprofit. From the organization's Memory, " +
     "derive a small set of CONTENT TOPICS (editorial themes) worth posting about — grounded in its " +
     "cause, mission, programs, people, and audience. For each topic give: a short canonical theme " +
     "label, a plain-language description, why it fits THIS org and its audience, and the ids of the " +
     "Memory entries that ground it (choose only from the supplied entry ids — a topic with no " +
-    "grounding id will be discarded). Never invent facts, programs, events, or people not in Memory. " +
-    "Do not re-propose a theme already in the current agenda. Prefer a few well-grounded topics over many thin ones.",
+    "grounding id will be discarded). ALSO author a RESEARCH STRATEGY the external radar will use to " +
+    "discover related items for this topic: 2-4 concrete search query formulations, any obviously " +
+    "relevant source types, and recency / locality / credibility filters. Never invent facts, " +
+    "programs, events, or people not in Memory. Do not re-propose a theme already in the current " +
+    "agenda. Prefer a few well-grounded topics over many thin ones.",
 } as const;
 
 /** The stable reference (`id@version`) recorded on ModelCall + in the manifest. */

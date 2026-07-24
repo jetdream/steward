@@ -171,6 +171,13 @@ export const devStubLlm: RawLlmAdapter = {
               description: input.grounding.split("\n")[0]?.slice(0, 120) || "our work",
               whyItFits: "Grounded in the organization's Memory.",
               evidenceMemoryIds: [firstId],
+              researchStrategy: {
+                queries: ["our mission news", "our mission local events"],
+                sources: [],
+                recency: "past 60 days",
+                locality: "local",
+                credibility: "reputable outlets",
+              },
             },
           ];
     return {

@@ -9,7 +9,7 @@
  * @implements TOPS-4 v1  (getAgenda — the active-topic set is the agenda; read half)
  */
 import { randomUUID } from "node:crypto";
-import type { OrgId, Topic } from "@shared";
+import type { OrgId, ResearchStrategy, Topic } from "@shared";
 import { topic } from "@shared/db/schema.js";
 import { and, desc, eq, inArray, isNull } from "drizzle-orm";
 import type { Database } from "../db/client.js";
@@ -41,6 +41,19 @@ export async function activeTopics(db: Database, orgId: OrgId): Promise<Topic[]>
 
 /** The editorial agenda (TOP-4): the org's active-Topic set. Alias of `activeTopics`. */
 export const getAgenda = activeTopics;
+
+/** The TOPS-2 research strategy for a topic (the package the Radar discovers against), org-confined. */
+export async function strategyFor(
+  db: Database,
+  orgId: OrgId,
+  topicId: string,
+): Promise<ResearchStrategy | null> {
+  const [row] = await db
+    .select({ rs: topic.researchStrategy })
+    .from(topic)
+    .where(and(eq(topic.orgId, orgId), eq(topic.id, topicId)));
+  return row?.rs ?? null;
+}
 
 /**
  * Persist guarded candidate topics as active, system-derived DM-13 rows, skipping
@@ -74,6 +87,7 @@ export async function persistTopics(
       description: c.description,
       whyItFits: c.whyItFits,
       evidence: { memoryEntryIds: c.evidenceMemoryIds },
+      researchStrategy: c.researchStrategy ?? null, // TOPS-2 (null until authored)
       provenance: "system-derived" as const,
       status: "active" as const,
     }));

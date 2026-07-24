@@ -76,9 +76,16 @@ const candidatesSchema = z.object({
 
 /** Assemble the discovery user prompt: the agenda + geography + how many to find. */
 function searchPrompt(input: GroundedSearchInput): string {
-  const agenda = input.topics.map((t) => `${t.id}: ${t.description}`).join("\n");
+  const agenda = input.topics
+    .map((t) => {
+      const queries =
+        t.queries && t.queries.length > 0 ? ` — queries: ${t.queries.join("; ")}` : "";
+      return `${t.id}: ${t.description}${queries}`;
+    })
+    .join("\n");
   return (
-    `EDITORIAL AGENDA:\n${agenda}\n\nGEOGRAPHY: ${input.geography}\n\n` +
+    `EDITORIAL AGENDA (discover against each topic's research queries when given):\n${agenda}\n\n` +
+    `GEOGRAPHY: ${input.geography}\n\n` +
     `Find up to ${input.count} recent, relevant external items (events/news/research) to comment on.`
   );
 }
@@ -124,6 +131,13 @@ const topicsSchema = z.object({
       description: z.string(),
       whyItFits: z.string(),
       evidenceMemoryIds: z.array(z.string()),
+      researchStrategy: z.object({
+        queries: z.array(z.string()),
+        sources: z.array(z.string()),
+        recency: z.string().optional(),
+        locality: z.string().optional(),
+        credibility: z.string().optional(),
+      }),
     }),
   ),
 });
@@ -321,12 +335,24 @@ export function createVertexLlm(): RawLlmAdapter {
         system: IDENTIFY_TOPICS_PROMPT.system,
         prompt: topicsPrompt(input),
       });
-      const topics: CandidateTopic[] = object.topics.map((t) => ({
-        theme: t.theme,
-        description: t.description,
-        whyItFits: t.whyItFits,
-        evidenceMemoryIds: t.evidenceMemoryIds,
-      }));
+      const topics: CandidateTopic[] = object.topics.map((t) => {
+        const rs = t.researchStrategy;
+        // Drop absent optionals rather than carry explicit undefined (exactOptional).
+        const researchStrategy: NonNullable<CandidateTopic["researchStrategy"]> = {
+          queries: rs.queries,
+          sources: rs.sources,
+        };
+        if (rs.recency !== undefined) researchStrategy.recency = rs.recency;
+        if (rs.locality !== undefined) researchStrategy.locality = rs.locality;
+        if (rs.credibility !== undefined) researchStrategy.credibility = rs.credibility;
+        return {
+          theme: t.theme,
+          description: t.description,
+          whyItFits: t.whyItFits,
+          evidenceMemoryIds: t.evidenceMemoryIds,
+          researchStrategy,
+        };
+      });
       return {
         topics,
         usage: {

@@ -28,7 +28,7 @@ import { getAgenda, persistTopics } from "./store.js";
 
 export type { DeriveTopicsInput } from "./identify.js";
 export { applyEvidenceGuard, deriveTopics, identifyForOrg } from "./identify.js";
-export { activeTopics, getAgenda, persistTopics, topicKey } from "./store.js";
+export { activeTopics, getAgenda, persistTopics, strategyFor, topicKey } from "./store.js";
 
 /** The @backend/topics facade (ARC-26) — binds the DB + Memory + LLM port once. */
 export interface Topics {

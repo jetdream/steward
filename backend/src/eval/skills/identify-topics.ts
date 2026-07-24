@@ -105,5 +105,23 @@ export const identifyTopicsEval: SkillEvalDef<TopicCase, CandidateTopic[]> = {
         return { passed: sub.filter((r) => r.output.length === 0).length, total: sub.length };
       },
     },
+    {
+      // Deterministic (TOPS-2): every derived topic carries a research strategy with
+      // at least one query formulation — the package the Radar discovers against.
+      name: "topics-carry-a-research-strategy",
+      kind: "deterministic",
+      target: 1.0,
+      evaluate: (rows: Row[]) => {
+        let passed = 0;
+        let total = 0;
+        for (const { output } of rows) {
+          for (const t of output) {
+            total++;
+            if (t.researchStrategy && t.researchStrategy.queries.length > 0) passed++;
+          }
+        }
+        return { passed, total };
+      },
+    },
   ],
 };

@@ -24,7 +24,11 @@ function radarFor(ctx: { db: Database; memory: Memory }) {
     port: createLlmPort({ db: ctx.db }),
     agendaFor: (orgId) =>
       getAgenda(ctx.db, orgId).then((ts) =>
-        ts.map((t) => ({ id: t.id, description: t.description })),
+        ts.map((t) => ({
+          id: t.id,
+          description: t.description,
+          queries: t.researchStrategy?.queries ?? [],
+        })),
       ),
   });
 }

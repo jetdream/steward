@@ -195,6 +195,34 @@
         }
       ],
       "at": "2026-07-24T08:20:25.445Z"
+    },
+    "e989a1d36ab1a811#1": {
+      "skill": "extract-memory",
+      "manifestHash": "e989a1d36ab1a811",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "kind-match",
+          "kind": "deterministic",
+          "passed": 5,
+          "total": 5,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "correction-never-bare-fact",
+          "kind": "catch-rate",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T08:35:32.816Z"
     }
   },
   "generate-draft": {
@@ -473,6 +501,52 @@
         }
       ],
       "at": "2026-07-24T08:20:25.449Z"
+    },
+    "e989a1d36ab1a811#1": {
+      "skill": "generate-draft",
+      "manifestHash": "e989a1d36ab1a811",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "clean-passes",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "active-overlay-never-auto-passed",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "promise-caught",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "sensitive-escalates",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T08:35:32.821Z"
     }
   },
   "identify-topics": {
@@ -623,6 +697,52 @@
         }
       ],
       "at": "2026-07-24T08:20:25.450Z"
+    },
+    "e989a1d36ab1a811#1": {
+      "skill": "identify-topics",
+      "manifestHash": "e989a1d36ab1a811",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "every-topic-grounded",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "populated-yields-topics",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "empty-memory-no-fabrication",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "topics-carry-a-research-strategy",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T08:35:32.823Z"
     }
   },
   "plan-calendar": {
@@ -736,6 +856,43 @@
         }
       ],
       "at": "2026-07-24T08:20:25.452Z"
+    },
+    "e989a1d36ab1a811#1": {
+      "skill": "plan-calendar",
+      "manifestHash": "e989a1d36ab1a811",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "every-slot-grounded",
+          "kind": "deterministic",
+          "passed": 24,
+          "total": 24,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "impact-rhythm-floor",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "asks-within-cap",
+          "kind": "deterministic",
+          "passed": 3,
+          "total": 3,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T08:35:32.825Z"
     }
   },
   "draft-strategy": {
@@ -794,6 +951,34 @@
         }
       ],
       "at": "2026-07-24T08:20:25.453Z"
+    },
+    "e989a1d36ab1a811#1": {
+      "skill": "draft-strategy",
+      "manifestHash": "e989a1d36ab1a811",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "core-sections-present",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "every-channel-covered",
+          "kind": "deterministic",
+          "passed": 4,
+          "total": 4,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T08:35:32.826Z"
     }
   },
   "radar-discover": {
@@ -824,6 +1009,34 @@
         }
       ],
       "at": "2026-07-24T08:20:25.454Z"
+    },
+    "e989a1d36ab1a811#1": {
+      "skill": "radar-discover",
+      "manifestHash": "e989a1d36ab1a811",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "candidates-provenance-bound",
+          "kind": "deterministic",
+          "passed": 3,
+          "total": 3,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "candidates-on-agenda",
+          "kind": "deterministic",
+          "passed": 3,
+          "total": 3,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T08:35:32.827Z"
     }
   }
 }

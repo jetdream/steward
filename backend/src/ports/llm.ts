@@ -137,6 +137,18 @@ export interface CandidateTopic {
   whyItFits: string;
   /** Cited Memory entry ids backing the topic (guard: must be a subset of groundingIds). */
   evidenceMemoryIds: string[];
+  /**
+   * The TOPS-2 research-strategy package the Radar discovers against — query
+   * formulations + source hints + recency/locality/credibility filters. Authored
+   * as part of identification (an LLM step); persisted on DM-13.
+   */
+  researchStrategy?: {
+    queries: string[];
+    sources: string[];
+    recency?: string;
+    locality?: string;
+    credibility?: string;
+  };
 }
 
 /** Input to the calendar-pairing step (GENS-1): the agenda to draw subjects from. */
@@ -193,8 +205,12 @@ export interface StrategyDraft {
  * and passes them in; the port runs Gemini + Google-Search grounding (IG-3).
  */
 export interface GroundedSearchInput {
-  /** The editorial agenda to discover against (topic id + description) — never a static seed. */
-  topics: { id: string; description: string }[];
+  /**
+   * The editorial agenda to discover against — never a static seed. Each topic
+   * carries its TOPS-2 research-strategy `queries` when authored; the adapter
+   * discovers against those, falling back to the description.
+   */
+  topics: { id: string; description: string; queries?: string[] }[];
   /** The org's geography scope for relevance (local → county → state → national → global). */
   geography: string;
   /** How many candidates to aim for across the agenda. */
