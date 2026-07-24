@@ -21,7 +21,7 @@ export * from "./entities/memory-source.js";
 export type { ModelCall } from "./entities/model-call.js";
 export type { Org } from "./entities/org.js";
 export type { ChannelInstructions, StrategyDoc } from "./entities/strategy-doc.js";
-export { EvidencePointer, type Topic } from "./entities/topic.js";
+export { EvidencePointer, ResearchStrategy, type Topic } from "./entities/topic.js";
 export * from "./enums.js";
 export * from "./ids.js";
 export * from "./parse.js";

@@ -19,5 +19,25 @@ export const EvidencePointer = z.object({
 });
 export type EvidencePointer = z.infer<typeof EvidencePointer>;
 
+/**
+ * A topic's RESEARCH STRATEGY (TOPS-2) — the structured package the Radar (EXT-1)
+ * discovers AGAINST, not a bare keyword: query formulations + source/feed hints +
+ * recency/locality/credibility filters. Refined by Discoveries triage feedback
+ * (EXT-5). Persisted on DM-13 (nullable until authored).
+ */
+export const ResearchStrategy = z.object({
+  /** Concrete query formulations the Radar issues (never a single static seed). */
+  queries: z.array(z.string()).default([]),
+  /** Source/feed selection hints (structured feeds arrive with EXT-4). */
+  sources: z.array(z.string()).default([]),
+  /** Recency filter (e.g. "past 30 days"). */
+  recency: z.string().optional(),
+  /** Locality focus (local → county → state → national → global). */
+  locality: z.string().optional(),
+  /** Credibility bar for sources. */
+  credibility: z.string().optional(),
+});
+export type ResearchStrategy = z.infer<typeof ResearchStrategy>;
+
 /** A Topic row exactly as stored (a content topic / editorial theme). */
 export type Topic = InferSelectModel<typeof topic>;

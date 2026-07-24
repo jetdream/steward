@@ -57,6 +57,13 @@
       "when": 1784880365208,
       "tag": "0007_harsh_spiral",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1784881598995,
+      "tag": "0008_windy_sleeper",
+      "breakpoints": true
     }
   ]
 }
