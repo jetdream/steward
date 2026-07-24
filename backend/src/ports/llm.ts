@@ -13,7 +13,7 @@
  * (text → a fixed-dim vector for pgvector retrieval, MEMS-4). Generation (GEN)
  * and search-grounding (EXT/IG-3) extend this port as those verticals land.
  */
-import type { MemoryEntryKind } from "@steward/shared";
+import type { ContentType, MemoryEntryKind, SlotDesignation } from "@steward/shared";
 
 /** The embedding dimension every adapter must return (ADR-0008: 1536). */
 export const EMBEDDING_DIM = 1536 as const;
@@ -33,6 +33,78 @@ export interface ExtractedEntry {
   subject?: string;
   /** The normalized assertion/body. */
   content: string;
+}
+
+/**
+ * A calendar slot the generator writes for (GENS-7 input): the taxonomy TYPE
+ * (HOW to frame) paired with an agenda SUBJECT (WHAT to talk about, a TOPS-4
+ * topic), plus the plan-time overlay DESIGNATION the master must honor (GEN-1
+ * v4). Assembled by the planner (GENS-1); for the G1 slice it is fed directly.
+ */
+export interface ContentSlot {
+  type: ContentType;
+  subject: string;
+  designation: SlotDesignation;
+}
+
+/**
+ * The grounded generation input (GENS-7). The DOMAIN caller (@backend/content)
+ * assembles the grounding + overlay from Memory (MEMS-4) + Strategy and passes
+ * them in — the port itself does NO retrieval (it stays a dumb provider surface,
+ * ADR-0003). On a VAL-driven regenerate, `regenerateHint` carries the failed
+ * check's fix instruction (the bounded PIPE-2 regenerate loop).
+ */
+export interface DraftGenInput {
+  slot: ContentSlot;
+  /** Grounding package text (Memory retrieval + Strategy) — the sole factual source (VAL-4). */
+  grounding: string;
+  /** The FULL active rule/taboo overlay (MEMS-3), routed in so generation steers clear. */
+  overlay: string[];
+  /** A VAL-driven regenerate fix hint from a failed guardrail check, if any. */
+  regenerateHint?: string;
+}
+
+/** The generated MASTER story before VAL (GENS-7) — the DM-5 master content fields. */
+export interface GeneratedMaster {
+  title: string;
+  body: string;
+  /** The founder-facing "why this, why now" line (the GEN-1 ReasonLine). */
+  reasonLine: string;
+}
+
+/** The guardrails the VAL judge can flag (GENS-7 / PIPE-2). */
+export type GuardrailId = "GR-1" | "GR-2" | "GR-3" | "GR-5" | "GR-8";
+
+/**
+ * One guardrail the JUDGE flagged on a master. `fixable` → a regenerate with a
+ * hint (GR-1/GR-2/GR-5); `escalate` → force human approval regardless of Trust
+ * Level (GR-3 sensitive, a GR-8 taboo that cannot be confidently cleared).
+ */
+export interface GuardrailFinding {
+  guardrail: GuardrailId;
+  severity: "fixable" | "escalate";
+  reason: string;
+}
+
+/**
+ * The guardrail JUDGE's verdict (GENS-7). Detection is a semantic LLM judgment
+ * (LRN-20 — NEVER a regex/keyword heuristic): the keyed tier reads the master and
+ * returns the findings it is confident about. `judged: false` marks the DORMANT
+ * keyless path (no live judgment performed) so the eval treats content catch-rates
+ * as dormant on that tier — only the structural GR-8 backstop still fires.
+ */
+export interface GuardrailJudgment {
+  findings: GuardrailFinding[];
+  judged: boolean;
+}
+
+/** Input to the guardrail judge: the master to read + the routed overlay (MEMS-3). */
+export interface GuardrailCheckInput {
+  master: GeneratedMaster;
+  /** The FULL active rule/taboo overlay (MEMS-3) the master must not violate. */
+  overlay: string[];
+  /** External-sourced content triggers the GR-5 citation requirement. */
+  isExternal: boolean;
 }
 
 /** Context passed to extraction so classification is grounded, not blind. */
@@ -62,6 +134,19 @@ export interface LlmPort {
   extractEntries(rawInput: string, context: ExtractionContext): Promise<ExtractedEntry[]>;
   /** Embed text into an EMBEDDING_DIM-length vector for pgvector retrieval (MEMS-4). */
   embed(text: string, taskType: EmbedTaskType): Promise<number[]>;
+  /**
+   * Generate the grounded MASTER story for a slot (GENS-7 / PIPE-2). Returns the
+   * raw master only; the VAL guardrail chain (@backend/content) gates it before
+   * any queue — generation is never a bypass of the guardrails.
+   */
+  generateDraft(input: DraftGenInput): Promise<GeneratedMaster>;
+  /**
+   * The VAL guardrail JUDGE (GENS-7 / PIPE-2): read a master and flag guardrail
+   * violations SEMANTICALLY (LRN-20 — an LLM judgment with a residual miss rate,
+   * never a regex/keyword heuristic). The keyless stub is dormant (`judged:false`);
+   * the caller's chain resolves findings → pass / regenerate / escalate.
+   */
+  checkGuardrails(input: GuardrailCheckInput): Promise<GuardrailJudgment>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -87,4 +172,8 @@ export interface RawLlmAdapter {
     context: ExtractionContext,
   ): Promise<{ entries: ExtractedEntry[]; usage: LlmUsage }>;
   embed(text: string, taskType: EmbedTaskType): Promise<{ vector: number[]; usage: LlmUsage }>;
+  generate(input: DraftGenInput): Promise<{ master: GeneratedMaster; usage: LlmUsage }>;
+  judgeGuardrails(
+    input: GuardrailCheckInput,
+  ): Promise<{ judgment: GuardrailJudgment; usage: LlmUsage }>;
 }

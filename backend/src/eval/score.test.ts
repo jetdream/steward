@@ -9,7 +9,13 @@ import { detectRegression, gateCheck, runEval } from "./score.js";
 import type { EvalRun, MetricResult, RunsStore, Scorecard, SkillEvalDef } from "./types.js";
 import { runKey } from "./types.js";
 
-const noopPort: LlmPort = { name: "test", extractEntries: async () => [], embed: async () => [] };
+const noopPort: LlmPort = {
+  name: "test",
+  extractEntries: async () => [],
+  embed: async () => [],
+  generateDraft: async () => ({ title: "", body: "", reasonLine: "" }),
+  checkGuardrails: async () => ({ findings: [], judged: false }),
+};
 
 const fakeDef: SkillEvalDef<{ x: number }, number> = {
   skill: "fake",

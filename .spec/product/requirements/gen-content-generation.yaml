@@ -40,12 +40,16 @@ items:
     coverage:
       status: complete
       reasoning: >-
-        Covered by GENS-1 (approved, challenge r2 pass): the rolling planner pairs
-        a taxonomy TYPE with a TOPS-4 agenda SUBJECT; mix quotas (≥1
-        impact/gratitude, ≤25% asks) are deterministic counts over PLAN-TIME slot
-        designations on a trailing 28-day window; saved-pool freshness rules
-        (DEC-20). Realization pending code.
-      against: [GENS-1@1, G-1@1, G-2@1, G-4@1, G-5@1, MEM-1@1, STR-1@2, EXT-1@2, EXT-5@2, TOP-4@1]
+        Covered by GENS-1 (the rolling planner: pairs a taxonomy TYPE with a
+        TOPS-4 agenda SUBJECT; mix quotas ≥1 impact/gratitude, ≤25% asks as
+        deterministic counts over PLAN-TIME slot designations on a trailing 28-day
+        window; saved-pool freshness rules, DEC-20) AND GENS-7 (the grounded
+        master GENERATION of the draft named in GEN-1's statement, gated by the
+        VAL guardrail chain — PIPE-2 / GR-1/GR-3/GR-8, the LRN-20 honesty split).
+        The two split GEN-1: GENS-1 plans the slot, GENS-7 writes+validates the
+        master. Realization: GENS-7 lands with the generateDraft Skill (G1); GENS-1
+        planner pending code.
+      against: [GENS-1@1, GENS-7@1, G-1@1, G-2@1, G-4@1, G-5@1, MEM-1@1, STR-1@2, EXT-1@2, EXT-5@2, TOP-4@1]
 
   GEN-2:
     v: 1

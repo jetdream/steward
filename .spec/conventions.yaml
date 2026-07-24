@@ -66,6 +66,14 @@ scopes:
         internal detail).
       - Reach an external service ONLY through its ADR-0003 port/adapter — never
         call a vendor SDK from domain/business code.
+      - NEVER judge content SEMANTICS with regex / substring / keyword heuristics
+        (does this promise an outcome? is it sensitive? does it violate a taboo?)
+        — heuristic detection is unreliable (false positives AND negatives) and
+        gives false confidence. Semantic detection is an LLM judgment: use a cheap,
+        versioned judge Skill through the LLM port (e.g. the GENS-7 guardrail-check
+        Skill). This is the LRN-20 class. Deterministic code is for STRUCTURE and
+        POLICY only — routing, counts, hard char/format limits, outcome resolution,
+        bounded loops, escalate-on-uncertainty backstops — never for reading meaning.
     should: |
       - Import `./otel` before any instrumented module (it must patch first).
       - A fallible outbound call (publish, cache purge, webhook) must surface its

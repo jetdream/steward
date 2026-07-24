@@ -13,12 +13,21 @@
  */
 import { createHash } from "node:crypto";
 import { EXTRACT_MEMORY_PROMPT, EXTRACT_MEMORY_PROMPT_REF } from "./prompts/extract-memory.js";
+import { GENERATE_DRAFT_PROMPT, GENERATE_DRAFT_PROMPT_REF } from "./prompts/generate-draft.js";
+import { GUARDRAIL_CHECK_PROMPT, GUARDRAIL_CHECK_PROMPT_REF } from "./prompts/guardrail-check.js";
 
 /** The bound on a Skill's runtime (PIPE-4). `maxSteps: 1` ⇒ a single-shot skill. */
 export interface AgentPolicy {
   maxSteps: number;
   /** Per-invocation cost ceiling (USD), tied to the PIPE-1 COGS target. */
   costBudgetUsd?: number;
+  /**
+   * The bound on the PIPE-2 VAL-driven REGENERATE loop (GENS-7): after this many
+   * regenerate attempts a still-failing draft ESCALATES rather than looping —
+   * "unbounded loops are structurally impossible" (PIPE-4). Absent ⇒ 0 (no
+   * regenerate; a violation escalates immediately).
+   */
+  maxRegenerate?: number;
 }
 
 /** One Skill's harness: what prompt + model + policy the runtime assembles. */
@@ -45,6 +54,22 @@ export const HARNESS: Record<string, HarnessEntry> = {
     promptSystem: null,
     model: "gemini-embedding-2",
     agentPolicy: { maxSteps: 1 },
+  },
+  "generate-draft": {
+    promptRef: GENERATE_DRAFT_PROMPT_REF,
+    promptSystem: GENERATE_DRAFT_PROMPT.system,
+    model: "gemini-2.5-flash",
+    // Single-shot generation (maxSteps: 1) with a bounded VAL regenerate loop
+    // (GENS-7 / PIPE-2): up to 2 regenerate attempts, then escalate.
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.1, maxRegenerate: 2 },
+  },
+  "guardrail-check": {
+    // The semantic VAL guardrail judge (GENS-7 / LRN-20) — LLM detection, not
+    // regex. Cheap model; single-shot classification.
+    promptRef: GUARDRAIL_CHECK_PROMPT_REF,
+    promptSystem: GUARDRAIL_CHECK_PROMPT.system,
+    model: "gemini-2.5-flash",
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.02 },
   },
 };
 

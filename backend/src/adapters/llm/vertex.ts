@@ -22,17 +22,75 @@ import { MemoryEntryKind } from "@steward/shared";
 import { embed as aiEmbed, generateObject } from "ai";
 import { z } from "zod";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
+import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
+import { GUARDRAIL_CHECK_PROMPT } from "../../harness/prompts/guardrail-check.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
+  type DraftGenInput,
   EMBEDDING_DIM,
   type EmbedTaskType,
   type ExtractedEntry,
   type ExtractionContext,
+  type GeneratedMaster,
+  type GuardrailCheckInput,
+  type GuardrailFinding,
   type RawLlmAdapter,
 } from "../../ports/llm.js";
 
 const EXTRACT_MODEL = "gemini-2.5-flash";
+const GENERATE_MODEL = "gemini-2.5-flash";
+// The guardrail judge is a cheap classification (LRN-20 — LLM detection, not regex).
+const GUARDRAIL_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-2";
+
+/** The structured verdict the guardrail judge must return (GENS-7). */
+const guardrailSchema = z.object({
+  findings: z.array(
+    z.object({
+      guardrail: z.enum(["GR-1", "GR-2", "GR-3", "GR-5", "GR-8"]),
+      severity: z.enum(["fixable", "escalate"]),
+      reason: z.string(),
+    }),
+  ),
+});
+
+/** Assemble the judge's user prompt: the master to read + the active overlay. */
+function guardrailPrompt(input: GuardrailCheckInput): string {
+  const { master, overlay, isExternal } = input;
+  const overlayBlock =
+    overlay.length > 0
+      ? `\n\nACTIVE RULES/TABOOS:\n- ${overlay.join("\n- ")}`
+      : "\n\n(no active taboos)";
+  return (
+    `${isExternal ? "This is EXTERNAL-sourced content (GR-5 citation applies).\n\n" : ""}` +
+    `TITLE: ${master.title}\nBODY: ${master.body}\nREASON: ${master.reasonLine}` +
+    overlayBlock
+  );
+}
+
+/** The structured-draft schema Gemini must return (the DM-5 master fields, GENS-7). */
+const draftSchema = z.object({
+  title: z.string(),
+  body: z.string(),
+  reasonLine: z.string(),
+});
+
+/** Assemble the grounded user prompt from the slot + grounding + overlay (GENS-7). */
+function draftPrompt(input: DraftGenInput): string {
+  const { slot, grounding, overlay, regenerateHint } = input;
+  const overlayBlock =
+    overlay.length > 0
+      ? `\n\nACTIVE RULES/TABOOS (never violate; steer clear):\n- ${overlay.join("\n- ")}`
+      : "";
+  const designation = slot.designation === "none" ? "" : `\nOverlay to honor: ${slot.designation}.`;
+  const hint = regenerateHint ? `\n\nREVISION REQUIRED: ${regenerateHint}` : "";
+  return (
+    `Content type: ${slot.type}\nSubject (from the editorial agenda): ${slot.subject}.${designation}\n\n` +
+    `GROUNDING (the ONLY factual source — do not invent facts or events, VAL-4):\n${grounding}` +
+    overlayBlock +
+    hint
+  );
+}
 
 /** The structured-extraction schema Gemini must return (grounded classification, PIPE-1). */
 const extractionSchema = z.object({
@@ -111,6 +169,50 @@ export function createVertexLlm(): RawLlmAdapter {
       return {
         vector: embedding,
         usage: { model: EMBED_MODEL, tokensIn: usage.tokens ?? 0, tokensOut: 0 },
+      };
+    },
+    async generate(input: DraftGenInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(GENERATE_MODEL),
+        schema: draftSchema,
+        telemetry: telemetryFor("generate-draft"),
+        system: GENERATE_DRAFT_PROMPT.system,
+        prompt: draftPrompt(input),
+      });
+      const master: GeneratedMaster = {
+        title: object.title,
+        body: object.body,
+        reasonLine: object.reasonLine,
+      };
+      return {
+        master,
+        usage: {
+          model: GENERATE_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async judgeGuardrails(input: GuardrailCheckInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(GUARDRAIL_MODEL),
+        schema: guardrailSchema,
+        telemetry: telemetryFor("guardrail-check"),
+        system: GUARDRAIL_CHECK_PROMPT.system,
+        prompt: guardrailPrompt(input),
+      });
+      const findings: GuardrailFinding[] = object.findings.map((f) => ({
+        guardrail: f.guardrail,
+        severity: f.severity,
+        reason: f.reason,
+      }));
+      return {
+        judgment: { findings, judged: true },
+        usage: {
+          model: GUARDRAIL_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
       };
     },
   };

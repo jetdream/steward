@@ -5,8 +5,9 @@
  */
 import type { SkillEvalDef } from "../types.js";
 import { extractMemoryEval } from "./extract-memory.js";
+import { generateDraftEval } from "./generate-draft.js";
 
 // biome-ignore lint/suspicious/noExplicitAny: heterogeneous registry — each entry's case/output types differ; the generic runner re-binds them per entry.
-export const EVAL_SKILLS: SkillEvalDef<any, any>[] = [extractMemoryEval];
+export const EVAL_SKILLS: SkillEvalDef<any, any>[] = [extractMemoryEval, generateDraftEval];
 
 export const EVAL_SKILL_IDS: string[] = EVAL_SKILLS.map((d) => d.skill);

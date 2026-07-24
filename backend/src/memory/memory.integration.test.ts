@@ -52,6 +52,12 @@ const llm: LlmPort = {
   async embed(t, k) {
     return (await devStubLlm.embed(t, k)).vector;
   },
+  async generateDraft(input) {
+    return (await devStubLlm.generate(input)).master;
+  },
+  async checkGuardrails(input) {
+    return (await devStubLlm.judgeGuardrails(input)).judgment;
+  },
 };
 
 let db: Database;

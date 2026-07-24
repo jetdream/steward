@@ -87,5 +87,15 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { vector, usage } = await adapter.embed(text, taskType);
         return { value: vector, usage };
       }),
+    generateDraft: (input) =>
+      observe("generateObject", async () => {
+        const { master, usage } = await adapter.generate(input);
+        return { value: master, usage };
+      }),
+    checkGuardrails: (input) =>
+      observe("classify", async () => {
+        const { judgment, usage } = await adapter.judgeGuardrails(input);
+        return { value: judgment, usage };
+      }),
   };
 }

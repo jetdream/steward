@@ -17,10 +17,13 @@
  * policy is the real authority regardless.
  */
 import {
+  type DraftGenInput,
   EMBEDDING_DIM,
   type EmbedTaskType,
   type ExtractedEntry,
   type ExtractionContext,
+  type GeneratedMaster,
+  type GuardrailFinding,
   type RawLlmAdapter,
 } from "../../ports/llm.js";
 
@@ -95,6 +98,53 @@ export const devStubLlm: RawLlmAdapter = {
   async embed(text, _taskType: EmbedTaskType) {
     return {
       vector: hashEmbedding(text),
+      usage: { model: "dev-stub", tokensIn: estTokens(text), tokensOut: 0 },
+    };
+  },
+  // Deterministic master generation (GENS-7 plumbing): the stub is NOT a writer —
+  // it ECHOES the grounding into the body so the pipeline has real text to carry.
+  // A regenerate visibly changes the output via the hint. Real drafting quality
+  // (and the semantic guardrail judgment) is the keyed path.
+  async generate(input: DraftGenInput) {
+    const { slot, grounding, regenerateHint } = input;
+    const body = [regenerateHint ? `[revised: ${regenerateHint}]` : "", grounding.trim()]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    const master: GeneratedMaster = {
+      title: slot.subject,
+      body: body || slot.subject,
+      reasonLine: `Planned for "${slot.subject}" (${slot.type}${slot.designation === "none" ? "" : `, ${slot.designation}`}).`,
+    };
+    return {
+      master,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(grounding + slot.subject),
+        tokensOut: estTokens(JSON.stringify(master)),
+      },
+    };
+  },
+  // The guardrail JUDGE, DORMANT (GENS-7 / LRN-20). Semantic guardrail detection
+  // is intrinsically an LLM judgment — the keyless stub performs NONE (no regex,
+  // no keyword scan of the content; `judged:false` tells the eval its content
+  // catch-rates are dormant on this tier). The ONLY finding is the STRUCTURAL
+  // GR-8 backstop: an active taboo overlay EXISTS (a count, not a content
+  // reading) and a non-model stub cannot confidently clear it, so escalate —
+  // a taboo draft is never silently auto-passed (MEM-1 / GR-8), safe by default.
+  async judgeGuardrails(input) {
+    const findings: GuardrailFinding[] = [];
+    if (input.overlay.length > 0) {
+      findings.push({
+        guardrail: "GR-8",
+        severity: "escalate",
+        reason:
+          "an active taboo/rule overlay is present; the keyless stub cannot confidently clear it (GR-8 backstop)",
+      });
+    }
+    const text = `${input.master.title}\n${input.master.body}\n${input.master.reasonLine}`;
+    return {
+      judgment: { findings, judged: false },
       usage: { model: "dev-stub", tokensIn: estTokens(text), tokensOut: 0 },
     };
   },

@@ -76,6 +76,36 @@ export type MemoryEntryKind = z.infer<typeof MemoryEntryKind>;
 export const TopicStatus = z.enum(["proposed", "active", "retired"]);
 export type TopicStatus = z.infer<typeof TopicStatus>;
 
+/**
+ * The GEN-1 content TAXONOMY — HOW a slot frames its subject (DEC-23). A
+ * cross-capability field on DM-5 ContentItem (the slot's content TYPE) chosen by
+ * the planner (GENS-1) and consumed by generation (GENS-7). Internal types draw
+ * on the org's own material; external types draw on the Radar (EXT-1) + saved
+ * pool (EXT-5). Overlays (impact/gratitude, fundraising ask) are NOT types — they
+ * are a separate slot DESIGNATION (see `SlotDesignation`), the LRN-20 split.
+ */
+export const contentTypes = [
+  "mission",
+  "founderStory",
+  "caseStudy",
+  "ownEvent",
+  "people",
+  "relatedEvent",
+  "relatedNews",
+  "relatedResearch",
+] as const;
+export const ContentType = z.enum(contentTypes);
+export type ContentType = z.infer<typeof ContentType>;
+
+/**
+ * The GEN-1 v4 OVERLAY woven through the mix as a PLAN-TIME slot designation (a
+ * structured attribute the mix quota counts deterministically, NOT a post-hoc
+ * prose classification — the LRN-20 split). `none` = a base slot with no overlay.
+ * The planner (GENS-1) assigns it; generation (GENS-7) honors it in the master.
+ */
+export const SlotDesignation = z.enum(["none", "impact_gratitude", "fundraising_ask"]);
+export type SlotDesignation = z.infer<typeof SlotDesignation>;
+
 /** DM-13 Topic.provenance. */
 export const TopicProvenance = z.enum(["system-derived", "founder-added"]);
 export type TopicProvenance = z.infer<typeof TopicProvenance>;

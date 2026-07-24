@@ -3,27 +3,21 @@ prefix: GENS
 title: Planning & Content Generation — behavior
 status: approved
 challenge:
-  date: 2026-07-19
-  by: cortex:architect-challenger (r1 single 4-lens pass → r2 delta)
+  date: 2026-07-24
+  by: "cortex:architect-challenger (r1 4-lens → r2 delta → r3 GENS-7 delta — over-structure + design-conformance + delta-verify)"
   verdict: pass
-  record: .spec/specs/challenges/gen-content-generation-2026-07-19-r2.md
+  record: .spec/specs/challenges/gen-content-generation-2026-07-24-r3.md
   summary: >-
-    r1 FAILED on one high — GENS-2/GENS-5 ordered the channel-fit gate BEFORE
-    adaptation, inverting the approved PIPE-2 sequence (GEN master+variants → VAL
-    → FIT) and DM-5's per-variant fit verdicts. Resolved by CONFORMING the spec to
-    the architecture (adapt → VAL → fit), not inverting the pipeline — design-correct
-    because the founder preview/override UX (GEN-5) needs the skipped channel's
-    variant to exist, which fit-before-adapt would not produce; skipped variants
-    are retained with their verdict on DM-5. r1 mediums/lows also fixed: mix-quota
-    determinism honestly re-pinned to PLAN-TIME slot designations (overlays are a
-    reservation the quota counts; prose realization is a soft VAL/fit — LRN-20
-    trap closed); the ≥1-impact quota pinned to a trailing 28-day sliding window
-    seeded from scheduled history (no cross-regeneration gap); XH-1/XH-5 added
-    to constrained-by; GR-2 added to governed-by; GENS-5 deterministic skip scoped
-    to technical/structural (semantic §e is LLM); the picture gate reworded to the
-    DM-5 awaiting_picture→approved editorial boundary. r2 delta verified all fixes
-    against live text and passed; the sole new low (a sparse-startup ask-ratio
-    carve-out) applied in this change.
+    r3 delta-challenges the added GENS-7 (grounded master generation + the reusable
+    VAL guardrail chain, the PIPE-4 harness substrate its first consumer implements).
+    PASS: over-structure holds (GENS-7 is referenced by the GEN-1 roll-up, @implements'd
+    by the G1 generate-draft Skill, and the citable target for the ADR-0010/EVAL-1
+    catch-rate tests; not a GENS-1/GENS-2 duplicate); design conforms (three outcomes =
+    PIPE-2 pass/regenerate/escalate; GR-3/GR-8 escalate-on-uncertainty; regenerate
+    bounded by the PIPE-4 agentPolicy cap); prior r2 fixes (plan-time quota determinism,
+    adapt→VAL→fit ordering) still hold. One medium — the acceptance clause had reverted
+    to the un-failable-absolute LRN-20 trap MEMS-3 hedged — rewritten to catch-rate
+    framing; one low — a per-variant re-run clause — added; both applied in this change.
 intent: >-
   Exact behavior of the content engine (register gen-content-generation.yaml) —
   the hub that turns Memory + Strategy + the editorial agenda + the Radar into a
@@ -35,7 +29,7 @@ intent: >-
   the creative pairing/writing is the LLM part, grounded and guardrail-gated
   (PIPE-1/PIPE-2). Generation produces drafts; approval is APR, publishing is PUB.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, ARC-15, XH-1, XH-5]
+constrained-by: [ADR-0002, ADR-0003, ADR-0009, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, PIPE-4, ARC-15, ARC-27, XH-1, XH-5]
 depends-on: [MEMS, STRS, TOPS]
 governed-by: [GR-1, GR-2, GR-3, GR-4, GR-5, GR-8]
 assurance: standard
@@ -235,6 +229,51 @@ items:
       VAL-5). P1 — NOT in the P1a thin slice.
       ACCEPTANCE: post metrics measurably inform planner weighting; no metric
       value alone causes a publish/schedule action without founder disposition.
+  GENS-7:
+    v: 1
+    title: Grounded master generation through the VAL guardrail chain
+    implements: [GEN-1]
+    statement: >-
+      The core write act behind generateDraft (this spec's interfaces): given a
+      SLOT (a content TYPE paired with an agenda SUBJECT) the generator produces
+      the MASTER story, GROUNDED — retrieval over Memory (MEMS-4) + the Strategy,
+      PLUS the always-on DETERMINISTIC active rule/taboo OVERLAY (MEMS-3) as an
+      explicit input — never vibes, nothing fabricated (PIPE-1, VAL-4). Every
+      master then flows through the VAL GUARDRAIL CHAIN before it can reach any
+      queue (PIPE-2) — the reusable guardrail stage the founder-authored composer
+      (APRS-5) and external drafts (PIPE-3) share, and the guardrailChain component
+      of the PIPE-4 Skill harness (the substrate this element realizes for its
+      first consumer). THE CHAIN, applied to every master: platform guardrails —
+      no outcome promise (GR-1), no legal/tax advice (GR-2), external-source
+      citation where applicable (GR-5); sensitive-topic detection (GR-3); and the
+      Memory taboo-overlay gate (GR-8). THREE OUTCOMES (PIPE-2): PASS (clear) ·
+      REGENERATE (a fixable violation, fed back to the generator) · ESCALATE
+      (force human approval, regardless of Trust Level). GR-3 (a sensitive topic)
+      and GR-8 (cannot CONFIDENTLY clear against an active taboo) ESCALATE, never
+      auto-pass. LRN-20 HONESTY SPLIT: the active rule/taboo overlay is matched
+      DETERMINISTICALLY (the exact active set from Memory, not a similarity guess),
+      so a founder-stated correction is structurally never silently violated;
+      detecting a SEMANTIC outcome-promise or a semantic taboo in the generated
+      prose is an LLM check with a residual miss rate — surfaced honestly, never
+      claimed deterministic, and VAL-UNCERTAINTY ESCALATES rather than passes.
+      REGENERATE is BOUNDED by the PIPE-4 agentPolicy cap: past the cap the draft
+      ESCALATES rather than looping (unbounded loops are structurally impossible,
+      PIPE-4). Strategy semantic validation (STRS-3) joins the chain when Strategy
+      lands (deferred); its absence never weakens the guardrail checks. This
+      element is the generation+VAL substrate ONLY — the planner that fills slots
+      is GENS-1, per-channel adaptation is GENS-2, the fit gate is GENS-5, the
+      picture gate is GENS-3/GENS-4. The SAME reusable chain re-runs PER-VARIANT
+      in GENS-2, so an adaptation cannot smuggle a violation past a master-only VAL.
+      ACCEPTANCE (testable, not an untestable absolute — the LRN-20 discipline): a
+      labeled adversarial set of outcome-promise (GR-1), sensitive-topic (GR-3),
+      and taboo-violating (GR-8) masters is caught by the VAL chain at or above its
+      target catch rate and regenerated or (past the regenerate cap) escalated —
+      never auto-queued; any master the chain cannot CONFIDENTLY clear ESCALATES
+      regardless of Trust Level (GR-3 and GR-8 escalate, never auto-pass), while
+      GR-1/GR-2/GR-5 semantic detection is an LLM check with a residual miss rate,
+      never claimed 100%; regenerate cannot loop unbounded (the PIPE-4 agentPolicy
+      cap); a clean, grounded master passes; every master's claims trace to
+      retrieved Memory/Strategy — no fabricated events or impact (VAL-4).
 
 open-questions:
   - >-
