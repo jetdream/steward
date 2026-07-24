@@ -355,6 +355,30 @@ items:
       uncommitted spec under review); post-challenge verification is the
       mitigation.
 
+  LRN-26:
+    v: 1
+    type: gotcha
+    scope: [tooling, docs-format, process]
+    source: cortex toolchain bump v0.21.0 → v0.24.0 surfaced a new DAG lint (2026-07-24)
+    statement: >-
+      A cortex MINOR bump can add new graph lints that a previously-green graph
+      now fails — the upgrade is not guaranteed no-op even with zero spec changes.
+      Bumping the toolchain pin v0.21.0 → v0.24.0 (to lockstep with the plugin,
+      LRN-22) introduced a new GOVERNANCE-DAG lint (the graph must be acyclic over
+      serves/implements/constrained-by/depends), which caught a LATENT baseline
+      cycle GEN-4 ⇄ PRO-1 (each `depends` on the other: GEN-4's awaiting-picture
+      triggers the PRO-1 request, and PRO-1 listed GEN-4 as a trigger). Fix: break
+      the cycle by dropping the SPURIOUS direction — PRO-1 is a general
+      material-request capability that also runs on event-tied triggers, so it does
+      not depend on GEN-4; GEN-4 genuinely depends on PRO-1. Removing a
+      cycle-causing `depends` edge is a graph-correctness fix, NOT a requirement
+      semantic change — the lint did not demand a v-bump/decided-by (statement/
+      priority/acceptance untouched). Lesson: budget a "re-run the full gate + fix
+      what new lints surface" step into every cortex upgrade; `depends`/`serves`
+      edges encode a trigger relationship bidirectionally at your peril — keep them
+      a DAG (the depended-on capability is the general one; the caller depends on
+      it, not vice-versa).
+
   LRN-22:
     v: 1
     type: pattern

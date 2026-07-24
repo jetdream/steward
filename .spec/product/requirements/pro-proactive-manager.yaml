@@ -14,7 +14,7 @@ items:
     v: 1
     origin: baseline
     priority: P0
-    depends: [MEM-1, GEN-4]
+    depends: [MEM-1]
     title: Material requests with a reason
     statement: >-
       Prioritizing pictures (the scarce resource with generation off, GR-4):

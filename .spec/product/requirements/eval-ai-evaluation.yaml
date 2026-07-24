@@ -17,7 +17,7 @@ serves: [G-2]
 # FIELD metric (a real cohort measurement on the OPSS-1 pre-QA basis) — the eval
 # proxy is a leading indicator only (ADR-0010 §4). No user journey (assurance, not
 # a product surface) — the journey sweep listing is expected, not a gap. Behavior
-# spec (EVALS) + code arrive in the Phase-B build; approval here rests on HITL
+# spec (EVS) + code arrive in the Phase-B build; approval here rests on HITL
 # ratification (DEC-41) + honest linkage, not on that downstream spec.
 # Design gate: cortex:architect-challenger, 2026-07-23 (delta over ADR-0009/0010),
 # r-fail ×2 on the linkage → option (A) durability-floor pin → pass.
