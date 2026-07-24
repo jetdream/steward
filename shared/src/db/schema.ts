@@ -12,6 +12,7 @@
  */
 export * from "./auth-schema.js";
 export * from "./autonomy.js";
+export * from "./channel-connection.js";
 export * from "./channel-variant.js";
 export * from "./chat.js";
 export * from "./content.js";

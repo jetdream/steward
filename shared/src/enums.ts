@@ -19,8 +19,13 @@ export type ChannelPlatform = z.infer<typeof ChannelPlatform>;
 export const NewsDomainMode = z.enum(["app-path", "dedicated", "custom"]);
 export type NewsDomainMode = z.infer<typeof NewsDomainMode>;
 
-/** DM-14 ChannelConnection.status — a token expiry/revocation is first-class. */
-export const ChannelConnectionStatus = z.enum(["connected", "expired", "revoked", "error"]);
+/**
+ * DM-14 ChannelConnection.status — a token expiry/revocation is first-class
+ * (ONBS-4). `const` tuple is the ONE source: it backs both this Zod enum and the
+ * Drizzle column's `{ enum }`.
+ */
+export const channelConnectionStatuses = ["connected", "expired", "revoked", "error"] as const;
+export const ChannelConnectionStatus = z.enum(channelConnectionStatuses);
 export type ChannelConnectionStatus = z.infer<typeof ChannelConnectionStatus>;
 
 /**

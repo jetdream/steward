@@ -5,6 +5,7 @@
  */
 import { authRouter } from "./routers/auth.js";
 import { autonomyRouter } from "./routers/autonomy.js";
+import { channelsRouter } from "./routers/channels.js";
 import { chatRouter } from "./routers/chat.js";
 import { contentRouter } from "./routers/content.js";
 import { interviewerRouter } from "./routers/interviewer.js";
@@ -30,6 +31,7 @@ export const appRouter = router({
   strategy: strategyRouter,
   radar: radarRouter,
   autonomy: autonomyRouter,
+  channels: channelsRouter,
   system: systemRouter,
   ping: pingRouter,
 });
