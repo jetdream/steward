@@ -164,6 +164,16 @@ export const mediaProvenances = ["upload", "harvested"] as const;
 export const MediaProvenance = z.enum(mediaProvenances);
 export type MediaProvenance = z.infer<typeof MediaProvenance>;
 
+/** DM-9 TrustLevel value (AUT-1): TL0 approve-all (launch) · TL1 veto-window · TL2 autopilot. */
+export const trustLevels = ["TL0", "TL1", "TL2"] as const;
+export const TrustLevelValue = z.enum(trustLevels);
+export type TrustLevelValue = z.infer<typeof TrustLevelValue>;
+
+/** DM-9 TL1 veto model (DEC-26): founder-operator setting, default publish-then-takedown. */
+export const vetoModels = ["publish-then-takedown", "hold-then-publish"] as const;
+export const VetoModel = z.enum(vetoModels);
+export type VetoModel = z.infer<typeof VetoModel>;
+
 /**
  * DM-19 ModelCall.operation — the LLM/search port operations (PIPE-4/PIPE-5). A
  * `const` tuple: the ONE source, consumed by the Zod enum + the drizzle

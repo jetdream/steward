@@ -13,6 +13,7 @@
  * ARC-2 (@client), ARC-3 (@backend), and ARC-23 (@news).
  */
 
+export type { PublishControl, TrustLevel } from "./entities/autonomy.js";
 export * from "./entities/channel-connection.js";
 export type { ChannelVariant } from "./entities/channel-variant.js";
 export type { ChatMessage, ChatSession } from "./entities/chat.js";

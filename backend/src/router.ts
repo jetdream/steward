@@ -4,6 +4,7 @@
  * the API contract type the client imports.
  */
 import { authRouter } from "./routers/auth.js";
+import { autonomyRouter } from "./routers/autonomy.js";
 import { chatRouter } from "./routers/chat.js";
 import { contentRouter } from "./routers/content.js";
 import { interviewerRouter } from "./routers/interviewer.js";
@@ -28,6 +29,7 @@ export const appRouter = router({
   media: mediaRouter,
   strategy: strategyRouter,
   radar: radarRouter,
+  autonomy: autonomyRouter,
   system: systemRouter,
   ping: pingRouter,
 });
