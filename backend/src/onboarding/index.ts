@@ -5,17 +5,20 @@
  * DEC-22) — not a second brain. This SPINE slice delivers the Memory-driven
  * onboarding surfaces:
  *
+ * @implements ONBS-2 v1  (source ingestion into Memory — ingest.ts; website scrape
+ *                         IG-7 + the pipe through memory.write, assumed + source-pointed)
  * @implements ONBS-3 v1  (the gap model driving the interview — computeGaps)
  * @implements ONBS-5 v1  ("here's what I know" review → permanent rules —
  *                         getProfileForReview / applyCorrection)
  * @implements ONBS-6 v1  (first proof, lazily — minimum-viable-context predicate)
  *
- * DEFERRED to the next increment (external-API bearing, out of the brain-spine
- * slice): ONBS-1 signup + 501(c)(3) verification (ProPublica IG-6 — org creation
- * itself is already the auth signup triple), ONBS-2 source ingestion (scraper
- * IG-7 / Meta IG-1), ONBS-4 channel connect (OAuth). The NON-BLOCKING invariant
- * (ONB-1) holds here: none of these surfaces gates first drafts — only the
- * ONBS-6 predicate does.
+ * PARTIAL / DEFERRED: ONBS-2's Meta harvest (IG-1) needs a ChannelConnection
+ * (DM-14, ONBS-4) + OAuth — stubbed for now; its DM-3 StrategyDoc style seed
+ * (STR-2/STRS-2) lands with the STR vertical (the style findings already reach
+ * Memory as styleRule entries — DEC-22). Still deferred: ONBS-1 501(c)(3)
+ * verification (ProPublica IG-6 — org creation itself is the auth signup triple)
+ * and ONBS-4 channel connect (OAuth). The NON-BLOCKING invariant (ONB-1) holds:
+ * none of these gates first drafts — only the ONBS-6 predicate does.
  */
 import type { MemoryEntry, MemoryEntryView, OrgId } from "@shared";
 import { memoryEntry } from "@shared/db/schema.js";
@@ -163,6 +166,9 @@ export async function readyForFirstDrafts(
   };
 }
 
+// ONBS-2 source ingestion (ingest.ts).
+export type { IngestDeps, IngestResult, IngestSourcesInput } from "./ingest.js";
+export { ingestible, ingestSources } from "./ingest.js";
 /**
  * Helper re-export: the deterministic asked-set / gap key (MEMS-6), so callers
  * that build an interview question can key it consistently with dedup.

@@ -20,12 +20,12 @@ thin: they validate input (Zod), enforce org confinement via `orgProcedure`
 ## Folder spec context
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
-**Requirements this folder realizes** (11 — aggregated per register; detail: `cortex graph pack <ID>`):
+**Requirements this folder realizes** (12 — aggregated per register; detail: `cortex graph pack <ID>`):
 - Accounts & Identity — 5 requirement(s) realized here: ACC-1…ACC-5 (.spec/product/requirements/acc-accounts-identity.yaml)
 - Org Memory — 2 requirement(s) realized here: MEM-1…MEM-2 (.spec/product/requirements/mem-org-memory.yaml)
-- Lazy Onboarding — 4 requirement(s) realized here: ONB-1…ONB-6 (.spec/product/requirements/onb-onboarding.yaml)
+- Lazy Onboarding — 5 requirement(s) realized here: ONB-1…ONB-6 (.spec/product/requirements/onb-onboarding.yaml)
 
-**Spec-elements:** ACCS-1, ONBS-1, MEMS-1, ACCS-2, ONBS-3, ACCS-3, MEMS-4, MEMS-5, ONBS-5, ONBS-6
+**Spec-elements:** ACCS-1, ONBS-1, MEMS-1, ONBS-2, ACCS-2, ONBS-3, ACCS-3, MEMS-4, MEMS-5, ONBS-5, ONBS-6
 
 **Governed by:**
 - GR-6 — Official platform APIs and permitted automation only (.spec/product/guardrails.yaml)

@@ -4,21 +4,29 @@
  * the gap model, the "here's what I know" review + correction, and the
  * minimum-viable-context readiness predicate.
  *
+ * @implements ONBS-2 v1  (ingest)
  * @implements ONBS-3 v1  (gaps)
  * @implements ONBS-5 v1  (profile / correct)
  * @implements ONBS-6 v1  (ready)
  */
 import { OrgId } from "@shared";
 import { z } from "zod";
+import { createSourceFetch } from "../adapters/sources/index.js";
 import {
   applyCorrection,
   computeGaps,
   getProfileForReview,
+  ingestSources,
   readyForFirstDrafts,
 } from "../onboarding/index.js";
 import { orgProcedure, router } from "../trpc.js";
 
 const correctInput = z.object({ text: z.string().min(1) });
+
+const ingestInput = z.object({
+  siteUrls: z.array(z.url()).optional(),
+  metaHandles: z.array(z.string().min(1)).optional(),
+});
 
 export const onboardingRouter = router({
   /** ONBS-3: the gap model driving the interview (derived over Memory). */
@@ -34,4 +42,12 @@ export const onboardingRouter = router({
 
   /** ONBS-6: the deterministic minimum-viable-context predicate. */
   ready: orgProcedure.query(({ ctx }) => readyForFirstDrafts(ctx.db, OrgId.parse(ctx.orgId))),
+
+  /** ONBS-2: ingest public sources (website scrape) into Memory — assumed + source-pointed. */
+  ingest: orgProcedure.input(ingestInput).mutation(({ ctx, input }) =>
+    ingestSources({ memory: ctx.memory, sources: createSourceFetch() }, OrgId.parse(ctx.orgId), {
+      siteUrls: input.siteUrls ?? [],
+      metaHandles: input.metaHandles ?? [],
+    }),
+  ),
 });

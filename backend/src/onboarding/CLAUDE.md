@@ -8,15 +8,25 @@ source, DEC-22) — not a second brain. Implements the behaviour spec **ONBS**
 
 | Function | Implements |
 |---|---|
+| `ingestSources` (`ingest.ts`) | ONBS-2 — scrape the website (IG-7) via the source-fetch port → pipe through `memory.write` (assumed + source-pointed); Meta harvest (IG-1) stubbed |
 | `computeGaps` | ONBS-3 — the gap model (a derived view over Memory coverage) driving the interview |
 | `getProfileForReview` / `applyCorrection` | ONBS-5 — "here's what I know" review → permanent rules via the ONE write path (MEMS-1) |
 | `readyForFirstDrafts` | ONBS-6 — the deterministic minimum-viable-context predicate |
 
-**Deferred (next increment — external-API bearing).** ONBS-1 signup +
-501(c)(3) verification (ProPublica IG-6; org creation itself is the auth signup
-triple), ONBS-2 source ingestion (scraper IG-7 / Meta IG-1), ONBS-4 channel
-connect (OAuth, DM-14). The **non-blocking invariant** (ONB-1) holds: none of
-these gates first drafts — only the ONBS-6 predicate does.
+**ONBS-2 scope.** The website-scrape → Memory half is done (each entry `assumed`
++ carrying its source `ref`, for the ONBS-5 review). Deferred: the **Meta harvest**
+(IG-1) needs a ChannelConnection (DM-14, ONBS-4) + OAuth; the **DM-3 StrategyDoc
+style seed** (STR-2/STRS-2) lands with the STR vertical — the style findings
+already reach Memory as `styleRule` entries (DEC-22, so Strategy will project them).
+
+**Deferred (external-API bearing).** ONBS-1 501(c)(3) verification (ProPublica
+IG-6; org creation itself is the auth signup triple), ONBS-4 channel connect
+(OAuth, DM-14). The **non-blocking invariant** (ONB-1) holds: none of these gates
+first drafts — only the ONBS-6 predicate does.
+
+**Boundaries.** External reads go through the `../ports/sources.ts` port
+(ADR-0003), never `fetch` inline; extraction is the shared `extract-memory` Skill,
+never a second brain (DEC-22).
 
 **Boundaries.**
 - Org-scoped everywhere (ACC-3); no client-supplied org id.
@@ -29,11 +39,12 @@ these gates first drafts — only the ONBS-6 predicate does.
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
 **Requirements this folder realizes:**
+- ONB-2 — Source ingestion (.spec/product/requirements/onb-onboarding.yaml)
 - ONB-3 — Gap-driven flow (.spec/product/requirements/onb-onboarding.yaml)
 - ONB-5 — The "here's what I know" review (.spec/product/requirements/onb-onboarding.yaml)
 - ONB-6 — First proof, lazily (.spec/product/requirements/onb-onboarding.yaml)
 
-**Spec-elements:** ONBS-3, ONBS-5, ONBS-6
+**Spec-elements:** ONBS-2, ONBS-3, ONBS-5, ONBS-6
 
 **Governed by:**
 - GR-6 — Official platform APIs and permitted automation only (.spec/product/guardrails.yaml)
