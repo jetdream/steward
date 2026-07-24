@@ -12,6 +12,7 @@
  * guardrail chain land with GEN — their first real consumer — not here.
  */
 import { createHash } from "node:crypto";
+import { ADAPT_VARIANT_PROMPT, ADAPT_VARIANT_PROMPT_REF } from "./prompts/adapt-variant.js";
 import { CHAT_ANSWER_PROMPT, CHAT_ANSWER_PROMPT_REF } from "./prompts/chat-answer.js";
 import { DRAFT_STRATEGY_PROMPT, DRAFT_STRATEGY_PROMPT_REF } from "./prompts/draft-strategy.js";
 import { EXTRACT_MEMORY_PROMPT, EXTRACT_MEMORY_PROMPT_REF } from "./prompts/extract-memory.js";
@@ -126,6 +127,14 @@ export const HARNESS: Record<string, HarnessEntry> = {
     // Single-shot; grounding assembly + the redirect confirm-back live in @backend/chat.
     promptRef: CHAT_ANSWER_PROMPT_REF,
     promptSystem: CHAT_ANSWER_PROMPT.system,
+    model: "gemini-2.5-flash",
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.04 },
+  },
+  "adapt-variant": {
+    // The GENS-2 per-channel adaptation. Single-shot; the deterministic technical-fit
+    // check (PUBS-2) + persistence live in @backend/content.
+    promptRef: ADAPT_VARIANT_PROMPT_REF,
+    promptSystem: ADAPT_VARIANT_PROMPT.system,
     model: "gemini-2.5-flash",
     agentPolicy: { maxSteps: 1, costBudgetUsd: 0.04 },
   },

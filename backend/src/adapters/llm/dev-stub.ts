@@ -279,6 +279,21 @@ export const devStubLlm: RawLlmAdapter = {
       },
     };
   },
+  // Per-channel adaptation (GENS-2 plumbing): NOT a real re-voicing — it truncates
+  // the master body to the channel's limit + tags the channel, so the pipeline has
+  // a within-limit variant to fit-check. Real adaptation is the keyed path.
+  async adaptVariant(input) {
+    const base = `${input.master.title} — ${input.master.body}`;
+    const body = base.length > input.maxChars ? base.slice(0, Math.max(0, input.maxChars)) : base;
+    return {
+      body,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(base),
+        tokensOut: estTokens(body),
+      },
+    };
+  },
   // Interviewer questions (INTS-1 plumbing): one deterministic open question per
   // open gap, capped. Not a curious colleague — real conversational quality is the
   // keyed path.

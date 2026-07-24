@@ -291,6 +291,21 @@ export interface ChatAnswer {
   isUnknown: boolean;
 }
 
+/**
+ * Input to per-channel adaptation (GENS-2). The caller (@backend/content) supplies
+ * the approved master + the channel's technical constraints (PUBS-2) + the
+ * Strategy's section-(e) instruction for that channel; the Skill adapts the body.
+ * Conformance to the hard char limit is DETERMINISTICALLY checked after (LRN-20).
+ */
+export interface AdaptVariantInput {
+  master: GeneratedMaster;
+  platform: string;
+  /** The channel's hard character limit (PUBS-2) — the model aims within it. */
+  maxChars: number;
+  /** The Strategy section-(e) instruction for this channel (STR-1), or "". */
+  channelInstruction: string;
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -369,6 +384,12 @@ export interface LlmPort {
    * cannot ground (VAL-4). Detection/synthesis is the LLM step (LRN-20).
    */
   chatAnswer(input: ChatAnswerInput): Promise<ChatAnswer>;
+  /**
+   * Adapt a master story into one channel's variant body (GENS-2) — honoring the
+   * channel's voice/limit hint + its Strategy section-(e) instruction. Returns the
+   * adapted text; the deterministic technical-fit check is the caller's (GENS-5).
+   */
+  adaptVariant(input: AdaptVariantInput): Promise<string>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -408,4 +429,5 @@ export interface RawLlmAdapter {
     input: InterviewQuestionsInput,
   ): Promise<{ questions: InterviewQuestion[]; usage: LlmUsage }>;
   chatAnswer(input: ChatAnswerInput): Promise<{ answer: ChatAnswer; usage: LlmUsage }>;
+  adaptVariant(input: AdaptVariantInput): Promise<{ body: string; usage: LlmUsage }>;
 }

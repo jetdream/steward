@@ -21,6 +21,7 @@ const noopPort: LlmPort = {
   groundedSearch: async () => ({ candidates: [], sources: [] }),
   interviewQuestions: async () => [],
   chatAnswer: async () => ({ answer: "", declined: false, isUnknown: true }),
+  adaptVariant: async () => "",
 };
 
 const fakeDef: SkillEvalDef<{ x: number }, number> = {

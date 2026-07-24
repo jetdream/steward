@@ -13,6 +13,8 @@
  *
  * @implements GENS-7 v1  (grounded master generation through the VAL guardrail chain — generate.ts, guardrails.ts)
  * @implements GENS-1 v1  (the rolling planner — pairing + deterministic mix quotas — planner.ts)
+ * @implements GENS-2 v1  (per-channel adaptation — variants.ts: the adapt-variant Skill)
+ * @implements GENS-5 v1  (the channel-fit gate — variants.ts: deterministic technicalFit against PUBS-2)
  *
  * Guardrail DETECTION is the `guardrail-check` LLM Skill (LRN-20 — a semantic
  * judgment, never a regex heuristic); `guardrails.ts` is the pure POLICY over its
@@ -44,3 +46,5 @@ export {
 export type { PersistDraftInput } from "./store.js";
 export { getContentItem, listContentItems, persistDraft } from "./store.js";
 export type { DraftResult, ValOutcome, ValReport } from "./types.js";
+export type { AdaptDeps } from "./variants.js";
+export { adaptContentItem, listVariants, technicalFit } from "./variants.js";

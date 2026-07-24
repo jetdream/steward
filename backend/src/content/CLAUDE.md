@@ -62,10 +62,18 @@ the Radar (EXT-1), deferred. `engine.ts` WIRES the loop end-to-end
 draft ContentItem (`content_item.scheduledFor`), the org's history seeding the next
 run's quota. One call → a month of grounded, guardrailed, scheduled drafts.
 
-**Deferred (each a later Skill + eval on this substrate):** GENS-2 per-channel
-adaptation, GENS-3/GENS-4 the picture gate + awaiting-picture state, GENS-5 the
-channel-fit gate, GENS-6 performance feedback; the planner's external slot types
-(Radar) and its generate-per-slot persistence orchestration.
+**Per-channel adaptation + fit (GENS-2/GENS-5, `variants.ts`).** `adaptContentItem`
+runs the `adapt-variant` Skill per channel (honoring the PUBS-2 profile + Strategy
+section-(e)) and persists a ChannelVariant each, gated by the deterministic
+`technicalFit` (over-limit / media-required → skipped WITH a reason, retained +
+overridable, VAL-3). LRN-20: creative adaptation is the LLM step; limit-conformance
+is the deterministic gate. Connected-channel filtering (DM-14) lands with ONBS-4;
+the picture gate (GENS-3) lands with media, so `mediaRequired` channels skip until
+then. The semantic section-(e) Strategy-fit judge is a keyed follow-on.
+
+**Deferred (each a later Skill + eval on this substrate):** GENS-3/GENS-4 the
+picture gate + awaiting-picture state, GENS-6 performance feedback; the planner's
+external slot types (Radar) and its generate-per-slot persistence orchestration.
 
 **Gotcha.** The VAL chain runs on the master AND (per GENS-7 / GENS-2) re-runs
 per-variant, so an adaptation cannot smuggle a violation past a master-only VAL.
@@ -78,8 +86,10 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 
 **Requirements this folder realizes:**
 - GEN-1 — Rolling 4-week calendar (.spec/product/requirements/gen-content-generation.yaml)
+- GEN-2 — Per-channel adaptation (.spec/product/requirements/gen-content-generation.yaml)
+- GEN-5 — Channel-fit gate (.spec/product/requirements/gen-content-generation.yaml)
 
-**Spec-elements:** GENS-1, GENS-7
+**Spec-elements:** GENS-1, GENS-2, GENS-5, GENS-7
 
 **Governed by:**
 - GR-1 — No outcome promises (.spec/product/guardrails.yaml)

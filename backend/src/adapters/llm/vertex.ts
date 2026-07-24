@@ -21,6 +21,7 @@ import { createVertex } from "@ai-sdk/google-vertex";
 import { contentTypes, MemoryEntryKind } from "@steward/shared";
 import { embed as aiEmbed, generateObject, generateText } from "ai";
 import { z } from "zod";
+import { ADAPT_VARIANT_PROMPT } from "../../harness/prompts/adapt-variant.js";
 import { CHAT_ANSWER_PROMPT } from "../../harness/prompts/chat-answer.js";
 import { DRAFT_STRATEGY_PROMPT } from "../../harness/prompts/draft-strategy.js";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
@@ -32,6 +33,7 @@ import { PLAN_CALENDAR_PROMPT } from "../../harness/prompts/plan-calendar.js";
 import { RADAR_DISCOVER_PROMPT } from "../../harness/prompts/radar-discover.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
+  type AdaptVariantInput,
   type CandidateTopic,
   type ChatAnswer,
   type ChatAnswerInput,
@@ -65,6 +67,7 @@ const STRATEGY_MODEL = "gemini-2.5-flash";
 const SEARCH_MODEL = "gemini-2.5-flash";
 const INTERVIEW_MODEL = "gemini-2.5-flash";
 const CHAT_MODEL = "gemini-2.5-flash";
+const ADAPT_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
 
 /** The structured chat answer the Skill returns (CHTS-1). */
@@ -534,6 +537,27 @@ export function createVertexLlm(): RawLlmAdapter {
         answer,
         usage: {
           model: CHAT_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async adaptVariant(input: AdaptVariantInput) {
+      const instruction = input.channelInstruction
+        ? `\nChannel-specific instruction: ${input.channelInstruction}`
+        : "";
+      const { text, usage } = await generateText({
+        model: vertex(ADAPT_MODEL),
+        telemetry: telemetryFor("adapt-variant"),
+        system: ADAPT_VARIANT_PROMPT.system,
+        prompt:
+          `CHANNEL: ${input.platform} (character limit ${input.maxChars})${instruction}\n\n` +
+          `MASTER:\nTITLE: ${input.master.title}\nBODY: ${input.master.body}`,
+      });
+      return {
+        body: text.trim(),
+        usage: {
+          model: ADAPT_MODEL,
           tokensIn: usage.inputTokens ?? 0,
           tokensOut: usage.outputTokens ?? 0,
         },

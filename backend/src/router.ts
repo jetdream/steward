@@ -5,6 +5,7 @@
  */
 import { authRouter } from "./routers/auth.js";
 import { chatRouter } from "./routers/chat.js";
+import { contentRouter } from "./routers/content.js";
 import { interviewerRouter } from "./routers/interviewer.js";
 import { memoryRouter } from "./routers/memory.js";
 import { onboardingRouter } from "./routers/onboarding.js";
@@ -22,6 +23,7 @@ export const appRouter = router({
   onboarding: onboardingRouter,
   interviewer: interviewerRouter,
   chat: chatRouter,
+  content: contentRouter,
   strategy: strategyRouter,
   radar: radarRouter,
   system: systemRouter,

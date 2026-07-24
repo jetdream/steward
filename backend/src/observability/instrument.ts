@@ -127,5 +127,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { answer, usage } = await adapter.chatAnswer(input);
         return { value: answer, usage };
       }),
+    adaptVariant: (input) =>
+      observe("generate", async () => {
+        const { body, usage } = await adapter.adaptVariant(input);
+        return { value: body, usage };
+      }),
   };
 }
