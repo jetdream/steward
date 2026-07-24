@@ -8,7 +8,12 @@ to/from a vendor and return plain domain data; all policy lives in the modules.
 
 | Folder | Port | Adapters | Selection |
 |---|---|---|---|
-| `llm/` | `../ports/llm.ts` | `vertex.ts` (Google Vertex/Gemini, ADR-0008), `dev-stub.ts` (deterministic, keyless) | `createLlmPort()` — Vertex when `VERTEX_AI_KEY` is set, else the keyless dev stub (self-contained dev + CI, ADR-0003) |
+| `llm/` | `../ports/llm.ts` | `vertex.ts` (Google Vertex/Gemini, ADR-0008), `dev-stub.ts` (deterministic, keyless) | `createLlmPort()` — Vertex when `VERTEX_AI_KEY` is set, else the keyless dev stub (self-contained dev + CI, ADR-0003). `STEWARD_LLM=dev-stub` overrides and pins the stub even with a key present. |
 
-**Gotcha.** The keyed Vertex path is intentionally UNTESTED until the founder
-supplies real GCP creds (like Google OAuth); smoke + CI exercise the dev stub.
+**Gotcha.** The keyed Vertex path is exercised by the keyed tier only —
+`npm run eval` + the per-increment smokes (they leave `STEWARD_LLM` unset). The
+DETERMINISTIC test tier (`npm test`) sets `STEWARD_LLM=dev-stub` so it stays
+hermetic even though `.env` now carries `VERTEX_AI_KEY` — otherwise every test
+calling `createLlmPort()` would silently hit real Gemini (non-deterministic, slow,
+flaky; LRN-27). Tests asserting deterministic dev-stub behavior must never depend
+on the mere ABSENCE of an ambient key.

@@ -470,3 +470,29 @@ items:
       amendment, DEC-29) — the contrast is the point: a reversible, axis-aligned
       addition lands; an irreversible core-layer swap onto an unproven dependency
       does not.
+
+  LRN-27:
+    v: 1
+    type: gotcha
+    scope: [backend, testing, process]
+    source: pre-push red after VERTEX_AI_KEY moved into .env (2026-07-24)
+    title: The deterministic test tier must FORCE the keyless adapter — never rely on the absence of an ambient key
+    statement: >-
+      Four tests (generate.test, content/topics/content-engine .integration)
+      selected their LLM port via the env-driven `createLlmPort()` with the comment
+      "keyless dev-stub (no VERTEX_AI_KEY)". That held only while the key lived in
+      `.env.local` (which `npm test` does not load). Moving VERTEX_AI_KEY into `.env`
+      — which `npm test` loads via `--env-file-if-exists=.env` — made the
+      DETERMINISTIC tier silently select the real Vertex adapter: assertions written
+      for the dev-stub broke ('escalate'→'pass', judged:false→true), calls took
+      15–28s, and concurrent real calls hung the parallel run / tripped pre-push
+      with a strictEqual. Fix: a hermeticity knob — `STEWARD_LLM=dev-stub` in
+      `createLlmPort()` pins the keyless stub regardless of an ambient key, and the
+      `test` script sets it; the keyed tier (`npm run eval`, smokes) leaves it unset.
+      This is a test-infra fix, not a behavior change (production selection is
+      unchanged; no spec/requirement touched). Lesson: a hermetic test tier must
+      ASSERT its adapter, not inherit it from the absence of config — an ambient key
+      (in `.env` OR an exported shell var) will otherwise leak the live provider into
+      the deterministic tier. Every future LLM-bearing test inherits this via the
+      script knob, so the keyed vs keyless split (ADR-0010) stays enforced by
+      construction.

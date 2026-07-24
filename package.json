@@ -17,7 +17,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "gate": "npm run docs:check && npm run typecheck && npm run lint",
-    "test": "tsx --env-file-if-exists=.env --test \"{shared,backend,client,news}/src/**/*.test.ts\"",
+    "test": "STEWARD_LLM=dev-stub tsx --env-file-if-exists=.env --test \"{shared,backend,client,news}/src/**/*.test.ts\"",
     "eval": "tsx --env-file-if-exists=.env backend/src/eval/run.ts",
     "eval:gate": "tsx backend/src/eval/gate.ts",
     "db:generate": "cd backend && drizzle-kit generate",
