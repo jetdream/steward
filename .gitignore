@@ -16,3 +16,5 @@ dist
 
 # cortex graph cache (CTXS-10) — a disposable generated artifact, never committed
 .spec/.cache/
+.vscode/project-links.json
+THOUGHTS.md
