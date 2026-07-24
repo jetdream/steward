@@ -86,10 +86,11 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 
 **Requirements this folder realizes:**
 - GEN-1 — Rolling 4-week calendar (.spec/product/requirements/gen-content-generation.yaml)
+- STW-1 — First-class overlay categories (.spec/product/requirements/stw-stewardship.yaml)
 - GEN-2 — Per-channel adaptation (.spec/product/requirements/gen-content-generation.yaml)
 - GEN-5 — Channel-fit gate (.spec/product/requirements/gen-content-generation.yaml)
 
-**Spec-elements:** GENS-1, GENS-2, GENS-5, GENS-7
+**Spec-elements:** GENS-1, STWS-1, GENS-2, GENS-5, GENS-7
 
 **Governed by:**
 - GR-1 — No outcome promises (.spec/product/guardrails.yaml)

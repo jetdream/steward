@@ -17,6 +17,7 @@ import { orgRouter } from "./routers/org.js";
 import { pingRouter } from "./routers/ping.js";
 import { publishingRouter } from "./routers/publishing.js";
 import { radarRouter } from "./routers/radar.js";
+import { stewardshipRouter } from "./routers/stewardship.js";
 import { strategyRouter } from "./routers/strategy.js";
 import { systemRouter } from "./routers/system.js";
 import { router } from "./trpc.js";
@@ -36,6 +37,7 @@ export const appRouter = router({
   channels: channelsRouter,
   publishing: publishingRouter,
   approval: approvalRouter,
+  stewardship: stewardshipRouter,
   system: systemRouter,
   ping: pingRouter,
 });

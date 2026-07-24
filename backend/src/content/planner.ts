@@ -11,6 +11,9 @@
  * generateDraft (G1) + persistDraft (G1b) into dated ContentItems is the follow-on.
  *
  * @implements GENS-1 v1  (the pairing + the deterministic mix-quota designations)
+ * @implements STWS-1 v1  (STW-1 stewardship rhythm — REALIZED here: the ≥1
+ *   impact/gratitude-per-trailing-window reservation IS the STW-1 guarantee, a
+ *   plan-time slot designation, not a separate stewardship planner)
  */
 import type { ContentType, SlotDesignation } from "@shared";
 import { runSkill } from "../harness/runtime.js";
