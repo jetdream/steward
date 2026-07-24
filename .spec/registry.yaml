@@ -102,3 +102,12 @@ prefixes:
   PIPE: architecture/llm-pipeline.yaml
   SEC: architecture/security-privacy.yaml
   ADR: adr/NNNN-slug.md
+
+
+semantic-find:
+  provider: openai-compatible      # or: command
+  endpoint: https://ai-gateway.vercel.sh/v1/embeddings
+  model: openai/text-embedding-3-small
+  api-key-env: VERCEL_AI_GW_EMBED_KEY   # the env var NAME — never the key itself
+  # command: node scripts/embed.mjs  # `command` provider: JSONL texts in → JSONL vectors out
+  

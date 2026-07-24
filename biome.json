@@ -11,7 +11,8 @@
       "!.coder",
       "!.vscode",
       "!.mcp.json",
-      "!**/*.astro"
+      "!**/*.astro",
+      "!.spec/.index"
     ]
   },
   "formatter": {
