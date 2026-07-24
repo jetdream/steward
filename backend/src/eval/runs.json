@@ -1,0 +1,32 @@
+{
+  "extract-memory": {
+    "dea663544444bc3e#1": {
+      "skill": "extract-memory",
+      "manifestHash": "dea663544444bc3e",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "kind-match",
+          "kind": "deterministic",
+          "passed": 5,
+          "total": 5,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "correction-never-bare-fact",
+          "kind": "catch-rate",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T00:49:46.764Z"
+    }
+  }
+}

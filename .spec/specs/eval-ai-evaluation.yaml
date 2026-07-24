@@ -3,29 +3,31 @@ prefix: EVS
 title: AI Evaluation & Regression — behavior
 status: approved
 challenge:
-  date: 2026-07-23
+  date: 2026-07-24
   by: cortex:architect-challenger (single challenger — tooling spec)
   verdict: pass
-  record: .spec/specs/challenges/eval-ai-evaluation-2026-07-23-r1.md
+  record: .spec/specs/challenges/eval-ai-evaluation-2026-07-24-r2.md
   summary: >-
-    Reviewed as the B3 delta over the accepted ADR-0009/0010. Design-conformance
-    (tiered gate, DEC-3 gap closure), altitude (substrate-only scoping, scorer
-    deferred to B6), the per-item `verified` rung on MEMS-1/2/4/5/6 (deterministic
-    acceptance via the keyless dev stub; MEMS-3 stays standard), and acceptance
-    objectivity all held. One MEDIUM (gate must FAIL not silently skip to
-    unit-only when DATABASE_URL is absent) + one LOW (state the verified rung
-    attests deterministic/structural acceptance, not LLM quality) applied in this
-    change. Runner switched vitest → node:test via tsx (NodeNext/.js resolution
-    fit, zero new deps) — runner-agnostic findings unaffected.
+    Two challenge rounds. r1 (B3, EVS-1 assurance substrate) passed — record
+    eval-ai-evaluation-2026-07-23-r1.md. r2 (B6, EVS-2 runner+datasets+scorers /
+    EVS-3 regression gate) went FAIL (1 high: dataset-version dropped from the
+    eval-run key; + gate-mechanics mediums) → FAIL (process-gate overstated vs the
+    unwired eval:gate) → PASS. Fixes: key runs by (skill, manifestHash,
+    datasetVersion); keyed-satisfies-the-gate with keyless = dormant mechanism
+    record; in-repo committed runs store + explicit promotion; per-skill config;
+    provenance-tagged cases (SEC-4); and the honest ENFORCEMENT WIRING clause
+    (eval:gate on-demand, becomes a CI blocker when the keyed tier is configured).
+    EVAL-3 (trajectory) deferred to GEN. Record: eval-ai-evaluation-2026-07-24-r2.md.
 intent: >-
   Exact behavior of the AI evaluation & regression framework (register
   eval-ai-evaluation.yaml, EVAL-1..4; ADR-0010). Built in Phase-B increments:
-  EVS-1 (this pass, B3) is the ASSURANCE SUBSTRATE — the test runner + the
-  tiered acceptance harness + the active @verifies/@validates evidence markers —
-  the floor everything else stands on. The dataset format, the three-mode +
-  trajectory scorer, and the champion-vs-challenger regression gate (EVAL-1/2/3)
-  are later EVS elements (B6), authored when the runtime + a first Skill exist to
-  evaluate.
+  EVS-1 (B3) is the ASSURANCE SUBSTRATE — the test runner + the tiered acceptance
+  harness + the active @verifies/@validates evidence markers. EVS-2 + EVS-3 (this
+  pass, B6) add the eval framework proper: the dataset format + runner + scorers
+  (EVAL-1) and the champion-vs-challenger regression gate + manifest-hash
+  enforcement (EVAL-2), piloted on the extract-memory Skill. EVAL-3 (bounded-agent
+  TRAJECTORY + cost scoring) is deferred to GEN — the first multi-step Skill,
+  the only thing with a trajectory to score.
 design-scope: cross-cutting
 constrained-by: [ADR-0010, ADR-0009, ADR-0003]
 depends-on: []
@@ -47,8 +49,10 @@ design: >-
     integration) — is the every-commit / pre-push ACCEPTANCE HARNESS. No live
     model calls, so CI stays self-contained. This closes the DEC-3 /
     .spec/CLAUDE.md doc-vs-reality gap (they assert pre-push runs an acceptance
-    harness that did not exist). DB integration tests skip cleanly when no
-    DATABASE_URL is present, so the pure-unit subset runs anywhere.
+    harness that did not exist). DB integration tests skip cleanly ONLY on an
+    ad-hoc local run with no DATABASE_URL (so the pure-unit subset runs anywhere);
+    in a GATING context (STEWARD_GATE / CI) a missing DATABASE_URL FAILS LOUDLY,
+    never a silent unit-only narrowing (EVS-1 acceptance).
   - The KEYED LLM EVAL tier (champion-vs-challenger — a later EVS element,
     EVAL-2) runs on a
     harness-artifact change / on demand, NEVER on every push — it is not part of
@@ -68,12 +72,18 @@ design: >-
   QUALITY are NOT covered by these tests and are deferred to the catch-rate /
   champion-challenger tier (EVAL-1/2, B6).
 data: >-
-  No new entities. Eval datasets (DM-adjacent, ADR-0010 storage split) arrive
-  with the later EVS elements (B6). This element owns only the runner + harness wiring.
+  No new DB entities. EVS-2 adds eval DATASETS (in-repo, versioned, synthetic/
+  de-identified only — the ADR-0010 storage split, SEC-4) and an eval-RUNS store
+  (`backend/src/eval/runs.json`, committed — self-contained per ADR-0003) keyed
+  by `(skill, manifestHash#datasetVersion)`. The per-skill regression tolerance,
+  sample count, and judge-agreement threshold live in each skill's eval config
+  (with named runner defaults, `DEFAULT_EVAL_CONFIG`) — the ADR-0010 §5 hand-off.
 interfaces: >-
-  npm scripts: `test` (run the deterministic tier), and the pre-push hook runs it
-  as the acceptance harness alongside docs-check + typecheck + lint. Exact vitest
-  config + script names live in code.
+  npm scripts: `test` (the keyless deterministic tier / acceptance harness, run
+  by the pre-push hook + CI alongside docs-check + typecheck + lint); `eval` (the
+  keyed/on-demand LLM eval that records a champion); `eval:gate` (the keyless
+  regression-gate check — a harness/dataset change with no passing eval on record
+  fails). Exact node:test/tsx config + script names live in code.
 items:
   EVS-1:
     v: 1
@@ -99,4 +109,77 @@ items:
       spec-element marked `assurance: verified` without a `@verifies` test is
       reported by docs-check; at least one real spec-element (a MEMS element) is
       `verified` and backed by a passing `@verifies` test.
-open-questions: []
+  EVS-2:
+    v: 1
+    implements: [EVAL-1]
+    statement: >-
+      A Skill's harness is evaluated against a VERSIONED dataset (a `datasetVersion`
+      bumped on any change — part of the eval-run key, EVS-3). A dataset is a set
+      of CASES (input + expected signals) stored in-repo, each carrying a
+      PROVENANCE tag (`synthetic | curated | deidentified`) — real org content
+      stays in the org-scoped deletable store, never git (SEC-4, the ADR-0010
+      storage split). The RUNNER executes
+      the Skill's harness (through the ARC-27 runtime + LLM port) for each case
+      and applies three scorer modes: DETERMINISTIC (exact structural
+      expectations — e.g. the extracted kind, the correction-channel policy),
+      CATCH-RATE (adversarial invariants reported as a rate against a stated
+      NUMERIC target — the LRN-20 measurement), and LLM-JUDGE (subjective quality
+      vs a rubric; the KEYED tier — calibrated against human labels, never a sole
+      blocking authority). It emits a SCORECARD (per-metric rates + cost). The
+      keyless dev-stub path exercises the runner + deterministic/catch-rate
+      scorers with no live call; the judge + real-quality scoring is the keyed
+      tier. Piloted on extract-memory with a synthetic dataset.
+      ACCEPTANCE: `npm run eval` runs each registered skill's dataset and emits a
+      scorecard with each metric's rate; every in-repo dataset case carries a
+      provenance tag and none is sourced from the org store (SEC-4 — structurally
+      checkable, not a semantic judgment); a spec's catch-rate acceptance resolves
+      to a real dataset + a numeric target, not a placeholder.
+  EVS-3:
+    v: 1
+    implements: [EVAL-2]
+    statement: >-
+      The REGRESSION GATE. Every eval run is recorded keyed by
+      `(skill, harnessManifestHash, datasetVersion)` (ADR-0010 §5) in an IN-REPO,
+      COMMITTED store (`backend/src/eval/runs.json` — self-contained, ADR-0003).
+      Keying on BOTH the harness hash AND the dataset version means a prompt/model/
+      policy bump OR a dataset change invalidates a stale pass and forces a fresh
+      eval — no green from a grown dataset the current harness would fail. A change
+      to either requires a fresh PASSING eval before it ships: the `eval:gate`
+      check FAILS when the current `(hash, datasetVersion)` has no passing eval on
+      record — the ADR-0010 §5 manifest-hash seam that DEC-3 calls for.
+      CHAMPION-VS-CHALLENGER: the challenger is scored against the recorded champion;
+      a regression beyond tolerance on any tracked metric, a catch-rate below
+      target, or (for a multi-step Skill) a cost/step increase past budget BLOCKS.
+      A passing challenger becomes the champion only by the explicit recorded
+      `npm run eval` (+ committing runs.json) — never silent auto-promotion, so the
+      baseline cannot drift upward undetected. Runs are repeatability-controlled;
+      the hard blocking authority is the deterministic + catch-rate tiers plus the
+      GR-3/GR-8 escalation-fired checks; the LLM-judge/proxy is calibrated + never
+      a sole uncalibrated blocking authority. Per-skill regression tolerance,
+      sample count, and judge-agreement threshold live in the skill's eval config
+      (named runner defaults, `DEFAULT_EVAL_CONFIG`).
+      KEYED-SATISFIES-THE-GATE: only a KEYED run (a real provider) attests LLM
+      QUALITY; a keyless dev-stub run is a MECHANISM record (the dev stub is
+      prompt-insensitive), so the QUALITY-regression teeth are DORMANT while a
+      skill's champion is keyless and activate on the keyed tier once creds land —
+      until then the recorded run is flagged dev-stub and the gate reports the
+      dormancy rather than pretending to enforce quality.
+      ENFORCEMENT WIRING (honest, DEC-3): `eval:gate` is currently an ON-DEMAND
+      check — NOT yet a blocking CI/pre-push step, so running it is discipline, not
+      teeth, TODAY. It becomes a required CI step when the keyed tier
+      (VERTEX_AI_KEY) is configured; until then pre-push enforces only the keyless
+      acceptance harness (EVS-1). The keyed eval itself runs on a harness/dataset
+      change / on demand, never on every push (EVS-1 tier). (Matches eval/CLAUDE.md.)
+      ACCEPTANCE: a `(hash, datasetVersion)` with no recorded passing eval fails
+      `eval:gate`; bumping the prompt version OR the datasetVersion makes the prior
+      pass stale (gate fails until re-eval); a challenger that lowers a catch-rate
+      below target or worsens a tracked metric beyond tolerance is blocked; a
+      keyless champion is reported as quality-teeth-dormant, not a quality pass; an
+      uncalibrated judge score alone never blocks or passes a change.
+open-questions:
+  - >-
+    EVAL-3 (bounded-agent TRAJECTORY + cost scoring) is intentionally NOT
+    implemented here — no multi-step Skill exists to produce a trajectory (every
+    Skill is maxSteps=1 until GEN). It lands as a further EVS element with GEN,
+    when the tool-loop it scores exists. Not a gap: the champion-vs-challenger
+    frame (EVS-3) already carries a cost/step dimension ready for trajectories.

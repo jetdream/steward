@@ -45,7 +45,7 @@ export interface WriteContext {
 const PROHIBITION = /\b(never|don'?t|do not|avoid|no more|stop|without)\b/i;
 
 /** MEMS-1 deterministic policy: a correction-channel fact/story becomes a rule. */
-function applyCorrectionPolicy(
+export function applyCorrectionPolicy(
   kind: MemoryEntryKind,
   content: string,
   correctionChannel: boolean,
