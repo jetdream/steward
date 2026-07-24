@@ -111,6 +111,34 @@
         }
       ],
       "at": "2026-07-24T04:40:39.718Z"
+    },
+    "77851f4064ff3249#1": {
+      "skill": "extract-memory",
+      "manifestHash": "77851f4064ff3249",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "kind-match",
+          "kind": "deterministic",
+          "passed": 5,
+          "total": 5,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "correction-never-bare-fact",
+          "kind": "catch-rate",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:52:47.845Z"
     }
   },
   "generate-draft": {
@@ -251,6 +279,52 @@
         }
       ],
       "at": "2026-07-24T04:40:39.721Z"
+    },
+    "77851f4064ff3249#1": {
+      "skill": "generate-draft",
+      "manifestHash": "77851f4064ff3249",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "clean-passes",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "active-overlay-never-auto-passed",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "promise-caught",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "sensitive-escalates",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:52:47.848Z"
     }
   },
   "identify-topics": {
@@ -290,6 +364,82 @@
         }
       ],
       "at": "2026-07-24T04:40:39.723Z"
+    },
+    "77851f4064ff3249#1": {
+      "skill": "identify-topics",
+      "manifestHash": "77851f4064ff3249",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "every-topic-grounded",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "populated-yields-topics",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "empty-memory-no-fabrication",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:52:47.849Z"
+    }
+  },
+  "plan-calendar": {
+    "77851f4064ff3249#1": {
+      "skill": "plan-calendar",
+      "manifestHash": "77851f4064ff3249",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "every-slot-grounded",
+          "kind": "deterministic",
+          "passed": 24,
+          "total": 24,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "impact-rhythm-floor",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "asks-within-cap",
+          "kind": "deterministic",
+          "passed": 3,
+          "total": 3,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:52:47.851Z"
     }
   }
 }

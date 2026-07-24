@@ -139,6 +139,26 @@ export interface CandidateTopic {
   evidenceMemoryIds: string[];
 }
 
+/** Input to the calendar-pairing step (GENS-1): the agenda to draw subjects from. */
+export interface PlanSlotInput {
+  /** The editorial agenda — active topics to pair subjects from (id + description). */
+  agenda: { id: string; description: string }[];
+  /** How many slots to pair for the plan block. */
+  count: number;
+}
+
+/**
+ * One planner pairing (GENS-1): a taxonomy TYPE paired with an agenda SUBJECT (by
+ * topic id). The type↔subject pairing is the grounded LLM step; the deterministic
+ * guard (@backend/content) drops a pairing whose topicId is not in the agenda or
+ * whose type is not an allowed taxonomy type. Overlay DESIGNATION + quotas are a
+ * separate deterministic plan-time step, NOT chosen by the model (LRN-20 split).
+ */
+export interface SlotPairing {
+  type: ContentType;
+  topicId: string;
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -185,6 +205,12 @@ export interface LlmPort {
    * guard + persists the surviving topics (DM-13).
    */
   identifyTopics(input: TopicIdInput): Promise<CandidateTopic[]>;
+  /**
+   * Pair calendar slots — a taxonomy TYPE with an agenda SUBJECT (GENS-1, the
+   * grounded LLM pairing step). Returns raw pairings; the caller applies the
+   * deterministic agenda/taxonomy guard + the plan-time mix-quota designations.
+   */
+  planSlots(input: PlanSlotInput): Promise<SlotPairing[]>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -215,4 +241,5 @@ export interface RawLlmAdapter {
     input: GuardrailCheckInput,
   ): Promise<{ judgment: GuardrailJudgment; usage: LlmUsage }>;
   identifyTopics(input: TopicIdInput): Promise<{ topics: CandidateTopic[]; usage: LlmUsage }>;
+  planSlots(input: PlanSlotInput): Promise<{ pairings: SlotPairing[]; usage: LlmUsage }>;
 }

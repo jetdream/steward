@@ -102,5 +102,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { topics, usage } = await adapter.identifyTopics(input);
         return { value: topics, usage };
       }),
+    planSlots: (input) =>
+      observe("generateObject", async () => {
+        const { pairings, usage } = await adapter.planSlots(input);
+        return { value: pairings, usage };
+      }),
   };
 }

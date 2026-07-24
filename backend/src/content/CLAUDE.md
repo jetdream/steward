@@ -16,6 +16,7 @@ existence.
 | `generate.ts` | `generateDraft` (grounding-in) + the bounded VAL regenerate loop; `draftForSlot` (the MEMS-4 retrieve → generate seam); `assembleGrounding` | `@implements GENS-7 v1` |
 | `guardrails.ts` | The VAL chain POLICY (PIPE-2): `resolveOutcome` + `regenerateHint` over the judge's findings — pure, deterministic, no content heuristic | `@implements GENS-7 v1` |
 | `store.ts` | DM-5 ContentItem PERSISTENCE (G1b): `persistDraft` (a DraftResult → a durable master row) + `getContentItem` / `listContentItems` (org-scoped, ACC-3) | `@implements GENS-7 v1` |
+| `planner.ts` | The GENS-1 rolling planner (G4): the `plan-calendar` pairing Skill + the pure DETERMINISTIC mix-quota engine (`designateAndSchedule`) + the agenda/taxonomy guard (`applyPairingGuard`) | `@implements GENS-1 v1` |
 | `types.ts` | `ValReport` / `DraftResult` contracts (`ValOutcome` lives in `@shared` — a DM-5 field) | — |
 
 **Persistence (G1b).** `store.ts` completes the `generateDraft → ContentItem`
@@ -49,11 +50,19 @@ no content judgment of its own.
 `agentPolicy.maxRegenerate`, then escalate) · `escalate` (force human approval
 regardless of Trust Level — GR-3 / GR-8).
 
-**Deferred (each a later Skill + eval on this substrate):** GENS-1 the rolling
-planner (needs STRS + TOPS), GENS-2 per-channel adaptation, GENS-3/GENS-4 the
-picture gate + awaiting-picture state, GENS-5 the channel-fit gate, GENS-6
-performance feedback. The DM-5 ContentItem PERSISTENCE (table + migration + tRPC)
-is the G1b follow-on — G1 returns a typed in-memory draft.
+**The planner (G4 / GENS-1).** `planCalendar` pairs a taxonomy TYPE × an agenda
+SUBJECT (the grounded `plan-calendar` LLM Skill) and assigns the overlay
+DESIGNATIONS deterministically: `designateAndSchedule` reserves impact/gratitude so
+no trailing 28-day window lacks one (seeded from history — STW-1, no
+cross-regeneration gap), and asks stay `none` in the base plan (≤25% cap trivially
+held; campaign asks are PRO-2). INTERNAL taxonomy types only — external slots need
+the Radar (EXT-1), deferred. The planner returns a validated plan; wiring each slot
+through `generateDraft` → `persistDraft` into dated ContentItems is a follow-on.
+
+**Deferred (each a later Skill + eval on this substrate):** GENS-2 per-channel
+adaptation, GENS-3/GENS-4 the picture gate + awaiting-picture state, GENS-5 the
+channel-fit gate, GENS-6 performance feedback; the planner's external slot types
+(Radar) and its generate-per-slot persistence orchestration.
 
 **Gotcha.** The VAL chain runs on the master AND (per GENS-7 / GENS-2) re-runs
 per-variant, so an adaptation cannot smuggle a violation past a master-only VAL.
@@ -67,7 +76,7 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 **Requirements this folder realizes:**
 - GEN-1 — Rolling 4-week calendar (.spec/product/requirements/gen-content-generation.yaml)
 
-**Spec-elements:** GENS-7
+**Spec-elements:** GENS-1, GENS-7
 
 **Governed by:**
 - GR-1 — No outcome promises (.spec/product/guardrails.yaml)

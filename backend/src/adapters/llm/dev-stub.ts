@@ -25,9 +25,14 @@ import {
   type ExtractionContext,
   type GeneratedMaster,
   type GuardrailFinding,
+  type PlanSlotInput,
   type RawLlmAdapter,
+  type SlotPairing,
   type TopicIdInput,
 } from "../../ports/llm.js";
+
+/** The internal taxonomy types the stub cycles through (external types need the Radar). */
+const STUB_INTERNAL_TYPES = ["mission", "founderStory", "caseStudy", "ownEvent", "people"] as const;
 
 /** Synthetic token estimate for the free dev path (~4 chars/token). */
 const estTokens = (text: string): number => Math.ceil(text.length / 4);
@@ -174,6 +179,28 @@ export const devStubLlm: RawLlmAdapter = {
         model: "dev-stub",
         tokensIn: estTokens(input.grounding),
         tokensOut: estTokens(JSON.stringify(topics)),
+      },
+    };
+  },
+  // Calendar pairing (GENS-1 plumbing): NOT a planner's editorial judgment — it
+  // round-robins the agenda topics against rotating internal taxonomy types,
+  // citing real topic ids so the deterministic guard keeps them. Empty agenda →
+  // no pairings. Real pairing judgment is the keyed path.
+  async planSlots(input: PlanSlotInput) {
+    const pairings: SlotPairing[] =
+      input.agenda.length === 0
+        ? []
+        : Array.from({ length: input.count }, (_unused, i) => {
+            const topic = input.agenda[i % input.agenda.length];
+            const type = STUB_INTERNAL_TYPES[i % STUB_INTERNAL_TYPES.length] ?? "mission";
+            return { type, topicId: topic?.id ?? "" };
+          });
+    return {
+      pairings,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(JSON.stringify(input.agenda)),
+        tokensOut: estTokens(JSON.stringify(pairings)),
       },
     };
   },

@@ -18,13 +18,14 @@
  * `GOOGLE_VERTEX_PROJECT`, `GOOGLE_VERTEX_LOCATION`.
  */
 import { createVertex } from "@ai-sdk/google-vertex";
-import { MemoryEntryKind } from "@steward/shared";
+import { contentTypes, MemoryEntryKind } from "@steward/shared";
 import { embed as aiEmbed, generateObject } from "ai";
 import { z } from "zod";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT } from "../../harness/prompts/guardrail-check.js";
 import { IDENTIFY_TOPICS_PROMPT } from "../../harness/prompts/identify-topics.js";
+import { PLAN_CALENDAR_PROMPT } from "../../harness/prompts/plan-calendar.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
   type CandidateTopic,
@@ -36,7 +37,9 @@ import {
   type GeneratedMaster,
   type GuardrailCheckInput,
   type GuardrailFinding,
+  type PlanSlotInput,
   type RawLlmAdapter,
+  type SlotPairing,
   type TopicIdInput,
 } from "../../ports/llm.js";
 
@@ -45,7 +48,19 @@ const GENERATE_MODEL = "gemini-2.5-flash";
 // The guardrail judge is a cheap classification (LRN-20 — LLM detection, not regex).
 const GUARDRAIL_MODEL = "gemini-2.5-flash";
 const TOPICS_MODEL = "gemini-2.5-flash";
+const PLAN_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
+
+/** The structured pairing set the planner must return (GENS-1). */
+const planSchema = z.object({
+  pairings: z.array(z.object({ type: z.enum(contentTypes), topicId: z.string() })),
+});
+
+/** Assemble the planner's user prompt: the agenda + how many slots to pair. */
+function planPrompt(input: PlanSlotInput): string {
+  const agenda = input.agenda.map((t) => `${t.id}: ${t.description}`).join("\n");
+  return `EDITORIAL AGENDA (choose subjects only from these topic ids):\n${agenda}\n\nPair ${input.count} calendar slots.`;
+}
 
 /** The structured topic set the identifier must return (TOPS-1). */
 const topicsSchema = z.object({
@@ -262,6 +277,27 @@ export function createVertexLlm(): RawLlmAdapter {
         topics,
         usage: {
           model: TOPICS_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async planSlots(input: PlanSlotInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(PLAN_MODEL),
+        schema: planSchema,
+        telemetry: telemetryFor("plan-calendar"),
+        system: PLAN_CALENDAR_PROMPT.system,
+        prompt: planPrompt(input),
+      });
+      const pairings: SlotPairing[] = object.pairings.map((p) => ({
+        type: p.type,
+        topicId: p.topicId,
+      }));
+      return {
+        pairings,
+        usage: {
+          model: PLAN_MODEL,
           tokensIn: usage.inputTokens ?? 0,
           tokensOut: usage.outputTokens ?? 0,
         },
