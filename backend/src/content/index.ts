@@ -20,11 +20,13 @@
  * DEFERRED to later GEN slices (each its own Skill + eval on this substrate):
  * GENS-1 the rolling planner (needs STRS + TOPS), GENS-2 per-channel adaptation,
  * GENS-3/GENS-4 the picture gate + awaiting-picture state, GENS-5 the channel-fit
- * gate, GENS-6 performance feedback. The DM-5 ContentItem persistence (table +
- * migration + tRPC) is the G1b follow-on — G1 returns a typed in-memory draft.
+ * gate, GENS-6 performance feedback. G1b added DM-5 ContentItem PERSISTENCE
+ * (store.ts, master-only); the ChannelVariant table lands with G2.
  */
 
 export type { GenerateDraftInput } from "./generate.js";
 export { assembleGrounding, draftForSlot, generateDraft } from "./generate.js";
 export { regenerateHint, resolveOutcome } from "./guardrails.js";
+export type { PersistDraftInput } from "./store.js";
+export { getContentItem, listContentItems, persistDraft } from "./store.js";
 export type { DraftResult, ValOutcome, ValReport } from "./types.js";

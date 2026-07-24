@@ -6,10 +6,10 @@
  * regex heuristic); this module's chain is the deterministic POLICY that turns
  * findings into an outcome and drives the bounded regenerate loop.
  */
+import type { ValOutcome } from "@shared";
 import type { GuardrailFinding } from "../ports/llm.js";
 
-/** The PIPE-2 VAL outcome for a master. */
-export type ValOutcome = "pass" | "regenerate" | "escalate";
+export type { ValOutcome };
 
 /** The VAL chain's verdict on a master (PIPE-2). */
 export interface ValReport {

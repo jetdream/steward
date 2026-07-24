@@ -15,7 +15,17 @@ existence.
 |---|---|---|
 | `generate.ts` | `generateDraft` (grounding-in) + the bounded VAL regenerate loop; `draftForSlot` (the MEMS-4 retrieve → generate seam); `assembleGrounding` | `@implements GENS-7 v1` |
 | `guardrails.ts` | The VAL chain POLICY (PIPE-2): `resolveOutcome` + `regenerateHint` over the judge's findings — pure, deterministic, no content heuristic | `@implements GENS-7 v1` |
-| `types.ts` | `ValOutcome` / `ValReport` / `DraftResult` contracts | — |
+| `store.ts` | DM-5 ContentItem PERSISTENCE (G1b): `persistDraft` (a DraftResult → a durable master row) + `getContentItem` / `listContentItems` (org-scoped, ACC-3) | `@implements GENS-7 v1` |
+| `types.ts` | `ValReport` / `DraftResult` contracts (`ValOutcome` lives in `@shared` — a DM-5 field) | — |
+
+**Persistence (G1b).** `store.ts` completes the `generateDraft → ContentItem`
+interface: a generated master becomes a durable DM-5 `content_item` row
+(`@shared/db/content.ts`) in editorial state `draft`. An escalated VAL outcome
+(GR-3/GR-8) is recorded via `escalated` + `valSummary` (the item still lands in
+`draft` — at TL0 every draft needs founder approval; the flag records WHY it can
+never auto-advance). MASTER-ONLY for now; the ChannelVariant table + delivery
+state land with G2 (a follow-on migration), the awaiting_picture picture gate
+with G3.
 
 **Detection is an LLM judgment, never a heuristic (LRN-20 — strict project rule).**
 Whether a master violates a guardrail (GR-1 outcome promise, GR-3 sensitive, GR-5

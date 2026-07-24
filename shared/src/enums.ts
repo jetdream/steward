@@ -19,16 +19,22 @@ export type NewsDomainMode = z.infer<typeof NewsDomainMode>;
 export const ChannelConnectionStatus = z.enum(["connected", "expired", "revoked", "error"]);
 export type ChannelConnectionStatus = z.infer<typeof ChannelConnectionStatus>;
 
-/** DM-5 ContentItem editorial lifecycle state. */
-export const EditorialState = z.enum(["draft", "awaiting_picture", "approved", "skipped"]);
+/**
+ * DM-5 ContentItem editorial lifecycle state. `const` tuple is the ONE source —
+ * consumed by the Zod enum (boundary validation) AND the drizzle
+ * `content_item.editorial_state` column (db/content.ts), keeping it a narrow union.
+ */
+export const editorialStates = ["draft", "awaiting_picture", "approved", "skipped"] as const;
+export const EditorialState = z.enum(editorialStates);
 export type EditorialState = z.infer<typeof EditorialState>;
 
 /** DM-5 ChannelVariant delivery lifecycle state (`unpublished` is news-only). */
 export const DeliveryState = z.enum(["pending", "scheduled", "published", "paused", "unpublished"]);
 export type DeliveryState = z.infer<typeof DeliveryState>;
 
-/** DM-5 ContentItem cohort-1 operator-QA gate flag (OPSS-1). */
-export const QaStatus = z.enum(["pending-review", "cleared", "n/a"]);
+/** DM-5 ContentItem cohort-1 operator-QA gate flag (OPSS-1). `const` tuple → column. */
+export const qaStatuses = ["pending-review", "cleared", "n/a"] as const;
+export const QaStatus = z.enum(qaStatuses);
 export type QaStatus = z.infer<typeof QaStatus>;
 
 /** DM-11 Subscription.status — gates publishing (PUBS-1). */
@@ -103,8 +109,20 @@ export type ContentType = z.infer<typeof ContentType>;
  * prose classification — the LRN-20 split). `none` = a base slot with no overlay.
  * The planner (GENS-1) assigns it; generation (GENS-7) honors it in the master.
  */
-export const SlotDesignation = z.enum(["none", "impact_gratitude", "fundraising_ask"]);
+export const slotDesignations = ["none", "impact_gratitude", "fundraising_ask"] as const;
+export const SlotDesignation = z.enum(slotDesignations);
 export type SlotDesignation = z.infer<typeof SlotDesignation>;
+
+/**
+ * The GENS-7 VAL-chain outcome for a master (PIPE-2), persisted on DM-5
+ * ContentItem: `pass` (queue-eligible) · `regenerate` (transient — a fixable
+ * violation being retried) · `escalate` (forced human approval, GR-3/GR-8). A
+ * `const` tuple → the `content_item.val_outcome` column. Cross-boundary: the
+ * Ready surface (APR) shows why a draft is held.
+ */
+export const valOutcomes = ["pass", "regenerate", "escalate"] as const;
+export const ValOutcome = z.enum(valOutcomes);
+export type ValOutcome = z.infer<typeof ValOutcome>;
 
 /** DM-13 Topic.provenance. */
 export const TopicProvenance = z.enum(["system-derived", "founder-added"]);
