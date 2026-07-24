@@ -159,8 +159,9 @@ export const topicProvenances = ["system-derived", "founder-added"] as const;
 export const TopicProvenance = z.enum(topicProvenances);
 export type TopicProvenance = z.infer<typeof TopicProvenance>;
 
-/** DM-4 MediaAsset provenance. */
-export const MediaProvenance = z.enum(["upload", "harvested"]);
+/** DM-4 MediaAsset provenance. `const` tuple → the `media_asset.provenance` column. */
+export const mediaProvenances = ["upload", "harvested"] as const;
+export const MediaProvenance = z.enum(mediaProvenances);
 export type MediaProvenance = z.infer<typeof MediaProvenance>;
 
 /**

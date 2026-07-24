@@ -18,6 +18,7 @@ export type { ChannelVariant } from "./entities/channel-variant.js";
 export type { ChatMessage, ChatSession } from "./entities/chat.js";
 export type { ContentItem } from "./entities/content-item.js";
 export type { ExternalItem } from "./entities/external-item.js";
+export type { MediaAsset } from "./entities/media-asset.js";
 export type { MemoryEntry, MemoryEntryView } from "./entities/memory-entry.js";
 export * from "./entities/memory-source.js";
 export type { ModelCall } from "./entities/model-call.js";

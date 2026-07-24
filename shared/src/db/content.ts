@@ -27,6 +27,7 @@ import {
   valOutcomes,
 } from "../enums.js";
 import { organization } from "./auth-schema.js";
+import { mediaAsset } from "./media-asset.js";
 
 export const contentItem = pgTable(
   "content_item",
@@ -59,6 +60,8 @@ export const contentItem = pgTable(
     escalated: boolean("escalated").notNull().default(false),
     /** Human-readable summary of the guardrail findings (empty when clean) — APR shows it. */
     valSummary: text("val_summary").notNull().default(""),
+    /** The attached picture (DM-4, GENS-3); null ⇒ awaiting_picture blocks approval (GENS-4). */
+    mediaAssetId: text("media_asset_id").references(() => mediaAsset.id, { onDelete: "set null" }),
     /** External-sourced content (GR-5 citation applies). */
     isExternal: boolean("is_external").notNull().default(false),
     /** Cohort-1 operator-QA gate (OPSS-1); `n/a` (default) once the per-org dial is off. */

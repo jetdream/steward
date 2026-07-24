@@ -15,6 +15,7 @@ export * from "./channel-variant.js";
 export * from "./chat.js";
 export * from "./content.js";
 export * from "./external-item.js";
+export * from "./media-asset.js";
 export * from "./memory.js";
 export * from "./model-call.js";
 export * from "./strategy.js";
