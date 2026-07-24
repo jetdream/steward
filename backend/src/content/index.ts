@@ -28,6 +28,7 @@
  * master-only); the ChannelVariant table lands with G2.
  */
 
+export { type ContentEngine, createContentEngine } from "./engine.js";
 export type { GenerateDraftInput } from "./generate.js";
 export { assembleGrounding, draftForSlot, generateDraft } from "./generate.js";
 export { regenerateHint, resolveOutcome } from "./guardrails.js";

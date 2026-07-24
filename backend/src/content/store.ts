@@ -11,9 +11,10 @@
 import { randomUUID } from "node:crypto";
 import type { ContentItem, EditorialState, OrgId } from "@shared";
 import { contentItem } from "@shared/db/schema.js";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, gte, isNotNull } from "drizzle-orm";
 import type { Database } from "../db/client.js";
 import type { ContentSlot } from "../ports/llm.js";
+import type { HistorySlot } from "./planner.js";
 import type { DraftResult } from "./types.js";
 
 /** What `persistDraft` needs: the slot it answered + the VAL-gated result. */
@@ -23,6 +24,8 @@ export interface PersistDraftInput {
   result: DraftResult;
   /** External-sourced content (GR-5) — defaults to false. */
   isExternal?: boolean;
+  /** The plan-level calendar date (planner path); omitted for an ad-hoc draft. */
+  scheduledFor?: Date;
 }
 
 /** Join the VAL findings (+ any note) into the human-readable hold reason (APR shows it). */
@@ -56,6 +59,7 @@ export async function persistDraft(db: Database, input: PersistDraftInput): Prom
       escalated: result.val.outcome === "escalate",
       valSummary: summarizeVal(result),
       isExternal: input.isExternal ?? false,
+      ...(input.scheduledFor ? { scheduledFor: input.scheduledFor } : {}),
     })
     .returning();
   // The insert always returns exactly one row; the guard satisfies the type.
@@ -74,6 +78,33 @@ export async function getContentItem(
     .from(contentItem)
     .where(and(eq(contentItem.orgId, orgId), eq(contentItem.id, id)));
   return row ?? null;
+}
+
+/**
+ * The planner's trailing-window HISTORY (GENS-1): prior scheduled items' designations
+ * + dates since `since`, org-scoped. Seeds `designateAndSchedule` so the impact
+ * rhythm holds across plan regenerations. Only dated (planner-produced) items count.
+ */
+export async function recentDesignations(
+  db: Database,
+  orgId: OrgId,
+  since: Date,
+): Promise<HistorySlot[]> {
+  const rows = await db
+    .select({ designation: contentItem.designation, scheduledFor: contentItem.scheduledFor })
+    .from(contentItem)
+    .where(
+      and(
+        eq(contentItem.orgId, orgId),
+        isNotNull(contentItem.scheduledFor),
+        gte(contentItem.scheduledFor, since),
+      ),
+    );
+  return rows
+    .filter((r): r is { designation: (typeof r)["designation"]; scheduledFor: Date } =>
+      Boolean(r.scheduledFor),
+    )
+    .map((r) => ({ designation: r.designation, date: r.scheduledFor }));
 }
 
 /** List an org's ContentItems, newest first, optionally filtered by editorial state. */

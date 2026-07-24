@@ -17,6 +17,7 @@ existence.
 | `guardrails.ts` | The VAL chain POLICY (PIPE-2): `resolveOutcome` + `regenerateHint` over the judge's findings — pure, deterministic, no content heuristic | `@implements GENS-7 v1` |
 | `store.ts` | DM-5 ContentItem PERSISTENCE (G1b): `persistDraft` (a DraftResult → a durable master row) + `getContentItem` / `listContentItems` (org-scoped, ACC-3) | `@implements GENS-7 v1` |
 | `planner.ts` | The GENS-1 rolling planner (G4): the `plan-calendar` pairing Skill + the pure DETERMINISTIC mix-quota engine (`designateAndSchedule`) + the agenda/taxonomy guard (`applyPairingGuard`) | `@implements GENS-1 v1` |
+| `engine.ts` | `createContentEngine` — the WIRED loop `planAndDraftCalendar`: agenda → plan → generate → VAL → persist dated ContentItems | `@implements GENS-1 v1` |
 | `types.ts` | `ValReport` / `DraftResult` contracts (`ValOutcome` lives in `@shared` — a DM-5 field) | — |
 
 **Persistence (G1b).** `store.ts` completes the `generateDraft → ContentItem`
@@ -56,8 +57,10 @@ DESIGNATIONS deterministically: `designateAndSchedule` reserves impact/gratitude
 no trailing 28-day window lacks one (seeded from history — STW-1, no
 cross-regeneration gap), and asks stay `none` in the base plan (≤25% cap trivially
 held; campaign asks are PRO-2). INTERNAL taxonomy types only — external slots need
-the Radar (EXT-1), deferred. The planner returns a validated plan; wiring each slot
-through `generateDraft` → `persistDraft` into dated ContentItems is a follow-on.
+the Radar (EXT-1), deferred. `engine.ts` WIRES the loop end-to-end
+(`planAndDraftCalendar`): plan → generate + VAL-gate + persist each slot as a dated
+draft ContentItem (`content_item.scheduledFor`), the org's history seeding the next
+run's quota. One call → a month of grounded, guardrailed, scheduled drafts.
 
 **Deferred (each a later Skill + eval on this substrate):** GENS-2 per-channel
 adaptation, GENS-3/GENS-4 the picture gate + awaiting-picture state, GENS-5 the

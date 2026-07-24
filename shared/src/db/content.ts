@@ -63,6 +63,13 @@ export const contentItem = pgTable(
     isExternal: boolean("is_external").notNull().default(false),
     /** Cohort-1 operator-QA gate (OPSS-1); `n/a` (default) once the per-org dial is off. */
     qaStatus: text("qa_status", { enum: qaStatuses }).notNull().default("n/a"),
+    /**
+     * The plan-level target date this item was scheduled for by the planner (GEN-1),
+     * null for a composer/ad-hoc draft. This is the EDITORIAL calendar date — distinct
+     * from the per-ChannelVariant DELIVERY schedule (PUB-1's engagement-optimal slot,
+     * G2). Seeds the planner's trailing-window mix quota on the next run (GENS-1).
+     */
+    scheduledFor: timestamp("scheduled_for"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => [
