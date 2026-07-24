@@ -9,7 +9,7 @@
 const PRICE_PER_MTOK: Record<string, { in: number; out: number }> = {
   "gemini-2.5-flash": { in: 0.3, out: 2.5 },
   "gemini-2.5-pro": { in: 1.25, out: 10 },
-  "gemini-embedding-2": { in: 0.15, out: 0 },
+  "gemini-embedding-001": { in: 0.15, out: 0 },
 };
 
 /** ~4 chars per token — a rough, deterministic estimate (no tokenizer dep). */

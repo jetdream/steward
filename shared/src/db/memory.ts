@@ -25,7 +25,7 @@ import type { MemorySource } from "../entities/memory-source.js";
 import { memoryEntryKinds } from "../enums.js";
 import { organization } from "./auth-schema.js";
 
-/** The embedding dimension — Gemini `gemini-embedding-2` at 1536 (ADR-0008, DEC-40). */
+/** The embedding dimension — Gemini `gemini-embedding-001` at 1536 (ADR-0008, DEC-40). */
 export const MEMORY_EMBEDDING_DIM = 1536 as const;
 
 export const memoryEntry = pgTable(

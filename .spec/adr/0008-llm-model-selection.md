@@ -44,7 +44,7 @@ records at the technical altitude).
 - **Google Vertex AI — Gemini (chosen).** Generation/extraction on
   `gemini-2.5-flash` (fast, cheap — fits the PIPE-1 COGS target <$25/org/mo),
   escalating to `gemini-2.5-pro` where quality demands. Embeddings on
-  `gemini-embedding-2` via `@ai-sdk/google-vertex`, pinned to **1536
+  `gemini-embedding-001` via `@ai-sdk/google-vertex`, pinned to **1536
   dimensions** (`providerOptions.vertex.outputDimensionality: 1536`) with a
   retrieval `taskType`. *Cons:* Vertex auth (project + location + credential)
   is heavier than a bare API key; a live GCP project is needed for real
@@ -75,8 +75,11 @@ the ADR-0003 LLM/search port:
 - **Generation/extraction:** `gemini-2.5-flash` by default (`@ai-sdk/google-vertex`,
   `generateObject` for structured extraction), `gemini-2.5-pro` reserved for
   quality-critical slots.
-- **Embeddings:** `gemini-embedding-2`, output **1536 dimensions**, retrieval
-  task types (`RETRIEVAL_DOCUMENT` on write, `RETRIEVAL_QUERY` on retrieve).
+- **Embeddings:** `gemini-embedding-001`, output **1536 dimensions**, retrieval
+  task types (`RETRIEVAL_DOCUMENT` on write, `RETRIEVAL_QUERY` on retrieve). (Id
+  corrected 2026-07-24 from the originally-written `gemini-embedding-2`, which a
+  keyed smoke found returns 404; `gemini-embedding-001` is the GA id and verified
+  to support the 1536-dim output — same model family, no change to the choice.)
 - **The `MemoryEntry` embedding column is `vector(1536)`** (DM-2).
 - **Auth/config via env:** `VERTEX_AI_KEY` (+ project/location) drives the real
   adapter.

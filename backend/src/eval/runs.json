@@ -55,6 +55,34 @@
         }
       ],
       "at": "2026-07-24T02:05:03.421Z"
+    },
+    "d28547f5a2e29e76#1": {
+      "skill": "extract-memory",
+      "manifestHash": "d28547f5a2e29e76",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "kind-match",
+          "kind": "deterministic",
+          "passed": 5,
+          "total": 5,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "correction-never-bare-fact",
+          "kind": "catch-rate",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T02:29:17.594Z"
     }
   },
   "generate-draft": {
@@ -103,6 +131,52 @@
         }
       ],
       "at": "2026-07-24T02:05:03.424Z"
+    },
+    "d28547f5a2e29e76#1": {
+      "skill": "generate-draft",
+      "manifestHash": "d28547f5a2e29e76",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "clean-passes",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "active-overlay-never-auto-passed",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "promise-caught",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "sensitive-escalates",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T02:29:17.597Z"
     }
   }
 }

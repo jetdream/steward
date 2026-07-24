@@ -70,8 +70,11 @@ items:
       Onboarding) is the first capability needing generation + embeddings, the
       founder selects GOOGLE VERTEX AI / GEMINI as the v1 provider behind the
       ADR-0003 LLM port: generation/extraction on gemini-2.5-flash (pro reserved
-      for quality-critical slots), embeddings on gemini-embedding-2 pinned to 1536
-      dimensions. This binds the DM-2 MemoryEntry embedding column to vector(1536)
+      for quality-critical slots), embeddings on gemini-embedding-001 pinned to 1536
+      dimensions (the GA Gemini embedding model id; a 2026-07-24 keyed smoke found
+      the originally-written "gemini-embedding-2" 404s — a factual id correction,
+      not a change to the decision's substance: same model family, same 1536 dims).
+      This binds the DM-2 MemoryEntry embedding column to vector(1536)
       — a one-way-door (changing dimension later means re-embedding every org's
       corpus), which is why it is a recorded decision. Wired via VERTEX_AI_KEY
       (+ project/location) in env; a deterministic keyless dev fallback keeps

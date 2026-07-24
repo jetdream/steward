@@ -3,7 +3,7 @@
  *
  * The Google Vertex AI / Gemini adapter (ADR-0008, DEC-40) — the v1 real
  * provider, a RawLlmAdapter. Generation/extraction on `gemini-2.5-flash`
- * (structured output via `generateObject`); embeddings on `gemini-embedding-2`
+ * (structured output via `generateObject`); embeddings on `gemini-embedding-001`
  * pinned to 1536 dims. Reached only via the ADR-0003 port; no vendor type
  * escapes this file.
  *
@@ -41,7 +41,7 @@ const EXTRACT_MODEL = "gemini-2.5-flash";
 const GENERATE_MODEL = "gemini-2.5-flash";
 // The guardrail judge is a cheap classification (LRN-20 — LLM detection, not regex).
 const GUARDRAIL_MODEL = "gemini-2.5-flash";
-const EMBED_MODEL = "gemini-embedding-2";
+const EMBED_MODEL = "gemini-embedding-001";
 
 /** The structured verdict the guardrail judge must return (GENS-7). */
 const guardrailSchema = z.object({

@@ -52,7 +52,7 @@ export const HARNESS: Record<string, HarnessEntry> = {
   "retrieve-memory": {
     promptRef: null,
     promptSystem: null,
-    model: "gemini-embedding-2",
+    model: "gemini-embedding-001",
     agentPolicy: { maxSteps: 1 },
   },
   "generate-draft": {

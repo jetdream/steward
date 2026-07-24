@@ -42,7 +42,7 @@ export const modelCall = pgTable(
     skill: text("skill").notNull(),
     /** The versioned prompt template, when the call used one (null for embeddings). */
     promptVersion: text("prompt_version"),
-    /** The model id (e.g. "gemini-2.5-flash", "gemini-embedding-2", or the dev-stub label). */
+    /** The model id (e.g. "gemini-2.5-flash", "gemini-embedding-001", or the dev-stub label). */
     model: text("model").notNull(),
     operation: text("operation", { enum: modelCallOperations }).notNull(),
     tokensIn: integer("tokens_in").notNull().default(0),
