@@ -19,6 +19,7 @@ export type { MemoryEntry, MemoryEntryView } from "./entities/memory-entry.js";
 export * from "./entities/memory-source.js";
 export type { ModelCall } from "./entities/model-call.js";
 export type { Org } from "./entities/org.js";
+export type { ChannelInstructions, StrategyDoc } from "./entities/strategy-doc.js";
 export { EvidencePointer, type Topic } from "./entities/topic.js";
 export * from "./enums.js";
 export * from "./ids.js";
