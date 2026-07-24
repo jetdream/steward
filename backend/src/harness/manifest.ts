@@ -15,6 +15,7 @@ import { createHash } from "node:crypto";
 import { EXTRACT_MEMORY_PROMPT, EXTRACT_MEMORY_PROMPT_REF } from "./prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT, GENERATE_DRAFT_PROMPT_REF } from "./prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT, GUARDRAIL_CHECK_PROMPT_REF } from "./prompts/guardrail-check.js";
+import { IDENTIFY_TOPICS_PROMPT, IDENTIFY_TOPICS_PROMPT_REF } from "./prompts/identify-topics.js";
 
 /** The bound on a Skill's runtime (PIPE-4). `maxSteps: 1` ⇒ a single-shot skill. */
 export interface AgentPolicy {
@@ -70,6 +71,14 @@ export const HARNESS: Record<string, HarnessEntry> = {
     promptSystem: GUARDRAIL_CHECK_PROMPT.system,
     model: "gemini-2.5-flash",
     agentPolicy: { maxSteps: 1, costBudgetUsd: 0.02 },
+  },
+  "identify-topics": {
+    // Grounded editorial-agenda identification (TOPS-1). Single-shot; the
+    // deterministic evidence guard + persistence live in @backend/topics.
+    promptRef: IDENTIFY_TOPICS_PROMPT_REF,
+    promptSystem: IDENTIFY_TOPICS_PROMPT.system,
+    model: "gemini-2.5-flash",
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.05 },
   },
 };
 

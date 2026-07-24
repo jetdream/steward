@@ -17,6 +17,7 @@
  * policy is the real authority regardless.
  */
 import {
+  type CandidateTopic,
   type DraftGenInput,
   EMBEDDING_DIM,
   type EmbedTaskType,
@@ -25,6 +26,7 @@ import {
   type GeneratedMaster,
   type GuardrailFinding,
   type RawLlmAdapter,
+  type TopicIdInput,
 } from "../../ports/llm.js";
 
 /** Synthetic token estimate for the free dev path (~4 chars/token). */
@@ -146,6 +148,33 @@ export const devStubLlm: RawLlmAdapter = {
     return {
       judgment: { findings, judged: false },
       usage: { model: "dev-stub", tokensIn: estTokens(text), tokensOut: 0 },
+    };
+  },
+  // Topic identification (TOPS-1 plumbing): NOT an editorial brain — it echoes the
+  // grounding into ONE cause-level topic and cites a real grounding id (so the
+  // deterministic evidence guard has something resolvable to keep). Empty grounding
+  // → no topics (the thin-Memory path is the caller's, MEMS-4). Real topic quality
+  // is the keyed path.
+  async identifyTopics(input: TopicIdInput) {
+    const firstId = input.groundingIds[0];
+    const topics: CandidateTopic[] =
+      firstId === undefined
+        ? []
+        : [
+            {
+              theme: "our mission",
+              description: input.grounding.split("\n")[0]?.slice(0, 120) || "our work",
+              whyItFits: "Grounded in the organization's Memory.",
+              evidenceMemoryIds: [firstId],
+            },
+          ];
+    return {
+      topics,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(input.grounding),
+        tokensOut: estTokens(JSON.stringify(topics)),
+      },
     };
   },
 };

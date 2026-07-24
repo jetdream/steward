@@ -83,6 +83,34 @@
         }
       ],
       "at": "2026-07-24T02:29:17.594Z"
+    },
+    "b7661863c164f9bb#1": {
+      "skill": "extract-memory",
+      "manifestHash": "b7661863c164f9bb",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "kind-match",
+          "kind": "deterministic",
+          "passed": 5,
+          "total": 5,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "correction-never-bare-fact",
+          "kind": "catch-rate",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:40:39.718Z"
     }
   },
   "generate-draft": {
@@ -177,6 +205,91 @@
         }
       ],
       "at": "2026-07-24T02:29:17.597Z"
+    },
+    "b7661863c164f9bb#1": {
+      "skill": "generate-draft",
+      "manifestHash": "b7661863c164f9bb",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "clean-passes",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "active-overlay-never-auto-passed",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "promise-caught",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "sensitive-escalates",
+          "kind": "catch-rate",
+          "passed": 0,
+          "total": 0,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:40:39.721Z"
+    }
+  },
+  "identify-topics": {
+    "b7661863c164f9bb#1": {
+      "skill": "identify-topics",
+      "manifestHash": "b7661863c164f9bb",
+      "datasetVersion": 1,
+      "ok": true,
+      "adapter": "dev-stub",
+      "metrics": [
+        {
+          "name": "every-topic-grounded",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "populated-yields-topics",
+          "kind": "deterministic",
+          "passed": 2,
+          "total": 2,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        },
+        {
+          "name": "empty-memory-no-fabrication",
+          "kind": "deterministic",
+          "passed": 1,
+          "total": 1,
+          "rate": 1,
+          "target": 1,
+          "ok": true
+        }
+      ],
+      "at": "2026-07-24T04:40:39.723Z"
     }
   }
 }

@@ -78,8 +78,9 @@ export const memoryEntryKinds = [
 export const MemoryEntryKind = z.enum(memoryEntryKinds);
 export type MemoryEntryKind = z.infer<typeof MemoryEntryKind>;
 
-/** DM-13 Topic.status — the active set is the editorial agenda (TOP-4). */
-export const TopicStatus = z.enum(["proposed", "active", "retired"]);
+/** DM-13 Topic.status — the active set is the editorial agenda (TOP-4). `const` tuple → column. */
+export const topicStatuses = ["proposed", "active", "retired"] as const;
+export const TopicStatus = z.enum(topicStatuses);
 export type TopicStatus = z.infer<typeof TopicStatus>;
 
 /**
@@ -124,8 +125,9 @@ export const valOutcomes = ["pass", "regenerate", "escalate"] as const;
 export const ValOutcome = z.enum(valOutcomes);
 export type ValOutcome = z.infer<typeof ValOutcome>;
 
-/** DM-13 Topic.provenance. */
-export const TopicProvenance = z.enum(["system-derived", "founder-added"]);
+/** DM-13 Topic.provenance. `const` tuple → the `topic.provenance` column. */
+export const topicProvenances = ["system-derived", "founder-added"] as const;
+export const TopicProvenance = z.enum(topicProvenances);
 export type TopicProvenance = z.infer<typeof TopicProvenance>;
 
 /** DM-4 MediaAsset provenance. */

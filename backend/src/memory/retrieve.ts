@@ -15,7 +15,7 @@
  */
 import type { MemoryEntry, OrgId } from "@shared";
 import { memoryEntry } from "@shared/db/schema.js";
-import { and, cosineDistance, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, cosineDistance, desc, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import { runSkill } from "../harness/runtime.js";
 import type { MemoryDeps } from "./write.js";
 
@@ -96,4 +96,29 @@ export async function retrieveContext(
   }
 
   return { grounding, overlay, thin };
+}
+
+/**
+ * List the org's ACTIVE grounding entries (fact/story/person/program/event),
+ * newest first — the broad org-Memory read the editorial-agenda engine (TOPS-1)
+ * grounds topic identification in (NOT a similarity slice; it wants breadth). A
+ * plain org-scoped query (ACC-3), never embedding-gated.
+ */
+export async function listGrounding(
+  deps: MemoryDeps,
+  orgId: OrgId,
+  limit = 100,
+): Promise<MemoryEntry[]> {
+  return deps.db
+    .select()
+    .from(memoryEntry)
+    .where(
+      and(
+        eq(memoryEntry.orgId, orgId),
+        isNull(memoryEntry.supersededAt),
+        inArray(memoryEntry.kind, [...GROUNDING_KINDS]),
+      ),
+    )
+    .orderBy(desc(memoryEntry.createdAt))
+    .limit(limit);
 }

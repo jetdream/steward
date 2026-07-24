@@ -24,8 +24,10 @@ import { z } from "zod";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT } from "../../harness/prompts/guardrail-check.js";
+import { IDENTIFY_TOPICS_PROMPT } from "../../harness/prompts/identify-topics.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
+  type CandidateTopic,
   type DraftGenInput,
   EMBEDDING_DIM,
   type EmbedTaskType,
@@ -35,13 +37,40 @@ import {
   type GuardrailCheckInput,
   type GuardrailFinding,
   type RawLlmAdapter,
+  type TopicIdInput,
 } from "../../ports/llm.js";
 
 const EXTRACT_MODEL = "gemini-2.5-flash";
 const GENERATE_MODEL = "gemini-2.5-flash";
 // The guardrail judge is a cheap classification (LRN-20 — LLM detection, not regex).
 const GUARDRAIL_MODEL = "gemini-2.5-flash";
+const TOPICS_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
+
+/** The structured topic set the identifier must return (TOPS-1). */
+const topicsSchema = z.object({
+  topics: z.array(
+    z.object({
+      theme: z.string(),
+      description: z.string(),
+      whyItFits: z.string(),
+      evidenceMemoryIds: z.array(z.string()),
+    }),
+  ),
+});
+
+/** Assemble the identifier's user prompt: the grounding + available evidence ids + agenda. */
+function topicsPrompt(input: TopicIdInput): string {
+  const existing =
+    input.existingThemes.length > 0
+      ? `\n\nCURRENT AGENDA (do not re-propose these): ${input.existingThemes.join(", ")}`
+      : "\n\n(no agenda yet — this is the first run)";
+  return (
+    `ORGANIZATION MEMORY (each line is a groundable entry):\n${input.grounding}\n\n` +
+    `AVAILABLE EVIDENCE ENTRY IDS (cite only from these): ${input.groundingIds.join(", ") || "(none)"}` +
+    existing
+  );
+}
 
 /** The structured verdict the guardrail judge must return (GENS-7). */
 const guardrailSchema = z.object({
@@ -210,6 +239,29 @@ export function createVertexLlm(): RawLlmAdapter {
         judgment: { findings, judged: true },
         usage: {
           model: GUARDRAIL_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async identifyTopics(input: TopicIdInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(TOPICS_MODEL),
+        schema: topicsSchema,
+        telemetry: telemetryFor("identify-topics"),
+        system: IDENTIFY_TOPICS_PROMPT.system,
+        prompt: topicsPrompt(input),
+      });
+      const topics: CandidateTopic[] = object.topics.map((t) => ({
+        theme: t.theme,
+        description: t.description,
+        whyItFits: t.whyItFits,
+        evidenceMemoryIds: t.evidenceMemoryIds,
+      }));
+      return {
+        topics,
+        usage: {
+          model: TOPICS_MODEL,
           tokensIn: usage.inputTokens ?? 0,
           tokensOut: usage.outputTokens ?? 0,
         },

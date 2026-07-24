@@ -107,6 +107,38 @@ export interface GuardrailCheckInput {
   isExternal: boolean;
 }
 
+/**
+ * Grounded input to topic identification (TOPS-1). The DOMAIN caller
+ * (@backend/topics) assembles the grounding from Memory (MEMS-4 retrieveContext —
+ * cause profile, mission, programs, people, audience) and passes the available
+ * evidence ids; the port does NO retrieval. `existingThemes` is the active agenda
+ * (empty on a cold-start first run) so identification does not re-propose.
+ */
+export interface TopicIdInput {
+  /** Retrieved Memory text — the sole grounding (nothing fabricated, VAL-4). */
+  grounding: string;
+  /** The Memory entry ids available as evidence — the resolvability set for the guard. */
+  groundingIds: string[];
+  /** Active-agenda theme labels to avoid re-deriving (empty on cold start). */
+  existingThemes: string[];
+}
+
+/**
+ * A candidate topic the identifier proposes (TOPS-1). `evidenceMemoryIds` MUST
+ * resolve into the input `groundingIds` — the deterministic grounding guard drops
+ * any topic with no resolvable pointer (LRN-20); rationale quality is the keyed
+ * catch-rate tier.
+ */
+export interface CandidateTopic {
+  /** A short canonical theme label → the deterministic `topicKey`. */
+  theme: string;
+  description: string;
+  /** Why this fits THIS org — the grounded rationale. */
+  whyItFits: string;
+  /** Cited Memory entry ids backing the topic (guard: must be a subset of groundingIds). */
+  evidenceMemoryIds: string[];
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -147,6 +179,12 @@ export interface LlmPort {
    * the caller's chain resolves findings → pass / regenerate / escalate.
    */
   checkGuardrails(input: GuardrailCheckInput): Promise<GuardrailJudgment>;
+  /**
+   * Derive candidate content topics grounded in Memory (TOPS-1). Returns raw
+   * candidates; the caller (@backend/topics) applies the deterministic evidence
+   * guard + persists the surviving topics (DM-13).
+   */
+  identifyTopics(input: TopicIdInput): Promise<CandidateTopic[]>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -176,4 +214,5 @@ export interface RawLlmAdapter {
   judgeGuardrails(
     input: GuardrailCheckInput,
   ): Promise<{ judgment: GuardrailJudgment; usage: LlmUsage }>;
+  identifyTopics(input: TopicIdInput): Promise<{ topics: CandidateTopic[]; usage: LlmUsage }>;
 }

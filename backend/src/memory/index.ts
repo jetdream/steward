@@ -26,7 +26,7 @@ import { memoryEntry } from "@shared/db/schema.js";
 import { and, eq } from "drizzle-orm";
 import type { Database } from "../db/client.js";
 import type { LlmPort } from "../ports/llm.js";
-import { retrieveContext } from "./retrieve.js";
+import { listGrounding, retrieveContext } from "./retrieve.js";
 import { isResolved, shouldAsk, type Unknown } from "./should-ask.js";
 import { type MemoryDeps, reinforce, type WriteContext, writeMemory } from "./write.js";
 
@@ -42,6 +42,8 @@ export interface Memory {
   reinforce(orgId: OrgId, entryIds: readonly string[]): Promise<number>;
   /** Grounded context for a slot: grounding + full overlay + thinness (MEMS-4). */
   retrieveContext(orgId: OrgId, slot?: string): ReturnType<typeof retrieveContext>;
+  /** All active grounding entries, broad (not similarity) — the TOPS-1 agenda read. */
+  listGrounding(orgId: OrgId, limit?: number): ReturnType<typeof listGrounding>;
   /** Interrupt-or-assume decision, consulting the asked-set (MEMS-5/MEMS-6). */
   shouldAsk(orgId: OrgId, unknown: Unknown): ReturnType<typeof shouldAsk>;
   /** True when an unknown is already resolved in Memory (MEMS-6). */
@@ -61,6 +63,7 @@ export function createMemory(db: Database, llm: LlmPort): Memory {
     write: (rawInput, ctx) => writeMemory(deps, rawInput, ctx),
     reinforce: (orgId, entryIds) => reinforce(deps, orgId, entryIds),
     retrieveContext: (orgId, slot) => retrieveContext(deps, orgId, slot),
+    listGrounding: (orgId, limit) => listGrounding(deps, orgId, limit),
     shouldAsk: (orgId, unknown) => shouldAsk(deps, orgId, unknown),
     isResolved: (orgId, subjectKey) => isResolved(deps, orgId, subjectKey),
     async purgeOrg(orgId) {

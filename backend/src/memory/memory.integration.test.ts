@@ -58,6 +58,9 @@ const llm: LlmPort = {
   async checkGuardrails(input) {
     return (await devStubLlm.judgeGuardrails(input)).judgment;
   },
+  async identifyTopics(input) {
+    return (await devStubLlm.identifyTopics(input)).topics;
+  },
 };
 
 let db: Database;

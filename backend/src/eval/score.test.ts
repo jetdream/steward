@@ -15,6 +15,7 @@ const noopPort: LlmPort = {
   embed: async () => [],
   generateDraft: async () => ({ title: "", body: "", reasonLine: "" }),
   checkGuardrails: async () => ({ findings: [], judged: false }),
+  identifyTopics: async () => [],
 };
 
 const fakeDef: SkillEvalDef<{ x: number }, number> = {

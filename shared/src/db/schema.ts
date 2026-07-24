@@ -14,3 +14,4 @@ export * from "./auth-schema.js";
 export * from "./content.js";
 export * from "./memory.js";
 export * from "./model-call.js";
+export * from "./topic.js";

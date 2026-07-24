@@ -97,5 +97,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { judgment, usage } = await adapter.judgeGuardrails(input);
         return { value: judgment, usage };
       }),
+    identifyTopics: (input) =>
+      observe("generateObject", async () => {
+        const { topics, usage } = await adapter.identifyTopics(input);
+        return { value: topics, usage };
+      }),
   };
 }
