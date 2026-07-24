@@ -496,3 +496,30 @@ items:
       the deterministic tier. Every future LLM-bearing test inherits this via the
       script knob, so the keyed vs keyless split (ADR-0010) stays enforced by
       construction.
+
+  LRN-28:
+    v: 1
+    type: gotcha
+    scope: [backend, tooling]
+    source: I4 EXTS-1 keyed smoke — Vertex googleSearch returned 0 grounded sources (2026-07-24)
+    title: Vertex search grounding via the googleSearch tool needs verification — don't assume the tool fires
+    statement: >-
+      The EXTS-1 radar adapter wires Gemini + Google Search grounding as
+      `generateText({ model: vertex('gemini-2.5-flash'), tools: { google_search:
+      vertex.tools.googleSearch({}) } })` and reads `result.sources` (per the AI SDK
+      google-provider docs). It TYPECHECKS and RUNS, but the keyed smoke returned 0
+      candidates + 0 grounding `sources` — grounding did not surface sources in this
+      two-pass shape on @ai-sdk/google-vertex. Not yet root-caused (candidates: the
+      tool needs a Vertex-specific activation/config; sources arrive via
+      `providerMetadata.google.groundingMetadata.groundingChunks[].web.uri` rather
+      than the top-level `.sources` on Vertex; or the prompt did not trigger a
+      search). IMPACT IS CONTAINED: the deterministic tier is fully green — the R-4
+      guard (provenance-bound + dereferenceable) is unit-tested, persistence/feed/
+      triage are integration-tested, and the dev-stub eval is recorded — and the
+      keyed radar quality is dormant (keyless champion) per the project posture, so
+      nothing ships as falsely-working. Lesson: for a provider capability behind a
+      TOOL (search grounding), a keyed smoke is mandatory — a green typecheck +
+      dev-stub tier does NOT prove the tool fires; verify against grounding metadata
+      before relying on the keyed radar. FOLLOW-UP: a context7 pass on
+      @ai-sdk/google-vertex search grounding + extracting groundingMetadata, then
+      re-smoke (tracked; the keyed radar is not depended on until then).

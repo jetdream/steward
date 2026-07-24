@@ -187,6 +187,47 @@ export interface StrategyDraft {
   sectionE: Record<string, string>;
 }
 
+/**
+ * Grounded input to a Radar discovery run (EXTS-1). The DOMAIN caller
+ * (@backend/radar) assembles the agenda (TOPS topics) + the org geography (Memory)
+ * and passes them in; the port runs Gemini + Google-Search grounding (IG-3).
+ */
+export interface GroundedSearchInput {
+  /** The editorial agenda to discover against (topic id + description) — never a static seed. */
+  topics: { id: string; description: string }[];
+  /** The org's geography scope for relevance (local → county → state → national → global). */
+  geography: string;
+  /** How many candidates to aim for across the agenda. */
+  count: number;
+}
+
+/** One discovery candidate the search proposes (EXTS-1) — cited back to a source. */
+export interface SearchCandidate {
+  /** The source/publisher name. */
+  source: string;
+  /** The candidate's link — kept only if provenance-bound + dereferenceable (the R-4 guard). */
+  url: string;
+  title: string;
+  summary: string;
+  /** Why this fits THIS org's agenda + geography. */
+  relevanceRationale: string;
+  /** The agenda topic id this candidate answers (from the input topics). */
+  topicId: string;
+  /** ISO date for an event-tied candidate, else omitted. */
+  eventDate?: string;
+}
+
+/**
+ * A grounded search result (EXTS-1): the candidates PLUS `sources` — the set of
+ * URLs the search GROUNDING actually retrieved (from the provider's grounding
+ * metadata). The caller's deterministic R-4 guard keeps only candidates whose URL
+ * is in `sources` (provenance-bound, not model-invented) and dereferenceable.
+ */
+export interface GroundedSearchResult {
+  candidates: SearchCandidate[];
+  sources: string[];
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -245,6 +286,13 @@ export interface LlmPort {
    * version. Section (c) is never drafted — it is a derived view (DEC-22).
    */
   draftStrategy(input: DraftStrategyInput): Promise<StrategyDraft>;
+  /**
+   * Run an agenda-driven, grounded discovery search (EXTS-1) via Gemini +
+   * Google-Search grounding (IG-3). Returns raw candidates + the grounding
+   * `sources`; the caller (@backend/radar) applies the deterministic R-4 guard
+   * (provenance-bound + dereferenceable) before persisting.
+   */
+  groundedSearch(input: GroundedSearchInput): Promise<GroundedSearchResult>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -277,4 +325,7 @@ export interface RawLlmAdapter {
   identifyTopics(input: TopicIdInput): Promise<{ topics: CandidateTopic[]; usage: LlmUsage }>;
   planSlots(input: PlanSlotInput): Promise<{ pairings: SlotPairing[]; usage: LlmUsage }>;
   draftStrategy(input: DraftStrategyInput): Promise<{ draft: StrategyDraft; usage: LlmUsage }>;
+  groundedSearch(
+    input: GroundedSearchInput,
+  ): Promise<{ result: GroundedSearchResult; usage: LlmUsage }>;
 }

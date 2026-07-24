@@ -19,7 +19,7 @@
  */
 import { createVertex } from "@ai-sdk/google-vertex";
 import { contentTypes, MemoryEntryKind } from "@steward/shared";
-import { embed as aiEmbed, generateObject } from "ai";
+import { embed as aiEmbed, generateObject, generateText } from "ai";
 import { z } from "zod";
 import { DRAFT_STRATEGY_PROMPT } from "../../harness/prompts/draft-strategy.js";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
@@ -27,6 +27,7 @@ import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT } from "../../harness/prompts/guardrail-check.js";
 import { IDENTIFY_TOPICS_PROMPT } from "../../harness/prompts/identify-topics.js";
 import { PLAN_CALENDAR_PROMPT } from "../../harness/prompts/plan-calendar.js";
+import { RADAR_DISCOVER_PROMPT } from "../../harness/prompts/radar-discover.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
   type CandidateTopic,
@@ -37,10 +38,12 @@ import {
   type ExtractedEntry,
   type ExtractionContext,
   type GeneratedMaster,
+  type GroundedSearchInput,
   type GuardrailCheckInput,
   type GuardrailFinding,
   type PlanSlotInput,
   type RawLlmAdapter,
+  type SearchCandidate,
   type SlotPairing,
   type StrategyDraft,
   type TopicIdInput,
@@ -53,7 +56,32 @@ const GUARDRAIL_MODEL = "gemini-2.5-flash";
 const TOPICS_MODEL = "gemini-2.5-flash";
 const PLAN_MODEL = "gemini-2.5-flash";
 const STRATEGY_MODEL = "gemini-2.5-flash";
+const SEARCH_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
+
+/** The structured discovery candidates the radar returns (EXTS-1). */
+const candidatesSchema = z.object({
+  candidates: z.array(
+    z.object({
+      source: z.string(),
+      url: z.string(),
+      title: z.string(),
+      summary: z.string(),
+      relevanceRationale: z.string(),
+      topicId: z.string(),
+      eventDate: z.string().optional(),
+    }),
+  ),
+});
+
+/** Assemble the discovery user prompt: the agenda + geography + how many to find. */
+function searchPrompt(input: GroundedSearchInput): string {
+  const agenda = input.topics.map((t) => `${t.id}: ${t.description}`).join("\n");
+  return (
+    `EDITORIAL AGENDA:\n${agenda}\n\nGEOGRAPHY: ${input.geography}\n\n` +
+    `Find up to ${input.count} recent, relevant external items (events/news/research) to comment on.`
+  );
+}
 
 /**
  * The structured Strategy draft Gemini must return (STRS-2 — sections a/b/d/e).
@@ -351,6 +379,56 @@ export function createVertexLlm(): RawLlmAdapter {
           model: STRATEGY_MODEL,
           tokensIn: usage.inputTokens ?? 0,
           tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async groundedSearch(input: GroundedSearchInput) {
+      // Pass 1: grounded search — Gemini + Google Search (IG-3). `sources` is the
+      // grounding PROVENANCE (the URLs the retrieval actually cited), the R-4
+      // anti-hallucination basis the caller's guard checks against.
+      const grounded = await generateText({
+        model: vertex(SEARCH_MODEL),
+        tools: { google_search: vertex.tools.googleSearch({}) },
+        telemetry: telemetryFor("radar-discover"),
+        system: RADAR_DISCOVER_PROMPT.system,
+        prompt: searchPrompt(input),
+      });
+      const sources = Array.from(
+        new Set(
+          (grounded.sources ?? []).flatMap((s) =>
+            s.sourceType === "url" && typeof s.url === "string" ? [s.url] : [],
+          ),
+        ),
+      );
+      // Pass 2: structure the grounded findings into candidates that cite only the
+      // provenance URLs (no grounding needed for structuring).
+      const structured = await generateObject({
+        model: vertex(SEARCH_MODEL),
+        schema: candidatesSchema,
+        telemetry: telemetryFor("radar-discover"),
+        system: RADAR_DISCOVER_PROMPT.system,
+        prompt:
+          `${searchPrompt(input)}\n\nGROUNDED FINDINGS:\n${grounded.text}\n\n` +
+          `SOURCE URLS (cite only these):\n${sources.join("\n") || "(none)"}`,
+      });
+      const candidates: SearchCandidate[] = structured.object.candidates.map((c) => {
+        const cand: SearchCandidate = {
+          source: c.source,
+          url: c.url,
+          title: c.title,
+          summary: c.summary,
+          relevanceRationale: c.relevanceRationale,
+          topicId: c.topicId,
+        };
+        if (c.eventDate) cand.eventDate = c.eventDate;
+        return cand;
+      });
+      return {
+        result: { candidates, sources },
+        usage: {
+          model: SEARCH_MODEL,
+          tokensIn: (grounded.usage.inputTokens ?? 0) + (structured.usage.inputTokens ?? 0),
+          tokensOut: (grounded.usage.outputTokens ?? 0) + (structured.usage.outputTokens ?? 0),
         },
       };
     },

@@ -67,6 +67,9 @@ const llm: LlmPort = {
   async draftStrategy(input) {
     return (await devStubLlm.draftStrategy(input)).draft;
   },
+  async groundedSearch(input) {
+    return (await devStubLlm.groundedSearch(input)).result;
+  },
 };
 
 let db: Database;

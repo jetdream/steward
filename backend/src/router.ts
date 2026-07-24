@@ -8,6 +8,7 @@ import { memoryRouter } from "./routers/memory.js";
 import { onboardingRouter } from "./routers/onboarding.js";
 import { orgRouter } from "./routers/org.js";
 import { pingRouter } from "./routers/ping.js";
+import { radarRouter } from "./routers/radar.js";
 import { strategyRouter } from "./routers/strategy.js";
 import { systemRouter } from "./routers/system.js";
 import { router } from "./trpc.js";
@@ -18,6 +19,7 @@ export const appRouter = router({
   memory: memoryRouter,
   onboarding: onboardingRouter,
   strategy: strategyRouter,
+  radar: radarRouter,
   system: systemRouter,
   ping: pingRouter,
 });

@@ -112,5 +112,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { draft, usage } = await adapter.draftStrategy(input);
         return { value: draft, usage };
       }),
+    groundedSearch: (input) =>
+      observe("groundedSearch", async () => {
+        const { result, usage } = await adapter.groundedSearch(input);
+        return { value: result, usage };
+      }),
   };
 }

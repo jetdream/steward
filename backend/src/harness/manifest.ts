@@ -18,6 +18,7 @@ import { GENERATE_DRAFT_PROMPT, GENERATE_DRAFT_PROMPT_REF } from "./prompts/gene
 import { GUARDRAIL_CHECK_PROMPT, GUARDRAIL_CHECK_PROMPT_REF } from "./prompts/guardrail-check.js";
 import { IDENTIFY_TOPICS_PROMPT, IDENTIFY_TOPICS_PROMPT_REF } from "./prompts/identify-topics.js";
 import { PLAN_CALENDAR_PROMPT, PLAN_CALENDAR_PROMPT_REF } from "./prompts/plan-calendar.js";
+import { RADAR_DISCOVER_PROMPT, RADAR_DISCOVER_PROMPT_REF } from "./prompts/radar-discover.js";
 
 /** The bound on a Skill's runtime (PIPE-4). `maxSteps: 1` ⇒ a single-shot skill. */
 export interface AgentPolicy {
@@ -97,6 +98,15 @@ export const HARNESS: Record<string, HarnessEntry> = {
     promptSystem: DRAFT_STRATEGY_PROMPT.system,
     model: "gemini-2.5-flash",
     agentPolicy: { maxSteps: 1, costBudgetUsd: 0.05 },
+  },
+  "radar-discover": {
+    // The EXTS-1 agenda-driven grounded discovery run (Gemini + Google Search,
+    // IG-3). Single-shot; the deterministic R-4 guard (provenance-bound +
+    // dereferenceable) + persistence live in @backend/radar.
+    promptRef: RADAR_DISCOVER_PROMPT_REF,
+    promptSystem: RADAR_DISCOVER_PROMPT.system,
+    model: "gemini-2.5-flash",
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.08 },
   },
 };
 

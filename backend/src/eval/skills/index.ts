@@ -9,6 +9,7 @@ import { extractMemoryEval } from "./extract-memory.js";
 import { generateDraftEval } from "./generate-draft.js";
 import { identifyTopicsEval } from "./identify-topics.js";
 import { planCalendarEval } from "./plan-calendar.js";
+import { radarDiscoverEval } from "./radar-discover.js";
 
 // biome-ignore lint/suspicious/noExplicitAny: heterogeneous registry — each entry's case/output types differ; the generic runner re-binds them per entry.
 export const EVAL_SKILLS: SkillEvalDef<any, any>[] = [
@@ -17,6 +18,7 @@ export const EVAL_SKILLS: SkillEvalDef<any, any>[] = [
   identifyTopicsEval,
   planCalendarEval,
   draftStrategyEval,
+  radarDiscoverEval,
 ];
 
 export const EVAL_SKILL_IDS: string[] = EVAL_SKILLS.map((d) => d.skill);

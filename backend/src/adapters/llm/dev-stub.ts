@@ -227,4 +227,27 @@ export const devStubLlm: RawLlmAdapter = {
       },
     };
   },
+  // Grounded discovery (EXTS-1 plumbing): NOT a real search — one deterministic
+  // candidate per agenda topic, each citing a url it ALSO returns in `sources`, so
+  // the caller's provenance-bound guard keeps it. Empty agenda → no candidates.
+  // Real discovery + true grounding provenance is the keyed path.
+  async groundedSearch(input) {
+    const candidates = input.topics.slice(0, Math.max(0, input.count)).map((t) => ({
+      source: "Example News",
+      url: `https://example.org/${encodeURIComponent(t.id)}`,
+      title: `Update: ${t.description.slice(0, 48)}`,
+      summary: `A relevant item for the agenda topic: ${t.description.slice(0, 80)}.`,
+      relevanceRationale: `Matches agenda topic ${t.id} in the org's area.`,
+      topicId: t.id,
+    }));
+    const sources = candidates.map((c) => c.url); // the stub cites only what it emits
+    return {
+      result: { candidates, sources },
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(JSON.stringify(input.topics)),
+        tokensOut: estTokens(JSON.stringify(candidates)),
+      },
+    };
+  },
 };
