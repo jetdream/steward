@@ -17,7 +17,10 @@ domain-specific API hooks (constitution "Client"). Cross-boundary types come fro
 **Structure.** `src/` — folder-module layout, one module per capability, each with
 its own `CLAUDE.md` and a header comment naming the spec IDs it implements
 (`@implements <SPEC-ID> vN`). Modules are added just-in-time as frontier specs are
-built; nothing here yet but the seed entry.
+built. Landed so far: the AI substrate (`harness`, `observability`, `ports`,
+`adapters`, `eval`), the domain modules (`memory`, `content`, `topics`,
+`onboarding`, `accounts`), identity (`auth`), persistence (`db`), and the API
+surface (`trpc.ts`, `context.ts`, `router.ts`, `routers/`, `server.ts`).
 
 **Key boundaries (as modules land):** the job/blob/email/publishing/messaging/LLM
 ports of `ADR-0003`; auth via BetterAuth (dev-login by email in `development`,

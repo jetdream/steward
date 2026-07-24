@@ -1,18 +1,35 @@
 /**
- * Org router — accounts/identity org surface (ACCS-1/2/3) over the BetterAuth
- * organization plugin. Scope is the SESSION's active org (ACC-3, via orgProcedure),
- * never a client-supplied id. Membership lifecycle (ACCS-3) enforces the
- * Steward-only single-owner invariant that BetterAuth does not: an invite or
- * role-change can never mint a second owner, and ownership moves only via an
- * atomic transfer.
+ * Org router — the accounts/identity org surface over the BetterAuth organization
+ * plugin. Scope is the SESSION's active org (ACC-3, via orgProcedure), never a
+ * client-supplied id. Membership lifecycle enforces the Steward-only single-owner
+ * invariant that BetterAuth does not — delegated to the transport-free
+ * `@backend/accounts` policy (an invite or role-change can never mint a second
+ * owner; ownership moves only via an atomic transfer).
+ *
+ * @implements ACCS-1 v1  (org creation half of the signup triple; org list/switch)
+ * @implements ACCS-2 v1  (active-org confinement via orgProcedure; setActive confined to memberships)
+ * @implements ACCS-3 v1  (member invitation & lifecycle; the single-owner invariant)
  */
+
 import type { Org } from "@shared";
 import { member } from "@shared/db/schema.js";
 import { TRPCError } from "@trpc/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
+import {
+  guardMemberRemoval,
+  guardRoleChange,
+  OwnershipError,
+  planOwnershipTransfer,
+} from "../accounts/index.js";
 import type { Database } from "../db/client.js";
 import { orgProcedure, protectedProcedure, router } from "../trpc.js";
+
+/** Map an `@backend/accounts` policy violation onto its tRPC code. */
+function toTrpc(err: unknown): never {
+  if (err instanceof OwnershipError) throw new TRPCError({ code: err.code, message: err.message });
+  throw err;
+}
 
 const slugify = (s: string): string =>
   s
@@ -124,11 +141,10 @@ export const orgRouter = router({
     .input(z.object({ memberId: z.string().min(1), role: AssignableRole }))
     .mutation(async ({ ctx, input }) => {
       const target = await memberInOrg(ctx.db, input.memberId, ctx.orgId);
-      if (target.role === "owner") {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "the owner's role changes only via ownership transfer",
-        });
+      try {
+        guardRoleChange(target);
+      } catch (e) {
+        toTrpc(e);
       }
       await ctx.auth.api.updateMemberRole({
         body: { memberId: input.memberId, role: input.role },
@@ -142,11 +158,10 @@ export const orgRouter = router({
     .input(z.object({ memberId: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
       const target = await memberInOrg(ctx.db, input.memberId, ctx.orgId);
-      if (target.role === "owner") {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "the owner cannot be removed; transfer ownership first",
-        });
+      try {
+        guardMemberRemoval(target);
+      } catch (e) {
+        toTrpc(e);
       }
       await ctx.auth.api.removeMember({
         body: { memberIdOrEmail: input.memberId },
@@ -165,19 +180,15 @@ export const orgRouter = router({
     .mutation(async ({ ctx, input }) => {
       await ctx.db.transaction(async (tx) => {
         const members = await tx.select().from(member).where(eq(member.organizationId, ctx.orgId));
-        const currentOwner = members.find((m) => m.role === "owner");
-        const target = members.find((m) => m.id === input.toMemberId);
-        if (!currentOwner || currentOwner.userId !== ctx.session.user.id) {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "only the current owner can transfer ownership",
-          });
+        let plan: { demoteMemberId: string; promoteMemberId: string } | null;
+        try {
+          plan = planOwnershipTransfer(members, ctx.session.user.id, input.toMemberId);
+        } catch (e) {
+          toTrpc(e);
         }
-        if (!target)
-          throw new TRPCError({ code: "NOT_FOUND", message: "target member not in this org" });
-        if (target.id === currentOwner.id) return;
-        await tx.update(member).set({ role: "admin" }).where(eq(member.id, currentOwner.id));
-        await tx.update(member).set({ role: "owner" }).where(eq(member.id, target.id));
+        if (!plan) return; // target is already the owner — no-op
+        await tx.update(member).set({ role: "admin" }).where(eq(member.id, plan.demoteMemberId));
+        await tx.update(member).set({ role: "owner" }).where(eq(member.id, plan.promoteMemberId));
       });
       return { ok: true };
     }),

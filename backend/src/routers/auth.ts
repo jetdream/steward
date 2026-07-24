@@ -1,8 +1,12 @@
 /**
- * Auth router (ACCS-1, SEC-7). `devLogin` is the dev email-only flow — it drives
+ * Auth router (SEC-7). `devLogin` is the dev email-only flow — it drives
  * BetterAuth's email-OTP with the code captured in-process, then, for a brand-new
  * user, creates the (User, Org, owner-Membership) signup triple and sets the
- * active org. Production sign-in is Google (mounted at /api/auth, not here).
+ * active org. Production sign-in is Google (mounted at /api/auth, not here). The
+ * signup triple is the zero-homework signup (ONBS-1) layered on ACCS-1 identity.
+ *
+ * @implements ACCS-1 v1  (User–Org identity; signup creates the User+Org+owner-Membership triple)
+ * @implements ONBS-1 v1  (zero-homework signup — an org exists from name+email alone)
  */
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";

@@ -1,8 +1,8 @@
 /**
  * tRPC initialization: the router/procedure builders every capability uses.
- * superjson is the transformer (Date/Map/etc. survive the wire). Two seams:
- * an OpenTelemetry span per procedure call, and `protectedProcedure` for the
- * server-side auth gate (ACC-3 org confinement will tighten this in the vertical).
+ * superjson is the transformer (Date/Map/etc. survive the wire). Three seams:
+ * an OpenTelemetry span per procedure call, `protectedProcedure` for the
+ * server-side auth gate, and `orgProcedure` for ACCS-2 active-org confinement.
  */
 import { SpanStatusCode, trace } from "@opentelemetry/api";
 import { initTRPC, TRPCError } from "@trpc/server";
@@ -40,6 +40,8 @@ export const protectedProcedure = publicProcedure.use(({ ctx, next }) => {
  * org-scoped procedure builds on this — a request can only act within its one
  * active org (switch it via auth.setActiveOrganization, itself confined to the
  * user's memberships).
+ *
+ * @implements ACCS-2 v1  (active-org context resolved server-side; the confinement seam)
  */
 export const orgProcedure = protectedProcedure.use(({ ctx, next }) => {
   const orgId = ctx.session.session.activeOrganizationId;

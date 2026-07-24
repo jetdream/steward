@@ -6,6 +6,8 @@
  * (no mail sent) — see `devOtpStore` and the auth router's devLogin.
  *
  * This replaces the walking-skeleton's dev-session cookie seam (session.ts).
+ *
+ * @implements ACCS-1 v1  (User–Org identity on BetterAuth; the org + admin plugins)
  */
 
 import * as authSchema from "@steward/shared/db/auth-schema";
