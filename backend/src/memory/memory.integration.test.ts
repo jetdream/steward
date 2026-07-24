@@ -64,6 +64,9 @@ const llm: LlmPort = {
   async planSlots(input) {
     return (await devStubLlm.planSlots(input)).pairings;
   },
+  async draftStrategy(input) {
+    return (await devStubLlm.draftStrategy(input)).draft;
+  },
 };
 
 let db: Database;

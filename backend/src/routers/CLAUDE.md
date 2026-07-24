@@ -20,14 +20,20 @@ thin: they validate input (Zod), enforce org confinement via `orgProcedure`
 ## Folder spec context
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
-**Requirements this folder realizes** (12 — aggregated per register; detail: `cortex graph pack <ID>`):
+**Requirements this folder realizes** (14 — aggregated per register; detail: `cortex graph pack <ID>`):
 - Accounts & Identity — 5 requirement(s) realized here: ACC-1…ACC-5 (.spec/product/requirements/acc-accounts-identity.yaml)
 - Org Memory — 2 requirement(s) realized here: MEM-1…MEM-2 (.spec/product/requirements/mem-org-memory.yaml)
 - Lazy Onboarding — 5 requirement(s) realized here: ONB-1…ONB-6 (.spec/product/requirements/onb-onboarding.yaml)
+- Posting Strategy — 2 requirement(s) realized here: STR-1…STR-2 (.spec/product/requirements/str-posting-strategy.yaml)
 
-**Spec-elements:** ACCS-1, ONBS-1, MEMS-1, ONBS-2, ACCS-2, ONBS-3, ACCS-3, MEMS-4, MEMS-5, ONBS-5, ONBS-6
+**Spec-elements:** ACCS-1, ONBS-1, MEMS-1, STRS-1, ONBS-2, ACCS-2, STRS-2, ONBS-3, ACCS-3, MEMS-4, MEMS-5, ONBS-5, ONBS-6
 
 **Governed by:**
+- GR-1 — No outcome promises (.spec/product/guardrails.yaml)
+- GR-2 — No tax or legal advice (.spec/product/guardrails.yaml)
+- GR-3 — Sensitive-topic escalation (.spec/product/guardrails.yaml)
+- GR-4 — AI-visual policy (.spec/product/guardrails.yaml)
+- GR-5 — Mandatory citation of external content (.spec/product/guardrails.yaml)
 - GR-6 — Official platform APIs and permitted automation only (.spec/product/guardrails.yaml)
 - GR-8 — Stated-correction enforcement (.spec/product/guardrails.yaml)
 

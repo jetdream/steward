@@ -159,6 +159,34 @@ export interface SlotPairing {
   topicId: string;
 }
 
+/**
+ * Grounded input to Strategy auto-draft (STRS-2). The DOMAIN caller
+ * (@backend/strategy) assembles the grounding from Memory (style findings + facts)
+ * and passes it in; the port does NO retrieval. Nothing is invented (VAL-4) — the
+ * sections are drawn only from the grounding.
+ */
+export interface DraftStrategyInput {
+  /** Retrieved Memory text — the sole grounding for the draft (VAL-4). */
+  grounding: string;
+  /** The channels to write section (e) instructions for (fb / ig / threads / x). */
+  channels: string[];
+}
+
+/**
+ * The auto-drafted Strategy sections (STRS-2). Section (c) is NEVER drafted — it
+ * is a live derived view over the platform guardrails + Memory overlay (DEC-22).
+ */
+export interface StrategyDraft {
+  /** (a) what to post / what not to post — soft editorial preferences. */
+  sectionA: string;
+  /** (b) tone of voice — description + concrete examples. */
+  sectionB: string;
+  /** (d) specific standing instructions. */
+  sectionD: string;
+  /** (e) channel-specific instructions, keyed by platform. */
+  sectionE: Record<string, string>;
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -211,6 +239,12 @@ export interface LlmPort {
    * deterministic agenda/taxonomy guard + the plan-time mix-quota designations.
    */
   planSlots(input: PlanSlotInput): Promise<SlotPairing[]>;
+  /**
+   * Auto-draft the Strategy sections (a/b/d/e) grounded in Memory (STRS-2). Returns
+   * the raw draft; the caller (@backend/strategy) persists it as a StrategyDoc
+   * version. Section (c) is never drafted — it is a derived view (DEC-22).
+   */
+  draftStrategy(input: DraftStrategyInput): Promise<StrategyDraft>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -242,4 +276,5 @@ export interface RawLlmAdapter {
   ): Promise<{ judgment: GuardrailJudgment; usage: LlmUsage }>;
   identifyTopics(input: TopicIdInput): Promise<{ topics: CandidateTopic[]; usage: LlmUsage }>;
   planSlots(input: PlanSlotInput): Promise<{ pairings: SlotPairing[]; usage: LlmUsage }>;
+  draftStrategy(input: DraftStrategyInput): Promise<{ draft: StrategyDraft; usage: LlmUsage }>;
 }

@@ -12,6 +12,7 @@
  * guardrail chain land with GEN — their first real consumer — not here.
  */
 import { createHash } from "node:crypto";
+import { DRAFT_STRATEGY_PROMPT, DRAFT_STRATEGY_PROMPT_REF } from "./prompts/draft-strategy.js";
 import { EXTRACT_MEMORY_PROMPT, EXTRACT_MEMORY_PROMPT_REF } from "./prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT, GENERATE_DRAFT_PROMPT_REF } from "./prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT, GUARDRAIL_CHECK_PROMPT_REF } from "./prompts/guardrail-check.js";
@@ -86,6 +87,14 @@ export const HARNESS: Record<string, HarnessEntry> = {
     // agenda guard + mix-quota designations live in @backend/content/planner.
     promptRef: PLAN_CALENDAR_PROMPT_REF,
     promptSystem: PLAN_CALENDAR_PROMPT.system,
+    model: "gemini-2.5-flash",
+    agentPolicy: { maxSteps: 1, costBudgetUsd: 0.05 },
+  },
+  "draft-strategy": {
+    // The STRS-2 auto-draft of Strategy sections (a/b/d/e) grounded in Memory.
+    // Single-shot; section (c) is a derived view (DEC-22), never drafted.
+    promptRef: DRAFT_STRATEGY_PROMPT_REF,
+    promptSystem: DRAFT_STRATEGY_PROMPT.system,
     model: "gemini-2.5-flash",
     agentPolicy: { maxSteps: 1, costBudgetUsd: 0.05 },
   },

@@ -204,4 +204,27 @@ export const devStubLlm: RawLlmAdapter = {
       },
     };
   },
+  // Strategy auto-draft (STRS-2 plumbing): NOT an editorial brain — it echoes the
+  // first grounding line into deterministic sections + a per-channel line, so the
+  // pipeline has a real StrategyDoc to persist. Real drafting quality is the keyed
+  // path. Section (c) is never here (a derived view, DEC-22).
+  async draftStrategy(input) {
+    const first = input.grounding.split("\n").filter(Boolean)[0]?.slice(0, 160) ?? "our mission";
+    const sectionE: Record<string, string> = {};
+    for (const c of input.channels) sectionE[c] = `Post about ${first} in the org's voice on ${c}.`;
+    const draft = {
+      sectionA: `Post about: ${first}. Avoid off-mission topics.`,
+      sectionB: "Warm, plain-spoken, community-focused.",
+      sectionD: "Credit volunteers and donors; keep posts concrete and grounded.",
+      sectionE,
+    };
+    return {
+      draft,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(input.grounding),
+        tokensOut: estTokens(JSON.stringify(draft)),
+      },
+    };
+  },
 };

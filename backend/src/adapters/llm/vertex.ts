@@ -21,6 +21,7 @@ import { createVertex } from "@ai-sdk/google-vertex";
 import { contentTypes, MemoryEntryKind } from "@steward/shared";
 import { embed as aiEmbed, generateObject } from "ai";
 import { z } from "zod";
+import { DRAFT_STRATEGY_PROMPT } from "../../harness/prompts/draft-strategy.js";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
 import { GUARDRAIL_CHECK_PROMPT } from "../../harness/prompts/guardrail-check.js";
@@ -30,6 +31,7 @@ import { currentObsContext } from "../../observability/context.js";
 import {
   type CandidateTopic,
   type DraftGenInput,
+  type DraftStrategyInput,
   EMBEDDING_DIM,
   type EmbedTaskType,
   type ExtractedEntry,
@@ -40,6 +42,7 @@ import {
   type PlanSlotInput,
   type RawLlmAdapter,
   type SlotPairing,
+  type StrategyDraft,
   type TopicIdInput,
 } from "../../ports/llm.js";
 
@@ -49,7 +52,30 @@ const GENERATE_MODEL = "gemini-2.5-flash";
 const GUARDRAIL_MODEL = "gemini-2.5-flash";
 const TOPICS_MODEL = "gemini-2.5-flash";
 const PLAN_MODEL = "gemini-2.5-flash";
+const STRATEGY_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
+
+/**
+ * The structured Strategy draft Gemini must return (STRS-2 — sections a/b/d/e).
+ * Section (e) is an ARRAY of {channel, instruction} (not a free dictionary) — a
+ * more reliable structured-output shape that reliably elicits one entry per named
+ * channel; the adapter maps it to the port's Record shape.
+ */
+const strategySchema = z.object({
+  sectionA: z.string(),
+  sectionB: z.string(),
+  sectionD: z.string(),
+  sectionE: z.array(z.object({ channel: z.string(), instruction: z.string() })),
+});
+
+/** Assemble the strategy-draft user prompt: the grounding + the channels to cover. */
+function strategyPrompt(input: DraftStrategyInput): string {
+  const channels = input.channels.join(", ") || "(none connected yet)";
+  return (
+    `ORGANIZATION MEMORY (the ONLY grounding — do not invent, VAL-4):\n${input.grounding}\n\n` +
+    `Return one section (e) entry for EACH of these channels: ${channels}.`
+  );
+}
 
 /** The structured pairing set the planner must return (GENS-1). */
 const planSchema = z.object({
@@ -298,6 +324,31 @@ export function createVertexLlm(): RawLlmAdapter {
         pairings,
         usage: {
           model: PLAN_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async draftStrategy(input: DraftStrategyInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(STRATEGY_MODEL),
+        schema: strategySchema,
+        telemetry: telemetryFor("draft-strategy"),
+        system: DRAFT_STRATEGY_PROMPT.system,
+        prompt: strategyPrompt(input),
+      });
+      const sectionE: Record<string, string> = {};
+      for (const e of object.sectionE) sectionE[e.channel] = e.instruction;
+      const draft: StrategyDraft = {
+        sectionA: object.sectionA,
+        sectionB: object.sectionB,
+        sectionD: object.sectionD,
+        sectionE,
+      };
+      return {
+        draft,
+        usage: {
+          model: STRATEGY_MODEL,
           tokensIn: usage.inputTokens ?? 0,
           tokensOut: usage.outputTokens ?? 0,
         },

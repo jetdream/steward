@@ -107,5 +107,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { pairings, usage } = await adapter.planSlots(input);
         return { value: pairings, usage };
       }),
+    draftStrategy: (input) =>
+      observe("generateObject", async () => {
+        const { draft, usage } = await adapter.draftStrategy(input);
+        return { value: draft, usage };
+      }),
   };
 }
