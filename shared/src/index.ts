@@ -14,6 +14,7 @@
  */
 
 export * from "./entities/channel-connection.js";
+export type { ChannelVariant } from "./entities/channel-variant.js";
 export type { ChatMessage, ChatSession } from "./entities/chat.js";
 export type { ContentItem } from "./entities/content-item.js";
 export type { ExternalItem } from "./entities/external-item.js";

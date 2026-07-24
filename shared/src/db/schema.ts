@@ -11,6 +11,7 @@
  * (onboarding/news) — NOT a separate profile table.
  */
 export * from "./auth-schema.js";
+export * from "./channel-variant.js";
 export * from "./chat.js";
 export * from "./content.js";
 export * from "./external-item.js";

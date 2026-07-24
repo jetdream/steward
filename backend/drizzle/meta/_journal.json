@@ -71,6 +71,13 @@
       "when": 1784882334656,
       "tag": "0009_huge_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1784883715750,
+      "tag": "0010_slippery_piledriver",
+      "breakpoints": true
     }
   ]
 }

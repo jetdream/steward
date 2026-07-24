@@ -7,8 +7,12 @@
  */
 import { z } from "zod";
 
-/** DM-14 ChannelConnection.platform — the authorized publishing channels. */
-export const ChannelPlatform = z.enum(["facebook_page", "instagram", "threads", "x"]);
+/**
+ * DM-14 ChannelConnection.platform — the authorized publishing channels. A `const`
+ * tuple → the drizzle `channel_variant.platform` column + the Zod enum.
+ */
+export const channelPlatforms = ["facebook_page", "instagram", "threads", "x"] as const;
+export const ChannelPlatform = z.enum(channelPlatforms);
 export type ChannelPlatform = z.infer<typeof ChannelPlatform>;
 
 /** DM-1 Org.newsConfig addressing mode (NWS-1, DEC-10). */
@@ -28,9 +32,24 @@ export const editorialStates = ["draft", "awaiting_picture", "approved", "skippe
 export const EditorialState = z.enum(editorialStates);
 export type EditorialState = z.infer<typeof EditorialState>;
 
-/** DM-5 ChannelVariant delivery lifecycle state (`unpublished` is news-only). */
-export const DeliveryState = z.enum(["pending", "scheduled", "published", "paused", "unpublished"]);
+/**
+ * DM-5 ChannelVariant delivery lifecycle state (`unpublished` is news-only). A
+ * `const` tuple → the `channel_variant.delivery_state` column + the Zod enum.
+ */
+export const deliveryStates = [
+  "pending",
+  "scheduled",
+  "published",
+  "paused",
+  "unpublished",
+] as const;
+export const DeliveryState = z.enum(deliveryStates);
 export type DeliveryState = z.infer<typeof DeliveryState>;
+
+/** DM-5 ChannelVariant GENS-5 fit verdict. `const` tuple → the column. */
+export const channelFitVerdicts = ["fit", "skipped"] as const;
+export const ChannelFitVerdict = z.enum(channelFitVerdicts);
+export type ChannelFitVerdict = z.infer<typeof ChannelFitVerdict>;
 
 /** DM-5 ContentItem cohort-1 operator-QA gate flag (OPSS-1). `const` tuple → column. */
 export const qaStatuses = ["pending-review", "cleared", "n/a"] as const;
