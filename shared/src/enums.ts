@@ -57,8 +57,13 @@ export type StaffRole = z.infer<typeof StaffRole>;
 export const ActorKind = z.enum(["user", "system", "job", "staff", "staff-act-as"]);
 export type ActorKind = z.infer<typeof ActorKind>;
 
-/** DM-8 ExternalItem.disposition — the founder's post-read triage (DEC-20). */
-export const ExternalItemDisposition = z.enum(["worth-a-post", "saved-for-later", "not-for-us"]);
+/**
+ * DM-8 ExternalItem.disposition — the founder's post-read triage (DEC-20). A
+ * `const` tuple → the nullable `external_item.disposition` column (null = not yet
+ * triaged / unread in the Discoveries feed).
+ */
+export const externalDispositions = ["worth-a-post", "saved-for-later", "not-for-us"] as const;
+export const ExternalItemDisposition = z.enum(externalDispositions);
 export type ExternalItemDisposition = z.infer<typeof ExternalItemDisposition>;
 
 /**
