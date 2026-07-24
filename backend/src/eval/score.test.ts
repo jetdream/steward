@@ -20,6 +20,7 @@ const noopPort: LlmPort = {
   draftStrategy: async () => ({ sectionA: "", sectionB: "", sectionD: "", sectionE: {} }),
   groundedSearch: async () => ({ candidates: [], sources: [] }),
   interviewQuestions: async () => [],
+  chatAnswer: async () => ({ answer: "", declined: false, isUnknown: true }),
 };
 
 const fakeDef: SkillEvalDef<{ x: number }, number> = {

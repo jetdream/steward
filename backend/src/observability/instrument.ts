@@ -122,5 +122,10 @@ export function instrumentLlm(adapter: RawLlmAdapter, deps: InstrumentDeps = {})
         const { questions, usage } = await adapter.interviewQuestions(input);
         return { value: questions, usage };
       }),
+    chatAnswer: (input) =>
+      observe("chatStep", async () => {
+        const { answer, usage } = await adapter.chatAnswer(input);
+        return { value: answer, usage };
+      }),
   };
 }

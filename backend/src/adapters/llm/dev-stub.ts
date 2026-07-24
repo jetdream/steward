@@ -257,6 +257,28 @@ export const devStubLlm: RawLlmAdapter = {
       },
     };
   },
+  // Chat answer (CHTS-1 plumbing): NOT a real answer — it echoes that it would
+  // answer from grounding, honestly flags empty grounding as unknown, and never
+  // claims to decline (GR-2 detection is the keyed LLM step). Real answers +
+  // GR-2/grounding discipline are the keyed path.
+  async chatAnswer(input) {
+    const isUnknown = input.grounding.trim().length === 0;
+    const answer: import("../../ports/llm.js").ChatAnswer = {
+      answer: isUnknown
+        ? "I don't know yet — want me to note it as a gap?"
+        : `Here's what I know: ${input.grounding.split("\n")[0]?.slice(0, 120) ?? ""}`,
+      declined: false,
+      isUnknown,
+    };
+    return {
+      answer,
+      usage: {
+        model: "dev-stub",
+        tokensIn: estTokens(input.question + input.grounding),
+        tokensOut: estTokens(JSON.stringify(answer)),
+      },
+    };
+  },
   // Interviewer questions (INTS-1 plumbing): one deterministic open question per
   // open gap, capped. Not a curious colleague — real conversational quality is the
   // keyed path.

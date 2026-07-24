@@ -268,6 +268,29 @@ export interface InterviewQuestion {
   question: string;
 }
 
+/**
+ * Grounded input to a chat answer (CHTS-1). The DOMAIN caller (@backend/chat)
+ * assembles the grounding (Memory retrieveContext + Strategy + the content
+ * schedule) and passes it in with the founder's question; the port does NO
+ * retrieval.
+ */
+export interface ChatAnswerInput {
+  question: string;
+  grounding: string;
+}
+
+/**
+ * A chat answer (CHTS-1). `declined` = a GR-2 legal/tax question refused with a
+ * redirect (the fail-safe decline-on-uncertainty gate — the answer surface bypasses
+ * the PIPE-2 VAL chain, so GR-2 is enforced HERE). `isUnknown` = an honest "I don't
+ * know" from thin grounding (VAL-4), which the caller can turn into an INT-4 gap.
+ */
+export interface ChatAnswer {
+  answer: string;
+  declined: boolean;
+  isUnknown: boolean;
+}
+
 /** Context passed to extraction so classification is grounded, not blind. */
 export interface ExtractionContext {
   /**
@@ -340,6 +363,12 @@ export interface LlmPort {
    * caps the count — this is the conversational-quality LLM step (LRN-20).
    */
   interviewQuestions(input: InterviewQuestionsInput): Promise<InterviewQuestion[]>;
+  /**
+   * Answer a founder's chat question grounded in the supplied context (CHTS-1),
+   * declining legal/tax questions (GR-2, fail-safe) and honestly flagging what it
+   * cannot ground (VAL-4). Detection/synthesis is the LLM step (LRN-20).
+   */
+  chatAnswer(input: ChatAnswerInput): Promise<ChatAnswer>;
 }
 
 /** Provider-reported (or estimated) token usage for one call — cost input (PIPE-5). */
@@ -378,4 +407,5 @@ export interface RawLlmAdapter {
   interviewQuestions(
     input: InterviewQuestionsInput,
   ): Promise<{ questions: InterviewQuestion[]; usage: LlmUsage }>;
+  chatAnswer(input: ChatAnswerInput): Promise<{ answer: ChatAnswer; usage: LlmUsage }>;
 }

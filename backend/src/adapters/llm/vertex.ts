@@ -21,6 +21,7 @@ import { createVertex } from "@ai-sdk/google-vertex";
 import { contentTypes, MemoryEntryKind } from "@steward/shared";
 import { embed as aiEmbed, generateObject, generateText } from "ai";
 import { z } from "zod";
+import { CHAT_ANSWER_PROMPT } from "../../harness/prompts/chat-answer.js";
 import { DRAFT_STRATEGY_PROMPT } from "../../harness/prompts/draft-strategy.js";
 import { EXTRACT_MEMORY_PROMPT } from "../../harness/prompts/extract-memory.js";
 import { GENERATE_DRAFT_PROMPT } from "../../harness/prompts/generate-draft.js";
@@ -32,6 +33,8 @@ import { RADAR_DISCOVER_PROMPT } from "../../harness/prompts/radar-discover.js";
 import { currentObsContext } from "../../observability/context.js";
 import {
   type CandidateTopic,
+  type ChatAnswer,
+  type ChatAnswerInput,
   type DraftGenInput,
   type DraftStrategyInput,
   EMBEDDING_DIM,
@@ -61,7 +64,23 @@ const PLAN_MODEL = "gemini-2.5-flash";
 const STRATEGY_MODEL = "gemini-2.5-flash";
 const SEARCH_MODEL = "gemini-2.5-flash";
 const INTERVIEW_MODEL = "gemini-2.5-flash";
+const CHAT_MODEL = "gemini-2.5-flash";
 const EMBED_MODEL = "gemini-embedding-001";
+
+/** The structured chat answer the Skill returns (CHTS-1). */
+const chatAnswerSchema = z.object({
+  answer: z.string(),
+  declined: z.boolean(),
+  isUnknown: z.boolean(),
+});
+
+/** Assemble the chat-answer prompt: the founder's question + the grounding. */
+function chatAnswerPrompt(input: ChatAnswerInput): string {
+  return (
+    `GROUNDING (the org's Memory, Strategy, and schedule — answer ONLY from this):\n` +
+    `${input.grounding || "(very little known yet)"}\n\nFOUNDER'S QUESTION: ${input.question}`
+  );
+}
 
 /** The structured interviewer questions the Skill returns (INTS-1). */
 const interviewSchema = z.object({
@@ -493,6 +512,28 @@ export function createVertexLlm(): RawLlmAdapter {
         questions,
         usage: {
           model: INTERVIEW_MODEL,
+          tokensIn: usage.inputTokens ?? 0,
+          tokensOut: usage.outputTokens ?? 0,
+        },
+      };
+    },
+    async chatAnswer(input: ChatAnswerInput) {
+      const { object, usage } = await generateObject({
+        model: vertex(CHAT_MODEL),
+        schema: chatAnswerSchema,
+        telemetry: telemetryFor("chat-answer"),
+        system: CHAT_ANSWER_PROMPT.system,
+        prompt: chatAnswerPrompt(input),
+      });
+      const answer: ChatAnswer = {
+        answer: object.answer,
+        declined: object.declined,
+        isUnknown: object.isUnknown,
+      };
+      return {
+        answer,
+        usage: {
+          model: CHAT_MODEL,
           tokensIn: usage.inputTokens ?? 0,
           tokensOut: usage.outputTokens ?? 0,
         },

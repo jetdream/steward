@@ -73,6 +73,9 @@ const llm: LlmPort = {
   async interviewQuestions(input) {
     return (await devStubLlm.interviewQuestions(input)).questions;
   },
+  async chatAnswer(input) {
+    return (await devStubLlm.chatAnswer(input)).answer;
+  },
 };
 
 let db: Database;

@@ -4,6 +4,7 @@
  * a passing eval for the current harness version.
  */
 import type { SkillEvalDef } from "../types.js";
+import { chatAnswerEval } from "./chat-answer.js";
 import { draftStrategyEval } from "./draft-strategy.js";
 import { extractMemoryEval } from "./extract-memory.js";
 import { generateDraftEval } from "./generate-draft.js";
@@ -21,6 +22,7 @@ export const EVAL_SKILLS: SkillEvalDef<any, any>[] = [
   draftStrategyEval,
   radarDiscoverEval,
   interviewQuestionsEval,
+  chatAnswerEval,
 ];
 
 export const EVAL_SKILL_IDS: string[] = EVAL_SKILLS.map((d) => d.skill);

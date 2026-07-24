@@ -4,6 +4,7 @@
  * the API contract type the client imports.
  */
 import { authRouter } from "./routers/auth.js";
+import { chatRouter } from "./routers/chat.js";
 import { interviewerRouter } from "./routers/interviewer.js";
 import { memoryRouter } from "./routers/memory.js";
 import { onboardingRouter } from "./routers/onboarding.js";
@@ -20,6 +21,7 @@ export const appRouter = router({
   memory: memoryRouter,
   onboarding: onboardingRouter,
   interviewer: interviewerRouter,
+  chat: chatRouter,
   strategy: strategyRouter,
   radar: radarRouter,
   system: systemRouter,
