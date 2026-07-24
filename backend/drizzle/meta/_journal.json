@@ -64,6 +64,13 @@
       "when": 1784881598995,
       "tag": "0008_windy_sleeper",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1784882334656,
+      "tag": "0009_huge_mad_thinker",
+      "breakpoints": true
     }
   ]
 }

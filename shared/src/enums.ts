@@ -53,6 +53,11 @@ export type InvitationStatus = z.infer<typeof InvitationStatus>;
 export const StaffRole = z.enum(["admin", "support"]);
 export type StaffRole = z.infer<typeof StaffRole>;
 
+/** DM-7 ChatMessage.role (INT/CHT transcript). `const` tuple → the column. */
+export const chatMessageRoles = ["user", "assistant", "system"] as const;
+export const ChatMessageRole = z.enum(chatMessageRoles);
+export type ChatMessageRole = z.infer<typeof ChatMessageRole>;
+
 /** DM-17 ActivityEvent.actorKind (SEC-11 audit). */
 export const ActorKind = z.enum(["user", "system", "job", "staff", "staff-act-as"]);
 export type ActorKind = z.infer<typeof ActorKind>;
