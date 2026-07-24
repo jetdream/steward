@@ -29,7 +29,7 @@ items:
         the MEMS-6 asked-set + the PROS-4 budget (high when event-tied); GEN-4
         trigger after library suggestions; upload → library + drafts. Realization
         pending code.
-      against: [PROS-1@1, G-3@1, G-4@1, MEM-1@1, GEN-4@1]
+      against: [PROS-1@1, G-3@1, G-4@1, MEM-1@1]
 
   PRO-2:
     v: 1
