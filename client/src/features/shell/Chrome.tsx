@@ -19,7 +19,32 @@
  * 3. **Compose is an action, not a destination** (UXS-7): it opens a sheet over
  *    the home; it never navigates away.
  */
+import { useEffect, useRef } from "react";
 import { Button } from "../../ds/index.js";
+
+/**
+ * Publish the chrome's measured height as `--chrome-h`.
+ *
+ * The phone takeover has to start below the chrome (DSS-24 stacks the chrome
+ * ABOVE the pane so Pause is never buried), and the chrome's height is
+ * content-driven — two rows whose wrapping depends on the viewport. Measuring
+ * and publishing it keeps the pane's offset correct without a magic number that
+ * silently drifts the first time a chrome control is added.
+ */
+function usePublishedHeight(): React.RefObject<HTMLElement | null> {
+  const ref = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const publish = () =>
+      document.documentElement.style.setProperty("--chrome-h", `${el.offsetHeight}px`);
+    publish();
+    const observer = new ResizeObserver(publish);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
 
 /** The four glass-wall views, in their fixed chrome order (UXS-4/5/8). */
 export const LOOK_INSIDE = [
@@ -52,8 +77,10 @@ export function Chrome({
   onCompose,
   activeView = null,
 }: ChromeProps) {
+  const ref = usePublishedHeight();
   return (
     <header
+      ref={ref}
       // Sticky and above the pane: XH-12's "the chrome persists" holds in BOTH
       // modes, so a phone takeover never buries the kill switch (AUTS-3).
       className="sticky top-0 flex flex-col gap-2 border-b border-border-soft bg-[color-mix(in_srgb,var(--bg)_92%,transparent)] px-3 pb-2 pt-3 backdrop-blur-[4px]"

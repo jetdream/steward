@@ -22,12 +22,40 @@ import { useAuth } from "../../api/useAuth.js";
 import { useAutonomy } from "../../api/useAutonomy.js";
 import { useOnboarding } from "../../api/useOnboarding.js";
 import { useOrgs } from "../../api/useOrgs.js";
-import { Button } from "../../ds/index.js";
+import { Button, Narration } from "../../ds/index.js";
 import { Conversation } from "../conversation/Conversation.js";
+import { DraftOpened } from "../draft/DraftOpened.js";
 import { useDayOne } from "../onboarding/DayOne.js";
 import { isDayOne } from "../onboarding/dayOne.js";
 import { useReady } from "../ready/ReadySpine.js";
-import { Home } from "./Home.js";
+import { Home, useSummon } from "./Home.js";
+
+/** A pane target whose surface has not been built yet — said, never faked. */
+function NotYetPane() {
+  return (
+    <Narration
+      headline="I haven't built this one out yet."
+      detail="It's on the way. Everything you need today is on the home behind this."
+    />
+  );
+}
+
+/** The pane's heading for a target that has no body yet. */
+function paneTitle(target: { kind: string }): string {
+  if (target.kind === "controls") return "Controls";
+  if (target.kind === "compose") return "Compose";
+  return "Look inside";
+}
+
+/**
+ * The opened draft. A thin wrapper so the pane body can close itself after a
+ * disposition — `Home` owns the open/closed state, and `SummonedSurface`'s own
+ * dismissal is the founder's gesture, not the app's.
+ */
+function DraftOpenedPane({ itemId }: { itemId: string }) {
+  const { dismiss } = useSummon();
+  return <DraftOpened itemId={itemId} onClose={dismiss} />;
+}
 
 /** The signed-in home (XH-12), bound to the session. */
 export function HomeScreen() {
@@ -67,6 +95,14 @@ export function HomeScreen() {
       // The conversation is present in EVERY shape (UXS-2) — the home's medium,
       // not a day-one affordance the founder loses once onboarding is done.
       conversation={<Conversation />}
+      // XH-13 — the only pane body wired so far. The glass-wall views, Controls
+      // and Compose land with their own increments; until then their targets
+      // fall through to an honest note rather than an empty pane.
+      renderPane={(target) =>
+        target.kind === "draft"
+          ? { title: "The draft, opened", body: <DraftOpenedPane itemId={target.itemId} /> }
+          : { title: paneTitle(target), body: <NotYetPane /> }
+      }
       terminus={
         <>
           {inDayOne ? dayOne.terminus : spine.terminus}

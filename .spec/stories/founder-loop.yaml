@@ -248,3 +248,19 @@ items:
       Skipping removes the card from the spine straight away; the "mind saying
       why?" prompt appears only after that; and dismissing it leaves the card
       skipped with nothing else asked.
+  US-15:
+    v: 1
+    serves: [APR-1, UX-1]
+    persona: >-
+      Maria, who wants to read a draft properly before she says yes to it.
+    title: Opening a draft shows every channel, including the ones she is not on
+    statement: >-
+      A card opens into a deep review BESIDE the home (a takeover on the phone),
+      with a tab per channel — and the SKIPPED channels keep their tabs, each
+      stating why (GENS-5). A review that hid the omissions would let a founder
+      approve while believing a post is going somewhere it is not (XH-13).
+    acceptance: >-
+      Opening a card shows the master text and one tab per channel including the
+      skipped ones; selecting a skipped tab states the specific reason it was
+      skipped; and the schedule lists every channel in plain language, marking
+      the skipped ones rather than omitting them.

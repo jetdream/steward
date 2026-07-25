@@ -16,14 +16,14 @@
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import type { FullConfig } from "@playwright/test";
-import { demoEmailFor } from "../../backend/src/demo/seed.js";
+import { DEMO_SUITES, demoEmailFor } from "../../backend/src/demo/seed.js";
 
 export default function globalSetup(config: FullConfig): void {
   const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
-  // ONE ORG PER PROJECT. The Ready stories dispose of cards and the projects run
-  // concurrently, so a shared org would have desktop and phone clearing each
-  // other's stack — both green, neither asserting what it claims.
-  const emails = config.projects.map((p) => demoEmailFor(p.name));
+  // ONE ORG PER (PROJECT x SPEC FILE) — see `demoEmailFor` for why both axes
+  // matter: disposing specs must not clear each other's stacks, and concurrent
+  // dev sign-ins as the same founder race a single in-memory OTP.
+  const emails = config.projects.flatMap((p) => DEMO_SUITES.map((s) => demoEmailFor(p.name, s)));
   execFileSync("npm", ["run", "--silent", "demo:seed", "--", ...emails], {
     cwd: repoRoot,
     stdio: "inherit",

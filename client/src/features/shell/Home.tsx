@@ -19,7 +19,15 @@
  * a router-of-destinations would rebuild the six-surface shell DEC-18 abolished.
  * Deep links (the digest landing at the top of Ready) ride the URL hash only.
  */
-import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SummonedSurface } from "../../ds/index.js";
 import { Chrome, type LookInsideView } from "./Chrome.js";
 import { type HomeRegion, isRegionInert, type LayoutMode, scrimRegions } from "./summon.js";
@@ -46,6 +54,40 @@ export type SummonTarget =
   | { kind: "controls" }
   | { kind: "compose" }
   | { kind: "draft"; itemId: string };
+
+/**
+ * How a region's content opens a pane.
+ *
+ * A CONTEXT rather than a prop because the summon state belongs to `Home` — it
+ * owns the DSS-24 mechanics (inertness, focus restore, the non-modal surface),
+ * and lifting that into the screen above so a card could call it would scatter
+ * the one contract those rules depend on. Region content stays a plain
+ * `ReactNode`; anything inside it can ask to be summoned.
+ */
+interface SummonApi {
+  summon: (target: SummonTarget) => void;
+  /** Close the pane from INSIDE it — after a disposition removes its subject. */
+  dismiss: () => void;
+}
+
+const SummonContext = createContext<SummonApi | null>(null);
+
+/**
+ * Open or close a summoned pane from anywhere inside the home.
+ *
+ * `dismiss` is part of the contract rather than something a pane body improvises:
+ * a body that approved its own draft has to close, and reaching into the DOM for
+ * the back button would be a selector that breaks silently the day the control
+ * is renamed (the LRN-31/LRN-32 class).
+ *
+ * No-ops outside the home (the DS gallery, a unit render) rather than throwing —
+ * a card that cannot open a pane should still render.
+ */
+export function useSummon(): SummonApi {
+  return useContext(SummonContext) ?? NO_SUMMON;
+}
+
+const NO_SUMMON: SummonApi = { summon: () => undefined, dismiss: () => undefined };
 
 export interface HomeProps {
   paused: boolean;
@@ -107,11 +149,18 @@ export function Home({
   const [target, setTarget] = useState<SummonTarget | null>(null);
   const invokerRef = useRef<HTMLElement | null>(null);
 
-  const summon = useCallback((next: SummonTarget) => {
-    // Remember the control that opened the pane so focus can return to it.
-    invokerRef.current = document.activeElement as HTMLElement | null;
-    setTarget(next);
-  }, []);
+  const summonApi = useMemo<SummonApi>(
+    () => ({
+      summon: (next) => {
+        // Remember the control that opened the pane so focus can return to it.
+        invokerRef.current = document.activeElement as HTMLElement | null;
+        setTarget(next);
+      },
+      dismiss: () => setTarget(null),
+    }),
+    [],
+  );
+  const summon = summonApi.summon;
 
   const paneOpen = target !== null;
   const state = { mode, paneOpen };
@@ -120,67 +169,69 @@ export function Home({
   const activeView = target?.kind === "view" ? target.view : null;
 
   return (
-    <div className="min-h-screen bg-bg text-fg">
-      <Chrome
-        paused={paused}
-        onPause={onPause}
-        onResume={onResume}
-        onOpenView={(view) => summon({ kind: "view", view })}
-        onOpenControls={() => summon({ kind: "controls" })}
-        onCompose={() => summon({ kind: "compose" })}
-        activeView={activeView}
-      />
-      {/* Desktop: home column + pane BESIDE it (the pane takes the added width,
+    <SummonContext.Provider value={summonApi}>
+      <div className="min-h-screen bg-bg text-fg">
+        <Chrome
+          paused={paused}
+          onPause={onPause}
+          onResume={onResume}
+          onOpenView={(view) => summon({ kind: "view", view })}
+          onOpenControls={() => summon({ kind: "controls" })}
+          onCompose={() => summon({ kind: "compose" })}
+          activeView={activeView}
+        />
+        {/* Desktop: home column + pane BESIDE it (the pane takes the added width,
           the column holds --home-measure). Phone: the pane is a takeover. */}
-      <div className="mx-auto flex w-full max-w-[var(--container-max)] flex-col gap-4 p-4 desktop:flex-row desktop:items-start">
-        <main
-          data-home-column
-          className="flex w-full flex-col gap-4 desktop:w-[var(--home-measure)] desktop:flex-none"
-        >
-          <Region
-            id="pinned"
-            label="Needs you"
-            inert={isRegionInert("pinned", state)}
-            dimmed={dimmed.has("pinned")}
+        <div className="mx-auto flex w-full max-w-[var(--container-max)] flex-col gap-4 p-4 desktop:flex-row desktop:items-start">
+          <main
+            data-home-column
+            className="flex w-full flex-col gap-4 desktop:w-[var(--home-measure)] desktop:flex-none"
           >
-            {pinned}
-          </Region>
-          <Region
-            id="ready"
-            label="Ready for you"
-            inert={isRegionInert("ready", state)}
-            dimmed={dimmed.has("ready")}
-          >
-            {ready}
-          </Region>
-          <Region
-            id="conversation"
-            label="Conversation"
-            inert={isRegionInert("conversation", state)}
-            dimmed={dimmed.has("conversation")}
-          >
-            {conversation}
-          </Region>
-          <Region
-            id="terminus"
-            label="Caught up"
-            inert={isRegionInert("terminus", state)}
-            dimmed={dimmed.has("terminus")}
-          >
-            {terminus}
-          </Region>
-        </main>
-        {pane ? (
-          <SummonedSurface
-            open={paneOpen}
-            title={pane.title}
-            onDismiss={() => setTarget(null)}
-            returnFocusTo={invokerRef.current}
-          >
-            {pane.body}
-          </SummonedSurface>
-        ) : null}
+            <Region
+              id="pinned"
+              label="Needs you"
+              inert={isRegionInert("pinned", state)}
+              dimmed={dimmed.has("pinned")}
+            >
+              {pinned}
+            </Region>
+            <Region
+              id="ready"
+              label="Ready for you"
+              inert={isRegionInert("ready", state)}
+              dimmed={dimmed.has("ready")}
+            >
+              {ready}
+            </Region>
+            <Region
+              id="conversation"
+              label="Conversation"
+              inert={isRegionInert("conversation", state)}
+              dimmed={dimmed.has("conversation")}
+            >
+              {conversation}
+            </Region>
+            <Region
+              id="terminus"
+              label="Caught up"
+              inert={isRegionInert("terminus", state)}
+              dimmed={dimmed.has("terminus")}
+            >
+              {terminus}
+            </Region>
+          </main>
+          {pane ? (
+            <SummonedSurface
+              open={paneOpen}
+              title={pane.title}
+              onDismiss={() => setTarget(null)}
+              returnFocusTo={invokerRef.current}
+            >
+              {pane.body}
+            </SummonedSurface>
+          ) : null}
+        </div>
       </div>
-    </div>
+    </SummonContext.Provider>
   );
 }

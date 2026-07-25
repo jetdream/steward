@@ -32,6 +32,7 @@ import {
   typeRole,
   type VariantSummary,
 } from "../../ds/index.js";
+import { useSummon } from "../shell/Home.js";
 import { batchPlan, partitionSpine, spineHeader } from "./spine.js";
 
 /** A Ready card as the API returns it (the DM-5 item plus its variants). */
@@ -160,6 +161,7 @@ export function useReady(): ReadyRegions {
                   awaitingPicture={!s.hasPicture}
                   onApprove={() => approve.mutate({ itemId: s.id })}
                   onSkip={() => dispose(s.id)}
+                  footer={<OpenDraftButton itemId={s.id} />}
                 />
               </div>
             );
@@ -196,6 +198,32 @@ export function useReady(): ReadyRegions {
         </Card>
       ) : undefined,
   };
+}
+
+/**
+ * The way into the XH-13 deep review.
+ *
+ * A COMPONENT, not a callback closed over in `useReady`. `useReady` is called by
+ * the screen ABOVE `Home`, so a `useSummon()` there resolves outside the
+ * provider and silently becomes the no-op — the button renders, the click
+ * registers, and nothing opens. Reading the context from a component that
+ * renders INSIDE the home is what makes it resolve.
+ *
+ * It lives in the card's `footer` slot rather than as a new DSS-19 prop: opening
+ * a card is this surface's move, not a change to the card contract every stream
+ * shares (GR-7).
+ */
+function OpenDraftButton({ itemId }: { itemId: string }) {
+  const { summon } = useSummon();
+  return (
+    <Button
+      variant="quiet"
+      onClick={() => summon({ kind: "draft", itemId })}
+      data-open-draft={itemId}
+    >
+      Look closer
+    </Button>
+  );
 }
 
 /** The DS card takes the GEN-1 taxonomy union; the API hands back its string. */

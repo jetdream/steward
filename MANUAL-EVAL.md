@@ -153,3 +153,13 @@ UI tweaks.
 **You should observe:** Skipping removes the card from the spine straight away; the "mind saying why?" prompt appears only after that; and dismissing it leaves the card skipped with nothing else asked.
 
 <sub>Auto-checked by client/e2e/ready.spec.ts · serves APR-1, MEM-1</sub>
+
+### 15. Opening a draft shows every channel, including the ones she is not on  <sub>US-15</sub>
+
+**As** Maria, who wants to read a draft properly before she says yes to it.
+
+**Do:** A card opens into a deep review BESIDE the home (a takeover on the phone), with a tab per channel — and the SKIPPED channels keep their tabs, each stating why (GENS-5). A review that hid the omissions would let a founder approve while believing a post is going somewhere it is not (XH-13).
+
+**You should observe:** Opening a card shows the master text and one tab per channel including the skipped ones; selecting a skipped tab states the specific reason it was skipped; and the schedule lists every channel in plain language, marking the skipped ones rather than omitting them.
+
+<sub>Auto-checked by client/e2e/draft.spec.ts · serves APR-1, UX-1</sub>

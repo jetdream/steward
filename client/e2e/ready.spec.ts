@@ -27,7 +27,7 @@ async function signInAsDemo(page: Page, project: string): Promise<void> {
   const doorstep = page.locator("[data-screen='doorstep']");
   await doorstep.waitFor({ state: "visible", timeout: 30_000 });
   await page.getByRole("button", { name: /sign in instead/i }).click();
-  await doorstep.locator("input[name='email']").fill(demoEmailFor(project));
+  await doorstep.locator("input[name='email']").fill(demoEmailFor(project, "ready"));
   await doorstep.locator("button[type='submit']").click();
   await expect(page.locator("[data-chrome='pause']")).toBeVisible({ timeout: 30_000 });
 }

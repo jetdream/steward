@@ -14,6 +14,37 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-33:
+    v: 1
+    type: gotcha
+    scope: [client, testing]
+    source: E10 the draft opened — the pane would not open, then its back button would not click (2026-07-25)
+    title: Two silent-failure shapes — context read ABOVE its provider, and a correctly-stacked overlay that swallows pointer events
+    statement: >-
+      Two defects in one increment, both invisible to typecheck, lint and the
+      unit tier, and both the kind that LOOK like nothing happened. (1) CONTEXT
+      READ ABOVE ITS PROVIDER. The Ready feature is a HOOK called by the screen
+      that renders the shell, so its `useSummon()` ran OUTSIDE the shell's
+      provider and fell through to the deliberate no-op default: the button
+      rendered, the click registered, and no pane opened. A hook's context is
+      resolved where the HOOK RUNS, not where its returned elements render — so
+      anything consuming context must be a COMPONENT rendered inside the
+      provider, not a callback closed over in a parent hook. The no-op default
+      (chosen so a card still renders in the DS gallery) is what turned a crash
+      into a silence; a default that cannot fail loudly buys robustness with
+      diagnosability. (2) A CORRECT Z-ORDER CAN STILL SWALLOW CLICKS. DSS-24
+      stacks the chrome ABOVE the summoned pane on purpose, so the AUT-3 kill
+      switch is never buried — but on a phone TAKEOVER drawn from `inset-0` the
+      pane then slides UNDER the chrome, making its own "Back to Steward" control
+      unclickable and its first lines unreadable. The stacking rule was right;
+      the pane's GEOMETRY had to respect it. Fixed by having the chrome publish
+      its measured height as `--chrome-h` and the takeover start below it —
+      measured, not a magic number that drifts the first time a chrome control is
+      added. It had been broken since the shell landed and no test saw it,
+      because the pane-dismissal story used ESCAPE: a keyboard path never
+      discovers that something is physically on top of a control. Lesson: assert
+      at least one dismissal by POINTER, and treat "the click did nothing" as a
+      z-order/geometry question before a handler question.
   LRN-32:
     v: 1
     type: gotcha

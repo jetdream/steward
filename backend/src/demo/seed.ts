@@ -30,16 +30,26 @@ import type { Database } from "../db/client.js";
 /** The address the demo founder signs in with — dev email-only login (SEC-7). */
 export const DEMO_EMAIL = "demo@steward.test";
 
+/** The e2e spec files that need a demo org of their own. */
+export const DEMO_SUITES = ["ready", "draft"] as const;
+
 /**
- * A separate demo org per e2e project.
+ * A separate demo org per (e2e project × spec file).
  *
- * The Ready stories DISPOSE of cards, and Playwright runs the desktop and phone
- * projects concurrently — sharing one org would have each project clearing the
- * other's stack, so neither would be asserting the thing it claims. One org per
- * project keeps them independent without serialising the run. `DEMO_EMAIL`
- * itself stays untouched for the human walkthrough.
+ * TWO reasons, and both are about concurrency rather than tidiness:
+ *
+ * 1. The Ready stories DISPOSE of cards, and Playwright runs desktop and phone
+ *    concurrently — one org would have each project clearing the other's stack,
+ *    so neither would assert what it claims.
+ * 2. Dev sign-in captures a single OTP per address in memory, so two specs
+ *    signing in as the SAME founder at the same moment race each other and one
+ *    is left at the doorstep. (Production sign-in is Google; this is a property
+ *    of the dev path only.)
+ *
+ * `DEMO_EMAIL` itself stays untouched for the human walkthrough.
  */
-export const demoEmailFor = (project: string): string => `demo+${project}@steward.test`;
+export const demoEmailFor = (project: string, suite: string): string =>
+  `demo+${project}-${suite}@steward.test`;
 
 /** The demo organization's name, as it appears in the home's greeting. */
 export const DEMO_ORG_NAME = "Riverside Animal Shelter";
