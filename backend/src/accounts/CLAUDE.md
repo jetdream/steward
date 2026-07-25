@@ -27,9 +27,10 @@ server-side org confinement (ACCS-2) is `orgProcedure` in `../trpc.ts`.
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
 **Requirements this folder realizes:**
+- ONB-1 — Zero-homework signup (.spec/product/requirements/onb-onboarding.yaml)
 - ACC-4 — Member invitation & management (.spec/product/requirements/acc-accounts-identity.yaml)
 
-**Spec-elements:** ACCS-3
+**Spec-elements:** ONBS-1, ACCS-3
 
 **Governed by:**
 - GR-6 — Official platform APIs and permitted automation only (.spec/product/guardrails.yaml)

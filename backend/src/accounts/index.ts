@@ -16,3 +16,4 @@ export {
   OwnershipError,
   planOwnershipTransfer,
 } from "./ownership.js";
+export { signupOrgName } from "./signup.js";

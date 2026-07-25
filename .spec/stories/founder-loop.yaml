@@ -108,3 +108,34 @@ items:
       At phone width with a pane open, the chrome is still visible above the
       takeover and the Pause control takes keyboard focus without dismissing the
       pane first.
+  US-6:
+    v: 1
+    serves: [ONB-1, ACC-1]
+    persona: >-
+      Maria, arriving for the very first time with nothing but her
+      organization's name and her email address.
+    title: Two fields is the whole of signing up
+    statement: >-
+      The doorstep (XO-6) asks for an organization name and an email and nothing
+      else — no wizard, no checklist, no EIN gate — and one submit lands her in
+      her own home with her organization's name on it (ONB-1: nothing blocks on
+      completeness). Signing out returns her to the doorstep.
+    acceptance: >-
+      The doorstep shows exactly two inputs and a plain-language consent
+      sentence; submitting them lands on the home whose greeting carries the
+      typed organization name; and signing out returns to the doorstep.
+  US-7:
+    v: 1
+    serves: [AUT-3]
+    persona: >-
+      Maria, who hit Pause yesterday and wants to be certain it is still holding.
+    title: Pause is the real switch, not a button that looks like one
+    statement: >-
+      Pausing writes to the org's autonomy state, not to the page: the chrome
+      comes back paused after a full reload. A kill switch that forgets when the
+      tab closes would satisfy every visual check and stop nothing (AUT-3 is a
+      hard guardrail).
+    acceptance: >-
+      After pressing Pause the chrome offers Resume, that state survives a full
+      page reload, and pressing Resume returns the chrome to offering Pause —
+      also across a reload.

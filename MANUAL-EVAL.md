@@ -63,3 +63,23 @@ UI tweaks.
 **You should observe:** At phone width with a pane open, the chrome is still visible above the takeover and the Pause control takes keyboard focus without dismissing the pane first.
 
 <sub>Auto-checked by client/e2e/shell.spec.ts · serves AUT-3, UX-6</sub>
+
+### 6. Two fields is the whole of signing up  <sub>US-6</sub>
+
+**As** Maria, arriving for the very first time with nothing but her organization's name and her email address.
+
+**Do:** The doorstep (XO-6) asks for an organization name and an email and nothing else — no wizard, no checklist, no EIN gate — and one submit lands her in her own home with her organization's name on it (ONB-1: nothing blocks on completeness). Signing out returns her to the doorstep.
+
+**You should observe:** The doorstep shows exactly two inputs and a plain-language consent sentence; submitting them lands on the home whose greeting carries the typed organization name; and signing out returns to the doorstep.
+
+<sub>Auto-checked by client/e2e/doorstep.spec.ts · serves ONB-1, ACC-1</sub>
+
+### 7. Pause is the real switch, not a button that looks like one  <sub>US-7</sub>
+
+**As** Maria, who hit Pause yesterday and wants to be certain it is still holding.
+
+**Do:** Pausing writes to the org's autonomy state, not to the page: the chrome comes back paused after a full reload. A kill switch that forgets when the tab closes would satisfy every visual check and stop nothing (AUT-3 is a hard guardrail).
+
+**You should observe:** After pressing Pause the chrome offers Resume, that state survives a full page reload, and pressing Resume returns the chrome to offering Pause — also across a reload.
+
+<sub>Auto-checked by client/e2e/doorstep.spec.ts · serves AUT-3</sub>

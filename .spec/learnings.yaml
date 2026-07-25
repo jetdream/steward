@@ -14,6 +14,33 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-31:
+    v: 1
+    type: gotcha
+    scope: [client, testing]
+    source: E6 doorstep — sign-out left the founder on the home (2026-07-25)
+    title: queryClient.clear() empties the cache WITHOUT notifying observers — signing out silently left the home on screen
+    statement: >-
+      Signing out worked perfectly on the server — the session cookie was gone
+      and `auth.me` returned null — and the browser stayed on the signed-in home.
+      Cause: the sign-out handler called `queryClient.clear()`. In TanStack Query
+      v5 `clear()` is a hard cache wipe that does NOT notify mounted observers
+      and does NOT refetch, so `App`'s `me` observer kept its last value and the
+      component never re-rendered. It looked correct in the sign-IN direction
+      only by accident: the mutation that ran there lived in the SAME component,
+      so its own pending-state change forced the re-render that `clear()` failed
+      to trigger. Sign-out's mutation lived in a child, so the root never
+      re-rendered at all. USE `resetQueries()` for "start over under a new
+      identity": it clears cached data AND refetches the active queries, which is
+      the actual intent. `invalidateQueries()` is wrong here for the opposite
+      reason — it keeps serving the stale value while refetching, and after an
+      org switch that stale value is ANOTHER ORG's data (SEC-4). Generalizes: any
+      cache-reset primitive documented as "clears" rather than "resets" should be
+      assumed not to notify; verify in a browser, because a hook that wipes a
+      cache no test asserts on is invisible to typecheck, lint and the unit tier.
+      Fourth consecutive UI increment where the mandated browser check caught a
+      defect the whole machine gate showed green (E2 border colour, E4 dialog
+      positioning, E5 hook stability, E6 this).
   LRN-30:
     v: 1
     type: pattern

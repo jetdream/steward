@@ -1,140 +1,69 @@
 /**
- * The walking-skeleton app shell (ARC-2): a dev-login form → a dashboard that
- * lists/creates orgs (tRPC + Drizzle round-trip) and shows the live WebSocket
- * ping. It proves the front-to-back slice; it is NOT the One-Home experience
- * spine (that is built on approved screens through the design gate, GR-7).
+ * @implements ACCS-1 v1 (session gating: no org surface without a signed-in User)
+ *
+ * The app's root, and the ONLY place that branches on the session (ACCS-1: a
+ * User with no membership can act in no org). There are exactly two founder
+ * destinations and nothing between them:
+ *
+ *   signed out → the doorstep (XO-6)
+ *   signed in  → the home (XH-12)
+ *
+ * That is the whole "routing" story, and it is deliberate: DEC-18 abolished the
+ * six-surface shell, so summoned views are client-local view state inside the
+ * home, never destinations. Adding a router here is how that decision quietly
+ * gets undone.
+ *
+ * The two dev-only harnesses (`#ds`, `#shell`) mount ahead of the branch because
+ * they render no org data and need no session; `import.meta.env.DEV` strips them
+ * from a production build.
  */
-import { type FormEvent, useState } from "react";
 import { useAuth } from "./api/useAuth";
-import { useOrgs } from "./api/useOrgs";
-import { usePing } from "./api/usePing";
 import { Gallery } from "./ds/Gallery";
+import { Narration } from "./ds/index.js";
+import { Doorstep } from "./features/doorstep/Doorstep";
+import { HomeScreen } from "./features/shell/HomeScreen";
 import { ShellPreview } from "./features/shell/ShellPreview";
 
-function Shell({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900">
-      <div className="mx-auto max-w-2xl px-6 py-12">
-        <h1 className="mb-8 text-2xl font-semibold">Steward — walking skeleton</h1>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function LoginForm({ onSubmit, pending }: { onSubmit: (email: string) => void; pending: boolean }) {
-  const [email, setEmail] = useState("");
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    if (email.trim()) onSubmit(email.trim());
-  };
-  return (
-    <form onSubmit={submit} className="flex gap-2">
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@nonprofit.org"
-        className="flex-1 rounded-md border border-neutral-300 px-3 py-2"
-      />
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-50"
-      >
-        {pending ? "…" : "Dev sign in"}
-      </button>
-    </form>
-  );
-}
-
-function Dashboard({ email, onLogout }: { email: string; onLogout: () => void }) {
-  const { list, create } = useOrgs();
-  const ping = usePing();
-  const [name, setName] = useState("");
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-neutral-600">
-          Signed in as <strong>{email}</strong>
-        </span>
-        <button type="button" onClick={onLogout} className="text-sm underline">
-          Sign out
-        </button>
-      </div>
-
-      <div className="rounded-md border border-neutral-200 bg-white p-4">
-        <div className="text-xs uppercase tracking-wide text-neutral-500">Live WebSocket ping</div>
-        <div className="mt-1 font-mono text-sm">
-          {ping ? `#${ping.seq} @ ${ping.at}` : "waiting for first tick…"}
-        </div>
-      </div>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (name.trim()) {
-            create.mutate({ name: name.trim() });
-            setName("");
-          }
-        }}
-        className="flex gap-2"
-      >
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="New organization name"
-          className="flex-1 rounded-md border border-neutral-300 px-3 py-2"
-        />
-        <button
-          type="submit"
-          disabled={create.isPending}
-          className="rounded-md bg-neutral-900 px-4 py-2 text-white disabled:opacity-50"
-        >
-          Add org
-        </button>
-      </form>
-
-      <ul className="divide-y divide-neutral-200 rounded-md border border-neutral-200 bg-white">
-        {list.isLoading && <li className="p-3 text-sm text-neutral-500">Loading…</li>}
-        {list.data?.length === 0 && (
-          <li className="p-3 text-sm text-neutral-500">No orgs yet — add one.</li>
-        )}
-        {list.data?.map((org) => (
-          <li key={org.id} className="flex justify-between p-3 text-sm">
-            <span>{org.name}</span>
-            <span className="font-mono text-neutral-400">/{org.slug}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+/**
+ * A failed sign-in in plain language. tRPC surfaces transport and validation
+ * failures alike; the founder needs to know which of the two it was, not the
+ * code — "invalid_string" on a doorstep is a dead end (VAL-6).
+ */
+function signInError(error: { message: string } | null): string | undefined {
+  if (!error) return undefined;
+  return /email/i.test(error.message)
+    ? "That doesn't look like an email address I can reach you at."
+    : "I couldn't get you in just now. Try again in a moment.";
 }
 
 export function App() {
-  const { me, login, logout } = useAuth();
+  const { me, signIn } = useAuth();
 
   // The dev-only design-system gallery (#ds). Not a founder surface and not a
   // screen — it renders the DSS contracts so browser checks and the e2e suite
   // can assert them directly. Stripped from a production build.
   if (import.meta.env.DEV && window.location.hash === "#ds") return <Gallery />;
-  // The real One-Home shell with placeholder regions (#shell) — the XH-12
-  // invariants and DSS-24 summon mechanics, browser-checkable before data lands.
+  // The One-Home shell with STATIC regions (#shell) — the XH-12 invariants and
+  // DSS-24 summon mechanics, assertable without a backend or a session.
   if (import.meta.env.DEV && window.location.hash === "#shell") return <ShellPreview />;
 
-  if (me.isLoading) return <Shell>Loading…</Shell>;
-  if (!me.data) {
+  if (me.isLoading) {
     return (
-      <Shell>
-        <LoginForm onSubmit={(email) => login.mutate({ email })} pending={login.isPending} />
-      </Shell>
+      <main className="mx-auto flex min-h-screen w-full max-w-[var(--home-measure)] items-center p-6">
+        <Narration headline="One moment — finding your desk." live />
+      </main>
     );
   }
-  return (
-    <Shell>
-      <Dashboard email={me.data.user.email} onLogout={() => logout.mutate()} />
-    </Shell>
-  );
+
+  if (!me.data) {
+    return (
+      <Doorstep
+        onSubmit={(input) => signIn.mutate(input)}
+        pending={signIn.isPending}
+        error={signInError(signIn.error)}
+      />
+    );
+  }
+
+  return <HomeScreen />;
 }

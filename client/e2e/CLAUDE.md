@@ -12,11 +12,18 @@ exactly the failures that survive a green typecheck, a green lint, and a
 mouse-only walkthrough. Two of them (`US-3`, `US-5`) are the precise defects the
 ADR-0011 challenger rounds proved a modal pane would cause.
 
-**Hermetic.** Today that holds because this tier boots **Vite only** — there is
-no server here that could reach a model. The `STEWARD_LLM=dev-stub` pin in the
-config is forward-looking, for when a data-bound story boots `dev:api` (the
-DEC-41 tiering extended to the browser; LRN-27). It runs on port **3100**, not
-3000, so it never fights a dev server you have open.
+**Keyless, and deliberately not model-free-by-accident.** From the doorstep
+story on, this tier boots a **real `@backend` against the dev Postgres** — "sign
+in and land on your home" is not a claim a stub can validate. `STEWARD_LLM=dev-stub`
+in the config is therefore the live mechanism keeping the tier off Gemini, not a
+forward-looking pin (the DEC-41 tiering extended to the browser; LRN-27). It runs
+on its own **pair** of ports — web **3100**, api **3101** — so a run can neither
+fight a dev server you have open nor quietly sign in against it.
+
+**It needs a database.** `npm run infra:up` locally; CI supplies the same
+pgvector Postgres the integration tier uses and runs `db:migrate` first. Signup
+specs create a fresh account per test (never reuse one — a returning-user path
+skips org creation and still looks green).
 
 | | this tier | `.coder/playwright` |
 |---|---|---|

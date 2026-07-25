@@ -10,14 +10,23 @@
  */
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { signupOrgName } from "../accounts/index.js";
 import { devOtpStore } from "../auth/auth.js";
 import { publicProcedure, router } from "../trpc.js";
 import { orgSlug } from "./org.js";
 
 export const authRouter = router({
-  /** Dev email-only sign-in (SEC-7) — no mail sent; production is Google. */
+  /**
+   * Dev email-only sign-in (SEC-7) — no mail sent; production is Google.
+   *
+   * `orgName` is the doorstep's first field (XO-6): it names the Org created by
+   * the signup triple. It is OPTIONAL because sign-in reuses this procedure and
+   * a returning founder types only their address — and because ONBS-1 forbids
+   * blocking on a missing field. An existing membership always wins: signing in
+   * never renames the org you already have.
+   */
   devLogin: publicProcedure
-    .input(z.object({ email: z.email() }))
+    .input(z.object({ email: z.email(), orgName: z.string().trim().min(1).optional() }))
     .mutation(async ({ ctx, input }) => {
       if (process.env.NODE_ENV === "production") {
         throw new TRPCError({ code: "FORBIDDEN", message: "dev login is disabled in production" });
@@ -42,7 +51,7 @@ export const authRouter = router({
       if (firstOrg) {
         activeOrgId = firstOrg.id;
       } else {
-        const name = input.email.split("@")[0] || "My organization";
+        const name = signupOrgName(input.email, input.orgName);
         const created = await ctx.auth.api.createOrganization({
           body: { name, slug: orgSlug(name) },
           headers: authed,
