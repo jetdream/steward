@@ -30,7 +30,10 @@ export interface ChatMessageProps {
 export function ChatMessage({ author, children, attachment }: ChatMessageProps) {
   if (author === "founder") {
     return (
-      <div className="flex justify-end">
+      // The author is carried as a data hook as well as visually: who said a
+      // thing is asserted by the story tier, and the visual difference (bubble
+      // vs. avatar row) is the design system's to change.
+      <div data-chat-author="founder" className="flex justify-end">
         <div className="max-w-[80%] rounded-md bg-surface-warm px-4 py-3 font-body text-base text-fg">
           {children}
         </div>
@@ -38,7 +41,7 @@ export function ChatMessage({ author, children, attachment }: ChatMessageProps) 
     );
   }
   return (
-    <div className="flex max-w-[92%] gap-3">
+    <div data-chat-author="steward" className="flex max-w-[92%] gap-3">
       <span
         aria-hidden="true"
         className="flex size-9 flex-none items-center justify-center rounded-pill bg-fg font-body text-sm font-semibold text-bg"

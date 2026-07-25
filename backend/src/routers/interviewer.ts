@@ -27,6 +27,15 @@ export const interviewerRouter = router({
     interviewerFor(ctx).startSession(OrgId.parse(ctx.orgId)),
   ),
 
+  /**
+   * INTS-2: the session to RESUME, or null. Without this, "resumable forever"
+   * was unreachable from a client — a reload could only open a NEW session and
+   * strand the transcript it meant to continue.
+   */
+  session: orgProcedure.query(({ ctx }) =>
+    interviewerFor(ctx).latestSession(OrgId.parse(ctx.orgId)),
+  ),
+
   /** INTS-1: a few gap-driven, open questions (recorded on the session). */
   nextQuestions: orgProcedure
     .input(sessionInput)

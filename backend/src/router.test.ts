@@ -35,8 +35,11 @@ const CONTRACT: Record<string, "query" | "mutation" | "subscription"> = {
   "onboarding.profile": "query",
   "onboarding.correct": "mutation",
   "onboarding.ready": "query",
+  "interviewer.session": "query",
+  "interviewer.startSession": "mutation",
   "interviewer.nextQuestions": "mutation",
   "interviewer.answer": "mutation",
+  "interviewer.transcript": "query",
   // conversation (CHTS) — the confirm-back redirect is two steps by design
   "chat.openings": "query",
   "chat.answer": "mutation",

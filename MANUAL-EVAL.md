@@ -83,3 +83,23 @@ UI tweaks.
 **You should observe:** After pressing Pause the chrome offers Resume, that state survives a full page reload, and pressing Resume returns the chrome to offering Pause — also across a reload.
 
 <sub>Auto-checked by client/e2e/doorstep.spec.ts · serves AUT-3</sub>
+
+### 8. Day one is the same home, filling in — never a wizard  <sub>US-8</sub>
+
+**As** Maria on her first day, who has bounced off every tool that opened with a setup wizard.
+
+**Do:** The day-one home is a SHAPE of the same screen, not a different one: the same chrome and the same region order, at a different density (DEC-18). No step counter, no progress bar, no checklist of things she owes it (ONB-3, R-10) — Steward asks where to read, in one question she can decline, and talking to it works just as well.
+
+**You should observe:** On day one the chrome and the four regions appear exactly as they do on any other day; nowhere on the page is there a step counter, progress bar or setup checklist; and the one source question can be declined without blocking anything.
+
+<sub>Auto-checked by client/e2e/day-one.spec.ts · serves ONB-1, ONB-3, UX-1</sub>
+
+### 9. The conversation is in the stream, and it is still there later  <sub>US-9</sub>
+
+**As** Maria, who answered a question this morning and comes back after lunch.
+
+**Do:** The interview runs IN the home's conversation region — never a separate page — and it is resumable: the questions Steward asked and the answers she gave are still in the stream after a reload, because they live on a session the home resumes rather than in the page (INTS-2).
+
+**You should observe:** Asking puts Steward's questions in the conversation region as messages, her answer joins them in the same region, and every one of them is still there after a full page reload.
+
+<sub>Auto-checked by client/e2e/day-one.spec.ts · serves INT-2, ONB-3</sub>

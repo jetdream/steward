@@ -46,6 +46,8 @@ export interface InterviewerDeps {
 
 export interface Interviewer {
   startSession(orgId: OrgId): Promise<ChatSession>;
+  /** The session to RESUME (INTS-2), or null when the org has never talked. */
+  latestSession(orgId: OrgId): Promise<ChatSession | null>;
   nextQuestions(orgId: OrgId, sessionId: string): Promise<InterviewQuestion[]>;
   recordAnswer(orgId: OrgId, sessionId: string, answer: string): Promise<MemoryEntry[]>;
   openQuestions(orgId: OrgId): Promise<OpenQuestion[]>;
@@ -55,6 +57,8 @@ export interface Interviewer {
 export function createInterviewer(deps: InterviewerDeps): Interviewer {
   return {
     startSession: (orgId) => store.startSession(deps.db, orgId),
+
+    latestSession: (orgId) => store.latestSession(deps.db, orgId),
 
     /**
      * INTS-1/2: a few gap-driven, open questions. The gap model (ONBS-3) supplies

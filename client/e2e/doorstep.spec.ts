@@ -63,7 +63,13 @@ test("US-6: two fields and a consent sentence get her into her own home", async 
   // the name SHE typed, proving the org was created from her field and not
   // derived from her address.
   await expect(page.locator("[data-chrome='pause']")).toBeVisible({ timeout: 30_000 });
-  await expect(page.locator("[data-region='conversation']")).toContainText(who.orgName);
+  // Anywhere on the home, deliberately: the story's acceptance is that the
+  // greeting CARRIES her name, and which region greets her is the home's shape
+  // to decide (day one greets from Ready). Pinning a region here would make
+  // this story fail every time the shape changes, which is not what it asserts.
+  await expect(page.getByRole("heading", { name: new RegExp(who.orgName) })).toBeVisible({
+    timeout: 30_000,
+  });
   await expect(doorstep).toHaveCount(0);
 
   // Signing out returns her to the doorstep.
