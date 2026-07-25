@@ -173,3 +173,13 @@ UI tweaks.
 **You should observe:** Compose opens over the home rather than navigating away; submitting words produces a draft whose per-channel versions are shown for confirmation before anything ships; and closing a half-written sheet and reopening it brings the words back.
 
 <sub>Auto-checked by client/e2e/compose.spec.ts · serves APR-5, UX-7</sub>
+
+### 17. She can look inside at any time, and nothing ever asks her to  <sub>US-17</sub>
+
+**As** Maria, who wants to check what Steward believes about her before she trusts it with another post.
+
+**Do:** All four glass-wall views — Knowledge, How I write, Plan & Published, Discoveries — open in ONE click from the chrome, plain-labeled, and none of them badges, counts or nudges (VAL-3, UXS-4/5/8). Trust never depends on remembering to ask, and looking is never converted into an obligation.
+
+**You should observe:** Each of the four Look-inside links opens its own view in one click with its plain label as the heading; Knowledge lists what Steward knows and hosts the open-questions list; and no view or link carries a badge, count or unread marker.
+
+<sub>Auto-checked by client/e2e/glasswall.spec.ts · serves UX-4, UX-5, UX-8, DS-4</sub>

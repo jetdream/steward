@@ -28,9 +28,11 @@ import { ComposeSheet } from "../compose/ComposeSheet.js";
 import { type ComposeDraft, EMPTY_COMPOSE, parkedNote } from "../compose/compose.js";
 import { Conversation } from "../conversation/Conversation.js";
 import { DraftOpened } from "../draft/DraftOpened.js";
+import { GlassWall } from "../glasswall/GlassWall.js";
 import { useDayOne } from "../onboarding/DayOne.js";
 import { isDayOne } from "../onboarding/dayOne.js";
 import { useReady } from "../ready/ReadySpine.js";
+import type { LookInsideView } from "./Chrome.js";
 import { Home, useSummon } from "./Home.js";
 
 /**
@@ -78,10 +80,16 @@ function NotYetPane() {
 
 /** The pane's heading for a target that has no body yet. */
 function paneTitle(target: { kind: string }): string {
-  if (target.kind === "controls") return "Controls";
-  if (target.kind === "compose") return "Compose";
-  return "Look inside";
+  return target.kind === "controls" ? "Controls" : "Compose";
 }
+
+/** The glass-wall headings, matching the chrome's plain labels exactly (UXS-5). */
+const LOOK_INSIDE_TITLES: Record<LookInsideView, string> = {
+  knowledge: "Knowledge",
+  "how-i-write": "How I write",
+  plan: "Plan & Published",
+  discoveries: "Discoveries",
+};
 
 /**
  * The opened draft. A thin wrapper so the pane body can close itself after a
@@ -148,6 +156,9 @@ export function HomeScreen() {
             title: "Make something",
             body: <ComposePane draft={composeDraft} onChange={setComposeDraft} />,
           };
+        }
+        if (target.kind === "view") {
+          return { title: LOOK_INSIDE_TITLES[target.view], body: <GlassWall view={target.view} /> };
         }
         return { title: paneTitle(target), body: <NotYetPane /> };
       }}

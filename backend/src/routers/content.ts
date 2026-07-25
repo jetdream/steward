@@ -11,6 +11,7 @@ import { OrgId } from "@shared";
 import { z } from "zod";
 import { createLlmPort } from "../adapters/llm/index.js";
 import { createContentEngine } from "../content/engine.js";
+import { listContentItems } from "../content/store.js";
 import { adaptContentItem, listVariants } from "../content/variants.js";
 import { createTopics } from "../topics/index.js";
 import { orgProcedure, router } from "../trpc.js";
@@ -56,6 +57,15 @@ export const contentRouter = router({
         input.contentItemId,
       ),
     ),
+
+  /**
+   * GENS-1: the org's editorial calendar — every ContentItem, whatever its
+   * state. The read behind the Plan & Published glass-wall view (XG-8), which
+   * shows what is coming as well as what went out: a "plan" that listed only
+   * published posts would be a log, and the transparency guarantee is about
+   * seeing the intent BEFORE it happens (VAL-3).
+   */
+  plan: orgProcedure.query(({ ctx }) => listContentItems(ctx.db, OrgId.parse(ctx.orgId))),
 
   /** GENS-5: the per-channel variants + fit verdicts for a ContentItem. */
   variants: orgProcedure
