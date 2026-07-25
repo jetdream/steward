@@ -11,15 +11,22 @@ design-scope: cross-cutting
 # the system" is a claim the graph cannot see.
 governed-by: []               # GR-7 governs UI specs; the design system IS the thing conformed to, so it does not cite its own conform-guardrail.
 depends-on: []
-constrained-by: [ADR-0001]    # the Open Design airbnb substrate re-themed as steward (accepted).
+constrained-by: [ADR-0001, ADR-0011, XH-12]  # the Open Design airbnb substrate re-themed as steward; the client primitive layer (native behaviour, DSS appearance); the home screen DSS-24's summon mechanics derive from (pin: XH-12 v2 — a bump must cascade here).
 challenge:
-  date: 2026-07-20
+  date: 2026-07-25
   by: cortex:architect-challenger
   verdict: pass
-  record: .spec/specs/challenges/ds-design-system-2026-07-20-r1.md
+  record: .spec/specs/challenges/ds-design-system-2026-07-25-r2.md
   summary: >-
-    Product-Designer + design-conformance lenses over the 23 component
-    contracts vs the built steward system and DS-1..8; verdict pass.
+    r2 (four delta rounds) over the DSS-24/DSS-25 shell contracts added by
+    DEC-42/ADR-0011. Rounds r1-r3 failed and were fixed: a modal pane (Radix
+    hideOthers OR native showModal) was proven in headless Chromium to void
+    per-region `inert` and strand XH-12's pinned zone; the phone clause stranded
+    the AUT-3 kill switch; a `var()` Tailwind breakpoint compiled to a query that
+    never matches. Layout values were re-taken from the founder-reviewed desktop
+    render rather than invented. Pass at r4-fixed; 1:1 inventory invariant holds
+    (23 cards / 23 non-foundation contracts). Prior round: r1 2026-07-20 (the
+    original 23 contracts) — .spec/specs/challenges/ds-design-system-2026-07-20-r1.md.
 design: >-
   Each spec-element is one component's contract: its API (props / variants /
   slots), the design tokens it consumes (DS-1), and the interaction states it
@@ -36,6 +43,17 @@ design: >-
   across the colors/typography/spacing previews. Composite surfaces
   (Ready-spine card, approve panel, chat message) COMPOSE these primitives and
   never introduce new visual values (GR-7).
+  SHELL SURFACES (DSS-24/DSS-25, added 2026-07-25 by DEC-42/ADR-0011): the
+  summoned pane/sheet/tray and the variant tablist were missing from the
+  inventory while the shell that ships them carries real visual values — scrim,
+  elevation, pane width, motion, tab appearance — which GR-7 v3 reserves for the
+  inventory on founder surfaces. They are contracted here BEFORE any client code
+  composes them, per the extend-DSS-first rule (the Q-14/DEC-35 precedent). Both
+  are realized on NATIVE platform primitives, not a component library: ADR-0011
+  records that no portalled modal library can express XH-12's requirement that
+  the pinned zone stay undimmed, interactive and announcing while the pane is
+  open. Their BEHAVIOURAL clauses are `@validates`-backed by the e2e suite, since
+  focus trap/restore and per-region inertness are invisible to visual review.
 data: >-
   The steward theme tokens (color, type, spacing, radius, elevation, motion) —
   the single source every component reads (DS-1); light-only in v1 (DS-7).
@@ -270,4 +288,89 @@ items:
       CitationBlock (DSS-17) treatment for sources. Per-org branding is a
       sanctioned token, never an invented value (GR-7). Reading-surface a11y per
       DS-4. Source carries `@implements DSS-23`.
+  # ── Shell surfaces (DEC-42 / ADR-0011) ──────────────────────────────────
+  DSS-24:
+    v: 1
+    implements: [DS-1, DS-2, DS-4, DS-6]
+    title: Summoned-surface contract — pane, sheet & tray
+    statement: >-
+      The ONE surface every summoned view uses — the opened draft (XH-13), the
+      glass-wall views (XG-6/XG-7/XG-8/XG-9), the compose sheet (XH-14), and the
+      Controls tray (XA-6), against XH-12 v2.
+      VISUAL: on DESKTOP the home column HOLDS its readable measure
+      (`--home-measure`) and the pane takes the ADDED width beside it, growing
+      from `--pane-basis` up to `--pane-max`; under compression both shrink from
+      their bases so THE PANE IS NEVER THE SMALLER HALF, and the stream never
+      stretches into a dashboard (DEC-19). These values are the founder-reviewed
+      desktop render (`design/mockups/exp-38-home/round-1/Steward Home
+      (desktop).html`, the artifact that produced DEC-19), not fresh numbers. The
+      STREAM region is dimmed by the scrim tokens (`--scrim-opacity` /
+      `--scrim-saturate`) while the PINNED ZONE is left UNDIMMED; on PHONE it is a
+      full-screen takeover. Because the pane is non-modal it is NOT in the top
+      layer, so stacking is explicit and tokenized, never a raw z-index literal:
+      `--z-pane` above `--z-sticky`, and `--z-chrome` ABOVE THE PANE — the
+      persistent chrome and its phone sheet are never occluded, because a pane
+      that covered the chrome would hide the AUT-3 Pause control. Exactly two
+      layout modes,
+      no intermediate (DEC-19/DEC-20). The pane carries the raised elevation, the
+      large surface radius, and the standard enter/exit duration + easing — every
+      value from DS-1 tokens. Motion is SUPPRESSED under `prefers-reduced-motion`;
+      the surface still opens and still traps focus. Content loading and zero
+      states INSIDE a pane use DSS-22 narration, never a spinner (DS-6). The pane
+      hosts at most ONE accent action (DS-2); the "back to Steward" control is
+      quiet, never accented.
+      BEHAVIOURAL, on native platform primitives (ADR-0011) — the negative
+      constraint is load-bearing and is this contract's acceptance clause: the
+      pane MUST NOT be a top-layer modal (`showModal()` / `::backdrop`), because
+      a modal dialog inerts the entire document outside itself, which makes
+      `inert=false` on the pinned zone a NO-OP and silently reproduces the
+      library failure this contract exists to avoid. Use a NON-MODAL surface
+      (`<dialog>.show()` or a landmark element) plus PER-REGION `inert`. Focus is
+      trapped across {pane + pinned zone} and RESTORED to the invoking control on
+      dismiss; `Escape`, scroll lock and dismissal are hand-written (a non-modal
+      surface provides none of them). SCROLL LOCK applies to the INERTED region
+      only — the stream in desktop mode, the home's regions in phone mode; in
+      DESKTOP mode the pinned zone and the pane always scroll normally, so a
+      pinned card below the fold stays reachable and focus can scroll it into
+      view (DS-4). In DESKTOP
+      mode the stream region is `inert` while open and the pinned zone is
+      explicitly EXCLUDED, staying interactive with its polite live region intact.
+      In PHONE mode the takeover inerts the home's REGIONS (pinned, Ready,
+      conversation, terminus — an off-screen pinned zone left reachable is itself
+      a defect) and any pinned state that changed is re-announced on return, but
+      the takeover CARRIES THE PERSISTENT CHROME, which is never inert: XH-12's
+      "the chrome persists" holds in both modes, and the AUT-3 Pause control must
+      stay reachable in ONE GESTURE while a pane is open — AUTS-3 is P0 hard
+      ("always reachable at every Trust Level") and the phone is the floor
+      (UXS-1), so a takeover that buried the kill switch would break it. A pane
+      may SWAP its
+      content one level deep without leaving (DEC-20): on swap, focus moves to the
+      swapped content's heading with the back control announced; on back, focus
+      returns to the invoking row.
+      States: closed / opening / open / swapping / closing. Preview card:
+      `preview/summoned-surface.html`. Source carries `@implements DSS-24`.
+  DSS-25:
+    v: 1
+    implements: [DS-2, DS-4, DS-5]
+    title: Variant tablist contract
+    statement: >-
+      The per-channel variant tabs inside the opened draft (XH-13): one tab per
+      adapted channel, each pairing the channel label with its GENS-5 fit
+      indicator (DSS-9 FitBadge) so a skipped channel reads as skipped ON the tab,
+      not only inside it. Keyboard model is the WAI-ARIA tabs pattern — roving
+      tabindex, Left/Right (Home/End) traversal, the selected tab the only tab
+      stop — authored in-repo on native semantics (ADR-0011). Visuals resolve from
+      tokens: the selected tab carries the ink underline, never the accent, which
+      stays reserved for the panel's one primary action (DS-2). Targets >=44px
+      (DS-4). OVERFLOW is conditioned on the CONTAINER, not the layout mode:
+      whenever the tablist exceeds its container it SCROLLS horizontally with a
+      visible overflow affordance and the selected tab scrolled into view. That
+      happens on phone by default AND in a narrow desktop pane — with five tabs
+      (four channels plus the NEWS variant) the pane is the tighter case just
+      above the breakpoint, so a mode-keyed rule would exempt exactly the case
+      that overflows. Labels may collapse to the DEC-20 icon micro-pattern; the
+      fit indicator never collapses away (it is what makes the tab legible at a
+      glance) and targets never shrink below 44px. States:
+      selected / unselected / skipped / focus-visible. Preview card:
+      `preview/variant-tablist.html`. Source carries `@implements DSS-25`.
 open-questions: []

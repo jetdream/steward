@@ -12,7 +12,7 @@ NodeJS 24
 TypeScript 7 - (types always must be checked before commit)
 biome linting - (always must be checked before commit)
 Vite + React 
-Tailwind + ShadCN
+Tailwind + ShadCN — scoped by SURFACE (DEC-42 / ADR-0011): founder- and public-facing surfaces decline ShadCN and compose the DSS-1..23 design-system inventory over native platform primitives; internal staff tools (ops/admin) keep the shadcn allowance of DEC-35
 Postgres + pgvector with Drizzle
 tRPC
 WebSocket for realtime updates with light payloads

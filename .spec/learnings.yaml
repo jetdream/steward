@@ -14,6 +14,50 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-29:
+    v: 1
+    type: gotcha
+    scope: [design, enforcement]
+    source: E1 DSS-24 / ADR-0011 challenge rounds r1-r4 (2026-07-25)
+    title: A "top layer" primitive silently voids per-region `inert` — and a `var()` breakpoint silently never matches
+    statement: >-
+      Two verified traps found while contracting the summoned pane (DSS-24), both
+      invisible to typecheck, lint, and visual review — and one of them survived a
+      mechanism correction because the wrong version had already been copied into
+      a higher layer.
+      (1) TOP LAYER BEATS `inert`. XH-12 requires the pinned zone to stay
+      interactive and announcing while a pane is open, expressed as
+      `stream.inert = true; pinned.inert = false`. That works ONLY if the pane is
+      non-modal. Any top-layer promotion — Radix's `hideOthers()` OR native
+      `<dialog>.showModal()` — inerts the whole document outside the pane, making
+      `inert = false` a NO-OP: focusing a pinned control does nothing and
+      hit-testing its own rect returns the backdrop (verified twice in headless
+      Chromium). The distinction that matters is MODAL vs NON-MODAL, not library
+      vs native — the first correction round swapped Radix for `showModal()` and
+      reproduced the identical defect. Lesson: when a spec carves an EXCEPTION out
+      of a global behaviour (one region stays live while the rest goes inert),
+      verify the primitive can express the exception BEFORE contracting it, and
+      never assume "native" implies "granular". Corollary: after correcting a
+      mechanism, grep for the old one — the wrong version had already propagated
+      into the architecture container doc and the module router, which an
+      implementing agent reads before the spec.
+      (2) `var()` IS NOT SUBSTITUTED IN MEDIA FEATURES. Mapping a Tailwind v4
+      theme breakpoint as `--breakpoint-desktop: var(--breakpoint-desktop)`
+      compiles to `@media (width >= var(--breakpoint-desktop))`, which NEVER
+      matches at any viewport — the app renders phone layout at every width, with
+      no build error and no failing test. A breakpoint must be a LITERAL; where a
+      token is the source of record, the duplication is forced by the media-query
+      grammar and must be commented as such. Related: clearing Tailwind's default
+      sm/md/lg to enforce a two-mode rule broke the internal console's shadcn
+      source (GR-7 v3 / DEC-35) — enforce a surface-scoped rule as a
+      surface-scoped convention, not a theme-wide deletion.
+      (3) ACKNOWLEDGED DEBT (.spec/CLAUDE.md requires prose-only enforcement to be
+      recorded): "founder surfaces use only the `desktop:` variant" is
+      hook-surfaced conventions prose, not lint. The cheap check when client code
+      lands: a pre-commit `rg -n '\b(sm|md|lg|xl|2xl):' client/src/<founder dirs>`.
+      Also note the class: a `sed` on a shared generator matched two card entries
+      and leaked a DS-2 evidence claim onto an unrelated approved card — scope
+      batch edits to the line, and re-read what actually changed.
   LRN-17:
     v: 1
     type: pattern

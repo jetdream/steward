@@ -138,3 +138,26 @@ widths. Mobile micro-pattern (DEC-20): on phone, a single-action row is
 wholly tappable with an icon affordance (text micro-actions like "edit"
 collapse to icons), targets stay ≥44px (DS-4). Light theme only in v1; dark mode is a future sibling
 of `tokens.css`, never a component fork.
+
+**Summoned surface — #Bind S5** (DSS-24, added 2026-07-25 / DEC-42). Four
+Steward additions to the schema, none of which the reference needs because it
+has no summon-beside surface:
+
+- `--scrim-opacity` / `--scrim-saturate` — the pane dims the **stream region
+  only**. The pinned zone is never dimmed and never inert, so the scrim is an
+  opacity + desaturation pair rather than an overlay color: the dimmed region
+  stays present and legible — receding, not covered.
+- `--home-measure` — the desktop split is **not proportional**. The home column
+  holds this measure and the pane takes the *added* width; that is what "desktop
+  adds simultaneity, never density" means in pixels.
+- `--z-sticky` / `--z-pane` — the pane is a **non-modal** surface (a top-layer
+  `showModal()` would inert the pinned zone irrevocably), so its order above the
+  sticky chrome and sticky pinned zone is stated, not inherited from the top
+  layer.
+- **Breakpoint policy.** `--breakpoint-desktop` is duplicated as a literal in
+  `tailwind-v4.css` because CSS does not substitute `var()` inside a media
+  feature — the `var()` form silently never matches. Tailwind's default
+  `sm/md/lg/xl/2xl` are left in place for the internal ops/admin console, which
+  composes shadcn (GR-7 v3 / DEC-35); "only `desktop:`" is a **founder-surface
+  convention** (`.spec/conventions.yaml`, client scope), not a theme-wide
+  deletion.

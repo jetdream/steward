@@ -15,6 +15,52 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-42:
+    v: 1
+    date: 2026-07-25
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0002, ADR-0011, ARC-2, GR-7, DS-1, XH-12]
+    title: Founder/public surfaces decline ShadCN — native platform primitives + the DSS inventory; internal tools keep their shadcn allowance
+    statement: >-
+      Taken at the start of the founder-UI build, on an Architect-Challenger FAIL
+      of the proposed ADR-0011 that surfaced two coupled contradictions the agent
+      could not resolve autonomously. TWO DECISIONS. (1) STACK — the constitution
+      and ADR-0002 fix the client stack as "Tailwind + ShadCN", and ShadCN has
+      never been installed. FOUNDER/PUBLIC-FACING surfaces (@client's founder UI,
+      @news) DECLINE ShadCN: they compose the DSS-1..23 component inventory only,
+      per the clause GR-7 v3 keeps binding there. This does NOT narrow DEC-35 —
+      INTERNAL staff tools (ops/admin, OPS/ADM) keep their allowance to compose
+      shadcn primitives directly, so the prohibition is scoped to SURFACES, not to
+      packages or source roots. The challenger was right that GR-7 v3 + DEC-35
+      scoped only the inventory-reuse clause and therefore could not by themselves
+      authorize declining the library; this decision supplies that authorization,
+      following the DEC-29 (Drizzle) / DEC-36 (@news) precedent of a founder call
+      plus a dated ADR-0002 amendment, and cascades ARC-2 -> v2 plus every
+      "Tailwind + ShadCN" citation site (constitution, overview intent, ARC-2 body,
+      client/CLAUDE.md, client/src/index.ts). (2) SUMMONED-PANE MECHANISM — the
+      challenger verified that @radix-ui/react-dialog cannot honor XH-12 v2: its
+      modal mode calls hideOthers() (aria-hidden on everything outside the pane,
+      up to body) which would make the DELIBERATELY-undimmed pinned zone —
+      GR-3 holds, publish failures, channel re-auth, the cards that "cannot scroll
+      away" — keyboard-unreachable, screen-reader-hidden, and pointer-inert, with
+      its polite live-region updates swallowed; its non-modal mode has no focus
+      trap, which DSS-4/DS-4 (P0, flexibility hard) requires. Rather than weaken
+      the approved founder-decided contract, the CODE CONFORMS TO THE SPEC: the
+      summoned pane uses native platform primitives — a NON-MODAL surface
+      (dialog.show(), never showModal()) plus PER-REGION `inert` (the stream
+      inerted, the pinned zone excluded and live) — the only mechanism that
+      expresses XH-12's carve-out. (Mechanism corrected in the r2 challenge, which
+      verified in headless Chromium that a TOP-LAYER modal dialog inerts the whole
+      document, making `inert=false` on the pinned zone a no-op — showModal() is
+      hideOthers() by another name. The substance of this decision — native
+      primitives, no library, XH-12 v2 unchanged — is untouched; only the
+      primitive's mode is named correctly.) XH-12 v2 therefore
+      stands UNCHANGED (no v3, no weakening of the DEC-18 "holds pin and are never
+      batch-cleared" invariant). Consequence accepted: the founder surfaces take on
+      no new UI dependency (no ShadCN, no Radix), and the a11y machinery they
+      hand-write — focus trap/restore, per-region inertness, roving-tabindex tabs —
+      is held by the E5 e2e suite rather than by a library's reputation.
+
   DEC-41:
     v: 1
     date: 2026-07-23

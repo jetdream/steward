@@ -1,12 +1,19 @@
 kind: spec
 prefix: UXS
 title: App Shell & Navigation — behavior
+# Regressed to draft 2026-07-25 by the DEC-42/ADR-0011 cascade (the shell's
+# primitive layer became a constrained-by edge, and the summoned-pane mechanics
+# it describes are now contracted by DSS-24), then re-approved the same day: the
+# delta-scoped challenger attacked all eight items against ADR-0011 and found the
+# edge a genuine no-op for UXS-1..8 — the one collision (UXS-6's always-reachable
+# kill switch vs an early phone-takeover clause) was fixed upstream in DSS-24 and
+# ADR-0011, not here. No UXS item statement changed; no version bumps.
 status: approved
 challenge:
-  date: 2026-07-19
-  by: cortex:architect-challenger (single pass — design-conformance / product-designer / implementation-divergence + LRN-19/22 sweep)
+  date: 2026-07-25
+  by: cortex:architect-challenger (r2 delta — the DEC-42/ADR-0011 cascade edge; prior r1 2026-07-19 single pass, design-conformance / product-designer / implementation-divergence + LRN-19/22 sweep)
   verdict: pass
-  record: .spec/specs/challenges/ux-app-shell-2026-07-19-r1.md
+  record: .spec/specs/challenges/ux-app-shell-2026-07-25-r2.md
   summary: >-
     r1 passed with no surviving high. The product-designer lens confirmed GR-7
     conformance (the shell invents no component and defers pixels to method/ui.md),
@@ -29,7 +36,7 @@ intent: >-
   (routing, region order, one-click reachability, finite stack, pull-only); the
   pixel layer is a method/ui.md pass on the approved spine + design system.
 design-scope: cross-cutting
-constrained-by: [ADR-0001, ADR-0002, ADR-0003, XO-1, XH-1, XH-2, XA-1, XG-1, XH-3, XH-12]
+constrained-by: [ADR-0001, ADR-0002, ADR-0003, ADR-0011, XO-1, XH-1, XH-2, XA-1, XG-1, XH-3, XH-12]
 depends-on: [CHTS, APRS]
 governed-by: [GR-7]
 assurance: standard

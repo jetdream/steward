@@ -91,6 +91,13 @@ scopes:
         client, or `fetch` directly (constitution "Client").
       - Build UI only on a screen that has passed the design gate (the experience
         spine + the design system, GR-7) — the skeleton App shell is not that.
+      - Founder surfaces use ONLY the `desktop:` breakpoint variant — exactly two
+        layout modes, phone and desktop (DEC-19/DEC-20). Tailwind's default
+        sm/md/lg/xl/2xl remain defined in the theme because the internal
+        ops/admin console composes shadcn (GR-7 v3, DEC-35) and would silently
+        render unresponsive without them, so this is a convention here rather
+        than a deletion there: a `sm:`/`md:`/`lg:` class on a founder surface is
+        a review defect.
     should: |
       - Resolve visual values from the steward theme tokens (DS-1/DS-3/DS-4);
         never hard-code a colour, radius, or type value.

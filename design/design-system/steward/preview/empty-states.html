@@ -57,7 +57,7 @@
     Consolas, monospace;
 
   /* ─── Typography — type scale — inherited: conversational 12–22px
-   * cluster, 28px section headings; 44/56px reserved for the streak
+   * cluster, 28px section headings; 44/56px reserved for the rhythm
    * numeral (the completion moment, UI-7) — Steward's analog of the
    * reference's rating lockup. */
   --text-xs: 12px;
@@ -115,9 +115,42 @@
   --motion-base: 200ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
+  /* ─── Summoned surface — #Bind S5 (DSS-24, added 2026-07-25 / DEC-42;
+   * narrated in DESIGN.md "Shell"). The reference has no summon-beside
+   * surface, so it defines none of these.
+   * Scrim: the pane dims the STREAM region only — the pinned zone is never
+   * dimmed (XH-12) — expressed as opacity + desaturation rather than an
+   * overlay color, because the dimmed region stays present and legible: it
+   * is receding, not covered. */
+  --scrim-opacity: 0.38;
+  --scrim-saturate: 0.75;
+  /* Stacking: the pane is NOT in the top layer (it is a non-modal surface —
+   * showModal() would inert the pinned zone), so its order above the sticky
+   * chrome and the sticky pinned zone must be stated rather than inherited. */
+  --z-sticky: 10;
+  --z-pane: 20;
+  /* The chrome outranks the pane: XH-12's "the chrome persists" in BOTH modes,
+   * and AUT-3's Pause must stay one gesture away even under a phone takeover
+   * (AUTS-3 is P0 hard). A pane that covered the chrome would strand the kill
+   * switch — so the chrome, and its phone sheet, stack above it. */
+  --z-chrome: 30;
+
   /* ─── Layout — inherited 1280px content cap; Steward is a workspace,
    * not a marketplace — there is no ultra-wide grid mode. */
   --container-max: 1280px;
+  /* The desktop split (DSS-24 / DEC-19), taken from the founder-reviewed render
+   * `design/mockups/exp-38-home/round-1/Steward Home (desktop).html` — the
+   * artifact that PRODUCED DEC-19 (stream 600, pane 640→760). The home column
+   * holds its measure and the pane takes the added width up to --pane-max;
+   * under compression both shrink from their bases, so the pane is never the
+   * smaller half. Not a proportional split: the stream must never stretch into
+   * a dashboard. */
+  --home-measure: 600px;
+  --pane-basis: 640px;
+  --pane-max: 760px;
+  /* Layout-mode boundary (DEC-19/DEC-20): below = phone mode (takeover
+   * summons), at/above = desktop mode (summon-beside). Exactly two modes. */
+  --breakpoint-desktop: 900px;
   --container-gutter-desktop: 40px;
   --container-gutter-tablet: 24px;
   --container-gutter-phone: 16px;
@@ -134,7 +167,7 @@ h1 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 6
   letter-spacing: var(--tracking-display); }
 h2 { font-size: var(--text-sm); font-weight: 600; color: var(--muted);
   margin: var(--space-6) 0 var(--space-3); }
-/* Display face for headlines, card titles, and the streak numerals; body
+/* Display face for headlines, card titles, and the rhythm numerals; body
  * stays Source Sans. (DS-3 v2 — chiseled display over magazine body.) */
 .display { font-family: var(--font-display); letter-spacing: var(--tracking-display); }
 .note { color: var(--muted); font-size: var(--text-sm); }
@@ -194,7 +227,7 @@ h2 { font-size: var(--text-sm); font-weight: 600; color: var(--muted);
   border-radius: var(--radius-md); }
 
 .zero { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
-.streak { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }
+.rhythm { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }
 </style>
 </head>
 <body>
@@ -207,7 +240,7 @@ h2 { font-size: var(--text-sm); font-weight: 600; color: var(--muted);
     <button class="btn btn-secondary">Sure, let's talk</button>
   </div>
   <div class="zero">
-    <div class="streak">6<span style="font-size: var(--text-base); font-weight: 600; margin-left: var(--space-2)">week streak</span></div>
+    <div class="rhythm">6<span style="font-size: var(--text-base); font-weight: 600; margin-left: var(--space-2)">weeks of steady presence</span></div>
     <div>That's everything for this week — 5 posts heading out. See you next Tuesday.</div>
     <div class="reason">Next up from me: photos request for Saturday's cleanup, and your GivingTuesday plan.</div>
   </div>

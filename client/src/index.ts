@@ -1,8 +1,10 @@
 /**
  * @module @client
  *
- * The Steward web app (ARC-2): the React SPA (Vite + Tailwind + ShadCN) that
- * renders the One-Home experience spine. Every backend call goes through a
+ * The Steward web app (ARC-2 v2): the React SPA (Vite + Tailwind) that renders
+ * the One-Home experience spine. Founder surfaces compose the DSS design-system
+ * inventory over NATIVE platform primitives — no ShadCN/Radix (DEC-42, ADR-0011);
+ * internal staff tools keep the DEC-35 shadcn allowance. Every backend call goes through a
  * domain-specific API React hook (constitution "Client"). UI is built only on an
  * approved screen (the design gate). The React app entry lands with the
  * walking-skeleton increment; this seed consumes a `@shared` type to hold the

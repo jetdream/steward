@@ -16,7 +16,8 @@ status: approved
 intent: >-
   Technical module map for the core loop described in product/overview.md.
   Stack baseline is ADR-0002 (constitution-fixed: NodeJS 24, TypeScript, Vite +
-  React, Tailwind + ShadCN, Postgres + pgvector via Drizzle, tRPC, WebSocket,
+  React, Tailwind + ShadCN — scoped by surface per DEC-42/ADR-0011: founder and
+  public surfaces decline it, internal staff tools keep it — Postgres + pgvector via Drizzle, tRPC, WebSocket,
   BetterAuth, Vercel AI SDK, OTel/LGTM). Cross-cutting principle: deployment portability via
   ports & adapters (ADR-0003) — every external/infra dependency behind a
   domain-defined port with environment-selected adapters. Modelled as a C4
@@ -115,15 +116,26 @@ items:
       threat-model/audit pass (SEC intent).
 
   ARC-2:
-    v: 1
+    v: 2
     kind: c4-container
     title: Client (@client)
     parent: ARC-1
     body: |
-      Browser SPA: Vite + React, Tailwind + ShadCN. Folder-modules per
-      capability UI; all calls to the backend go through domain-specific API
-      React hooks, with realtime updates over WebSocket (light payloads).
-      Houses the app-shell and the capability UI components.
+      Browser SPA: Vite + React + Tailwind. Folder-modules per capability UI;
+      all calls to the backend go through domain-specific API React hooks, with
+      realtime updates over WebSocket (light payloads). Houses the app-shell and
+      the capability UI components.
+      COMPONENT LAYER (v2 — DEC-42/ADR-0011): founder-facing surfaces compose the
+      DSS design-system inventory (`client/src/ds/`, GR-7 v3) over NATIVE
+      platform primitives — a NON-MODAL `<dialog>.show()` (never `showModal()`,
+      whose top layer would inert the pinned zone irrevocably) plus per-region
+      `inert` for the summoned pane, and a roving-tabindex tablist — and take no
+      ShadCN/Radix dependency; the non-modal choice is what expresses XH-12's
+      pinned-zone carve-out, which no portalled or top-layer modal can. The
+      INTERNAL ops/admin
+      console living in this same container keeps its DEC-35 allowance to compose
+      shadcn primitives styled with the steward tokens — the scope is by SURFACE,
+      not by package.
 
   ARC-3:
     v: 1

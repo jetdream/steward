@@ -36,6 +36,12 @@ Adopt and record the constitution-fixed stack as the baseline:
 - **Runtime/language**: Node 24, TypeScript (strict, no `any`).
 - **Client**: Vite + React, Tailwind + ShadCN; all backend calls through
   domain-specific API React hooks; realtime over WebSocket (light payloads).
+  *(Amended 2026-07-25, DEC-42/ADR-0011: the ShadCN clause is SCOPED BY SURFACE.
+  Founder- and public-facing surfaces DECLINE ShadCN — they compose the DSS-1..23
+  inventory (the clause GR-7 v3 keeps binding there) over native platform
+  primitives, taking no new UI dependency. INTERNAL staff tools (ops/admin) keep
+  the shadcn allowance DEC-35 granted them. ShadCN was never installed; this
+  records which surfaces it applies to rather than removing it wholesale.)*
 - **Backend**: Node 24 + TypeScript service exposing tRPC + WebSocket.
 - **Datastore**: Postgres + pgvector (system of record + Memory embeddings),
   accessed through **Drizzle** — a light, type-first query builder whose

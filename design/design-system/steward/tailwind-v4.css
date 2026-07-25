@@ -62,4 +62,28 @@
   --spacing-container-desktop: var(--container-gutter-desktop);
   --spacing-container-tablet: var(--container-gutter-tablet);
   --spacing-container-phone: var(--container-gutter-phone);
+
+  /* THE ONE LAYOUT-MODE BOUNDARY (DEC-19/DEC-20): `desktop:` is the only
+   * breakpoint variant founder surfaces may use — exactly two modes, phone
+   * and desktop, never an in-between hybrid.
+   *
+   * The value is a LITERAL, not `var(--breakpoint-desktop)`: CSS does not
+   * substitute var() inside a media-feature value, so the var form compiles to
+   * `@media (width >= var(--breakpoint-desktop))`, which never matches at any
+   * viewport — silently rendering phone layout everywhere. tokens.css remains
+   * the source of record for the 900px value (DS-1); this single duplication
+   * is forced by the media-query grammar and is the only one in the theme.
+   *
+   * Tailwind's default sm/md/lg/xl/2xl are deliberately LEFT IN PLACE: the
+   * internal ops/admin console composes shadcn primitives (GR-7 v3 / DEC-35),
+   * whose source is saturated with `sm:`/`md:`/`lg:` and would silently render
+   * unresponsive if they were cleared. The two-modes rule is therefore a
+   * FOUNDER-SURFACE convention (.spec/conventions.yaml, client scope), not a
+   * theme-wide deletion — enforced where it applies instead of breaking a
+   * surface it was never meant to govern. */
+  --breakpoint-desktop: 900px;
+
+  /* Summoned-surface treatment (DSS-24). */
+  --opacity-scrim: var(--scrim-opacity);
+  --spacing-home-measure: var(--home-measure);
 }

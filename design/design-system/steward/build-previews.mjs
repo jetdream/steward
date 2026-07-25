@@ -24,7 +24,7 @@ h1 { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 6
   letter-spacing: var(--tracking-display); }
 h2 { font-size: var(--text-sm); font-weight: 600; color: var(--muted);
   margin: var(--space-6) 0 var(--space-3); }
-/* Display face for headlines, card titles, and the streak numerals; body
+/* Display face for headlines, card titles, and the rhythm numerals; body
  * stays Source Sans. (DS-3 v2 — chiseled display over magazine body.) */
 .display { font-family: var(--font-display); letter-spacing: var(--tracking-display); }
 .note { color: var(--muted); font-size: var(--text-sm); }
@@ -122,7 +122,7 @@ ${[['Background', '--bg'], ['Surface', '--surface'], ['Surface warm', '--surface
 <p class="spec">16px · 500 · body (Source Sans 3)</p><div>Body runs Source Sans 3 at weight 500 — a quietly confident texture at magazine leading, calm against Bricolage's characterful headlines.</div>
 <p class="spec">14px · 500 · caption / buttons</p><div style="font-size: var(--text-sm)">Captions, metadata, secondary buttons.</div>
 <p class="spec">12px · 500 · micro</p><div style="font-size: var(--text-xs); color: var(--muted)">Timestamps, footnotes, legal.</div>
-<p class="spec">44px · 700 · streak numeral (completion moments only)</p><div class="d" style="font-size: var(--text-3xl); font-weight: 700">6</div>`,
+<p class="spec">44px · 700 · rhythm numeral (completion moments only)</p><div class="d" style="font-size: var(--text-3xl); font-weight: 700">6</div>`,
   },
   {
     file: 'spacing-shape.html', group: 'Foundations', name: 'Spacing, radius & elevation',
@@ -305,7 +305,7 @@ ${[1, 2, 3, 4, 6, 8, 12].map(n => `  <div class="row"><span class="lbl">--space-
     subtitle: 'The system narrates — never a blank page', width: 680,
     implements: 'DS-6',
     css: `.zero { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
-.streak { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }`,
+.rhythm { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 700; line-height: var(--leading-tight); letter-spacing: var(--tracking-display); }`,
     body: `<h1>Zero states</h1>
 <div class="stack" style="gap: var(--space-4)">
   <div class="zero">
@@ -314,7 +314,7 @@ ${[1, 2, 3, 4, 6, 8, 12].map(n => `  <div class="row"><span class="lbl">--space-
     <button class="btn btn-secondary">Sure, let's talk</button>
   </div>
   <div class="zero">
-    <div class="streak">6<span style="font-size: var(--text-base); font-weight: 600; margin-left: var(--space-2)">week streak</span></div>
+    <div class="rhythm">6<span style="font-size: var(--text-base); font-weight: 600; margin-left: var(--space-2)">weeks of steady presence</span></div>
     <div>That's everything for this week — 5 posts heading out. See you next Tuesday.</div>
     <div class="reason">Next up from me: photos request for Saturday's cleanup, and your GivingTuesday plan.</div>
   </div>
@@ -425,6 +425,76 @@ ${[1, 2, 3, 4, 6, 8, 12].map(n => `  <div class="row"><span class="lbl">--space-
   <div style="font-size: var(--text-base)">Two hundred and fourteen days. That's how long Biscuit waited for a family. This Saturday, at our adoption day, everything changed — because of a community that keeps showing up.</div>
 </article>
 <div class="pgfooter"><span>Published with Steward</span><span>news.hopeandpaws.org</span></div>`,
+  },
+  {
+    file: 'summoned-surface.html', group: 'Shell', name: 'Summoned surface',
+    subtitle: 'Pane beside the home — stream dimmed, pinned zone never dimmed (DSS-24)', width: 1240,
+    implements: 'DS-1 DS-2 DS-4 DS-6',
+    css: `main { max-width: 1240px; }
+/* The desktop shape: home column + pane beside it (DEC-19 simultaneity). */
+/* NOT a proportional split: the home column holds its readable measure
+ * (--home-measure) and the pane takes the ADDED width (DEC-19 — desktop adds
+ * simultaneity, never density; the stream never stretches into a dashboard). */
+.shell { display: flex; gap: var(--space-4); align-items: start; }
+.col { flex: 0 1 var(--home-measure); min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+/* The scrim dims the STREAM region only — never the pinned zone (XH-12). */
+.dimmed { opacity: var(--scrim-opacity); filter: saturate(var(--scrim-saturate)); pointer-events: none; }
+.zone { border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); padding: var(--space-3); }
+.zone-label { font-size: var(--text-xs); font-weight: 600; color: var(--meta); text-transform: none; margin-bottom: var(--space-2); }
+.pinned { border-color: color-mix(in srgb, var(--warn) 38%, var(--border)); background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
+.pane { flex: 1 1 var(--pane-basis); max-width: var(--pane-max); min-width: 0; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--elev-raised); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+.pane-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.back { font-size: var(--text-sm); font-weight: 600; color: var(--fg-2); }
+.legend { margin-top: var(--space-5); font-size: var(--text-xs); color: var(--meta); display: flex; flex-direction: column; gap: 4px; }`,
+    body: `<h1>Summoned surface — the pane beside the home</h1>
+<div class="shell">
+  <div class="col">
+    <div class="zone pinned">
+      <div class="zone-label">Pinned — stays live while the pane is open</div>
+      <div style="font-size: var(--text-sm)">Held for your approval: a post mentions a family by name.</div>
+      <div class="row" style="margin-top: var(--space-2)"><button class="btn btn-quiet">Review</button></div>
+    </div>
+    <div class="zone dimmed">
+      <div class="zone-label">Ready — dimmed, place kept</div>
+      <div style="font-size: var(--text-sm)">The well in Kamuli is running…</div>
+    </div>
+    <div class="zone dimmed">
+      <div class="zone-label">Conversation — dimmed</div>
+      <div style="font-size: var(--text-sm)">Anything you want to say about this week?</div>
+    </div>
+  </div>
+  <div class="pane">
+    <div class="pane-top"><span class="back">← Back to Steward</span><span class="note">Esc</span></div>
+    <div class="display" style="font-size: var(--text-lg); font-weight: 600">The draft, opened</div>
+    ${PHOTO}
+    <div style="font-size: var(--text-sm)">Focus is trapped across the pane and the pinned zone; the stream between them is inert.</div>
+  </div>
+</div>
+<div class="legend">
+  <span>Desktop: pane BESIDE the home, stream dimmed and place kept. Phone: full-screen takeover — exactly two modes (DEC-19/DEC-20).</span>
+  <span>The pinned zone is never dimmed, never inert, and keeps announcing (XH-12) — which is why this is native dialog + per-region inert, not a portalled modal (ADR-0011).</span>
+  <span>Dismiss returns focus to the control that opened the pane.</span>
+</div>`,
+  },
+  {
+    file: 'variant-tablist.html', group: 'Shell', name: 'Variant tablist',
+    subtitle: 'Per-channel tabs carrying their fit verdict (DSS-25)', width: 520,
+    implements: 'DS-2 DS-4 DS-5',
+    css: `main { max-width: 480px; }
+.tablist { display: flex; gap: var(--space-1); border-bottom: 1px solid var(--border); }
+.tab { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: 0 var(--space-3); font: inherit; font-size: var(--text-sm); font-weight: 600; color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; }
+.tab[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--fg); }
+.tab:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.tab .fit { font-size: var(--text-xs); }
+.panel { border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); background: var(--surface); padding: var(--space-3); font-size: var(--text-sm); }`,
+    body: `<h1>Variant tablist</h1>
+<div class="tablist" role="tablist">
+  <button class="tab" role="tab" aria-selected="true">Facebook <span class="fit ok">fit</span></button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1">Instagram <span class="fit ok">fit</span></button>
+  <button class="tab" role="tab" aria-selected="false" tabindex="-1">X <span class="fit skip">skipped</span></button>
+</div>
+<div class="panel" role="tabpanel">The well in Kamuli is running. Three months ago you helped us break ground — this week, 400 families drew clean water for the first time.</div>
+<p class="note" style="margin-top: var(--space-4)">A skipped channel reads as skipped ON its tab, not only inside it. Roving tabindex: the selected tab is the only tab stop; Left/Right traverse. The selected tab is marked with ink, never the accent — the accent stays reserved for the panel's one primary action (DS-2).</p>`,
   },
 ];
 
