@@ -26,6 +26,7 @@ import { useOrgs } from "../../api/useOrgs.js";
 import { Button, Narration } from "../../ds/index.js";
 import { ComposeSheet } from "../compose/ComposeSheet.js";
 import { type ComposeDraft, EMPTY_COMPOSE, parkedNote } from "../compose/compose.js";
+import { ControlsTray } from "../controls/ControlsTray.js";
 import { Conversation } from "../conversation/Conversation.js";
 import { DraftOpened } from "../draft/DraftOpened.js";
 import { GlassWall } from "../glasswall/GlassWall.js";
@@ -76,11 +77,6 @@ function NotYetPane() {
       detail="It's on the way. Everything you need today is on the home behind this."
     />
   );
-}
-
-/** The pane's heading for a target that has no body yet. */
-function paneTitle(target: { kind: string }): string {
-  return target.kind === "controls" ? "Controls" : "Compose";
 }
 
 /** The glass-wall headings, matching the chrome's plain labels exactly (UXS-5). */
@@ -157,10 +153,13 @@ export function HomeScreen() {
             body: <ComposePane draft={composeDraft} onChange={setComposeDraft} />,
           };
         }
+        if (target.kind === "controls") {
+          return { title: "Controls", body: <ControlsTray /> };
+        }
         if (target.kind === "view") {
           return { title: LOOK_INSIDE_TITLES[target.view], body: <GlassWall view={target.view} /> };
         }
-        return { title: paneTitle(target), body: <NotYetPane /> };
+        return { title: "Compose", body: <NotYetPane /> };
       }}
       terminus={
         <>

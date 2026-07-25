@@ -183,3 +183,13 @@ UI tweaks.
 **You should observe:** Each of the four Look-inside links opens its own view in one click with its plain label as the heading; Knowledge lists what Steward knows and hosts the open-questions list; and no view or link carries a badge, count or unread marker.
 
 <sub>Auto-checked by client/e2e/glasswall.spec.ts · serves UX-4, UX-5, UX-8, DS-4</sub>
+
+### 18. The controls tell her the truth about what I can and cannot do  <sub>US-18</sub>
+
+**As** Maria, whose Facebook connection quietly expired last week.
+
+**Do:** The Controls tray states every channel's real health in plain language and offers the repair — a channel that BROKE is never discovered silently (ONBS-4) — while a channel simply not connected is an invitation, not a problem. The kill switch appears here as a MIRROR of the chrome's Pause, never as the only way to reach it (AUT-3 is one gesture from the chrome at every level). Anything with no working backend is named as absent rather than rendered as a control that forgets what you chose.
+
+**You should observe:** Controls opens from the chrome showing every channel with its own plain-language state and the right repair offered; the kill switch mirror changes with the chrome's Pause and back; and the settings that have no backend are listed as not-yet rather than shown as working controls.
+
+<sub>Auto-checked by client/e2e/controls.spec.ts · serves UX-6, AUT-3, ONB-4</sub>

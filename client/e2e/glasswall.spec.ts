@@ -1,8 +1,10 @@
 /**
  * The glass-wall story (UXS-4/5/8), against the seeded demo org.
  *
- * Read-only — it opens all four views and inspects them, disposing of nothing,
- * so it shares the `draft` suite's org rather than needing one of its own.
+ * Read-only — it opens all four views and inspects them and disposes of nothing.
+ * It still gets its OWN org: two specs signing in as the same demo founder at
+ * the same moment race the single in-memory dev OTP, and one is left at the
+ * doorstep (see `demoEmailFor`).
  */
 import { expect, test } from "@playwright/test";
 import { demoEmailFor } from "../../backend/src/demo/seed.js";
@@ -23,7 +25,9 @@ test("US-17: all four views open in one click, and none of them badges", async (
   const doorstep = page.locator("[data-screen='doorstep']");
   await doorstep.waitFor({ state: "visible", timeout: 30_000 });
   await page.getByRole("button", { name: /sign in instead/i }).click();
-  await doorstep.locator("input[name='email']").fill(demoEmailFor(testInfo.project.name, "draft"));
+  await doorstep
+    .locator("input[name='email']")
+    .fill(demoEmailFor(testInfo.project.name, "glasswall"));
   await doorstep.locator("button[type='submit']").click();
   await expect(page.locator("[data-chrome='pause']")).toBeVisible({ timeout: 30_000 });
 

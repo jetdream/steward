@@ -298,4 +298,23 @@ items:
       plain label as the heading; Knowledge lists what Steward knows and hosts
       the open-questions list; and no view or link carries a badge, count or
       unread marker.
+  US-18:
+    v: 1
+    serves: [UX-6, AUT-3, ONB-4]
+    persona: >-
+      Maria, whose Facebook connection quietly expired last week.
+    title: The controls tell her the truth about what I can and cannot do
+    statement: >-
+      The Controls tray states every channel's real health in plain language and
+      offers the repair — a channel that BROKE is never discovered silently
+      (ONBS-4) — while a channel simply not connected is an invitation, not a
+      problem. The kill switch appears here as a MIRROR of the chrome's Pause,
+      never as the only way to reach it (AUT-3 is one gesture from the chrome at
+      every level). Anything with no working backend is named as absent rather
+      than rendered as a control that forgets what you chose.
+    acceptance: >-
+      Controls opens from the chrome showing every channel with its own
+      plain-language state and the right repair offered; the kill switch mirror
+      changes with the chrome's Pause and back; and the settings that have no
+      backend are listed as not-yet rather than shown as working controls.
 
