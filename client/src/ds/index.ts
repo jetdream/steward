@@ -12,8 +12,9 @@
  * appearance comes from here. Internal staff tools keep their DEC-35 shadcn
  * allowance — the scope is by surface, not by package.
  *
- * E1 landed the FOUNDATIONS (DSS-1..4); E2 the PRIMITIVES (DSS-5/6/7/21/22).
- * The trust chrome (DSS-8..20) and the shell surfaces (DSS-24/25) follow.
+ * E1 landed the FOUNDATIONS (DSS-1..4); E2 the PRIMITIVES (DSS-5/6/7/21/22);
+ * E3 the TRUST CHROME + composites (DSS-8..20). The shell surfaces
+ * (DSS-24/25 — the summoned pane and the variant tablist) follow with E4.
  */
 
 // DSS-1 — the token source is `../index.css`, which imports the steward theme.
@@ -36,6 +37,18 @@ export {
   assertSingleAccent,
   countAccentFocals,
 } from "./accent.js";
+export {
+  ArticleLinkBadge,
+  type ArticleLinkBadgeProps,
+  FitBadge,
+  type FitBadgeProps,
+  FitReason,
+  type FitReasonProps,
+  KillSwitchRow,
+  type KillSwitchRowProps,
+  TrustLevelIndicator,
+  type TrustLevelIndicatorProps,
+} from "./Badges.js";
 export { Button, type ButtonProps, type ButtonVariant } from "./Button.js";
 export {
   Card,
@@ -52,6 +65,16 @@ export {
   type InlineWorkCardProps,
 } from "./ChatMessage.js";
 export {
+  AwaitingPicture,
+  type AwaitingPictureProps,
+  CitationBlock,
+  type CitationBlockProps,
+  OPTIONAL_REASONS,
+  OptionalReason,
+  type OptionalReasonChoice,
+  type OptionalReasonProps,
+} from "./Disposition.js";
+export {
   TextArea,
   type TextAreaProps,
   TextField,
@@ -59,5 +82,28 @@ export {
   Toggle,
   type ToggleProps,
 } from "./Field.js";
+export {
+  HeldForApprovalCard,
+  type HeldForApprovalCardProps,
+  VetoWindowCard,
+  type VetoWindowCardProps,
+} from "./HoldCards.js";
 export { CaughtUp, type CaughtUpProps, Narration, type NarrationProps } from "./Narration.js";
+export {
+  ApprovePanel,
+  type ApprovePanelProps,
+  PostCard,
+  type PostCardProps,
+  type ScheduleRow,
+  type VariantSummary,
+} from "./PostCard.js";
+export {
+  AssumedNote,
+  type AssumedNoteProps,
+  ProvenanceLine,
+  type ProvenanceLineProps,
+  type ProvenanceSource,
+  ReasonLine,
+  type ReasonLineProps,
+} from "./TrustMarks.js";
 export { type TextTone, type TypeRole, textTone, typeRole } from "./type.js";

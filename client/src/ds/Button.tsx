@@ -63,6 +63,13 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   pendingLabel?: string;
   /** A square control whose label lives in `aria-label` (still ≥44px, DS-4). */
   iconOnly?: boolean;
+  /**
+   * Fill the container — the approve panel's CTA (DSS-20) and the phone
+   * bottom-bar. A named prop rather than a `className` passthrough on purpose:
+   * `className` stays omitted so a caller cannot inject arbitrary visual values
+   * and quietly bypass GR-7.
+   */
+  fullWidth?: boolean;
   children: ReactNode;
 }
 
@@ -72,6 +79,7 @@ export function Button({
   loading = false,
   pendingLabel,
   iconOnly = false,
+  fullWidth = false,
   disabled,
   children,
   ...rest
@@ -84,7 +92,7 @@ export function Button({
       type="button"
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={`${base} ${minTarget} ${variants[variant]} ${iconOnly ? "aspect-square px-0" : ""}`}
+      className={`${base} ${minTarget} ${variants[variant]} ${iconOnly ? "aspect-square px-0" : ""} ${fullWidth ? "w-full" : ""}`}
       {...focal}
       {...rest}
     >
