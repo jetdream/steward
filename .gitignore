@@ -5,6 +5,10 @@ dist
 # Playwright MCP test artifacts (snapshots, console logs, screenshots)
 .playwright-mcp/
 
+# Playwright e2e output (traces, reports) — outputDir is relative to the config
+client/test-results/
+client/playwright-report/
+
 # local env / secrets — never committed
 .env
 .env.*

@@ -34,6 +34,15 @@ Cross-boundary types are imported from `@shared`. UI is built only on a screen
 that has passed the design gate (experience spine + the design system, `GR-7`);
 see `method/ui.md`.
 
-**Structure.** `src/` — folder-module layout (feature areas mirror the experience
-spine); `src/index.ts` is the seed entry. React app entry, routing, and the
-design-system component layer land with the walking-skeleton increment.
+**Structure.**
+
+| Path | Role |
+|---|---|
+| `src/ds/` | the DSS design-system inventory ([CLAUDE.md](src/ds/CLAUDE.md)) — every founder surface composes these |
+| `src/features/<area>/` | feature areas mirroring the experience spine (`shell/` is the XH-12 One-Home shell) |
+| `src/api/use<Domain>.ts` | the ONLY path to the backend — components never touch `useTRPC` or `fetch` |
+| `e2e/` | the story-validation tier ([CLAUDE.md](e2e/CLAUDE.md)) — `@validates US-*` Playwright specs, run by `npm run e2e` |
+
+**Stories.** An increment that ships a founder-visible flow adds its `US-*` to
+[`.spec/stories/`](../.spec/stories/CLAUDE.md) and an `@validates` e2e spec in the
+same commit (`DEC-43`, and the SDLC's Phase B step 2b).

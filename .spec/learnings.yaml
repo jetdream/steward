@@ -14,6 +14,40 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-30:
+    v: 1
+    type: pattern
+    scope: [testing, enforcement]
+    source: E5 founding the US stories register — challenger r1 (2026-07-25)
+    title: MUTATE the code to prove a test asserts its acceptance sentence — and route a new layer into the mandatory-read path or it dies
+    statement: >-
+      Two lessons from founding the stories register, both generalizable beyond it.
+      (1) A GREEN TEST IS NOT EVIDENCE THAT IT CHECKS WHAT IT CLAIMS. The e2e specs
+      were written directly from each story's acceptance sentence and passed. The
+      challenger then MUTATED the implementation to violate three clauses of those
+      sentences — the dimmed stream set to `opacity: 0` (hidden, not dimmed), the
+      home column shrunk to 9% of its readable width, a dot added to every
+      pull-only nav label — and the suite stayed fully green. The prose said
+      "dimmed but not hidden", "full readable width", "no badge, count or dot";
+      the assertions checked position, presence, and `/\d/`. Lesson: for any test
+      that claims to validate a written acceptance, break the implementation on
+      PURPOSE, clause by clause, and confirm the test goes red. Bound values on
+      BOTH sides (`0 < opacity < 1`, not "has an opacity"); assert measured
+      values against the TOKEN the prose promises, not against "looks laid out".
+      This is cheap, takes minutes, and is the only thing that distinguishes a
+      test from a comment. Corollary found the same round: putting several
+      `@validates`/`@verifies` markers in a FILE header keeps every story
+      "evidenced" after a test body is deleted — put each marker on its own test.
+      (2) A NEW GOVERNANCE LAYER NEEDS A CARRIER ON THE PATH AGENTS ALREADY WALK.
+      The register, its router, its prefix and its DEC were all correct and
+      lint-green, and the layer was still going to die: nothing in `.spec/CLAUDE.md`
+      (the declared entry point for every artifact), the SDLC Phase B steps, or the
+      module CLAUDE.md mentioned it, so no future increment would ever be prompted
+      to add a story. A layer justified by "it accumulates as we build" must be
+      wired into the build ritual in the same change — a step in the protocol, a
+      row in the layer table, a line in the consuming module's router — or it
+      becomes a handful of stale items that make the graph look healthier than it
+      is. Founding artifacts is not the same as adopting them.
   LRN-29:
     v: 1
     type: gotcha

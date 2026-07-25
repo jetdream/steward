@@ -15,6 +15,49 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-43:
+    v: 1
+    date: 2026-07-25
+    by: founder (shpin.p@diffco.us)
+    binds: [ADR-0010, EVAL-4, G-2, G-5]
+    title: Found the stories register (US-*) and an automated e2e tier — activating the dormant @validates channel
+    statement: >-
+      Authorizes a new REGISTER KIND and ID prefix, which is a structural
+      governance addition the agent may not make autonomously. Founder decision
+      taken at the start of the founder-UI build, alongside DEC-42.
+      WHY NOW. The marker vocabulary has three channels (method/testing.md):
+      `@implements` (code realizes a spec-element), `@verifies` (a unit or
+      integration test verifies it), and `@validates` — which cites a STORY and
+      is what lets a requirement roll up to `satisfied`. The first two have been
+      in use since the backend phase; the third has been DORMANT since ADR-0010
+      because this project has no stories register, so `@validates` had no legal
+      target and every user-visible flow was verified only at the unit tier. The
+      UI phase is exactly where that gap bites: focus restore, per-region
+      inertness, "the kill switch is reachable under a phone takeover" and "the
+      pinned zone still announces" are RENDERED-STATE facts no unit test can see
+      — they were caught this phase only by ad-hoc agent browser checks, which
+      leave no regression behind. EVAL-4 already requires the @validates channel
+      turned on; this supplies the register it needs.
+      WHAT IS AUTHORIZED. (1) A `stories` register at `.spec/stories/`, prefix
+      `US`, whose items carry a persona and a testable acceptance and serve a
+      requirement (the engine's story floor, enforced by docs-check).
+      (2) `@playwright/test` as an
+      automated e2e tier with a CI step, running hermetically on the dev-stub LLM
+      so it is deterministic and never keyed — the DEC-41 tiering, extended to
+      the browser. (3) e2e specs under `client/e2e/` carrying `@validates US-*`.
+      THE DELIBERATE SHAPE. The stories register IS the normative form of the
+      manual-evaluation walkthrough: each story is one thing the founder will do
+      by hand at the end of this phase, its `acceptance` is what they should
+      observe, and its e2e spec is the machine-checkable half of the same
+      sentence. MANUAL-EVAL.md is then a RENDERING of the register, not a second
+      list that can drift from it. This is why the register is founded here
+      rather than bolted on at the end: the walkthrough should accumulate as the
+      UI is built, not be reconstructed from memory afterwards.
+      HONEST COST. It adds a register kind, a prefix, and build time per
+      increment; it regresses nothing. The over-structure lens applies (VAL-6:
+      does the ID earn its keep) — each US-* must be referenced by at least one
+      e2e spec, or it is prose pretending to be governance.
+
   DEC-42:
     v: 1
     date: 2026-07-25

@@ -48,3 +48,18 @@ jobs:
         run: npm run db:migrate
       - name: acceptance harness (keyless deterministic tier, no LLM key)
         run: npm test
+      # The e2e tier (DEC-43): the @validates half of the founder-loop stories.
+      # Also keyless — the config pins STEWARD_LLM=dev-stub — so it is
+      # deterministic and belongs on every push, unlike the keyed LLM eval.
+      - name: install the e2e browser
+        run: npm run e2e:install
+      - name: e2e (founder-loop stories, keyless)
+        run: npm run e2e
+      - name: upload e2e traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          # outputDir is relative to the CONFIG file, so traces land under client/.
+          path: client/test-results/
+          retention-days: 7

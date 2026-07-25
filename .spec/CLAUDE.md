@@ -19,6 +19,8 @@ graph TD
   VAL[values.yaml — VAL-* : soft compass] -.guides.-> REQ
   SC[scope.md / assumptions.yaml A-* / risks.yaml R-*] -.bounds.-> REQ
   REQ --> SPEC[specs/*.yaml — exact behavior]
+  REQ --> STORY["stories/*.yaml — US-* : what the founder DOES and OBSERVES"]
+  STORY --> E2E["e2e/UX tests: @validates US-*"]
   ADR[adr/ — ADR-*] -.justifies.-> ARCH[architecture/*.yaml]
   ADR -- constrained-by --> SPEC
   ARCH -- constrained-by --> SPEC
@@ -45,6 +47,7 @@ graph TD
 | What does each domain term mean? | [product/glossary.yaml](product/glossary.yaml) | — |
 | WHAT must each capability do? | [product/requirements/](product/requirements/) `*.yaml` | capability prefixes |
 | EXACTLY how must it behave? | [specs/](specs/) `*.yaml` | `items:` spec-elements (`<REQ>S-*`), each `implements:` requirement IDs |
+| What will the founder DO, and what should they OBSERVE? | [stories/](stories/) `*.yaml` | `US-*` — persona + testable acceptance, `serves:` requirements; validated by `@validates` e2e tests (DEC-43) |
 | Cross-cutting technical truth | [architecture/](architecture/) `*.yaml` | — |
 | Why this technical choice? | [adr/](adr/) | `ADR-*` |
 | Where is X implemented? | each `src` module's `CLAUDE.md` + code headers | — |
@@ -110,6 +113,7 @@ Governs how every request becomes a change. Three phases: **A — Intake** (eval
 
 1. `[lint: pins, cascades]` **Behavior change (new or modified):** edit the requirement/spec **first**. Semantic edit ⇒ `v` bump ⇒ spec status regresses to `draft` until re-approved. Spec + code + tests land in the same commit.
 2. `[lint + evidence]` **Design gate (spec approval prerequisites):** a spec may flip to `approved` only when **(a)** its `design-scope`/`constrained-by` are valid — cross-cutting specs cite accepted ADRs and/or approved architecture docs; `design-scope: local` is an explicit, greppable claim, never an omission; **(b)** its `design` section is filled; and **(c)** the **Architect Challenger has been invoked**, its verbatim verdict stored as a challenge record, and the `challenge:` block points at it — see the challenge policy in [specs/CLAUDE.md](specs/CLAUDE.md); a `fail` verdict keeps the spec in `draft` until findings are resolved and it is re-challenged.
+2b. `[lint: @validates resolution | prose: the trigger]` **Founder-visible flow ⇒ a story, in the same commit.** An increment that ships something a founder can *do* adds a `US-*` to [stories/](stories/) — persona + a one-sentence testable acceptance — and an `@validates US-*` e2e test asserting that sentence (DEC-43). This is the third marker channel: `@implements` (code realizes a spec-element), `@verifies` (a unit/integration test), `@validates` (an e2e test validates a story, which then *gates* its requirement's `satisfied`). Stories accumulate as the product is built; reconstructing them afterwards is how a walkthrough drifts from the thing it claims to describe. Rendered-state facts only — focus landed, a region is reachable, a control is one gesture away; pure policy stays a `@verifies` unit test.
 3. `[prose]` **Design altitude rule:** a design choice affecting more than one capability is an **ADR + architecture doc** entry; a choice local to one capability lives in that spec's `design` section, derived from (and citing) the cross-cutting layer.
 4. `[lint: stale pins, ADR statuses]` **Cascade analysis:** after a version bump, `docs-check` lists every citing site; each must be revisited (updated or consciously re-pinned). Superseding an accepted ADR cascades the same way: every spec citing it goes red until re-pointed.
 5. `[hook: write-guard | prose beyond it]` **Contradiction check:** before writing, load the target file's `depends-on` set, every file referencing the edited IDs (one grep), applicable values and guardrails, and open `INC-*` entries touching those IDs. A contradiction you cannot resolve in this change becomes a new `INC-*` entry — contradictions are never silently dropped.
@@ -149,6 +153,7 @@ Who decides what. Right-sized for a two-founder product; the decisive artifact i
 - [learnings.yaml](learnings.yaml) — engineering learnings: gotchas, dead-ends, patterns (`LRN-*`)
 - [conventions.yaml](conventions.yaml) — engineering conventions: the implementation compass (scoped must/should prose, no IDs; how we build where the spec is silent — method/conventions.md)
 - [specs/](specs/) — behavior specs, written just-in-time before a capability's code starts; [specs/challenges/](specs/challenges/) holds challenge evidence
+- [stories/](stories/) — user stories (`US-*`): what the founder does and observes, validated by `@validates` e2e tests; the normative form of the manual-evaluation walkthrough (DEC-43)
 - [architecture/](architecture/) — cross-cutting technical truth (approving its sketches is the first task of the design pass — a hard predecessor of spec approval)
 - [experience/](experience/) — the experience spine: journeys/flows/screens/touchpoints (`UI-*`), the experienced-HOW parallel to architecture (method/ui.md)
 - [product/decisions.yaml](product/decisions.yaml) — HITL decision log (`DEC-*`); [product/constraints.yaml](product/constraints.yaml) — operational/compliance/deployment constraints (`CON-*`)

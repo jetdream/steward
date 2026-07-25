@@ -85,6 +85,7 @@ prefixes:
   ACCS: specs/acc-accounts-identity.yaml
   ADMS: specs/adm-platform-admin.yaml
   EVS: specs/eval-ai-evaluation.yaml   # AI evaluation & regression — behavior spec (ADR-0010)
+  US: stories/founder-loop.yaml   # the founder-loop story register (DEC-43) — @validates targets; the normative form of MANUAL-EVAL.md
   ARC: architecture/overview.yaml
   UI: experience/ui.yaml   # superseded spine (DEC-18) — retained so history resolves
   # experience spine split by domain (DEC-28, 2026-07-20); EXP/spine.yaml retired
