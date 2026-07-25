@@ -8,6 +8,7 @@ import { type FormEvent, useState } from "react";
 import { useAuth } from "./api/useAuth";
 import { useOrgs } from "./api/useOrgs";
 import { usePing } from "./api/usePing";
+import { Gallery } from "./ds/Gallery";
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
@@ -113,6 +114,11 @@ function Dashboard({ email, onLogout }: { email: string; onLogout: () => void })
 
 export function App() {
   const { me, login, logout } = useAuth();
+
+  // The dev-only design-system gallery (#ds). Not a founder surface and not a
+  // screen — it renders the DSS contracts so browser checks and the e2e suite
+  // can assert them directly. Stripped from a production build.
+  if (import.meta.env.DEV && window.location.hash === "#ds") return <Gallery />;
 
   if (me.isLoading) return <Shell>Loading…</Shell>;
   if (!me.data) {

@@ -12,8 +12,8 @@
  * appearance comes from here. Internal staff tools keep their DEC-35 shadcn
  * allowance — the scope is by surface, not by package.
  *
- * E1 lands the FOUNDATIONS (DSS-1..4). The component contracts (DSS-5..25)
- * arrive in E2/E3.
+ * E1 landed the FOUNDATIONS (DSS-1..4); E2 the PRIMITIVES (DSS-5/6/7/21/22).
+ * The trust chrome (DSS-8..20) and the shell surfaces (DSS-24/25) follow.
  */
 
 // DSS-1 — the token source is `../index.css`, which imports the steward theme.
@@ -36,4 +36,28 @@ export {
   assertSingleAccent,
   countAccentFocals,
 } from "./accent.js";
+export { Button, type ButtonProps, type ButtonVariant } from "./Button.js";
+export {
+  Card,
+  type CardElevation,
+  type CardProps,
+  PhotoSlot,
+  type PhotoSlotProps,
+} from "./Card.js";
+export {
+  type ChatAuthor,
+  ChatMessage,
+  type ChatMessageProps,
+  InlineWorkCard,
+  type InlineWorkCardProps,
+} from "./ChatMessage.js";
+export {
+  TextArea,
+  type TextAreaProps,
+  TextField,
+  type TextFieldProps,
+  Toggle,
+  type ToggleProps,
+} from "./Field.js";
+export { CaughtUp, type CaughtUpProps, Narration, type NarrationProps } from "./Narration.js";
 export { type TextTone, type TypeRole, textTone, typeRole } from "./type.js";

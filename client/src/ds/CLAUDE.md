@@ -56,11 +56,14 @@ Components (`DSS-5..25`) land in E2/E3.
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
 **Requirements this folder realizes:**
+- DS-1 — Single token source (.spec/product/requirements/ds-design-system.yaml)
 - DS-2 — Single-accent discipline (.spec/product/requirements/ds-design-system.yaml)
 - DS-3 — Typography (.spec/product/requirements/ds-design-system.yaml)
 - DS-4 — Accessibility baseline (.spec/product/requirements/ds-design-system.yaml)
+- DS-5 — Trust components (.spec/product/requirements/ds-design-system.yaml)
+- DS-6 — No empty states (.spec/product/requirements/ds-design-system.yaml)
 
-**Spec-elements:** DSS-2, DSS-3, DSS-4
+**Spec-elements:** DSS-2, DSS-3, DSS-4, DSS-5, DSS-6, DSS-7, DSS-21, DSS-22
 
 **Conventions scope:** client (see .spec/conventions.yaml)
 
