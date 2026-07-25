@@ -63,7 +63,7 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 - DS-5 — Trust components (.spec/product/requirements/ds-design-system.yaml)
 - DS-6 — No empty states (.spec/product/requirements/ds-design-system.yaml)
 
-**Spec-elements:** DSS-2, DSS-3, DSS-4, DSS-5, DSS-6, DSS-7, DSS-8, DSS-9, DSS-10, DSS-11, DSS-12, DSS-13, DSS-14, DSS-15, DSS-16, DSS-17, DSS-18, DSS-19, DSS-20, DSS-21, DSS-22
+**Spec-elements:** DSS-2, DSS-3, DSS-4, DSS-5, DSS-6, DSS-7, DSS-8, DSS-9, DSS-10, DSS-11, DSS-12, DSS-13, DSS-14, DSS-15, DSS-16, DSS-17, DSS-18, DSS-19, DSS-20, DSS-21, DSS-22, DSS-24, DSS-25
 
 **Conventions scope:** client (see .spec/conventions.yaml)
 

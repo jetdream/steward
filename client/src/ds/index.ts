@@ -97,6 +97,7 @@ export {
   type ScheduleRow,
   type VariantSummary,
 } from "./PostCard.js";
+export { SummonedSurface, type SummonedSurfaceProps } from "./SummonedSurface.js";
 export {
   AssumedNote,
   type AssumedNoteProps,
@@ -107,3 +108,4 @@ export {
   type ReasonLineProps,
 } from "./TrustMarks.js";
 export { type TextTone, type TypeRole, textTone, typeRole } from "./type.js";
+export { type VariantTab, VariantTablist, type VariantTablistProps } from "./VariantTablist.js";

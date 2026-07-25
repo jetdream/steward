@@ -9,6 +9,7 @@ import { useAuth } from "./api/useAuth";
 import { useOrgs } from "./api/useOrgs";
 import { usePing } from "./api/usePing";
 import { Gallery } from "./ds/Gallery";
+import { ShellPreview } from "./features/shell/ShellPreview";
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
@@ -119,6 +120,9 @@ export function App() {
   // screen — it renders the DSS contracts so browser checks and the e2e suite
   // can assert them directly. Stripped from a production build.
   if (import.meta.env.DEV && window.location.hash === "#ds") return <Gallery />;
+  // The real One-Home shell with placeholder regions (#shell) — the XH-12
+  // invariants and DSS-24 summon mechanics, browser-checkable before data lands.
+  if (import.meta.env.DEV && window.location.hash === "#shell") return <ShellPreview />;
 
   if (me.isLoading) return <Shell>Loading…</Shell>;
   if (!me.data) {
