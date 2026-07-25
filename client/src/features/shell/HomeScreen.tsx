@@ -23,6 +23,7 @@ import { useAutonomy } from "../../api/useAutonomy.js";
 import { useOnboarding } from "../../api/useOnboarding.js";
 import { useOrgs } from "../../api/useOrgs.js";
 import { Button, Narration } from "../../ds/index.js";
+import { Conversation } from "../conversation/Conversation.js";
 import { useDayOne } from "../onboarding/DayOne.js";
 import { isDayOne } from "../onboarding/dayOne.js";
 import { Home } from "./Home.js";
@@ -56,24 +57,21 @@ export function HomeScreen() {
       onPause={() => killSwitch.mutate()}
       onResume={() => resume.mutate({})}
       ready={inDayOne ? dayOne.ready : undefined}
-      conversation={
-        inDayOne ? (
-          dayOne.conversation
-        ) : (
-          <Narration
-            headline={orgName ? `${orgName} is set up.` : "You're signed in."}
-            detail="I know enough to start writing. Your drafts land above as they're ready — nothing publishes without your yes."
-            action={signOut}
-          />
-        )
-      }
+      // The conversation is present in EVERY shape (UXS-2) — the home's medium,
+      // not a day-one affordance the founder loses once onboarding is done.
+      conversation={<Conversation />}
       terminus={
-        inDayOne ? (
-          <>
-            {dayOne.terminus}
-            {signOut}
-          </>
-        ) : undefined
+        <>
+          {inDayOne ? (
+            dayOne.terminus
+          ) : (
+            <Narration
+              headline="Caught up."
+              detail="I know enough to start writing. Your drafts land above as they're ready — nothing publishes without your yes."
+            />
+          )}
+          {signOut}
+        </>
       }
     />
   );

@@ -14,6 +14,31 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-32:
+    v: 1
+    type: gotcha
+    scope: [client, testing]
+    source: E8 conversation region — the first message a founder typed vanished (2026-07-25)
+    title: A null-guard around a user action is a silent drop — resolve the precondition instead of skipping the work
+    statement: >-
+      The chat hook sent a message only `if (sessionId !== null)`. It read as
+      defensive and was correct for every org that had ever talked — but a
+      BRAND-NEW org has no conversation session, so the founder's very first
+      message was swallowed: composer cleared, no turn in the stream, no error,
+      indistinguishable from a network failure the product never mentions. The
+      guard hid exactly the case that matters most, the first one. Typecheck,
+      lint, the unit tier and the existing e2e were all green — the stories
+      tapped an opening (which only fills the box) and drove the redirect path
+      (which needs no session). THE PATTERN: when a precondition is MISSING
+      rather than INVALID, resolve it (`await ensureSession()`) rather than
+      skipping the action; make the id a required PARAMETER so a caller cannot
+      quietly pass nothing. A guard that can no-op a user-visible action must
+      either be impossible by typing or must surface. Corollary for the story
+      tier: a flow tested only from its warm state is untested — assert the COLD
+      start, because "first ever use" is the one path every founder takes exactly
+      once and never forgives. Fifth consecutive UI increment where the mandated
+      browser check caught a defect the whole machine gate showed green (see
+      LRN-31 for the running list).
   LRN-31:
     v: 1
     type: gotcha

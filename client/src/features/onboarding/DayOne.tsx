@@ -18,7 +18,8 @@
  * stream, so where the two disagree the region contract wins —
  *
  *   READY        the day-one work: arrival, findings, the review card
- *   CONVERSATION the interview — transcript + questions + the answer box
+ *   CONVERSATION the shared conversation region (UXS-2) — NOT day-one-specific;
+ *                the interview is one move inside it, not a separate thread
  *   TERMINUS     what happens next, honestly
  *
  * **Two places where the truth is narrower than the mockup, deliberately:**
@@ -36,18 +37,17 @@
  *    promise a check that never runs.
  */
 import { useState } from "react";
-import { useInterviewer } from "../../api/useInterviewer.js";
 import { useOnboarding } from "../../api/useOnboarding.js";
 import {
   AssumedNote,
   Button,
   Card,
-  ChatMessage,
   Narration,
   TextArea,
   TextField,
   typeRole,
 } from "../../ds/index.js";
+import { Conversation } from "../conversation/Conversation.js";
 import { proposedSiteFromEmail, toFindings } from "./dayOne.js";
 
 /** How many findings the arrival stream shows before the review card takes over. */
@@ -73,8 +73,6 @@ export interface DayOneRegions {
  */
 export function useDayOne({ email, orgName }: DayOneProps): DayOneRegions {
   const { profile, ready, ingest, correct } = useOnboarding();
-  // Resumption (INTS-2) lives entirely inside the hook — see useInterviewer.
-  const interview = useInterviewer();
 
   return {
     ready: (
@@ -90,15 +88,10 @@ export function useDayOne({ email, orgName }: DayOneProps): DayOneRegions {
         correcting={correct.isPending}
       />
     ),
-    conversation: (
-      <Interview
-        transcript={interview.transcript.data ?? []}
-        busy={interview.asking}
-        answering={interview.replying}
-        onAsk={() => void interview.ask()}
-        onAnswer={interview.reply}
-      />
-    ),
+    // The conversation region is NOT day-one-specific: the interview is one
+    // move inside the single conversation (UXS-2/DEC-18), so day one and the
+    // weekly visit render the same region and differ only in what surrounds it.
+    conversation: <Conversation />,
     terminus: <NextUp note={ready.data?.note} />,
   };
 }
@@ -299,75 +292,6 @@ function SourceProposal({
         </>
       )}
     </Card>
-  );
-}
-
-// ── CONVERSATION region: the interview in the stream (XO-3 / INTS-1/2) ──
-
-function Interview({
-  transcript,
-  busy,
-  answering,
-  onAsk,
-  onAnswer,
-}: {
-  transcript: ReadonlyArray<{ id: string; role: string; content: string }>;
-  busy: boolean;
-  answering: boolean;
-  onAsk: () => void;
-  onAnswer: (answer: string) => void;
-}) {
-  const [text, setText] = useState("");
-  const askedYet = transcript.length > 0;
-
-  return (
-    <>
-      {transcript.map((m) => (
-        <ChatMessage key={m.id} author={m.role === "assistant" ? "steward" : "founder"}>
-          {m.content}
-        </ChatMessage>
-      ))}
-
-      {!askedYet ? (
-        <Narration
-          headline="Want to tell me something no website says?"
-          detail="A couple of questions is all it takes — the answers are what make your posts sound like you."
-          action={
-            <Button variant="secondary" onClick={onAsk} loading={busy} pendingLabel="Thinking">
-              Ask me something
-            </Button>
-          }
-        />
-      ) : (
-        <form
-          className="flex flex-col gap-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const t = text.trim();
-            if (!t) return;
-            onAnswer(t);
-            setText("");
-          }}
-        >
-          <TextArea
-            label="Your answer"
-            rows={3}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="A sentence is plenty."
-            data-interview-answer
-          />
-          <div className="flex flex-wrap gap-2">
-            <Button type="submit" variant="primary" loading={answering} pendingLabel="Filing that">
-              Send
-            </Button>
-            <Button type="button" variant="quiet" onClick={onAsk} loading={busy}>
-              Ask me something else
-            </Button>
-          </div>
-        </form>
-      )}
-    </>
   );
 }
 

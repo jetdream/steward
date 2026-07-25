@@ -172,3 +172,34 @@ items:
       Asking puts Steward's questions in the conversation region as messages, her
       answer joins them in the same region, and every one of them is still there
       after a full page reload.
+  US-10:
+    v: 1
+    serves: [CHT-1, UX-2]
+    persona: >-
+      Maria, blank-page-averse, who has never once known what to type into a
+      chat box.
+    title: The conversation never shows her an empty box
+    statement: >-
+      The conversation region leads: it always offers specific things to say,
+      and every one of them states WHY Steward is offering it (CHTS-4/CHTS-5).
+      She mostly answers questions she already knows the answer to, rather than
+      composing from nothing (VAL-6, DS-6).
+    acceptance: >-
+      The conversation region always shows at least one suggested opening, every
+      opening displays a reason beneath it, and tapping one puts its text in the
+      composer ready to send.
+  US-11:
+    v: 1
+    serves: [CHT-2, MEM-1]
+    persona: >-
+      Maria, telling Steward "never name our donors" in passing.
+    title: A standing rule is confirmed back before it binds
+    statement: >-
+      Turning a sentence into a permanent rule is a two-step gate: Steward states
+      what it understood and writes NOTHING, and only her confirmation binds it
+      to Memory (CHTS-2). A misread instruction that bound silently would shape
+      every future draft.
+    acceptance: >-
+      Choosing to make a sentence a rule shows Steward's interpretation with
+      nothing yet saved; cancelling leaves what Steward knows unchanged; and only
+      after confirming does the rule appear in what Steward knows.

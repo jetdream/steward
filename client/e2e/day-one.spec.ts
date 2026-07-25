@@ -76,8 +76,16 @@ test("US-9: the interview lands in the conversation region and survives a reload
   const askedCount = await stewardTurns.count();
   expect(askedCount).toBeGreaterThan(0);
 
+  // Answering goes through the shared composer, and "Reply to this" is what
+  // routes it to Memory rather than asking Steward a question (E8 unified the
+  // interview and chat into one conversation — UXS-2).
   const answer = "They sat on the floor and she climbed into the dad's lap.";
-  await conversation.locator("[data-interview-answer]").fill(answer);
+  await stewardTurns
+    .first()
+    .getByRole("button", { name: /reply to this/i })
+    .click();
+  await expect(conversation.locator("[data-replying]")).toBeVisible();
+  await conversation.locator("[data-composer]").fill(answer);
   await conversation.getByRole("button", { name: "Send", exact: true }).click();
   await expect(conversation.locator("[data-chat-author='founder']")).toContainText(answer, {
     timeout: 30_000,

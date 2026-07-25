@@ -103,3 +103,23 @@ UI tweaks.
 **You should observe:** Asking puts Steward's questions in the conversation region as messages, her answer joins them in the same region, and every one of them is still there after a full page reload.
 
 <sub>Auto-checked by client/e2e/day-one.spec.ts · serves INT-2, ONB-3</sub>
+
+### 10. The conversation never shows her an empty box  <sub>US-10</sub>
+
+**As** Maria, blank-page-averse, who has never once known what to type into a chat box.
+
+**Do:** The conversation region leads: it always offers specific things to say, and every one of them states WHY Steward is offering it (CHTS-4/CHTS-5). She mostly answers questions she already knows the answer to, rather than composing from nothing (VAL-6, DS-6).
+
+**You should observe:** The conversation region always shows at least one suggested opening, every opening displays a reason beneath it, and tapping one puts its text in the composer ready to send.
+
+<sub>Auto-checked by client/e2e/conversation.spec.ts · serves CHT-1, UX-2</sub>
+
+### 11. A standing rule is confirmed back before it binds  <sub>US-11</sub>
+
+**As** Maria, telling Steward "never name our donors" in passing.
+
+**Do:** Turning a sentence into a permanent rule is a two-step gate: Steward states what it understood and writes NOTHING, and only her confirmation binds it to Memory (CHTS-2). A misread instruction that bound silently would shape every future draft.
+
+**You should observe:** Choosing to make a sentence a rule shows Steward's interpretation with nothing yet saved; cancelling leaves what Steward knows unchanged; and only after confirming does the rule appear in what Steward knows.
+
+<sub>Auto-checked by client/e2e/conversation.spec.ts · serves CHT-2, MEM-1</sub>

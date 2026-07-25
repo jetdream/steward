@@ -67,28 +67,39 @@ export function useInterviewer() {
   );
 
   /**
+   * The id of the conversation, opening it if this org has never talked.
+   *
+   * Every write to the conversation goes through here, including chat's — the
+   * session is SHARED (DEC-18), and a caller that skips this silently drops the
+   * founder's first message on the floor, because a brand-new org has no session
+   * to write to and no way to notice.
+   */
+  const ensureSession = async (): Promise<string> => {
+    if (sessionId !== null) return sessionId;
+    const id = (await startSession.mutateAsync()).id;
+    setOpenedNow(id);
+    void queryClient.invalidateQueries({ queryKey: trpc.interviewer.session.queryKey() });
+    return id;
+  };
+
+  /**
    * Ask the next few questions, resuming the session or opening the first one.
    * The only entry point — a caller that could start a session itself is a
    * caller that can strand a transcript.
    */
   const ask = async (): Promise<void> => {
-    let id = sessionId;
-    if (id === null) {
-      id = (await startSession.mutateAsync()).id;
-      setOpenedNow(id);
-      void queryClient.invalidateQueries({ queryKey: trpc.interviewer.session.queryKey() });
-    }
-    await nextQuestions.mutateAsync({ sessionId: id });
+    await nextQuestions.mutateAsync({ sessionId: await ensureSession() });
   };
 
-  /** Record the founder's answer on the resumed session. */
-  const reply = (text: string): void => {
-    if (sessionId !== null) answer.mutate({ sessionId, answer: text });
+  /** Record the founder's answer on the conversation. */
+  const reply = async (text: string): Promise<void> => {
+    await answer.mutateAsync({ sessionId: await ensureSession(), answer: text });
   };
 
   return {
     session,
     sessionId,
+    ensureSession,
     transcript,
     openQuestions,
     ask,
