@@ -22,10 +22,11 @@ import { useAuth } from "../../api/useAuth.js";
 import { useAutonomy } from "../../api/useAutonomy.js";
 import { useOnboarding } from "../../api/useOnboarding.js";
 import { useOrgs } from "../../api/useOrgs.js";
-import { Button, Narration } from "../../ds/index.js";
+import { Button } from "../../ds/index.js";
 import { Conversation } from "../conversation/Conversation.js";
 import { useDayOne } from "../onboarding/DayOne.js";
 import { isDayOne } from "../onboarding/dayOne.js";
+import { useReady } from "../ready/ReadySpine.js";
 import { Home } from "./Home.js";
 
 /** The signed-in home (XH-12), bound to the session. */
@@ -43,6 +44,7 @@ export function HomeScreen() {
   const email = me.data?.user.email;
 
   const dayOne = useDayOne({ email, orgName });
+  const spine = useReady();
   const inDayOne = isDayOne(ready.data);
 
   const signOut = (
@@ -56,20 +58,18 @@ export function HomeScreen() {
       paused={paused}
       onPause={() => killSwitch.mutate()}
       onResume={() => resume.mutate({})}
-      ready={inDayOne ? dayOne.ready : undefined}
+      // PINNED is shape-independent. A GR-3 hold pins whether the org is on day
+      // one or its fortieth week — the whole point is that it cannot be missed.
+      pinned={spine.pinned}
+      // Day one puts arrival and the review where Ready will be; once Steward
+      // knows enough to write, the same region becomes the disposition spine.
+      ready={inDayOne ? dayOne.ready : spine.ready}
       // The conversation is present in EVERY shape (UXS-2) — the home's medium,
       // not a day-one affordance the founder loses once onboarding is done.
       conversation={<Conversation />}
       terminus={
         <>
-          {inDayOne ? (
-            dayOne.terminus
-          ) : (
-            <Narration
-              headline="Caught up."
-              detail="I know enough to start writing. Your drafts land above as they're ready — nothing publishes without your yes."
-            />
-          )}
+          {inDayOne ? dayOne.terminus : spine.terminus}
           {signOut}
         </>
       }

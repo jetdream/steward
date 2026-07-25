@@ -21,6 +21,7 @@
     "manual-eval": "node scripts/render-manual-eval.mjs",
     "manual-eval:check": "node scripts/render-manual-eval.mjs --check",
     "e2e:install": "playwright install --with-deps chromium",
+    "demo:seed": "tsx backend/src/demo/run.ts",
     "test": "STEWARD_LLM=dev-stub tsx --env-file-if-exists=.env --test \"{shared,backend,client,news}/src/**/*.test.ts\"",
     "eval": "tsx --env-file-if-exists=.env backend/src/eval/run.ts",
     "eval:gate": "tsx backend/src/eval/gate.ts",

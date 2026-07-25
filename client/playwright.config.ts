@@ -23,6 +23,9 @@ const BASE = `http://127.0.0.1:${PORT}`;
 
 export default defineConfig({
   testDir: "./e2e",
+  // Seeds the demo org (see the file) — the Ready-spine states cannot be
+  // produced through the UI on a keyless tier.
+  globalSetup: "./e2e/global-setup.ts",
   // A story is validated or it is not; a retry that passes on the second go is
   // a flake we want to see, not hide.
   retries: 0,

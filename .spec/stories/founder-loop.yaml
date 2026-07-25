@@ -203,3 +203,48 @@ items:
       Choosing to make a sentence a rule shows Steward's interpretation with
       nothing yet saved; cancelling leaves what Steward knows unchanged; and only
       after confirming does the rule appear in what Steward knows.
+  US-12:
+    v: 1
+    serves: [APR-1, UX-3]
+    persona: >-
+      Maria on a Tuesday morning, with fifteen minutes before her first meeting.
+    title: The week's stack is finite, and she can see the end of it
+    statement: >-
+      Ready states how much is left and roughly how long it will take, and it
+      ENDS — the stream reaches an honest "caught up" rather than scrolling
+      forever (UXS-3). Each card offers exactly one accent verb, so there is
+      never a choice between two things that look equally intended (DS-2).
+    acceptance: >-
+      The Ready region shows a header naming how many cards are left and an
+      estimate in minutes; each card carries exactly one accent action; and once
+      the spine is empty the home shows the caught-up terminus instead.
+  US-13:
+    v: 1
+    serves: [APR-1, AUT-3, DS-4]
+    persona: >-
+      Maria, who has one draft about a distressing local event waiting for her.
+    title: A held card cannot be swept away with the rest
+    statement: >-
+      A GR-3 hold sits in the pinned needs-you zone, not in the clearable spine,
+      and "approve all ready" says up front that it will not touch it — the
+      exclusion is a guarantee stated before the tap, not a surprise discovered
+      after it (APRS-1, DEC-18).
+    acceptance: >-
+      The held draft appears in the pinned region rather than the Ready spine;
+      the batch-approve control names how many cards will stay behind; and after
+      batch approving, the held card is still there.
+  US-14:
+    v: 1
+    serves: [APR-1, MEM-1]
+    persona: >-
+      Maria skipping a draft that just is not right this week.
+    title: Skipping asks why afterwards, and never makes her answer
+    statement: >-
+      Skip completes immediately and the card leaves the count; only THEN does
+      Steward ask why, in one tap, dismissible (CHTS-5 — "answering is a gift,
+      never a toll"). Asking first would turn every skip into a small
+      interrogation.
+    acceptance: >-
+      Skipping removes the card from the spine straight away; the "mind saying
+      why?" prompt appears only after that; and dismissing it leaves the card
+      skipped with nothing else asked.

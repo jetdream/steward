@@ -48,9 +48,15 @@ test("US-10: there is always something to say, and every suggestion says why", a
   // (The interview opening starts questioning instead, so pick a prompt one.)
   const composer = conversation.locator("[data-composer]");
   await expect(composer).toHaveValue("");
-  const prompts = openings.filter({ hasNotText: "Ask me something" });
-  const label = (await prompts.first().textContent())?.trim() ?? "";
-  await prompts.first().click();
+  // Wait for the SERVER's suggestions before picking one. Until `chat.openings`
+  // resolves the list holds only the local floor, so reading a label then and
+  // clicking after would capture one opening and click a different one — the
+  // list is correct throughout; the snapshot in between is not.
+  await expect(openings).toHaveCount(2, { timeout: 30_000 });
+  const prompt = openings.filter({ hasNotText: "Ask me something" }).first();
+  const label = (await prompt.textContent())?.trim() ?? "";
+  expect(label.length).toBeGreaterThan(0);
+  await prompt.click();
   await expect(composer).toHaveValue(label);
 
   // And SENDING it works from a cold start. This org has never talked, so there
