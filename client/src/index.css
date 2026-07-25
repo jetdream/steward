@@ -1,1 +1,19 @@
-@import "tailwindcss";
+/* The Steward theme — Tailwind v4 CSS-first, bound to the steward tokens.
+ *
+ * @implements DSS-1 (token source & Tailwind theme binding)
+ *
+ * This import IS the DSS-1 realization: `design/design-system/steward/`
+ * remains the SINGLE source of every colour/type/spacing/radius/elevation/
+ * motion value (DS-1), and the Tailwind `@theme` derives from that same
+ * `tokens.css` — there is no parallel scale here and no fork of the theme.
+ * (`tailwind-v4.css` itself pulls in `tailwindcss` and `tokens.css`.)
+ *
+ * A raw hex, px, or ms literal in a component is a DSS-1 violation; resolve
+ * values through the generated utilities — `bg-surface`, `text-muted`,
+ * `rounded-md`, `shadow-raised`, `duration-fast`, and `desktop:` (the ONLY
+ * breakpoint variant founder surfaces may use — two layout modes, DEC-19/20).
+ *
+ * The path reaches outside the workspace on purpose: copying the tokens into
+ * `client/` would create exactly the second source DS-1 exists to prevent.
+ */
+@import "../../design/design-system/steward/tailwind-v4.css";

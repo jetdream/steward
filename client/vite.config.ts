@@ -22,7 +22,10 @@ export default defineConfig({
     // the dev server via host.docker.internal; allow the workspace's external host
     // (Vite blocks unknown Host headers by default). Dev only — gated by Coder auth.
     host: true,
-    allowedHosts: [".coder.bpms.dev", "localhost"],
+    // `host.docker.internal` is how the .coder/playwright container reaches the
+    // dev server (its Caddy reverse-proxies to it), so agent browser checks and
+    // the e2e suite need it allowlisted alongside the Coder workspace host.
+    allowedHosts: [".coder.bpms.dev", "localhost", "host.docker.internal"],
     port: 3000,
     proxy: {
       "/trpc": {
