@@ -206,8 +206,9 @@ items:
 
 open-questions:
   - >-
-    The chat SURFACE is the already-approved One-Home stream (UX-2, DEC-18; the
-    XH-2 flows XH-7/19/20 are approved) — not deferred. The only UI follow is
+    The chat SURFACE is the already-approved One-Home stream (UX-2, DEC-18: the
+    conversation is region 3 of the home screen XH-12, and the XH-2 flows XH-7 /
+    XH-8 / XH-9 are approved) — not deferred. The only UI follow is
     the CHT-3 command-action affordances (P1, XH-10) with their destructive
     confirm, which sit OUTSIDE the P1a thin slice (R-1); their UI-detail pass
     (method/ui.md) waits on the P1 command work.

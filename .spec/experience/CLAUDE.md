@@ -46,3 +46,24 @@ Rules of this layer:
 - The UX-coverage report in `docs-check` lists P0/P1 requirements with no
   serving journey; gaps are resolved consciously (backend-only requirements
   stay uncovered on purpose).
+
+## Two conscious entries in the `not yet ux-designed` report line
+
+`docs-check` marks a requirement ux-designed only when a serving journey's own
+subtree holds ≥1 flow **and** ≥1 leaf surface. Because the nesting is a tree
+while the experience is a graph, two entries on that list are deliberate, not
+debt — recorded here so neither is "fixed" by inventing a duplicate screen:
+
+- **XH-2 "Just talk"** (→ CHT-1..CHT-5, INT-3, INT-4, MEM-2, UX-2). It nests
+  flows XH-7/8/9/10 and no screen **by design**: DEC-18 abolished the chat page,
+  so the conversation is REGION 3 of the home screen [XH-12](home.yaml) — homed
+  under XH-5 (its steady life) and referenced by body from XH-2, exactly the
+  shared-surface rule above. Chat UI therefore `constrained-by`s XH-12 + XH-2 and
+  the design gate is satisfied; a second "chat screen" would re-create the surface
+  DEC-18 removed. Read that report line as "shares a designed surface", not
+  "undesigned".
+- **XB-1 "Fair account and exit"** (→ BIL-1, BIL-2). This one IS a real gap:
+  flows XB-2/XB-3 nest no screen (XB-6 hangs off XB-4/XB-5). Billing UI needs a
+  `/cortex:ux` step adding that screen first — tracked in
+  [bil-billing.yaml](../specs/bil-billing.yaml) `open-questions`, and outside the
+  P1b founder-loop slice.

@@ -20,21 +20,22 @@ thin: they validate input (Zod), enforce org confinement via `orgProcedure`
 ## Folder spec context
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
-**Requirements this folder realizes** (36 — aggregated per register; detail: `cortex graph pack <ID>`):
+**Requirements this folder realizes** (39 — aggregated per register; detail: `cortex graph pack <ID>`):
 - Accounts & Identity — 5 requirement(s) realized here: ACC-1…ACC-5 (.spec/product/requirements/acc-accounts-identity.yaml)
 - Approval surface (Ready) & Composer — 3 requirement(s) realized here: APR-1…APR-5 (.spec/product/requirements/apr-approval-inbox.yaml)
 - Autonomy System — 2 requirement(s) realized here: AUT-1…AUT-3 (.spec/product/requirements/aut-autonomy.yaml)
 - Agentic Chat — 3 requirement(s) realized here: CHT-1…CHT-4 (.spec/product/requirements/cht-agentic-chat.yaml)
 - External Content Radar — 3 requirement(s) realized here: EXT-1…EXT-5 (.spec/product/requirements/ext-external-radar.yaml)
-- Planning & Content Generation — 4 requirement(s) realized here: GEN-2…GEN-5 (.spec/product/requirements/gen-content-generation.yaml)
+- Planning & Content Generation — 5 requirement(s) realized here: GEN-1…GEN-5 (.spec/product/requirements/gen-content-generation.yaml)
 - Interviewer — 3 requirement(s) realized here: INT-1…INT-4 (.spec/product/requirements/int-interviewer.yaml)
 - Org Memory — 2 requirement(s) realized here: MEM-1…MEM-2 (.spec/product/requirements/mem-org-memory.yaml)
 - Lazy Onboarding — 6 requirement(s) realized here: ONB-1…ONB-6 (.spec/product/requirements/onb-onboarding.yaml)
 - Publishing — 2 requirement(s) realized here: PUB-1…PUB-3 (.spec/product/requirements/pub-publishing.yaml)
 - Posting Strategy — 2 requirement(s) realized here: STR-1…STR-2 (.spec/product/requirements/str-posting-strategy.yaml)
 - Stewardship Content Loop — 1 requirement(s) realized here: STW-1 (.spec/product/requirements/stw-stewardship.yaml)
+- Content Topics — 2 requirement(s) realized here: TOP-1…TOP-4 (.spec/product/requirements/top-content-topics.yaml)
 
-**Spec-elements:** APRS-1, ACCS-1, ONBS-1, AUTS-1, CHTS-1, INTS-1, MEMS-1, PUBS-1, EXTS-1, STWS-1, STRS-1, CHTS-2, GENS-2, INTS-2, ONBS-2, ACCS-2, EXTS-2, STRS-2, APRS-3, AUTS-3, GENS-3, ONBS-3, ACCS-3, PUBS-3, ONBS-4, CHTS-4, INTS-4, GENS-4, MEMS-4, APRS-5, GENS-5, MEMS-5, ONBS-5, EXTS-5, ONBS-6
+**Spec-elements:** APRS-1, ACCS-1, ONBS-1, AUTS-1, CHTS-1, GENS-1, INTS-1, MEMS-1, PUBS-1, EXTS-1, STWS-1, STRS-1, TOPS-1, CHTS-2, GENS-2, INTS-2, ONBS-2, ACCS-2, EXTS-2, STRS-2, APRS-3, AUTS-3, GENS-3, ONBS-3, ACCS-3, PUBS-3, ONBS-4, CHTS-4, INTS-4, GENS-4, MEMS-4, TOPS-4, APRS-5, GENS-5, MEMS-5, ONBS-5, EXTS-5, ONBS-6
 
 **Governed by:**
 - GR-1 — No outcome promises (.spec/product/guardrails.yaml)

@@ -1,7 +1,8 @@
 /**
- * Vite config for the web app (ARC-2). Proxies tRPC — HTTP and WebSocket — to
- * @backend on :3001 so the browser talks to the API same-origin (no CORS). The
- * @shared/@client aliases mirror the tsconfig paths for any runtime value import.
+ * Vite config for the web app (ARC-2). Proxies tRPC — HTTP and WebSocket — AND the
+ * BetterAuth handler (`/api/auth/*`) to @backend on :3001 so the browser talks to
+ * both same-origin (no CORS; the session cookie rides along). The @shared/@client
+ * aliases mirror the tsconfig paths for any runtime value import.
  */
 import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
@@ -29,6 +30,12 @@ export default defineConfig({
         changeOrigin: true,
         ws: true,
         rewrite: (path) => path.replace(/^\/trpc/, ""),
+      },
+      // The BetterAuth handler is mounted at /api/auth on the API server (SEC-7).
+      // Same-origin so Set-Cookie is accepted; no rewrite — the path is the route.
+      "/api/auth": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
       },
     },
   },

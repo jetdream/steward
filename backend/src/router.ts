@@ -20,6 +20,7 @@ import { radarRouter } from "./routers/radar.js";
 import { stewardshipRouter } from "./routers/stewardship.js";
 import { strategyRouter } from "./routers/strategy.js";
 import { systemRouter } from "./routers/system.js";
+import { topicsRouter } from "./routers/topics.js";
 import { router } from "./trpc.js";
 
 export const appRouter = router({
@@ -30,6 +31,7 @@ export const appRouter = router({
   interviewer: interviewerRouter,
   chat: chatRouter,
   content: contentRouter,
+  topics: topicsRouter,
   media: mediaRouter,
   strategy: strategyRouter,
   radar: radarRouter,

@@ -45,7 +45,9 @@ Environment variables in `docker-compose.yml`:
 
 ## Playwright MCP Integration
 
-The CDP port is exposed so that [Playwright MCP](https://github.com/microsoft/playwright-mcp) can connect to the container's browser from the host. Configuration lives in `.playwright/cli.config.json` at the project root and is picked up via the `PLAYWRIGHT_MCP_CONFIG` env var in `.mcp.json`.
+The CDP port is exposed so that [Playwright MCP](https://github.com/microsoft/playwright-mcp) can connect to the container's browser from the host. The MCP server is configured directly in `.mcp.json` (gitignored — copy `.mcp.json.example`), which runs `npx @playwright/mcp@latest --cdp-endpoint http://127.0.0.1:9222`. There is no separate config file.
+
+Note this container is for **interactive, agent-driven** browsing — a single shared headed session you can watch over VNC. The automated end-to-end suite is separate: `@playwright/test` with its own config and browsers, run via `npm run e2e`.
 
 ## Files
 

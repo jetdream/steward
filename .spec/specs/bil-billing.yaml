@@ -125,5 +125,11 @@ open-questions:
   - >-
     Q-6 (the 30-day-guarantee MARKETING posture — how prominently it is promised)
     is OPEN but is copy/positioning, not a behavior gate; BILS-1 is unaffected.
-    Pixel-level plan/cancel screens (XB-2/XB-3) are a method/ui.md pass on the
-    approved fair-account-and-exit journey (XB-1).
+    The plan/cancel surfaces are the approved fair-account-and-exit journey XB-1
+    and its FLOWS XB-2 (plan & billing) / XB-3 (cancel with dignity) — which nest
+    no screen of their own yet (the register's only screen, XB-6 team & roles,
+    hangs off XB-4/XB-5). So this needs a /cortex:ux step adding the plan/cancel
+    screen under XB-2/XB-3 BEFORE any billing UI, not merely a method/ui.md pass
+    on an existing screen. Not a P1b blocker — billing UI sits outside the
+    founder-loop slice; tracked so the missing element is not mistaken for a
+    designed one (it is also why BIL-1/BIL-2 read as not-yet-ux-designed).

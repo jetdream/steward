@@ -184,6 +184,7 @@ open-questions:
   - >-
     Pixel-level shell design — the exact chrome, the desktop summoned-pane layout
     (DEC-19), the Look-inside cluster, and the home's shape transitions — is a
-    method/ui.md pass on the already-approved One-Home spine (home screen XH-12 +
-    journeys XO-1/2/3/5/6/7) and the design system (GR-7). Not deferred design
+    method/ui.md pass on the already-approved One-Home spine (home screen XH-12,
+    the day-one journey XO-1 with its flows XO-2 / XO-3 / XO-4 / XO-5, and the
+    doorstep screen XO-6) and the design system (GR-7). Not deferred design
     (the spine is approved); it is the pixel-spec altitude below this behavior spec.

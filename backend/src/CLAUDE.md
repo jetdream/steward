@@ -21,13 +21,22 @@ modules. The client calls only through these routers (constitution "Client").
 _Generated from `.spec/` (references only — the registers are the source of truth). Run `cortex context` to refresh._
 
 **Requirements this folder realizes:**
+- GEN-1 — Rolling 4-week calendar (.spec/product/requirements/gen-content-generation.yaml)
+- TOP-1 — Topic identification (.spec/product/requirements/top-content-topics.yaml)
 - ACC-2 — Org membership with roles (.spec/product/requirements/acc-accounts-identity.yaml)
 - ACC-3 — Active-org session context & confinement (.spec/product/requirements/acc-accounts-identity.yaml)
+- TOP-4 — The editorial agenda — shared, transparent, founder-owned (.spec/product/requirements/top-content-topics.yaml)
 
-**Spec-elements:** ACCS-2
+**Spec-elements:** GENS-1, TOPS-1, ACCS-2, TOPS-4
 
 **Governed by:**
+- GR-1 — No outcome promises (.spec/product/guardrails.yaml)
+- GR-2 — No tax or legal advice (.spec/product/guardrails.yaml)
+- GR-3 — Sensitive-topic escalation (.spec/product/guardrails.yaml)
+- GR-4 — AI-visual policy (.spec/product/guardrails.yaml)
+- GR-5 — Mandatory citation of external content (.spec/product/guardrails.yaml)
 - GR-6 — Official platform APIs and permitted automation only (.spec/product/guardrails.yaml)
+- GR-8 — Stated-correction enforcement (.spec/product/guardrails.yaml)
 
 **Conventions scope:** backend (see .spec/conventions.yaml)
 
