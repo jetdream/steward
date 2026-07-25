@@ -12,6 +12,67 @@ checks that the contract holds, not that the product is good. Route findings
 back through the SDLC as spec amendments or `DEC-*` decisions, not as silent
 UI tweaks.
 
+## Before you start
+
+Two paths. Do the first; the second is what tells you whether the product is
+actually any good.
+
+**A · The seeded org — state coverage.** Every card state at once, deterministic,
+no model involved.
+
+```bash
+npm run infra:up      # Postgres, if it isn't already up
+npm run db:migrate
+npm run demo:seed     # writes the synthetic org (SEC-4 — no real org's content)
+npm run dev           # api + web on :3000
+```
+
+Then open `localhost:3000`, choose **Sign in instead**, and enter
+`demo@steward.test`. You will land on a home with a held card pinned, a spine of
+two, a published post in the log, an expired Instagram connection, and two
+discoveries waiting.
+
+**B · A live run — the real thing.** A fresh org against real Gemini. This is
+the path that answers the question the phase exists to ask.
+
+```bash
+# .env needs VERTEX_AI_KEY (gitignored; never commit or print it)
+npm run dev
+```
+
+Sign up at the doorstep with a real nonprofit's name and your address, let it
+propose reading that site, answer a couple of its questions, and see what it
+writes. Judge the *writing*, not the plumbing.
+
+## What "wrong" means here
+
+A step whose observation holds but which **feels** wrong is still a finding —
+the automated checks prove the contract holds, never that the product is good.
+The things worth watching for are the ones no assertion can see: does it sound
+like a colleague or like software; is the draft something you would actually
+post; does the reason under a card explain anything; did anything ask for your
+attention that had not earned it.
+
+## Known limitations — none of these are defects
+
+- **Publishing is dev-stubbed.** Nothing reaches Facebook, Instagram, Threads or
+  X. The publish log's "live link" goes nowhere; the connectors are the dev
+  stand-ins, since the platform OAuth apps are out of scope (`ONBS-4` deferral).
+- **501(c)(3) verification does not exist**, so the doorstep asks for no EIN
+  rather than showing a verification state it cannot reach.
+- **Guided Adjust** (the conversational redraft) has no backend; the verb says
+  so. Raw Edit and Redirect are live.
+- **No undo after approve.** `APRS-1`'s recall (approved → draft while still
+  pending) has no procedure yet, so approving is final until publish.
+- **Cadence, notifications and billing** are named as absent in Controls — none
+  has a backend.
+- **Only TL0 is active.** The trust ladder is shown; TL1/TL2 activation is P2.
+- **Keyless runs escalate everything.** With no model key, the guardrail judge is
+  dormant and FAIL-SAFE, so every generated draft is held. That is correct
+  behaviour, and it is why the seeded org writes its clean card directly.
+- **`@news`, billing and the admin/ops console are not built.** Out of this
+  phase by scope.
+
 ## Founder-loop stories — the manual-evaluation walkthrough, made normative
 
 ### 1. The home always presents the same skeleton  <sub>US-1</sub>
@@ -193,3 +254,13 @@ UI tweaks.
 **You should observe:** Controls opens from the chrome showing every channel with its own plain-language state and the right repair offered; the kill switch mirror changes with the chrome's Pause and back; and the settings that have no backend are listed as not-yet rather than shown as working controls.
 
 <sub>Auto-checked by client/e2e/controls.spec.ts · serves UX-6, AUT-3, ONB-4</sub>
+
+### 19. The whole loop closes — a draft she approves ends up in the record  <sub>US-19</sub>
+
+**As** Maria on her weekly visit, doing the only two things the product asks of her: approve, and redirect.
+
+**Do:** The founder loop is one pass: the stack says what is waiting, she opens a draft and reads it properly, she approves it, it leaves the stack, and it is in Plan & Published afterwards. Nothing about that arc requires her to go looking for a second screen or to trust that something happened off-stage.
+
+**You should observe:** From the home she opens a draft, approves it, and the card is gone from the Ready spine; the spine's count drops by one; and the approved post appears in the Plan & Published view.
+
+<sub>Auto-checked by client/e2e/full-loop.spec.ts · serves APR-1, PUB-3, UX-3</sub>

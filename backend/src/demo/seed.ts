@@ -23,7 +23,15 @@
  */
 import { randomUUID } from "node:crypto";
 import type { OrgId } from "@shared";
-import { channelVariant, contentItem, mediaAsset, memoryEntry } from "@shared/db/schema.js";
+import {
+  channelConnection,
+  channelVariant,
+  contentItem,
+  externalItem,
+  mediaAsset,
+  memoryEntry,
+  strategyDoc,
+} from "@shared/db/schema.js";
 import { eq } from "drizzle-orm";
 import type { Database } from "../db/client.js";
 
@@ -31,7 +39,14 @@ import type { Database } from "../db/client.js";
 export const DEMO_EMAIL = "demo@steward.test";
 
 /** The e2e spec files that need a demo org of their own. */
-export const DEMO_SUITES = ["ready", "draft", "compose", "controls", "glasswall"] as const;
+export const DEMO_SUITES = [
+  "ready",
+  "draft",
+  "compose",
+  "controls",
+  "glasswall",
+  "fullloop",
+] as const;
 
 /**
  * A separate demo org per (e2e project × spec file).
@@ -60,6 +75,9 @@ export interface SeedReport {
   memoryEntries: number;
   cards: number;
   variants: number;
+  published: number;
+  discoveries: number;
+  channels: string;
 }
 
 /**
@@ -78,6 +96,15 @@ const PLACEHOLDER_PHOTO = `data:image/svg+xml;utf8,${encodeURIComponent(
 )}`;
 
 /**
+ * A fixed past moment for the seeded publish log.
+ *
+ * Constant rather than `Date.now()`-relative so two runs produce the same
+ * screen: a walkthrough that reads "3 days ago" one day and "5 days ago" the
+ * next makes a reviewer wonder what changed when nothing did.
+ */
+const WHEN_PUBLISHED = new Date("2026-07-18T09:05:00Z");
+
+/**
  * Wipe and rewrite the demo org's content.
  *
  * Deleting first is what makes the walkthrough repeatable — a seed that appended
@@ -89,6 +116,9 @@ export async function seedDemoOrg(db: Database, orgId: OrgId): Promise<SeedRepor
   await db.delete(contentItem).where(eq(contentItem.orgId, orgId));
   await db.delete(mediaAsset).where(eq(mediaAsset.orgId, orgId));
   await db.delete(memoryEntry).where(eq(memoryEntry.orgId, orgId));
+  await db.delete(channelConnection).where(eq(channelConnection.orgId, orgId));
+  await db.delete(externalItem).where(eq(externalItem.orgId, orgId));
+  await db.delete(strategyDoc).where(eq(strategyDoc.orgId, orgId));
 
   // ── Memory: enough grounded context that the home leaves day-one shape
   //    (ONBS-6 wants identity + one program/story fact).
@@ -242,5 +272,107 @@ export async function seedDemoOrg(db: Database, orgId: OrgId): Promise<SeedRepor
     }
   }
 
-  return { orgId, memoryEntries: memory.length, cards: cards.length, variants: variantCount };
+  // ── A published post, so Plan & Published has a log with a live link (PUBS-3).
+  const publishedItemId = randomUUID();
+  await db.insert(contentItem).values({
+    id: publishedItemId,
+    orgId,
+    editorialState: "approved",
+    contentType: "people",
+    subject: "Saturday's volunteers",
+    designation: "impact_gratitude",
+    title: "Saturday's volunteers",
+    body: "Nineteen people gave up a Saturday morning to walk dogs who needed walking. That is the whole shelter, really.",
+    reasonLine: "Thanking volunteers is the rhythm that keeps them coming back.",
+    valOutcome: "pass",
+    escalated: false,
+    valSummary: "",
+    mediaAssetId: photoId,
+    isExternal: false,
+    qaStatus: "n/a",
+  });
+  await db.insert(channelVariant).values({
+    id: randomUUID(),
+    orgId,
+    contentItemId: publishedItemId,
+    platform: "facebook_page",
+    body: "Nineteen people gave up a Saturday morning to walk dogs who needed walking.",
+    fitVerdict: "fit",
+    fitReason: "",
+    deliveryState: "published",
+    scheduledFor: WHEN_PUBLISHED,
+    publishedUrl: "https://facebook.example/riverside/posts/demo-1",
+    publishedAt: WHEN_PUBLISHED,
+  });
+
+  // ── Channel health: one CONNECTED and one EXPIRED. The expired one is the
+  //    XO-4 needs-you case — a founder must never discover a dead channel
+  //    silently (ONBS-4), so the walkthrough has to be able to see it.
+  await db.insert(channelConnection).values([
+    {
+      id: randomUUID(),
+      orgId,
+      platform: "facebook_page",
+      externalAccountRef: "demo-fb-page",
+      credentialCipher: "demo-not-a-real-credential",
+      status: "connected",
+      statusReason: "",
+      lastVerifiedAt: WHEN_PUBLISHED,
+    },
+    {
+      id: randomUUID(),
+      orgId,
+      platform: "instagram",
+      externalAccountRef: "demo-ig-account",
+      credentialCipher: "demo-not-a-real-credential",
+      status: "expired",
+      statusReason: "Instagram signed me out — it does that every 60 days",
+      lastVerifiedAt: WHEN_PUBLISHED,
+    },
+  ]);
+
+  // ── Discoveries: read-first, untriaged, so all three dispositions are live.
+  const discoveries = [
+    {
+      source: "Cedar Hollow Gazette",
+      url: "https://gazette.example/river-cleanup",
+      title: "River cleanup draws a record turnout",
+      summary:
+        "Four hundred volunteers cleared six tonnes of debris from the river valley last weekend.",
+      relevanceRationale: "Your supporters care about the valley, and you work in it.",
+    },
+    {
+      source: "State Humane Association",
+      url: "https://humane.example/foster-shortage",
+      title: "Foster homes are short statewide going into winter",
+      summary: "Shelters across the state report a 30% drop in available foster placements.",
+      relevanceRationale: "You run a foster programme and this is the season it matters.",
+    },
+  ];
+  await db
+    .insert(externalItem)
+    .values(discoveries.map((d) => ({ id: randomUUID(), orgId, ...d, disposition: null })));
+
+  // ── A strategy doc, so How I write is not an empty screen (STRS-1).
+  await db.insert(strategyDoc).values({
+    id: randomUUID(),
+    orgId,
+    version: 1,
+    sectionA:
+      "Adoption stories, the people who volunteer, and what is actually happening in the valley.",
+    sectionB:
+      "Warm and plain. Short sentences. Never sentimental about the animals — say what happened.",
+    sectionD: "Always name the park for an adoption day. Never promise an outcome for an animal.",
+    sectionE: { x: "Keep it under two sentences; link out for the story." },
+  });
+
+  return {
+    orgId,
+    memoryEntries: memory.length,
+    cards: cards.length,
+    variants: variantCount + 1,
+    published: 1,
+    discoveries: discoveries.length,
+    channels: "1 connected, 1 expired (needs you)",
+  };
 }

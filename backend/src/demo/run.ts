@@ -54,6 +54,7 @@ async function seedFor(email: string): Promise<void> {
     [
       `demo:seed — ${org.name} <${email}> (${report.orgId})`,
       `  ${report.memoryEntries} memory entries · ${report.cards} cards · ${report.variants} variants`,
+      `  ${report.published} published (with a live link) · ${report.discoveries} discoveries · channels: ${report.channels}`,
       "  states: 1 clean approvable · 1 held (GR-3) · 1 awaiting-picture · 1 variant skipped with a reason",
     ].join("\n"),
   );

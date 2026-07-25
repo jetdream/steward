@@ -17,6 +17,8 @@ const ROOT = new URL("..", import.meta.url).pathname;
 const STORIES_DIR = join(ROOT, ".spec/stories");
 const OUT = join(ROOT, "MANUAL-EVAL.md");
 const E2E_DIR = join(ROOT, "client/e2e");
+/** Hand-written guidance inlined verbatim — prose, not items (VAL-6). */
+const PROSE = join(STORIES_DIR, "walkthrough.md");
 
 /** Every `@validates US-n` marker in the e2e tier → the files that cite it. */
 function validationSites() {
@@ -56,6 +58,18 @@ function render() {
     "UI tweaks.",
     "",
   );
+
+  // The how-to-run and known-limitations sections are PROSE the register has no
+  // business itemizing, but they must ship in the same generated file so the
+  // walkthrough is one document — inlined, still single-sourced.
+  if (existsSync(PROSE)) {
+    out.push(
+      readFileSync(PROSE, "utf8")
+        .replace(/^<!--[\s\S]*?-->\n*/, "")
+        .trimEnd(),
+      "",
+    );
+  }
 
   for (const file of files) {
     const reg = parse(readFileSync(join(STORIES_DIR, file), "utf8"));

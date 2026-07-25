@@ -317,4 +317,21 @@ items:
       plain-language state and the right repair offered; the kill switch mirror
       changes with the chrome's Pause and back; and the settings that have no
       backend are listed as not-yet rather than shown as working controls.
+  US-19:
+    v: 1
+    serves: [APR-1, PUB-3, UX-3]
+    persona: >-
+      Maria on her weekly visit, doing the only two things the product asks of
+      her: approve, and redirect.
+    title: The whole loop closes — a draft she approves ends up in the record
+    statement: >-
+      The founder loop is one pass: the stack says what is waiting, she opens a
+      draft and reads it properly, she approves it, it leaves the stack, and it
+      is in Plan & Published afterwards. Nothing about that arc requires her to
+      go looking for a second screen or to trust that something happened
+      off-stage.
+    acceptance: >-
+      From the home she opens a draft, approves it, and the card is gone from
+      the Ready spine; the spine's count drops by one; and the approved post
+      appears in the Plan & Published view.
 
