@@ -31,7 +31,7 @@ import type { Database } from "../db/client.js";
 export const DEMO_EMAIL = "demo@steward.test";
 
 /** The e2e spec files that need a demo org of their own. */
-export const DEMO_SUITES = ["ready", "draft"] as const;
+export const DEMO_SUITES = ["ready", "draft", "compose"] as const;
 
 /**
  * A separate demo org per (e2e project × spec file).

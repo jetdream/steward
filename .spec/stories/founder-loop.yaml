@@ -264,3 +264,20 @@ items:
       skipped ones; selecting a skipped tab states the specific reason it was
       skipped; and the schedule lists every channel in plain language, marking
       the skipped ones rather than omitting them.
+  US-16:
+    v: 1
+    serves: [APR-5, UX-7]
+    persona: >-
+      Maria, who wants to say thank you to Saturday's volunteers right now.
+    title: Writing something herself goes through the same checks, not around them
+    statement: >-
+      Compose is an ACTION from the chrome, never a destination, and what it
+      produces is a DRAFT in Ready — the founder's own words take the same
+      adapt → guardrail → fit chain a generated post does (APRS-5: authorship is
+      not a bypass). Closing the sheet half-written parks it rather than throwing
+      it away (XH-14).
+    acceptance: >-
+      Compose opens over the home rather than navigating away; submitting words
+      produces a draft whose per-channel versions are shown for confirmation
+      before anything ships; and closing a half-written sheet and reopening it
+      brings the words back.

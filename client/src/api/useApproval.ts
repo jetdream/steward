@@ -37,6 +37,13 @@ export function useApproval() {
   const skip = useMutation(trpc.approval.skip.mutationOptions({ onSuccess: refresh }));
   const editDraft = useMutation(trpc.approval.editDraft.mutationOptions({ onSuccess: refresh }));
   const redirect = useMutation(trpc.approval.redirect.mutationOptions({ onSuccess: refresh }));
+  /**
+   * APRS-5: hand a founder-authored master to the CONTENT ENGINE. Not a publish
+   * path — what comes back is a draft in Ready that still needs confirming, and
+   * it has passed the same VAL chain a generated draft does (authorship is not
+   * a bypass).
+   */
+  const compose = useMutation(trpc.approval.compose.mutationOptions({ onSuccess: refresh }));
 
   /**
    * The after-the-fact skip reason (CHTS-5 enrichment loop). A second call on
@@ -47,5 +54,5 @@ export function useApproval() {
     skip.mutate({ itemId, reason });
   };
 
-  return { stack, approve, batchApprove, skip, explainSkip, editDraft, redirect };
+  return { stack, approve, batchApprove, skip, explainSkip, editDraft, redirect, compose };
 }

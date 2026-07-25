@@ -92,6 +92,14 @@ export function SummonedSurface({
       // stays present, place kept" (caught by the E4 browser check).
       //   phone   → a full-screen takeover that starts BELOW the chrome.
       //
+      // The height is set EXPLICITLY rather than left to the top/bottom insets:
+      // the UA stylesheet gives `dialog` `height: fit-content`, which wins over
+      // the fill those insets would otherwise produce, so the box grows with its
+      // content past the bottom of the screen and its own `overflow-y` never
+      // scrolls — the pane's last screenful (its submit button included) sits
+      // permanently below the fold with no way to reach it. `100dvh` (not `vh`)
+      // because a mobile browser's toolbars change the usable height.
+      //
       // `top: var(--chrome-h)` rather than `inset-0`: DSS-24 stacks the chrome
       // ABOVE the pane so the AUT-3 Pause control is never buried, which means a
       // pane drawn from y=0 slides UNDER it — its own "Back to Steward" control
@@ -99,7 +107,7 @@ export function SummonedSurface({
       // publishes its measured height (see `Chrome`); the pane consumes it.
       //   desktop → `relative` and in-flow: a flex sibling that takes the ADDED
       //             width beside the column, so nothing is covered.
-      className="fixed inset-x-0 bottom-0 top-[var(--chrome-h,0px)] m-0 flex max-h-full w-full flex-col gap-3 overflow-y-auto rounded-lg border border-border bg-surface p-4 text-fg shadow-raised backdrop:bg-transparent open:flex desktop:relative desktop:inset-auto desktop:top-auto desktop:max-h-none desktop:w-auto desktop:max-w-[var(--pane-max)] desktop:flex-1 desktop:basis-[var(--pane-basis)]"
+      className="fixed inset-x-0 bottom-0 top-[var(--chrome-h,0px)] m-0 flex h-[calc(100dvh-var(--chrome-h,0px))] w-full flex-col gap-3 overflow-y-auto rounded-lg border border-border bg-surface p-4 text-fg shadow-raised backdrop:bg-transparent open:flex desktop:relative desktop:inset-auto desktop:top-auto desktop:h-auto desktop:w-auto desktop:max-w-[var(--pane-max)] desktop:flex-1 desktop:basis-[var(--pane-basis)]"
       style={{ zIndex: "var(--z-pane)" }}
     >
       <div className="flex items-center justify-between gap-3">

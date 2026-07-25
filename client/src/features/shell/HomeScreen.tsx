@@ -18,17 +18,53 @@
  * day-one at exactly the moment Steward knows enough to write. Nothing about the
  * switch is a route, and the founder's spatial memory survives it.
  */
+import { useState } from "react";
 import { useAuth } from "../../api/useAuth.js";
 import { useAutonomy } from "../../api/useAutonomy.js";
 import { useOnboarding } from "../../api/useOnboarding.js";
 import { useOrgs } from "../../api/useOrgs.js";
 import { Button, Narration } from "../../ds/index.js";
+import { ComposeSheet } from "../compose/ComposeSheet.js";
+import { type ComposeDraft, EMPTY_COMPOSE, parkedNote } from "../compose/compose.js";
 import { Conversation } from "../conversation/Conversation.js";
 import { DraftOpened } from "../draft/DraftOpened.js";
 import { useDayOne } from "../onboarding/DayOne.js";
 import { isDayOne } from "../onboarding/dayOne.js";
 import { useReady } from "../ready/ReadySpine.js";
 import { Home, useSummon } from "./Home.js";
+
+/**
+ * The compose sheet in its pane. On success it SWAPS the pane to the new draft
+ * (XH-13) rather than closing: the adapted per-channel variants are what
+ * APRS-5 asks the founder to confirm, and they are one level down, not away.
+ */
+function ComposePane({
+  draft,
+  onChange,
+}: {
+  draft: ComposeDraft;
+  onChange: (next: ComposeDraft) => void;
+}) {
+  const { summon } = useSummon();
+  const parked = parkedNote(draft);
+  return (
+    <>
+      <ComposeSheet
+        draft={draft}
+        onChange={onChange}
+        onComposed={(itemId) => {
+          onChange(EMPTY_COMPOSE);
+          summon({ kind: "draft", itemId });
+        }}
+      />
+      {parked ? (
+        <p className="font-body text-sm text-meta" data-compose-parked>
+          {parked}
+        </p>
+      ) : null}
+    </>
+  );
+}
 
 /** A pane target whose surface has not been built yet — said, never faked. */
 function NotYetPane() {
@@ -71,6 +107,11 @@ export function HomeScreen() {
   const orgName = active.data?.name;
   const email = me.data?.user.email;
 
+  // The composer's unsent draft lives HERE, above the pane, so closing the
+  // sheet parks it instead of destroying it (XH-14). In memory only — the note
+  // the sheet shows says exactly that rather than promising it is saved.
+  const [composeDraft, setComposeDraft] = useState<ComposeDraft>(EMPTY_COMPOSE);
+
   const dayOne = useDayOne({ email, orgName });
   const spine = useReady();
   const inDayOne = isDayOne(ready.data);
@@ -98,11 +139,18 @@ export function HomeScreen() {
       // XH-13 — the only pane body wired so far. The glass-wall views, Controls
       // and Compose land with their own increments; until then their targets
       // fall through to an honest note rather than an empty pane.
-      renderPane={(target) =>
-        target.kind === "draft"
-          ? { title: "The draft, opened", body: <DraftOpenedPane itemId={target.itemId} /> }
-          : { title: paneTitle(target), body: <NotYetPane /> }
-      }
+      renderPane={(target) => {
+        if (target.kind === "draft") {
+          return { title: "The draft, opened", body: <DraftOpenedPane itemId={target.itemId} /> };
+        }
+        if (target.kind === "compose") {
+          return {
+            title: "Make something",
+            body: <ComposePane draft={composeDraft} onChange={setComposeDraft} />,
+          };
+        }
+        return { title: paneTitle(target), body: <NotYetPane /> };
+      }}
       terminus={
         <>
           {inDayOne ? dayOne.terminus : spine.terminus}

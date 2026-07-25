@@ -163,3 +163,13 @@ UI tweaks.
 **You should observe:** Opening a card shows the master text and one tab per channel including the skipped ones; selecting a skipped tab states the specific reason it was skipped; and the schedule lists every channel in plain language, marking the skipped ones rather than omitting them.
 
 <sub>Auto-checked by client/e2e/draft.spec.ts · serves APR-1, UX-1</sub>
+
+### 16. Writing something herself goes through the same checks, not around them  <sub>US-16</sub>
+
+**As** Maria, who wants to say thank you to Saturday's volunteers right now.
+
+**Do:** Compose is an ACTION from the chrome, never a destination, and what it produces is a DRAFT in Ready — the founder's own words take the same adapt → guardrail → fit chain a generated post does (APRS-5: authorship is not a bypass). Closing the sheet half-written parks it rather than throwing it away (XH-14).
+
+**You should observe:** Compose opens over the home rather than navigating away; submitting words produces a draft whose per-channel versions are shown for confirmation before anything ships; and closing a half-written sheet and reopening it brings the words back.
+
+<sub>Auto-checked by client/e2e/compose.spec.ts · serves APR-5, UX-7</sub>
