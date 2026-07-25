@@ -14,6 +14,33 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-34:
+    v: 1
+    type: gotcha
+    scope: [tooling, backend, process]
+    source: The founder ran the MANUAL-EVAL walkthrough and `npm run db:migrate` failed on step 2 (2026-07-25)
+    title: A root script that `cd`s into a workspace loses the root .env — and a command nobody runs from scratch is a command nobody has tested
+    statement: >-
+      `npm run db:migrate` is `cd backend && drizzle-kit migrate`. drizzle-kit
+      auto-loads `.env` FROM ITS CWD, the cwd is now `backend/`, and `.env` lives
+      at the repo root — so `DATABASE_URL` resolved to `""` and the command died
+      with "Please provide required params". It had been broken since the script
+      was written. SECOND INCIDENT OF THE CLASS: the e2e tier's Playwright
+      `webServer` hit the identical failure (the server reads `.env` relative to
+      its cwd, and a webServer inherits the CONFIG's directory), fixed there with
+      `cwd: ".."`. Any tool that resolves an env file relative to its own working
+      directory breaks the moment a script changes directories — so load the env
+      EXPLICITLY from a path anchored to the file that needs it
+      (`process.loadEnvFile(new URL("../.env", import.meta.url).pathname)`),
+      optional-and-caught so CI's ambient variables still win. THE DEEPER LESSON
+      is about verification, not env files: this survived a whole phase of green
+      gates because every gate ran against an ALREADY-MIGRATED database and an
+      already-populated dev environment. `npm test`, `npm run e2e` and the
+      browser checks all passed while step 2 of the project's own setup
+      instructions was broken. A command that only ever runs in an environment
+      it already succeeded in is untested — when a doc tells a human to run a
+      sequence, run that sequence from a cold shell (`env -u VAR`, a fresh
+      clone, or CI) before shipping the doc.
   LRN-33:
     v: 1
     type: gotcha
