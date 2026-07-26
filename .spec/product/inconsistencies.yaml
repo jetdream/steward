@@ -11,6 +11,102 @@ intent: >-
   open count.
 
 items:
+  INC-12:
+    v: 1
+    status: open
+    binds: [VIS-1, VAL-6, ONB-6, ONBS-6, GEN-1]
+    title: The built product cannot produce content unaided — the vision's central verb is unimplemented
+    statement: >-
+      Detected 2026-07-26 (Phase F audit, F0b/F1). VIS-1 promises an AI employee
+      that "plans and writes its donor-facing content"; VAL-6 forbids "empty
+      states that ask the founder to create from scratch"; ONBS-6's acceptance
+      states that an org giving only name + email "receives first drafts in that
+      session". None of this holds. The client has ZERO callers of
+      content.planAndDraft, topics.identify or strategy.autoDraft, and the chain
+      no-ops regardless (planner.ts:148 returns [] on an empty agenda). The only
+      reachable content path is approval.compose, where the founder writes the
+      post themselves. Confirmed live against real Gemini: a fresh org whose
+      website yielded 21 accurate Memory entries produced no draft, and chat
+      declined the request "write a post about Monty" as "our strategy for
+      writing posts isn't set yet". Evidence and screenshots:
+      design/walkthroughs/audit-2026-07-26/.
+  INC-11:
+    v: 1
+    status: open
+    binds: [ARC-3, GEN-1, PRO-4]
+    title: ADR-0003 provisioned a Job/Queue port and nothing implements it — Steward has no heartbeat
+    statement: >-
+      Detected 2026-07-26 (Phase F audit). ADR-0003 specifies a Job/Queue port
+      (cron + work queues, pg-boss on Postgres) as one of the environment-selected
+      adapter seams. No implementation exists — no scheduler, cron, queue or timer
+      anywhere in backend/ or shared/. Consequence: Steward can only act while a
+      founder is looking at it, so the founding insight ("she shows up on her
+      own") is structurally unreachable, and DEC-24's shared proactive-interruption
+      budget (PRO-4) cannot be built. Resolving INC-12 with a UI button would NOT
+      close this: a button is still a tool the founder operates, which vision.md
+      names as the failure mode this persona abandons. Founder decision taken
+      2026-07-26 (build the substrate) — pending its DEC-* record.
+  INC-10:
+    v: 1
+    status: open
+    binds: [STR-4, STRS-4, MEM-1, GR-8]
+    title: Strategy section (c) merges taboos with style rules, inverting the org's own instructions
+    statement: >-
+      Detected 2026-07-26 (Phase F audit, F1 run A). STRS-4 derives section (c)
+      as the platform guardrail layer plus the active Memory overlay, and renders
+      the whole under the founder-facing heading "What I never do". The overlay
+      contains BOTH taboo entries (never do X) and styleRule entries (do X this
+      way), so positive instructions are presented as prohibitions. Observed live
+      with real ingested data: an animal shelter was told Steward will never
+      "Encourage adoption, fostering, and donation." The two kinds need separate
+      presentation; only taboos belong under a never-heading.
+  INC-9:
+    v: 1
+    status: open
+    binds: [UX-1, US-1]
+    title: The story register assumes a laptop; the experience register makes the phone the floor
+    statement: >-
+      Detected 2026-07-26 (Phase F audit). UX-1 v2 (decided-by DEC-19) states
+      "the phone is the FLOOR — every founder action is available one-handed in a
+      phone browser; desktop adds simultaneity, never exclusive capability". US-1's
+      persona line reads "marketing-averse, time-poor, arriving on a laptop". The
+      contradiction had a practical consequence: every Phase E browser check and
+      the manual walkthrough ran at 1280px, so the specified primary surface was
+      never judged by a human until this audit.
+  INC-8:
+    v: 1
+    status: open
+    binds: [DEC-16, AUT-1, AUTS-1]
+    title: The built trust-level labels are not the ones DEC-16 mandates
+    statement: >-
+      Detected 2026-07-26 (Phase F audit, F2). DEC-16 clause (3) and the glossary
+      entry for Trust Level both mandate the founder-facing labels "Ask me first /
+      Publish with a heads-up / Run on your own", with the TL0/1/2 codes internal.
+      All three strings are absent from the codebase; the build renders "I approve
+      everything" / "Let the routine ones go" / "Run it" (client controls). The
+      codes are correctly kept internal, so DEC-16's substance holds, but its
+      prescribed wording does not. The built labels are arguably the better
+      colleague voice — this is a choice between conforming the code and amending
+      DEC-16, and needs a decision rather than being left divergent.
+  INC-7:
+    v: 1
+    status: open
+    binds: [US-19, ONBS-6]
+    title: The demo seed fabricates both ends of the content loop, so no test could detect its absence
+    statement: >-
+      Detected 2026-07-26 (Phase F audit, F0b). backend/src/demo/seed.ts inserts
+      content_item rows directly (the drafts) AND a channelVariant with
+      deliveryState "published" plus a URL (the record). Nothing in the product
+      writes either state: generation has no UI trigger (INC-12) and
+      publishing.publish has no client caller, so publishLog can only ever return
+      seeded rows. Every e2e spec that asserts a draft exists signs into the
+      seeded org; the only two specs that start from a fresh signup assert no
+      draft appears. US-19 ("the whole loop closes") therefore passes against
+      fabricated data while being false for every real founder. The suite was
+      structurally incapable of failing when the product could not write. LRN-30
+      recorded this class of blindness on 2026-07-25 and it recurred the same
+      week. Resolution requires a test that starts from a fresh signup and
+      asserts a draft arrives unaided.
   INC-6:
     v: 1
     status: resolved
