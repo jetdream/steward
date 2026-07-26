@@ -179,3 +179,50 @@ test(
     );
   },
 );
+
+/**
+ * The ORG layer of the two-layer guardrail check (STR-4) must reach the judge on
+ * the composer path too — authorship is not an exemption from GR-8 (APRS-5).
+ *
+ * Why this asserts `escalated` rather than inspecting the call: on the keyless
+ * dev-stub tier the judge performs NO content detection, and its ONLY finding is
+ * the STRUCTURAL GR-8 backstop — "an active taboo overlay exists and a non-model
+ * stub cannot confidently clear it". That finding fires if and only if the
+ * overlay it receives is non-empty, which makes `escalated` an exact, keyless
+ * witness for "the org's own rules were passed to the check". Emptying the
+ * overlay again turns this red.
+ *
+ * @verifies MEMS-3 v1
+ * @verifies APRS-5 v1
+ */
+test("compose applies the org's OWN taboos to the founder's own post (GR-8)", opts, async () => {
+  await memory.write("Never name individual donors in a post.", {
+    orgId: ORG,
+    source: { trigger: "chat", detail: "audit F-16 regression" },
+    correctionChannel: true,
+  });
+  const overlay = await db
+    .select({ kind: memoryEntry.kind })
+    .from(memoryEntry)
+    .where(and(eq(memoryEntry.orgId, ORG)));
+  assert.ok(
+    overlay.some((r) => r.kind === "taboo" || r.kind === "styleRule"),
+    "precondition: the org has an active rule/taboo overlay",
+  );
+
+  const item = await approval.compose(ORG, {
+    title: "Thanks to our supporters",
+    body: "A huge thank you to Margaret Chen, who gave $5,000 this month.",
+  });
+
+  assert.equal(
+    item.escalated,
+    true,
+    "the founder's own taboo reached the guardrail judge — an empty overlay would leave this false",
+  );
+  assert.match(
+    item.valSummary ?? "",
+    /GR-8/,
+    "and the hold records the org-layer backstop as its reason",
+  );
+});

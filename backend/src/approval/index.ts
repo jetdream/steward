@@ -31,6 +31,7 @@ import { randomUUID } from "node:crypto";
 import type { ChannelPlatform, ChannelVariant, ContentItem, MemoryEntry, OrgId } from "@shared";
 import { channelVariant, contentItem, editDiff } from "@shared/db/schema.js";
 import { and, asc, eq } from "drizzle-orm";
+import { assembleGrounding } from "../content/generate.js";
 import { resolveOutcome } from "../content/guardrails.js";
 import { getContentItem, listContentItems, persistDraft } from "../content/store.js";
 import type { DraftResult } from "../content/types.js";
@@ -226,7 +227,16 @@ export function createApproval(deps: ApprovalDeps): Approval {
         body: input.body,
         reasonLine: input.reasonLine ?? "Founder-composed",
       };
-      const judgment = await port.checkGuardrails({ master, overlay: [], isExternal: false });
+      // GR-8 is a HARD guardrail: a stated correction is NEVER violated, and
+      // authorship is not an exemption (APRS-5). The org's own taboos/styleRules
+      // must therefore reach the judge here exactly as they do on the planner
+      // path — an empty overlay silently skipped the ORG layer of the two-layer
+      // check (STR-4), so a founder's own rule was never applied to a founder's
+      // own post. No slot argument: the guardrail check needs the FULL active
+      // overlay (MEMS-3 — an indexed read, never a top-k similarity slice), not
+      // retrieved grounding, and skipping the slot skips the embedding call.
+      const { overlay } = assembleGrounding(await memory.retrieveContext(orgId));
+      const judgment = await port.checkGuardrails({ master, overlay, isExternal: false });
       const result: DraftResult = {
         master,
         val: {

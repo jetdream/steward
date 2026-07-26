@@ -685,6 +685,40 @@ items:
       script knob, so the keyed vs keyless split (ADR-0010) stays enforced by
       construction.
 
+  LRN-35:
+    v: 1
+    type: gotcha
+    scope: [backend, tooling]
+    source: Phase F founder-truth audit — the composer skipped the org guardrail layer for the whole of Phase E (2026-07-26)
+    title: An empty-literal argument at a guardrail call site is invisible to every gate — assert the INPUT reached the check, not just that the check ran
+    statement: >-
+      `approval.compose` called `port.checkGuardrails({ master, overlay: [], ... })`
+      and `draftExternalItem` did the same. Both TYPECHECK (the parameter is
+      `string[]`, and `[]` satisfies it), both pass lint, both were covered by a
+      green integration test asserting the composer "runs the VAL chain", and the
+      module's own CLAUDE.md correctly stated "the composer is not a bypass". The
+      chain DID run — the PLATFORM layer (GR-1..GR-6) was checked. What was silently
+      skipped was the ORG layer (STR-4's second half): the founder's own
+      taboos/styleRules were never passed in, so GR-8's hard promise — "a stated
+      correction is never violated" — did not hold on the one generation path the UI
+      could actually reach. Three lessons. (1) AN EMPTY LITERAL IS THE MOST
+      DANGEROUS ARGUMENT IN A SECURITY-ADJACENT CALL: it is well-typed, reads as
+      deliberate, and produces a clean pass rather than an error. Grep for
+      `: []`/`: ""`/`: null` at every guardrail, authz and policy call site and
+      justify each one in a comment, or wire the input so an empty value is
+      impossible to supply by accident. (2) A TEST THAT ASSERTS "THE CHECK RAN" IS
+      NOT A TEST THAT THE CHECK COULD CATCH ANYTHING. The passing test observed the
+      pipeline's SHAPE (state transitions, persistence); it never established that
+      the org's rules reached the judge. Assert on a witness that is FALSE when the
+      input is empty — here the keyless dev-stub's structural GR-8 backstop fires if
+      and only if the overlay it receives is non-empty, which makes `escalated` an
+      exact keyless witness. Then MUTATE the argument back to `[]` and confirm red
+      (LRN-30). (3) FIX THE CLASS: the same empty literal existed at a second call
+      site (`content/external.ts`) that no UI can reach yet, so it would have
+      shipped as a live breach the moment `radar.toDraft` was wired. The bug-triage
+      rule ("fix the class, not only the instance") is what turns a one-line fix
+      into a durable one.
+
   LRN-28:
     v: 1
     type: gotcha

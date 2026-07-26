@@ -42,6 +42,17 @@ master through the SAME chain a planner slot takes: the VAL guardrail judge
 `adaptContentItem` (GENS-2 per-channel + the GENS-5 fit gate). No APR-side pipeline,
 no direct-publish side channel.
 
+**BOTH guardrail layers, or it is still a bypass (STR-4 / LRN-35).** The check is
+two-layer: the PLATFORM layer (GR-1..GR-6, always on) and the ORG layer — the
+founder's own active taboos/styleRules. `compose` must therefore pass the FULL
+active overlay, read via `memory.retrieveContext(orgId)` with **no slot** (MEMS-3:
+an indexed read of the whole active set, never a top-k similarity slice; omitting
+the slot also skips the embedding call). Passing `overlay: []` still runs the
+chain and still reads as deliberate — it silently drops the org layer, so GR-8's
+"a stated correction is never violated" quietly stops holding. It typechecks, it
+lints, and a test that only asserts "the chain ran" stays green; the regression
+test asserts `escalated` instead, which is false whenever the overlay is empty.
+
 **Deferred (documented keyed follow-on).**
 - **APRS-3 recurring-edit-PATTERN detection** — the LLM/statistical judgment over
   the accumulated `edit_diff` log that SURFACES a rule-proposal card ("you've
@@ -62,10 +73,11 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 
 **Requirements this folder realizes:**
 - APR-1 — Ready (.spec/product/requirements/apr-approval-inbox.yaml)
+- MEM-1 — Memory persistence (.spec/product/requirements/mem-org-memory.yaml)
 - APR-3 — Learning loop (.spec/product/requirements/apr-approval-inbox.yaml)
 - APR-5 — Manual composer (.spec/product/requirements/apr-approval-inbox.yaml)
 
-**Spec-elements:** APRS-1, APRS-3, APRS-5
+**Spec-elements:** APRS-1, APRS-3, MEMS-3, APRS-5
 
 **Governed by:**
 - GR-1 — No outcome promises (.spec/product/guardrails.yaml)

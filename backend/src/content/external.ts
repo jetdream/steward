@@ -10,8 +10,9 @@
  */
 import type { ContentItem, OrgId } from "@shared";
 import type { Database } from "../db/client.js";
+import { retrieveContext } from "../memory/retrieve.js";
 import type { LlmPort } from "../ports/llm.js";
-import { generateDraft } from "./generate.js";
+import { assembleGrounding, generateDraft } from "./generate.js";
 import { persistDraft } from "./store.js";
 
 /** The ExternalItem fields the drafter needs (from the Radar, EXTS-2). */
@@ -38,11 +39,20 @@ export async function draftExternalItem(
     `EXTERNAL SOURCE — you MUST cite it (GR-5): ${item.source} (${item.url})\n` +
     `HEADLINE: ${item.title}\nSUMMARY: ${item.summary}\n\n` +
     `Write the organization's own PERSPECTIVE / commentary tying this to its mission — not a rehash of the news.`;
+  // GENS-7 names the active rule/taboo overlay an ALWAYS-ON input to the shared
+  // VAL chain, and names external drafts (PIPE-3) as one of its consumers —
+  // SOURCING is no more an exemption from GR-8 than AUTHORSHIP is (APRS-5). An
+  // empty overlay let an externally-sourced draft violate a rule the founder had
+  // already stated. No slot: the check needs the FULL active overlay (MEMS-3 —
+  // an indexed read, never a top-k slice); external grounding is supplied above.
+  const { overlay } = assembleGrounding(
+    await retrieveContext({ db: deps.db, llm: deps.port }, orgId),
+  );
   const result = await generateDraft(deps.port, {
     orgId,
     slot,
     grounding,
-    overlay: [],
+    overlay,
     isExternal: true,
   });
   return persistDraft(deps.db, {
