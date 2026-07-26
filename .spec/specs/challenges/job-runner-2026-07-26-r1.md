@@ -1,0 +1,51 @@
+---
+kind: challenge-record
+spec: .spec/specs/{gen-content-generation,onb-onboarding}.yaml + architecture/overview.yaml (ARC-28) — the DEC-44 job-runner delta
+round: 1
+date: 2026-07-26
+verdict: fail
+by: cortex:architect-challenger (delta pass — design-conformance + over-structure + element-ownership + LRN-20 honesty + acceptance quality + cheaper-alternative/hidden-assumptions + missed-cascade)
+---
+
+# Challenge record — the job-runner delta (ARC-28 / GENS-8 / ONBS-6 v2)
+
+- **Delta under review:** new `ARC-28` (Job Runner), new `GENS-8` (autonomous generation), `ONBS-6` v1→v2
+- **Authorized by:** `DEC-44`; motivated by `INC-11` / `INC-12` (Phase F audit)
+- **Verdict:** **fail** — 3 high, 8 medium, 4 low
+- **Disposition:** all 15 findings applied in the same change. Because the round
+  carried HIGH findings, the challenge policy's convergence rule does not permit
+  treating it as a pass — both specs stayed in `draft` and a delta re-challenge
+  (round 2) was run to verify the fixes. See `job-runner-2026-07-26-r2.md`.
+
+## Findings and their resolution
+
+| # | Sev | Finding | Applied fix |
+|---|---|---|---|
+| 1 | high | ARC-28's port reproduced only 2 of ADR-0003's 4 named contract items under the ADR's own heading — dropping **durable dynamic delayed execution** (`runAt`) and the failure/dead-letter surface. Leaves `PUBS-1` (P0 hard, ±5 min slot), `AUTS-1` (per-item 24h veto timer) and `OPSS-2`/`OPS-1` retry-with-backoff with no primitive, forcing PUB to rebuild a queue in domain code — inverting the ADR's purpose. Survives "a cron sweeper can poll": the ADR pre-rejected it. Survives "PUB is deferred": DEC-44 (2) defers the OAuth apps, not scheduling | Port extended to `enqueue(name, payload, { runAt?, tx? })`; retry/backoff + dead-letter named as port-level; `PUB-1` and `OPS-1` added to the consumer list; the ADR's pre-rejection of cron-sweeping recorded inline |
+| 2 | high | The rolling refill had **no defined output and no idempotency**. "Tops the calendar back up" names GENS-1's artifact (slots), not drafts — so on a literal reading nothing ever triggers steady-state generation, reproducing INC-12 one layer down. On the charitable reading it calls `planAndDraftCalendar`, whose `planCalendar` is blind to already-planned dates while `persistDraft` inserts unconditionally ⇒ a recurring job duplicates a month of drafts every run. Idempotency was specified only for the once-only first batch, not for the trigger that runs forever | Refill now states it emits **both** slots and drafts, and both are idempotent **per slot date** (plan only horizon dates with no slot; generate only for a due slot with no draft). Acceptance clause (c) runs the refill twice and asserts no duplicate |
+| 3 | high | The meter was written as a **surfacing filter**, which (a) contradicts `APRS-1 v3`'s acceptance ("with the QA dial off, drafts flow to the spine normally") — a test written from APRS-1 would go red; (b) reaches into a surface GENS does not own (`APRS-1` owns `readyStack`), inverting the declared `APRS depends-on GENS` direction; (c) needs a second DM-5 withheld state that does not exist; (d) contradicts ONBS-6's "drafts sharpen as Memory deepens" and GENS-1's "prefer fresh over stale" by drafting a month ahead and holding it back | Rewritten as a **generation gate**: the refill *generates* only while the pending count is below the ceiling; no generated draft is ever withheld; APRS-1's membership rule explicitly unchanged. Dissolves the conflict, the DM-5 gap and the staleness objection at once, and forces no new `APRS-1` version (which per LRN-23 would have forced its own delta re-challenge) |
+| 4 | med | The observer watched only the **Memory** conjunct of a two-conjunct predicate; `onboarding/index.ts:144-149` says the Strategy conjunct lands with the STR vertical, so the day it lands the observer silently stops firing and ONBS-6 reverts to INC-12 | Stated as a rule, not examples: the observer runs post-commit on **every write path that feeds the predicate** — the MEMS-1 write path and the STRS-2 Strategy-seed write |
+| 5 | med | "Idempotent by construction" was **backwards** (the LRN-20/MEMS-3 overclaim shape): the *marker* is structural, the *transition* is a read-modify-write, and ONBS-2 writes ingested facts in a batch, so two observers can both read `false` and both enqueue. The marker was scoped to job replay, not to the enqueue race | Named the atomicity: a **conditional claim** (`SET first_batch_at = now() WHERE … IS NULL`, acting on rowcount 1) committed **in the same transaction as the enqueue** — exactly what ARC-28's transactional seam exists for. Acceptance (b) rewritten as the **concurrent** case |
+| 6 | med | `ARC-28` governed both specs but appeared in neither `constrained-by` — the B2(a) design gate satisfied by narrative, and absent from future cascade lists | `ARC-28` added to both `constrained-by` sets |
+| 7 | med | The calibration framing had **no structural carrier** (testable only by substring-matching founder copy — banned by LRN-20) and its retirement rule created the state it forbids: specified as a *surface mode* retired on the first tap, it strips the frame from still-undisposed siblings — worst after a *redirect*, where those leftovers predate the correction — while the refill interleaves genuine steady-state cards indistinguishably | Marker moved **onto the item**, retiring per-item on its own disposition; rendered through the existing DSS-22/DS-5 family (GR-7 v3 forbids inventing one); acceptance split into a deterministic half (marker present/absent) and a keyed judge case for the voice |
+| 8 | med | `ONBS-6` v2's acceptance was **unexecutable**: "in that session" and "no page open at the moment of generation" cannot both be asserted by one test, and "with no button pressed" is a property of the test author — it can never go red (the LRN-30 trap) | Rewritten as six separable clauses; "unattended" restated as **generation completes with no client session connected for that org** (close the client, drain the queue, reassert) — the audit's own F6 test #1 |
+| 9 | med | Job org-confinement was an **exhortation** where the request path has a seam — the exact shape of `LRN-35`, this audit's own learning. `ACC-3`'s only enforcement is `orgProcedure`, which derives the org from a session a job does not have | `ARC-28` now names the seam: `work(name, handler)` hands the handler an **org-scoped handle built from the payload's `orgId`** — the job-side analogue of `orgProcedure`. Acceptance (e) asserts a handler given org A's payload cannot construct a query returning org B's row |
+| 10 | med | A **third per-org ceiling** justified by G-3, with no stated relationship to `PROS-4` (which exists precisely because per-capability limits stack) or `APRS-2` | One clause dividing them: this ceiling bounds **stack size**, PROS-4 bounds **interruption volume** (Ready drafts are pulled, not pushed, and do not draw on the budget), APRS-2 bounds **timing**; PROS-4 authoritative for anything that reaches out, this ceiling for anything that waits |
+| 11 | med | Decoupling the predicate from generation opens a **new observable window** — steady shape, empty Ready, generation in flight — against VAL-6/DS-6 | `ONBS-6` v2: the day-one narration persists **until the first batch lands**, not until the predicate flips, using the copy XO-2/DSS-22 already prescribe. Cross-referenced to the Phase F day-one→steady transition finding so the two are repaired coherently |
+| 12 | low | `overview.yaml` gained ARC-28 with no header amendment note, against the file's own convention | Amendment note added, citing DEC-44 and this record |
+| 13 | low | `GENS.depends-on` omitted `ONBS` despite consuming `readyForFirstDrafts` | `ONBS` added (graph stays acyclic — ONBS depends only on MEMS) |
+| 14 | low | Coverage re-affirmation pending (SDLC B4); the lint already named it | 13 requirements re-affirmed. `ONB-6` and `GEN-1` revised substantively (not re-pinned): both record that the decomposition was **incomplete** — a capability is not covered by the elements that *can* perform it if no element is accountable for *invoking* it |
+| 15 | low | The delta inverted DEC-44 (4)'s stated ownership split without saying so | Reconciliation clause added to `GENS-8`; the challenger judged the delta's allocation better than the DEC's, matching ONBS's approved `interfaces` line ("caller: GEN") |
+| 16 | low | `ARC-28` did not cite ADR-0007's resolution of its own largest deployment risk (scale-to-zero vs the long-running consumer) | ADR-0007 cited inline |
+
+## What the challenger attacked and could not break
+
+Recorded so these are not re-litigated (SDLC dead-end rule):
+
+- **C4 altitude.** `kind: c4-component, parent: ARC-3` is right; `ARC-27` is the standing precedent for a cross-cutting technical component under the backend container. Folding into ARC-27 would conflate LLM-skill execution with infra scheduling; folding into ARC-19 would make a P0 substrate a child of a P2 capability and point the dependency backwards (LRN-26).
+- **The transactional-enqueue claim** — verified **true and better than claimed** against pg-boss 12.26.3: `send(name, data, { db })` plus a first-class `fromDrizzle(tx, sql)` adapter whose own docs show the exact pattern. Given the stack is Drizzle, the fit is exact.
+- **Scale-to-zero killing the heartbeat** — ADR-0007 already names and resolves it; the challenger refuted its own finding.
+- **Over-structure on GENS-8** — it earns its ID (referenced twice by ONBS-6 v2, once by ARC-28, rolls up through GEN-1/ONB-6); neither GENS-1 nor ONBS-6 owns "who calls the chain". The "two concerns" charge was real in authoring but dissolves once the meter becomes a generation gate: the refill then decides both *when* and *how many*, one mechanism.
+- **Ownership of the framing** — ONBS-6 owns framing, GENS-8 owns trigger, with an explicit deferral clause. No duplication.
+- **LRN-20 honesty on the meter** — a count against a ceiling **is** deterministic and is correctly not claimed as an LLM judgment. Only the idempotency claim overreached (finding 5).
+- **The rejected UI button** — not re-proposed; DEC-44's reasoning binds. The cheaper-alternative finding (generation- rather than surfacing-gating) sits strictly *inside* the unattended design.

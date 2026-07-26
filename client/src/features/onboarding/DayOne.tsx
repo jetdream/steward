@@ -36,6 +36,7 @@
  *    doorstep's EIN field: no lookup exists, so "verification pending" would
  *    promise a check that never runs.
  */
+import { type MemoryEntryView, memoryEntryKindLabels } from "@shared";
 import { useState } from "react";
 import { useOnboarding } from "../../api/useOnboarding.js";
 import {
@@ -111,13 +112,13 @@ function Arrival({
 }: {
   orgName: string | undefined;
   email: string | undefined;
-  entries: ReadonlyArray<{
-    id: string;
-    kind: string;
-    subject: string | null;
-    content: string;
-    assumed: boolean;
-  }>;
+  // Picked from the shared entity, never re-declared: a hand-written structural
+  // copy had widened `kind` to `string`, which is how the raw `styleRule` value
+  // reached the founder's screen as a heading. Pick keeps the union narrow, so
+  // the label lookup is exhaustive and a new Memory kind fails typecheck here
+  // rather than rendering its identifier (the constitution's "never redefine
+  // essentially the same fields" — Property Selection utility types).
+  entries: ReadonlyArray<Pick<MemoryEntryView, "id" | "kind" | "subject" | "content" | "assumed">>;
   loading: boolean;
   ingesting: boolean;
   ingestFailed: boolean;
@@ -163,7 +164,7 @@ function Arrival({
             {findings.map((f) => (
               <li key={f.id} className={`${typeRole.secondary} text-fg`}>
                 <span className={`${typeRole.meta} uppercase tracking-widest text-meta`}>
-                  {f.kind}
+                  {memoryEntryKindLabels[f.kind]}
                 </span>{" "}
                 {f.text}
               </li>

@@ -112,6 +112,25 @@ export const memoryEntryKinds = [
 export const MemoryEntryKind = z.enum(memoryEntryKinds);
 export type MemoryEntryKind = z.infer<typeof MemoryEntryKind>;
 
+/**
+ * The ONB-3 gap-model categories — the coverage dimensions the interviewer works
+ * through (INT-2) and the "help me understand you" list renders (XG-3/XG-6). NOT
+ * a table column: the gap model is a DERIVED VIEW over Memory coverage, never a
+ * stored entity. It lives here because it crosses the tRPC boundary, and the
+ * constitution puts every cross-boundary type in @shared rather than letting the
+ * client re-declare the union.
+ */
+export const gapCategories = [
+  "identity",
+  "programs",
+  "people",
+  "stories",
+  "style",
+  "calendar",
+] as const;
+export const GapCategory = z.enum(gapCategories);
+export type GapCategory = z.infer<typeof GapCategory>;
+
 /** DM-13 Topic.status — the active set is the editorial agenda (TOP-4). `const` tuple → column. */
 export const topicStatuses = ["proposed", "active", "retired"] as const;
 export const TopicStatus = z.enum(topicStatuses);

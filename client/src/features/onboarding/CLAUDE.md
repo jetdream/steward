@@ -53,6 +53,7 @@ _Generated from `.spec/` (references only — the registers are the source of tr
 
 **Governed by:**
 - GR-6 — Official platform APIs and permitted automation only (.spec/product/guardrails.yaml)
+- GR-7 — Conform to the design system (.spec/product/guardrails.yaml)
 
 **Conventions scope:** client (see .spec/conventions.yaml)
 

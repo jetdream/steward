@@ -92,12 +92,12 @@ export function createChat(deps: ChatDeps): Chat {
       if (drafts.length > 0) {
         openings.push({
           opening: `Want to look over the ${drafts.length} draft${drafts.length === 1 ? "" : "s"} I prepared?`,
-          reason: "you have drafts ready to review in the Ready spine",
+          reason: "they are finished and waiting for your yes",
         });
       }
       openings.push({
         opening: "Anything you'd like me to write about, or a story worth telling?",
-        reason: "the composer is never blank — I lead so you mostly answer (CHTS-5)",
+        reason: "I would rather ask than leave you a blank box",
       });
       return openings;
     },

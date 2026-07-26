@@ -12,6 +12,11 @@ status: approved
 # (news purge is a fallible Cloudflare Cache-Tags outbound call, not a local no-op);
 # new IG-11 (Cloudflare CDN adapter). Deployment delta DEC-36/ADR-0007; challenger
 # pass-with-nits (fixes applied): specs/challenges/deployment-2026-07-22-r2.md.
+# Amended 2026-07-26: ARC-28 Job Runner added (DEC-44) — the ADR-0003 Job/Queue
+# seam made real, resolving INC-11 (Steward could only act while watched).
+# Challenger FAIL round with fixes applied in-change (the port had narrowed
+# ADR-0003's four contract items to two, dropping durable per-item delay that
+# PUBS-1/AUTS-1 require): specs/challenges/job-runner-2026-07-26-r1.md.
 
 intent: >-
   Technical module map for the core loop described in product/overview.md.
@@ -400,6 +405,62 @@ items:
       Content Engine's planner (ARC-15, GEN-1). Founder-facing surfaces (the
       proposal card in the colleague-moves-first journey, the agenda view in
       How I write) are a fast-follow experience addition.
+
+  ARC-28:
+    v: 1
+    kind: c4-component
+    title: Job Runner
+    parent: ARC-3
+    body: |
+      The ADR-0003 Job/Queue seam made real (DEC-44) — the component that lets
+      Steward act with NO SESSION OPEN. Until it existed, every capability could
+      only run while a founder watched it, which made VIS-1's "an employee that
+      shows up on her own" structurally unreachable (INC-11) and left DEC-24's
+      shared interruption budget (PRO-4) unbuildable.
+      PORT: `ports/jobs.ts` — `enqueue(name, payload, opts?)` where `opts` carries
+      `runAt` (a DURABLE, DYNAMIC, PER-ITEM delay — "run this at time T", not a
+      static cadence) and `tx` (the caller's handle); `schedule(name, cron,
+      payload)` for a recurring cadence; `work(name, handler)` to register a
+      long-running consumer; `start`/`stop`. Retry/backoff and a DEAD-LETTER
+      surface for exhausted jobs are port-level, not per-caller.
+      ALL FOUR ADR-0003 CONTRACT ITEMS ARE IN THE PORT, DELIBERATELY. `runAt` is
+      the one most easily dropped and the most expensive to re-add: PUBS-1 (P0,
+      `flexibility: hard`) requires each variant to post "within ±5 min of its
+      scheduled slot", and AUTS-1's opt-in hold-then-publish is a per-ITEM 24h
+      timer. ADR-0003 pre-rejected the obvious substitute — per-item timers need a
+      durable timer service, NOT a cron sweeper polling for due work. Keeping
+      delay, retry and dead-lettering in the port is what stops PUB from
+      re-implementing a queue in domain code, which is the ADR's whole purpose.
+      ADAPTERS by environment (ADR-0003): in-process deterministic for the test
+      tier (explicit drain, no wall-clock timers — hermetic), pg-boss on the ARC-4
+      Postgres for dev and single-instance, cloud scheduler + serverless workers +
+      an outbox for the managed target. ADR-0007 already names and resolves this
+      component's largest deployment risk: the long-running-consumer assumption is
+      at risk under a scale-to-zero runtime and is handled with a scheduled
+      trigger.
+      THE SEAM THAT DOES NOT SWAP FOR FREE (ADR-0003): `enqueue` must be able to
+      enlist in the CALLER'S transaction, so a state transition and the job it
+      triggers commit together or not at all. A draft-generation job enqueued
+      outside the transaction that recorded the Memory write can fire against a
+      row that never committed — and the same seam is what makes GENS-8's
+      first-batch claim atomic rather than racy. The pg-boss adapter takes the
+      caller's handle; the cloud adapter needs the outbox to preserve the
+      guarantee.
+      ORG-SCOPED BY CONSTRUCTION, NOT BY EXHORTATION (ACC-3). ACC-3's only
+      enforcement today is `orgProcedure`, which derives the org from the session
+      — structurally unavailable to a session-less job. So `work(name, handler)`
+      hands the handler an ORG-SCOPED handle built from the payload's `orgId`: the
+      job-side analogue of `orgProcedure`, so an unscoped query is not writable by
+      accident. "Every handler remembers to filter" is the failure shape LRN-35
+      was written about; a job is NOT a privileged context, and having no session
+      must never mean having wider reach.
+      RUNS TODAY: the ONBS-6 first-batch observer (the minimum-viable-context
+      predicate, evaluated on the write paths that feed it rather than on a page
+      view) and the GENS-8 rolling refill. QUEUED BEHIND IT: PUB-1 scheduled
+      delivery and OPS-1 failure queues (both of which need `runAt` and
+      dead-lettering), EXT-1 discovery sweeps, PRO-1..PRO-4 proactive pushes,
+      APR-6 quiet accountability, STW-2 recaps — each of which named a cadence or
+      a timer and had no runner to provide it.
 
   ARC-27:
     v: 1

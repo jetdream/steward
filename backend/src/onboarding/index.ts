@@ -20,7 +20,7 @@
  * and ONBS-4 channel connect (OAuth). The NON-BLOCKING invariant (ONB-1) holds:
  * none of these gates first drafts — only the ONBS-6 predicate does.
  */
-import type { MemoryEntry, MemoryEntryView, OrgId } from "@shared";
+import type { GapCategory, MemoryEntry, MemoryEntryView, OrgId } from "@shared";
 import { memoryEntry } from "@shared/db/schema.js";
 import { and, count, eq, isNull } from "drizzle-orm";
 import type { Database } from "../db/client.js";
@@ -28,7 +28,9 @@ import type { Memory } from "../memory/index.js";
 import { subjectKey } from "../memory/subject-key.js";
 
 /** The enumerable gap categories the interview draws from (ONBS-3). */
-export type GapCategory = "identity" | "programs" | "people" | "stories" | "style" | "calendar";
+// GapCategory now lives in @shared (it crosses the tRPC boundary); re-exported
+// here so existing importers of this module keep resolving.
+export type { GapCategory };
 
 /** One category's coverage in the gap model — a DERIVED view over Memory (ONBS-3). */
 export interface Gap {

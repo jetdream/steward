@@ -37,7 +37,8 @@ test("ONBS-6: day-one shape holds until the MVC predicate says ready", () => {
   assert.equal(isDayOne({ ready: true }), false);
 });
 
-const entry = (over: Partial<Parameters<typeof toFindings>[0][number]> = {}) => ({
+type Entry = Parameters<typeof toFindings>[0][number];
+const entry = (over: Partial<Entry> = {}): Entry => ({
   id: "e1",
   kind: "fact",
   subject: null,

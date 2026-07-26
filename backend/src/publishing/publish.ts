@@ -12,7 +12,7 @@
  * @implements PUBS-1 v3  (channels at launch — official APIs, scheduled, gated delivery)
  * @implements PUBS-3 v1  (append-only publish log — destination, time, link, exact text)
  */
-import type { DeliveryState, OrgId } from "@shared";
+import type { ChannelPlatform, DeliveryState, OrgId } from "@shared";
 import { channelVariant, contentItem } from "@shared/db/schema.js";
 import { and, desc, eq } from "drizzle-orm";
 import type { Autonomy } from "../autonomy/index.js";
@@ -46,7 +46,16 @@ export function publishability(input: {
 /** One PUBS-3 log entry — the exact post that went out, its destination, time, and live link. */
 export interface PublishLogEntry {
   variantId: string;
-  platform: string;
+  /**
+   * The DM-14 platform, NOT a bare string. It was `string` until the Phase F
+   * audit found the glass wall rendering `facebook_page` at the founder as a
+   * heading (PUBS-3's log is VISIBLE, so its field types are founder-facing): a
+   * widened type let the raw enum value reach the DOM, and no gate could see it
+   * because a `string` renders as happily as a label. Narrowing it forces the
+   * client through `channelPlatformLabels` (LRN-35 — wire it so the wrong thing
+   * is not writable by accident).
+   */
+  platform: ChannelPlatform;
   publishedAt: Date;
   url: string;
   text: string;

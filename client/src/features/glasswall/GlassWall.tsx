@@ -22,6 +22,12 @@
  * an org rule routes to Memory rather than the doc, DEC-22) and triaging a
  * discovery (EXTS-5). Neither creates a task.
  */
+import {
+  channelPlatformLabels,
+  editorialStateLabels,
+  gapCategoryLabels,
+  memoryEntryKindLabels,
+} from "@shared";
 import { useState } from "react";
 import { useDiscoveries, usePlan, useStrategy } from "../../api/useGlassWall.js";
 import { useInterviewer } from "../../api/useInterviewer.js";
@@ -67,7 +73,7 @@ function Knowledge() {
           {entries.map((e) => (
             <li key={e.id} className="flex flex-col gap-1 border-b border-border-soft pb-2">
               <span className={`${typeRole.meta} uppercase tracking-widest text-meta`}>
-                {e.kind}
+                {memoryEntryKindLabels[e.kind]}
                 {e.assumed ? " · assumed" : ""}
               </span>
               <span className={`${typeRole.secondary} text-fg`}>{e.content}</span>
@@ -86,7 +92,7 @@ function Knowledge() {
           <ul className="flex flex-col gap-2">
             {open.map((q) => (
               <li key={q.category} className={`${typeRole.secondary} text-fg`}>
-                <strong className="font-semibold">{q.category}</strong> — {q.why}
+                <strong className="font-semibold">{gapCategoryLabels[q.category]}</strong> — {q.why}
               </li>
             ))}
           </ul>
@@ -232,7 +238,7 @@ function PlanAndPublished() {
               <li key={i.id} className="flex flex-col gap-0.5 border-b border-border-soft pb-2">
                 <span className={`${typeRole.secondary} text-fg`}>{i.title}</span>
                 <span className={`${typeRole.meta} uppercase tracking-widest text-meta`}>
-                  {i.editorialState.replace("_", " ")}
+                  {editorialStateLabels[i.editorialState]}
                 </span>
               </li>
             ))}
@@ -251,7 +257,7 @@ function PlanAndPublished() {
             {published.map((entry) => (
               <li key={entry.variantId} className="flex flex-col gap-0.5">
                 <span className={`${typeRole.meta} uppercase tracking-widest text-meta`}>
-                  {entry.platform}
+                  {channelPlatformLabels[entry.platform]}
                 </span>
                 <span className={`${typeRole.secondary} text-fg`}>{entry.text}</span>
                 <a

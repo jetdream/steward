@@ -27,7 +27,7 @@ items:
         creation from name+email, EIN optional, a name-derived match is a
         founder-confirmed proposal (never silently bound — LRN-20), verification
         status honest and never a gate. Realization pending code.
-      against: [ONBS-1@1, G-1@1, G-3@1, G-5@1]
+      against: [ONBS-1@1, G-1@1, G-3@1, G-5@2]
 
   ONB-2:
     v: 1
@@ -48,7 +48,7 @@ items:
         (grounded-guard + catch-rate, LRN-20), Strategy style seed (STR-2),
         wrong-org purge (MEMS-2). X-timeline read is a surfaced gap (Q-13).
         Realization pending code.
-      against: [ONBS-2@1, G-1@1, G-3@1, G-5@1]
+      against: [ONBS-2@1, G-1@1, G-3@1, G-5@2]
 
   ONB-3:
     v: 1
@@ -66,7 +66,7 @@ items:
         owns, INT consumes, and MEMS-6 keys (DEC-22 discipline); no onboarding
         checklist/homework surface; progressive enrichment via INT-4.
         Realization pending code.
-      against: [ONBS-3@1, G-1@1, G-3@1, G-5@1]
+      against: [ONBS-3@1, G-1@1, G-3@1, G-5@2]
 
   ONB-4:
     v: 1
@@ -84,7 +84,7 @@ items:
         deterministic health state machine; publishing activates on a healthy
         connection (PUB-1/ARC-18); expiry surfaces as the XO-4 needs-you card.
         Realization pending code.
-      against: [ONBS-4@1, G-1@1, G-3@1, G-5@1]
+      against: [ONBS-4@1, G-1@1, G-3@1, G-5@2]
 
   ONB-5:
     v: 1
@@ -102,7 +102,7 @@ items:
         channel, MEMS-1 v2); a factual fix supersedes (MEMS-2), a prohibition
         becomes a taboo enforced by the overlay (MEMS-3/GR-8); the same single
         write path as CHT-2/APR-3. Realization pending code.
-      against: [ONBS-5@1, G-1@1, G-3@1, G-5@1]
+      against: [ONBS-5@1, G-1@1, G-3@1, G-5@2]
 
   ONB-6:
     v: 1
@@ -120,6 +120,14 @@ items:
         Covered by ONBS-6 (approved): first drafts on an explicit deterministic
         minimum-viable-context predicate (readyForFirstDrafts), decoupled from
         connection; thin Memory yields honest cause-level drafts (MEMS-4/TOPS-1),
-        never fabricated impact; target first-session / 48h live (G-5).
-        Realization pending code.
-      against: [ONBS-6@1, G-5@1]
+        never fabricated impact; target first-session (G-5 v2's interim measure).
+        RE-AFFIRMED 2026-07-26 (DEC-44) after the Phase F audit found this
+        requirement UNSATISFIABLE as built (INC-12): the predicate existed and was
+        deterministic, but nothing OBSERVED it — it was only read to choose the
+        home's shape — so "first drafts as soon as context exists" had no caller
+        and ONBS-6's acceptance was false for every real org. The decomposition was
+        never the gap; the missing piece was the trigger. GENS-8 (ARC-28) now owns
+        it and ONBS-6 v2 owns the calibration framing of what it produces. Coverage
+        is complete only once both land — realization pending code, and the honest
+        reading today is that this requirement is NOT satisfied.
+      against: [ONBS-6@2, GENS-8@1, G-5@2]

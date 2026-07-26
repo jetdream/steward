@@ -29,4 +29,5 @@ export type { ChannelInstructions, StrategyDoc } from "./entities/strategy-doc.j
 export { EvidencePointer, ResearchStrategy, type Topic } from "./entities/topic.js";
 export * from "./enums.js";
 export * from "./ids.js";
+export * from "./labels.js";
 export * from "./parse.js";

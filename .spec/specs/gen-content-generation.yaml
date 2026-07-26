@@ -1,23 +1,30 @@
 kind: spec
 prefix: GENS
 title: Planning & Content Generation — behavior
-status: approved
+status: draft
 challenge:
-  date: 2026-07-24
-  by: "cortex:architect-challenger (r1 4-lens → r2 delta → r3 GENS-7 delta — over-structure + design-conformance + delta-verify)"
-  verdict: pass
-  record: .spec/specs/challenges/gen-content-generation-2026-07-24-r3.md
+  date: 2026-07-26
+  by: "cortex:architect-challenger (r4 job-runner delta — design-conformance + over-structure + element-ownership + LRN-20 honesty + acceptance quality + cheaper-alternative + missed-cascade)"
+  verdict: fail-with-fixes-applied
+  record: .spec/specs/challenges/job-runner-2026-07-26-r1.md
   summary: >-
-    r3 delta-challenges the added GENS-7 (grounded master generation + the reusable
-    VAL guardrail chain, the PIPE-4 harness substrate its first consumer implements).
-    PASS: over-structure holds (GENS-7 is referenced by the GEN-1 roll-up, @implements'd
-    by the G1 generate-draft Skill, and the citable target for the ADR-0010/EVAL-1
-    catch-rate tests; not a GENS-1/GENS-2 duplicate); design conforms (three outcomes =
-    PIPE-2 pass/regenerate/escalate; GR-3/GR-8 escalate-on-uncertainty; regenerate
-    bounded by the PIPE-4 agentPolicy cap); prior r2 fixes (plan-time quota determinism,
-    adapt→VAL→fit ordering) still hold. One medium — the acceptance clause had reverted
-    to the un-failable-absolute LRN-20 trap MEMS-3 hedged — rewritten to catch-rate
-    framing; one low — a per-variant re-run clause — added; both applied in this change.
+    r4 delta-challenges the added GENS-8 (autonomous generation — the unattended
+    trigger + the calendar/Ready meter) alongside ARC-28 and ONBS-6 v2. FAIL with
+    3 high, 8 medium, 4 low; ALL applied in this change. The load-bearing high:
+    the meter was written as a SURFACING filter, which contradicted APRS-1 v3's
+    acceptance ("with the QA dial off, drafts flow to the spine normally"),
+    reached into a surface GENS does not own, inverted the APRS->GENS dependency,
+    and needed a DM-5 state that does not exist — rewritten as a GENERATION gate,
+    which also dissolves the staleness objection (ONBS-6 "drafts sharpen as Memory
+    deepens", GENS-1 "prefer fresh over stale") and forces no new APRS-1 version. Also: the
+    rolling refill had no defined output and no idempotency over a rolling window
+    (planCalendar is date-blind, persistDraft inserts unconditionally) — now
+    idempotent per slot date; and "idempotent by construction" was backwards in the
+    LRN-20 overclaim shape — the transition is a read-modify-write, so the
+    guarantee is now a conditional claim committed in the same transaction as the
+    enqueue. Over-structure HELD: GENS-8 earns its ID (neither GENS-1 nor ONBS-6
+    owns "who calls the chain"), and the trigger+meter become one mechanism once
+    the meter gates generation.
 intent: >-
   Exact behavior of the content engine (register gen-content-generation.yaml) —
   the hub that turns Memory + Strategy + the editorial agenda + the Radar into a
@@ -29,8 +36,8 @@ intent: >-
   the creative pairing/writing is the LLM part, grounded and guardrail-gated
   (PIPE-1/PIPE-2). Generation produces drafts; approval is APR, publishing is PUB.
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, ADR-0009, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, PIPE-4, ARC-15, ARC-27, XH-1, XH-5]
-depends-on: [MEMS, STRS, TOPS]
+constrained-by: [ADR-0002, ADR-0003, ADR-0009, DM-2, DM-3, DM-4, DM-5, DM-8, DM-10, DM-14, PIPE-1, PIPE-2, PIPE-4, ARC-15, ARC-27, ARC-28, XH-1, XH-5]
+depends-on: [MEMS, STRS, TOPS, ONBS]
 governed-by: [GR-1, GR-2, GR-3, GR-4, GR-5, GR-8]
 assurance: standard
 
@@ -274,6 +281,115 @@ items:
       never claimed 100%; regenerate cannot loop unbounded (the PIPE-4 agentPolicy
       cap); a clean, grounded master passes; every master's claims trace to
       retrieved Memory/Strategy — no fabricated events or impact (VAL-4).
+
+  GENS-8:
+    v: 1
+    title: Autonomous generation — the unattended trigger and the calendar↔Ready meter
+    implements: [GEN-1, ONB-6]
+    statement: >-
+      GENERATION RUNS WITHOUT A SESSION (DEC-44 (1), ARC-28). The planner and the
+      draft chain are driven by JOBS, never by a page view or a button. This
+      element exists because the capability was complete and unreachable: the
+      chain (TOPS-1 agenda → STRS-2 seed strategy → GENS-1 planner → GENS-7
+      generate+VAL) had no caller, so a founder could receive nothing they had not
+      written themselves (INC-12) — inverting VAL-6 ("the system moves first; no
+      empty state asks the founder to create from scratch") and falsifying ONBS-6's
+      own acceptance. A UI button would NOT have closed it: a control the founder
+      must press to make Steward work is still a tool they operate, which is the
+      failure mode users.md says this persona abandons.
+      TWO TRIGGERS. (a) FIRST BATCH — an ONBS-6 observer re-evaluates
+      readyForFirstDrafts and, on a false→true transition, enqueues the first
+      batch ONCE. The observer runs post-commit on EVERY WRITE PATH THAT FEEDS THE
+      PREDICATE — the single MEMS-1 Memory write path (DEC-22) and the STRS-2
+      Strategy-seed write — stated as a rule rather than a list of today's callers,
+      because the predicate is a conjunction (grounded Memory AND a seed Strategy)
+      and watching only the Memory half would silently re-open INC-12 the day the
+      STR conjunct becomes live. ATOMICITY, precisely: the transition alone is a
+      read-modify-write and two observers can both read false and both enqueue, so
+      the guarantee is NOT "the transition is the trigger" — it is a CONDITIONAL
+      CLAIM (set the org's first-batch marker WHERE it is still null, act only on
+      rowcount 1) committed IN THE SAME TRANSACTION AS THE ENQUEUE. That is
+      precisely what ARC-28's transactional-enqueue seam exists to make possible.
+      (b) ROLLING REFILL — a per-org recurring job that keeps the calendar at the
+      GENS-1 four-week horizon AND generates the drafts due from it. It emits
+      both, and both are IDEMPOTENT PER SLOT DATE: it plans only horizon dates
+      that carry no slot, and generates only for a due slot that has no draft.
+      DUE means the NEXT UN-DRAFTED SLOT IN CALENDAR ORDER — not "a slot whose
+      date has arrived", which would land drafts too late for a weekly founder to
+      approve. Lead time is emergent from the ceiling, not a second parameter. A
+      recurring job over a rolling window that re-planned from scratch would
+      duplicate a month of drafts on every run — GENS-1's planner is date-blind by
+      itself, so the idempotency lives here, in the caller.
+      THE REFILL IS STANDING AND PREDICATE-GATED, AND IT IS THE NAMED SAFETY NET.
+      It is scheduled once at org creation and runs for the org's lifetime on a
+      DAILY per-org cadence; it is not armed by the first batch. Until
+      readyForFirstDrafts is true it does nothing — so it never drafts below the
+      minimum-viable-context threshold ONBS-6 forbids — and once true it keeps the
+      calendar and the stack topped up whether or not the first batch ever
+      succeeded.
+      THE FIRST-BATCH CLAIM IS RELEASED ON TERMINAL FAILURE. Committing the claim
+      with the enqueue makes the trigger exactly-once, which also makes it
+      at-most-once-EVER: without a release, a first batch that exhausts its
+      retries and dead-letters would leave the org permanently and silently
+      without content — INC-11's own failure class, reintroduced one layer down.
+      So a terminally failed first-batch job CLEARS the claim, re-arming the
+      observer, and the standing refill heals the org within one cadence even if
+      the observer never fires again. Two independent recovery paths, because the
+      cost of this particular silence is the whole product.
+      THE CALENDAR↔READY METER IS A GENERATION GATE, NOT A SURFACING FILTER
+      (DEC-44 (3)). Planning horizon and DRAFTING rate are separate; membership of
+      the Ready spine is untouched. The planner keeps the rolling four-week
+      calendar so Plan & Published (XG-8) is genuinely forward-looking, and the
+      refill GENERATES a draft for the next due slot only while the org's
+      DISPOSABLE-DRAFT COUNT is below its ceiling. That count is the number of
+      undisposed items in Ready THE FOUNDER CAN ACT ON — DM-5 editorial state
+      `draft`, explicitly NOT the `pending` DELIVERY state, which is a live enum
+      member meaning the opposite (approved, not yet scheduled) and would read as
+      0 at TL0 and let the stack grow unbounded. Items the founder CANNOT dispose
+      are EXCLUDED: `awaiting_picture` (GENS-4 — complete but blocked) and
+      GR-3/GR-8 escalated holds, which pin and are never batch-cleared (APRS-1,
+      UXS-3). Counting them would let a few blocked cards silently halt generation
+      and take Steward quiet — PROS-4 carved out exactly this case for the same
+      reason ("safety always surfaces"), and a ceiling that can be filled by work
+      the founder is powerless to clear is a stall, not a limit.
+      No generated draft is ever withheld from Ready —
+      APRS-1 owns spine membership and its one withhold (the OPSS-1 qaStatus gate)
+      is unchanged, so this element adds no DM-5 state and inverts no dependency.
+      Gating generation rather than display is also the better product: drafting a
+      month ahead and holding it back would contradict ONBS-6 ("drafts sharpen as
+      Memory deepens") and GENS-1's freshness rule ("prefer fresh over stale"). The
+      gate is DETERMINISTIC — a count of pending items against a per-org ceiling,
+      never an LLM judgment. Un-drafted slots remain planned and visible in the
+      calendar: scheduled work, not hidden work (VAL-3).
+      THREE PER-ORG DIALS, DIVIDED EXPLICITLY (DEC-24 exists because per-capability
+      limits STACK). This ceiling bounds STACK SIZE — how much finished work waits.
+      PROS-4 bounds INTERRUPTION VOLUME; Ready drafts are pulled, not pushed, and
+      do NOT draw on that budget. APRS-2 bounds DELIVERY TIMING. When G-3 is tuned,
+      PROS-4 is authoritative for anything that reaches out to the founder and this
+      ceiling for anything that waits for them.
+      OWNERSHIP (reconciling DEC-44 (4), which anticipated the reverse split): this
+      element owns the TRIGGER, ONBS-6 v2 owns the FRAMING of what it produces.
+      That matches ONBS's approved interfaces contract, which already names
+      readyForFirstDrafts with "caller: GEN".
+      ACCEPTANCE: (a) a fresh org given only name + email and a readable site
+      receives drafts it never requested, and generation COMPLETES WITH NO CLIENT
+      SESSION CONNECTED FOR THAT ORG (close the client, drain the queue, reassert)
+      — and the arriving item is provably from the PLANNER path, not the composer:
+      it carries a slot (`scheduledFor` set, subject resolving to a TOPS-4 agenda
+      topic), which `approval.compose` never produces. (Asserting "no
+      founder-authorship marker" would be vacuous — DM-5 models no such field, and
+      APRS-5's whole design is that authorship is not a bypass.) (b) N observers
+      racing on the same false→true flip enqueue EXACTLY ONE batch (the concurrent
+      case, not the sequential one); (c) the refill run twice over the same horizon
+      yields no duplicate slot for any date and no second draft for any slot;
+      (d) with the disposable-draft count at the ceiling the refill generates
+      nothing, while the calendar still holds the full four-week horizon and every
+      already-generated draft remains in the spine — and a ceiling filled ENTIRELY
+      with awaiting-picture or escalated items does NOT stop generation; (e) a
+      handler given org A's payload cannot construct a query returning org B's row
+      (ARC-28's org-scoped handle), not merely "this handler happens to filter
+      correctly"; (f) a first-batch job that FAILS TERMINALLY still yields drafts
+      within one refill cadence, and the home never narrates an unbounded wait.
 
 open-questions:
   - >-

@@ -11,6 +11,32 @@ intent: >-
   open count.
 
 items:
+  INC-13:
+    v: 1
+    status: open
+    binds: [XH-12, UX-1, ONBS-6, GENS-8]
+    title: XH-12 defines the home's three shapes but never the transition between them
+    statement: >-
+      Detected 2026-07-26 (Phase F audit, F1 run A; registered as an ID during the
+      job-runner delta re-challenge, which found the delta deferring coherence to a
+      markdown finding with no graph node). XH-12 specifies day-one / steady /
+      quiet and states that a shape change alters "density and content, NEVER
+      layout" — but nothing specifies WHEN one becomes another, and
+      onb-onboarding.yaml explicitly defers the UI-detail pass over the day-one
+      screens. The implementation therefore chose its own condition
+      (isDayOne = readyForFirstDrafts !== true), and the observed consequence was
+      severe: a successful ingest flipped the predicate, the home left day-one
+      shape in the same refresh that produced 21 Memory entries, the findings card
+      never rendered, and the founder was shown "0 weeks of steady presence /
+      That's everything. Nothing is waiting on you." A BETTER ingest produced a
+      WORSE screen. GENS-8 sharpens the gap by decoupling the predicate from
+      generation: the shape would otherwise flip while generation is still in
+      flight and Ready is empty (an empty state against VAL-6/DS-6). ONBS-6 v2
+      carries the interim rule — the day-one narration persists until the first
+      batch lands or visibly fails — but the transition itself is XH-12's to own.
+      Resolution: amend XH-12 with the shape-transition condition, then repair the
+      code against it; the ONBS-6 v2 rule is the behavioural half and must stay
+      coherent with whatever XH-12 settles.
   INC-12:
     v: 1
     status: open

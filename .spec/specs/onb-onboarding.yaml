@@ -1,26 +1,29 @@
 kind: spec
 prefix: ONBS
 title: Lazy Onboarding — behavior
-status: approved
+status: draft
 challenge:
-  date: 2026-07-19
-  by: cortex:architect-challenger (single pass — design-conformance / implementation-divergence / cheaper-alternative+hidden-assumptions / over-structure + LRN-19 sweep)
-  verdict: pass
-  record: .spec/specs/challenges/onb-onboarding-2026-07-19-r1.md
+  date: 2026-07-26
+  by: "cortex:architect-challenger (r2 job-runner delta — acceptance quality + element-ownership + LRN-20/LRN-30 sweep)"
+  verdict: fail-with-fixes-applied
+  record: .spec/specs/challenges/job-runner-2026-07-26-r1.md
   summary: >-
-    r1 passed with no surviving high; four LLM touch-points verified honestly
-    split (name→EIN match = confirmed proposal, extraction = grounded-guard +
-    catch-rate, minimum-viable-context = a deterministic boolean, channel health
-    = a real state machine — no LRN-20 overclaim), the gap-model single source
-    (ONB-3 owns / INT consumes / MEMS-6 keys) and DM-14/SEC-10 over-structure
-    (both referenced, right altitude) confirmed. Two mediums + one low applied in
-    this change: ONBS-2 X-harvest corrected to IG-1 Meta-only with the write-only
-    X integration (IG-2/A-2) read-gap surfaced as Q-13; the LRN-19 straggler
-    closed by naming the onboarding review as an enumerated write-trigger +
-    explicit correction channel in MEMS-1 (v2, additive-clarifying, reviewed
-    in-band by this challenge — MEM-1 coverage re-pinned MEMS-1@2); ONBS-3's
-    product-global acceptance negative scoped to onboarding surfaces (VAL-6 owns
-    the product-wide guarantee).
+    r2 delta-challenges ONBS-6 v2 (who evaluates the predicate; the first batch
+    framed as calibration) alongside ARC-28 and GENS-8. FAIL with fixes applied.
+    Three findings landed here. (1) The acceptance was UNEXECUTABLE: "in that
+    session" and "no page open at the moment of generation" cannot both be
+    asserted by one test, and "with no button pressed" is a property of the test
+    author, never able to go red (the LRN-30 trap) — rewritten as six separable
+    clauses with "unattended" restated as generation completing with NO CLIENT
+    SESSION CONNECTED for that org. (2) The calibration framing had no structural
+    carrier and was specified as a SURFACE MODE whose retirement stripped the frame
+    from still-undisposed siblings — worst after a redirect, where those leftovers
+    predate the correction — so the marker moved onto the ITEM, retiring per-item,
+    rendered through the existing DSS-22/DS-5 family (GR-7 v3). (3) Decoupling the
+    predicate from generation opened a new empty-state window (steady shape, empty
+    Ready, generation in flight) against VAL-6/DS-6 — the day-one narration now
+    persists until the first batch LANDS, not until the predicate flips. Ownership
+    of the framing (ONBS-6) vs the trigger (GENS-8) was attacked and HELD.
 intent: >-
   Exact behavior of onboarding (register onb-onboarding.yaml): how an org starts
   from name + email with nothing blocking (ONB-1), how public sources are
@@ -32,9 +35,9 @@ intent: >-
   experience (journey XO-1); NEW pixel-level UI detail is a separate method/ui.md
   pass on those approved screens (named in open-questions).
 design-scope: cross-cutting
-constrained-by: [ADR-0002, ADR-0003, DM-1, DM-2, DM-3, DM-14, PIPE-1, ARC-12, ARC-18, IG-1, IG-2, IG-6, IG-7, SEC-3, SEC-4, SEC-10]
+constrained-by: [ADR-0002, ADR-0003, DM-1, DM-2, DM-3, DM-5, DM-14, PIPE-1, ARC-12, ARC-18, ARC-28, XH-12, IG-1, IG-2, IG-6, IG-7, SEC-3, SEC-4, SEC-10]
 depends-on: [MEMS]
-governed-by: [GR-6]
+governed-by: [GR-6, GR-7]
 assurance: standard
 
 design: >-
@@ -200,8 +203,8 @@ items:
       thereafter enforced by the taboo overlay (MEMS-3); skipping the review does
       not block drafts.
   ONBS-6:
-    v: 1
-    title: First proof, lazily — minimum viable context
+    v: 2
+    title: First proof, lazily — minimum viable context, offered as calibration
     implements: [ONB-6]
     statement: >-
       First drafts generate as soon as MINIMUM VIABLE CONTEXT exists — a defined,
@@ -216,10 +219,77 @@ items:
       fabricating specifics; drafts sharpen as Memory deepens. The predicate is
       evaluated DETERMINISTICALLY (the gate is a checkable boolean —
       readyForFirstDrafts); draft QUALITY is the LLM part downstream.
-      ACCEPTANCE: an org that provides only name + email and ten minutes of
-      interview receives first drafts in that session; the minimum-viable-context
-      predicate is explicit and deterministic; thin Memory yields honest
-      cause-level drafts, never fabricated impact.
+      WHO EVALUATES THE PREDICATE (v2, DEC-44): an unattended OBSERVER, not a page
+      view. "Generate as soon as the predicate exists" was already this element's
+      promise, and the gap that falsified its acceptance was that nothing watched
+      the predicate — it was only ever read to choose the home's shape. The
+      observer and its once-only enqueue are specified in GENS-8 (ARC-28).
+      THE FIRST BATCH IS OFFERED AS CALIBRATION, NOT AS FINISHED WORK (v2, DEC-44
+      (4)). It arrives with no gate and nothing to click — a confirm-the-profile
+      step would be exactly the wizard XO-1 forbids — but it is FRAMED as a first
+      attempt ("here's my first go — tell me what's off") rather than presented
+      like the steady-state stack. Three reasons this is behaviour and not
+      decoration: it is honest at the moment Steward knows least about the org;
+      it invites the correction that MEM-1 turns into a permanent rule, so a
+      rejected first draft IMPROVES the next batch instead of reading as failure;
+      and it protects G-2 (approval-without-edits by week 8) from being judged
+      against drafts written on the thinnest possible context.
+      THE CALIBRATION FLAG IS PER-ITEM, NOT A SURFACE MODE. (Named distinctly on
+      purpose — the semantic-clarity rule: this is the per-item CALIBRATION FLAG on
+      a ContentItem, not GENS-8's org-row FIRST-BATCH CLAIM, which is a
+      once-only enqueue guard. Two different things, two names.) The property
+      belongs to the DRAFT, so a first-batch ContentItem carries the flag and
+      RETIRES IT ON ITS OWN DISPOSITION — reaching DM-5 editorial state `approved`
+      or `skipped`, or having a redirect recorded against it (redirect is a Memory
+      write, not a DM-5 state, so it is named explicitly rather than implied). A
+      surface-wide mode retired on the first tap would strip the frame from the
+      still-undisposed siblings — and after a REDIRECT those leftovers were written
+      before the correction, so they are exactly the ones that still need it —
+      while the GENS-8 rolling refill interleaves genuine steady-state cards among
+      them, indistinguishably. The flag is a DM-5 ContentItem field, enumerated
+      there alongside `qaStatus` (the OPSS-1 precedent for a cross-capability flag
+      on this entity).
+      IT RENDERS THROUGH A NAMED DS ELEMENT, NOT A FAMILY (GR-7 v3 — inventing a
+      component here would be a governed violation, and naming only a family
+      leaves the implementer free to invent while the spec reads as conforming):
+      DSS-8 ReasonLine — "one quiet line under every system-initiated item stating
+      WHY it exists, in first-person colleague voice" — which is exactly the shape
+      of "here's my first go". Not DSS-22, which is the empty/loading zero-state
+      pattern and the wrong altitude for a badge on a populated card.
+      THE DAY-ONE NARRATION PERSISTS UNTIL THE FIRST BATCH LANDS OR VISIBLY FAILS —
+      never unboundedly. Decoupling the predicate from generation (GENS-8) opens a
+      window in which the home would otherwise leave day-one shape while Ready is
+      empty and generation is in flight: an empty state against VAL-6 and DS-6. But
+      a wait with no terminal branch is its own failure — if generation dies, the
+      founder watches "first drafts in about ten minutes" forever. So the narration
+      has a bound, after which it switches to the honest snag register XO-2 already
+      establishes for a failed source ("that didn't work — I'll retry; meanwhile,
+      tell me…"), never a silent spinner and never a lie about timing. Note XO-2's
+      own states cover the INGESTION wait, not generation-in-flight or
+      generation-failed; this element adds those two. The day-one->steady
+      TRANSITION itself is XH-12's to own and is registered as INC-13; this
+      element carries only the behavioural half, and the two are repaired
+      coherently.
+      ACCEPTANCE, as separable clauses (no clause may be un-failable — LRN-30):
+      (a) drafts are PRESENT inside the first-session window — note this is
+      upstream of G-5 v2's interim measure, which counts a first APPROVED post;
+      this element delivers the drafts that make approval possible, and claiming
+      the activation measure itself would overstate what ONBS-6 owns;
+      (b) generation COMPLETES WHILE NO CLIENT SESSION IS CONNECTED for that org —
+      close the client, drain the queue, reassert — which is the honest form of
+      "unattended", unlike "no button was pressed" (a property of the test author,
+      not the system, and therefore never red); (c) the arriving item is provably
+      from the planner path — it carries a slot (`scheduledFor` set, subject
+      resolving to a TOPS-4 topic), which the composer never produces;
+      (d) the minimum-viable-context predicate is explicit and deterministic;
+      (e) thin Memory yields honest cause-level drafts, never fabricated impact;
+      (f) the per-item calibration flag is present on first-batch items and absent
+      on refill items, and an item's flag is gone once THAT item is approved,
+      skipped, or has a redirect recorded, while its siblings keep theirs — a
+      deterministic check; whether the framing READS as a colleague's first attempt
+      is a keyed judge case (never a substring match — LRN-20); (g) generation
+      failing terminally leaves the founder with the honest snag state, never an
+      unbounded "first drafts in about ten minutes".
 
 open-questions:
   - >-

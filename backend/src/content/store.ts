@@ -33,7 +33,12 @@ export interface PersistDraftInput {
 
 /** Join the VAL findings (+ any note) into the human-readable hold reason (APR shows it). */
 function summarizeVal(result: DraftResult): string {
-  const parts = result.val.findings.map((f) => `${f.guardrail}: ${f.reason}`);
+  // The founder reads this as the hold's ReasonLine (DSS-8: "first-person
+  // colleague voice"), so it carries the REASON only. Stamping `${f.guardrail}: `
+  // put "GR-8:" in front of every held card — the guardrail ID is how WE track
+  // the finding, never how a founder understands why their post is waiting. The
+  // ID stays available structurally on `val.findings` for logs and evals.
+  const parts = result.val.findings.map((f) => f.reason);
   if (result.val.note) parts.push(result.val.note);
   return parts.join("; ");
 }

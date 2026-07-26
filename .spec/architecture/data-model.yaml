@@ -125,6 +125,15 @@ items:
       operator clears it; n/a (the default) once the per-org QA dial is off, so it
       is invisible outside cohort-1 oversight.
 
+      A FIRST-BATCH CALIBRATION FLAG (ONBS-6 v2, DEC-44): a per-item boolean
+      marking a draft as part of the org's FIRST batch, so it can be framed as a
+      first attempt rather than as finished work (rendered via DSS-8). It is
+      per-ITEM, not a surface mode, and retires on that item's own disposition —
+      approved, skipped, or a redirect recorded against it — so a single tap never
+      strips the frame from its still-undisposed siblings. Distinct from GENS-8's
+      org-row first-batch CLAIM, which is a once-only enqueue guard, not a
+      founder-visible property.
+
       Cross-capability fields accumulated on ContentItem (concrete shapes in
       @shared at code): the slot's content TYPE + agenda TOPIC (GEN-1 pairing;
       drives the NWSS-4 news category/topic rail), and an optional CAMPAIGN TAG

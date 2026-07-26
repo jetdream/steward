@@ -6,6 +6,7 @@
  * reading, and HOW a Memory entry reads as a finding. No content judgment lives
  * here — this is structure and policy only (LRN-20).
  */
+import type { MemoryEntryKind } from "@shared";
 
 /**
  * Mail hosts that say nothing about an organization's website. Deriving
@@ -77,7 +78,8 @@ export function isDayOne(ready: { ready: boolean } | undefined): boolean {
 export interface Finding {
   id: string;
   /** The entry type, as the founder-facing label ("program", "story"). */
-  kind: string;
+  /** The Memory kind, narrowed so the view must resolve a founder-facing label. */
+  kind: MemoryEntryKind;
   /** The one line that says what was learned. */
   text: string;
   /** An inference awaiting the ONBS-5 review, so it carries an AssumedNote. */
@@ -96,7 +98,7 @@ export interface Finding {
 export function toFindings(
   entries: ReadonlyArray<{
     id: string;
-    kind: string;
+    kind: MemoryEntryKind;
     subject: string | null;
     content: string;
     assumed: boolean;
