@@ -44,8 +44,10 @@ items:
       own") is structurally unreachable, and DEC-24's shared proactive-interruption
       budget (PRO-4) cannot be built. Resolving INC-12 with a UI button would NOT
       close this: a button is still a tool the founder operates, which vision.md
-      names as the failure mode this persona abandons. Founder decision taken
-      2026-07-26 (build the substrate) — pending its DEC-* record.
+      names as the failure mode this persona abandons. RESOLUTION AUTHORIZED by
+      DEC-44 clause (1): the Job/Queue port is implemented, not deferred. Stays
+      open until the substrate lands and Steward is observed changing state
+      between two sessions with no interaction.
   INC-10:
     v: 1
     status: open

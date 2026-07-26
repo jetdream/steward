@@ -196,8 +196,8 @@ items:
       ≥80% of active orgs maintain an unbroken 4-week posting streak.
 
   G-5:
-    v: 1
-    origin: baseline
+    v: 2
+    decided-by: DEC-44
     title: Activation
     coverage:
       status: complete
@@ -223,3 +223,12 @@ items:
     statement: >-
       First approved post live within 48 hours of the org's first session.
       (Absorbed from Vision v0.2 metrics; see INC-1.)
+      INTERIM MEASURE while platform publishing is unavailable (v2, DEC-44): the
+      48h LIVE target is the enduring goal and is NOT weakened — but it cannot be
+      measured before the Meta/X OAuth apps exist, which are consciously deferred.
+      Until they do, activation is measured as FIRST APPROVED POST WITHIN THE FIRST
+      SESSION: the founder approves something Steward wrote and did not ask for.
+      That is the honest, measurable half of the loop today, and it is the harder
+      half — publishing an approved post is plumbing, whereas producing one the
+      founder will approve unedited is the product. The interim measure retires,
+      and the live-post clock starts, when PUB-1 reaches a real platform.

@@ -15,6 +15,51 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-44:
+    v: 1
+    date: 2026-07-26
+    by: founder (shpin.p@diffco.us)
+    binds: [G-5, ARC-3, PRO-4, ONB-6, ONBS-6, GEN-1, GENS-1, INC-11, INC-12]
+    title: Phase F repair decisions — Steward gets a heartbeat; day-one success is an approved draft
+    statement: >-
+      Four founder calls taken on the Phase F founder-truth audit, which found
+      that the built product cannot produce content unaided (INC-12) and has no
+      way to act between visits (INC-11). Evidence:
+      design/walkthroughs/audit-2026-07-26/.
+      (1) THE HEARTBEAT — ADR-0003's Job/Queue port (cron + work queues, pg-boss
+      on the existing Postgres) is IMPLEMENTED, not deferred. Steward drafts,
+      discovers and checks in on a schedule with no session open. Chosen over
+      session-triggered generation because a button that makes Steward work is
+      still a tool the founder operates — the failure mode vision.md says this
+      persona abandons after two attempts — so the button is not a smaller
+      version of the right fix, it is a different product. This resolves INC-11,
+      unblocks PRO-4 (DEC-24's interruption budget, currently unbuildable), and
+      is the flexibility-limiting call SDLC A5 requires be recorded.
+      (2) DAY-ONE SUCCESS IS AN APPROVED DRAFT — G-5's "live" is honestly
+      re-scoped for the pre-OAuth phase: the first session succeeds when the
+      founder APPROVES something Steward wrote. Publishing stays dev-stubbed;
+      Meta/X app review is not on the critical path. G-5's enduring 48h
+      live-post target is retained, with an explicit interim measure (G-5 v2) so
+      the commercial commitment is not quietly weakened — only its measurable
+      bar for this phase is.
+      (3) PLAN A MONTH, SURFACE A FEW — planAndDraftCalendar generates the
+      rolling four-week calendar so Plan & Published is genuinely
+      forward-looking, but Ready only ever holds a few cards at a time. This
+      reconciles DEC-18's stated cadence ceiling (~1 item/day, a few posts a
+      week) with the planner as built, keeps the spine finite and finishable
+      inside G-3's fifteen minutes, and gives STW-1's impact/gratitude spacing a
+      real window to operate over. The metering between calendar and Ready is
+      new behaviour and needs a GENS spec element.
+      (4) THE FIRST BATCH IS AUTOMATIC, FRAMED AS CALIBRATION — generation fires
+      on the ONBS-6 minimum-viable-context predicate with no gate and nothing to
+      click, but the first drafts are presented as a first attempt ("here's my
+      first go, tell me what's off") rather than as finished work. Chosen over a
+      confirm-the-profile gate (which XO-1 forbids) and over an unframed batch:
+      it sets honest expectations at the moment Steward knows least, and turns
+      an early rejection into a MEM-1 correction that improves the next batch
+      instead of a disappointment. ONBS-6 specifies the trigger, not the
+      framing — the framing needs a spec element.
+
   DEC-43:
     v: 1
     date: 2026-07-25
