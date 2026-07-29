@@ -16,8 +16,8 @@ existence.
 | `generate.ts` | `generateDraft` (grounding-in) + the bounded VAL regenerate loop; `draftForSlot` (the MEMS-4 retrieve → generate seam); `assembleGrounding` | `@implements GENS-7 v1` |
 | `guardrails.ts` | The VAL chain POLICY (PIPE-2): `resolveOutcome` + `regenerateHint` over the judge's findings — pure, deterministic, no content heuristic | `@implements GENS-7 v1` |
 | `store.ts` | DM-5 ContentItem PERSISTENCE (G1b): `persistDraft` (a DraftResult → a durable master row) + `getContentItem` / `listContentItems` (org-scoped, ACC-3) | `@implements GENS-7 v1` |
-| `planner.ts` | The GENS-1 rolling planner (G4): the `plan-calendar` pairing Skill + the pure DETERMINISTIC mix-quota engine (`designateAndSchedule`) + the agenda/taxonomy guard (`applyPairingGuard`) | `@implements GENS-1 v1` |
-| `engine.ts` | `createContentEngine` — the WIRED loop `planAndDraftCalendar`: agenda → plan → generate → VAL → persist dated ContentItems | `@implements GENS-1 v1` |
+| `planner.ts` | The GENS-1 rolling planner (G4): the `plan-calendar` pairing Skill + the pure DETERMINISTIC mix-quota engine (`designateAndSchedule`) + the agenda/taxonomy guard (`applyPairingGuard`) | `@implements GENS-1 v2` |
+| `engine.ts` | `createContentEngine` — the WIRED loop `planAndDraftCalendar`: agenda → plan → generate → VAL → persist dated ContentItems | `@implements GENS-1 v2` |
 | `types.ts` | `ValReport` / `DraftResult` contracts (`ValOutcome` lives in `@shared` — a DM-5 field) | — |
 
 **Persistence (G1b).** `store.ts` completes the `generateDraft → ContentItem`

@@ -4,26 +4,27 @@ title: Lazy Onboarding — behavior
 status: draft
 challenge:
   date: 2026-07-26
-  by: "cortex:architect-challenger (r2 job-runner delta — acceptance quality + element-ownership + LRN-20/LRN-30 sweep)"
-  verdict: fail-with-fixes-applied
-  record: .spec/specs/challenges/job-runner-2026-07-26-r1.md
+  by: "cortex:architect-challenger (job-runner delta, rounds 1-6 — records r1, r4, r6)"
+  verdict: fail
+  record: .spec/specs/challenges/job-runner-2026-07-26-r6.md
   summary: >-
-    r2 delta-challenges ONBS-6 v2 (who evaluates the predicate; the first batch
-    framed as calibration) alongside ARC-28 and GENS-8. FAIL with fixes applied.
-    Three findings landed here. (1) The acceptance was UNEXECUTABLE: "in that
-    session" and "no page open at the moment of generation" cannot both be
-    asserted by one test, and "with no button pressed" is a property of the test
-    author, never able to go red (the LRN-30 trap) — rewritten as six separable
-    clauses with "unattended" restated as generation completing with NO CLIENT
-    SESSION CONNECTED for that org. (2) The calibration framing had no structural
-    carrier and was specified as a SURFACE MODE whose retirement stripped the frame
-    from still-undisposed siblings — worst after a redirect, where those leftovers
-    predate the correction — so the marker moved onto the ITEM, retiring per-item,
-    rendered through the existing DSS-22/DS-5 family (GR-7 v3). (3) Decoupling the
-    predicate from generation opened a new empty-state window (steady shape, empty
-    Ready, generation in flight) against VAL-6/DS-6 — the day-one narration now
-    persists until the first batch LANDS, not until the predicate flips. Ownership
-    of the framing (ONBS-6) vs the trigger (GENS-8) was attacked and HELD.
+    Six delta rounds, all FAIL, ~50 findings, every one applied. The pattern is
+    the finding: the TRIGGER half was fixed in r1 and held in every round since,
+    while EVERY high in r2-r5 was the METERING half — because bounding what
+    Steward writes is entangled with GEN-1's planning model, STW-1's quota
+    artifact and XG-8's calendar, three approved contracts this delta does not
+    own (a GEN-1 bump cascades 75 sites). That is a scope error, not a wording
+    one, so DEC-46 SPLIT the delta: ship the unattended trigger, defer the
+    metering as an open question. r5 also found TOP-1's scheduled agenda run had
+    no invoker anywhere — a fresh org's first batch would have found an empty
+    agenda, persisted nothing and SUCCEEDED, reproducing INC-12 one link upstream
+    in the element written to close it; now a named precondition of both
+    triggers and an ARC-28 consumer. r6's three highs were all the excision
+    removing bounds without restating them (first-batch size, refill convergence
+    target, the re-arm's terminal state) — all restated. Held throughout:
+    ARC-28's four ADR-0003 contract items, the transactional conditional claim,
+    the scheduledFor discriminator, per-date idempotency, and GENS-8's
+    over-structure even at half size.
 intent: >-
   Exact behavior of onboarding (register onb-onboarding.yaml): how an org starts
   from name + email with nothing blocking (ONB-1), how public sources are
@@ -234,14 +235,34 @@ items:
       rejected first draft IMPROVES the next batch instead of reading as failure;
       and it protects G-2 (approval-without-edits by week 8) from being judged
       against drafts written on the thinnest possible context.
+      THE FLAG IS KEYED TO THE ORG'S CONTEXT STATE, NOT TO THE PRODUCER. Every
+      item generated while the org is still thin carries it — not merely the ones
+      the first-batch job happened to write. Keying it to the producer looks
+      equivalent and is not: the daily sweeper reaches the same org the next
+      morning on the same one-program-fact Memory, so three framed cards would be
+      followed by nine unframed ones presented as finished steady-state work. That
+      inverts all three reasons this framing is behaviour rather than decoration,
+      and it would falsify this element's own sentence about the refill
+      interleaving "genuine steady-state" cards — they would not be.
       THE CALIBRATION FLAG IS PER-ITEM, NOT A SURFACE MODE. (Named distinctly on
       purpose — the semantic-clarity rule: this is the per-item CALIBRATION FLAG on
-      a ContentItem, not GENS-8's org-row FIRST-BATCH CLAIM, which is a
-      once-only enqueue guard. Two different things, two names.) The property
+      a ContentItem, not GENS-8's org-row FIRST-BATCH CLAIM, which is the once-only
+      enqueue guard GENS-8 defines (and which its bounded re-arm may legitimately
+      release once — the mechanics live there, not here). Two different things, two names.) The property
       belongs to the DRAFT, so a first-batch ContentItem carries the flag and
-      RETIRES IT ON ITS OWN DISPOSITION — reaching DM-5 editorial state `approved`
-      or `skipped`, or having a redirect recorded against it (redirect is a Memory
-      write, not a DM-5 state, so it is named explicitly rather than implied). A
+      RETIRES IT ON ITS OWN DISPOSITION. The card renders the calibration frame
+      WHILE THE FLAG IS SET — keyed on the flag, never baked into persisted copy,
+      or clearing a boolean would change no pixel. DSS-8 has exactly ONE slot and
+      DSS-19 already fills it per-card from `reasonLine`, so the frame PREFIXES
+      that reason text inside the single slot rather than replacing it: no new
+      DSS-8 variant (GR-7 v3), and the card keeps the explanation the founder most
+      needs on precisely the drafts written from the thinnest context.
+      Approved and skipped both remove the item from the spine, so the branch that
+      actually matters is REDIRECT — the item stays in Ready, and it is the one
+      case where the frame is stale, because that leftover was written before the
+      correction. Redirect must therefore CLEAR the flag on the item whose id it
+      already receives; today `approval.redirect` discards that id, which is the
+      carrier this rule needs and the reason it is stated rather than assumed. A
       surface-wide mode retired on the first tap would strip the frame from the
       still-undisposed siblings — and after a REDIRECT those leftovers were written
       before the correction, so they are exactly the ones that still need it —
@@ -267,9 +288,11 @@ items:
       tell me…"), never a silent spinner and never a lie about timing. Note XO-2's
       own states cover the INGESTION wait, not generation-in-flight or
       generation-failed; this element adds those two. The day-one->steady
-      TRANSITION itself is XH-12's to own and is registered as INC-13; this
-      element carries only the behavioural half, and the two are repaired
-      coherently.
+      TRANSITION itself is XH-12's to own and is registered as INC-13. This
+      element carries only the behavioural half, and it LANDS WITH XH-12's
+      shape-transition condition, not before it: shipping the narration rule alone
+      would paint the day-one wait on top of the steady terminus copy INC-13
+      describes — two truths on one screen.
       ACCEPTANCE, as separable clauses (no clause may be un-failable — LRN-30):
       (a) drafts are PRESENT inside the first-session window — note this is
       upstream of G-5 v2's interim measure, which counts a first APPROVED post;
@@ -279,8 +302,8 @@ items:
       close the client, drain the queue, reassert — which is the honest form of
       "unattended", unlike "no button was pressed" (a property of the test author,
       not the system, and therefore never red); (c) the arriving item is provably
-      from the planner path — it carries a slot (`scheduledFor` set, subject
-      resolving to a TOPS-4 topic), which the composer never produces;
+      from the planner path — it carries a planner slot date (`scheduledFor` set),
+      which the composer never sets;
       (d) the minimum-viable-context predicate is explicit and deterministic;
       (e) thin Memory yields honest cause-level drafts, never fabricated impact;
       (f) the per-item calibration flag is present on first-batch items and absent

@@ -10,6 +10,33 @@ intent: >-
   where the decision landed.
 
 items:
+  Q-18:
+    v: 1
+    status: open
+    decidable-by: user
+    title: How much finished work may wait — the per-org Ready ceiling, and the horizon that feeds it
+    statement: >-
+      Deferred by DEC-46 and retained here because SDLC Phase C keeps a deferred
+      escalation visible rather than letting it live in decision prose (where it
+      cannot be re-raised or reported). DEC-44 (3) directed "plan a month, surface
+      a few"; DEC-45 replaced it with "the ceiling bounds the horizon"; DEC-46
+      deferred BOTH after five challenger rounds failed on this seam alone. The
+      horizon question is reopened and unanswered — not settled.
+      WHY IT KEPT FAILING, so the next attempt does not repeat it: bounding what
+      Steward writes is entangled with three approved contracts the job-runner
+      delta does not own — GEN-1's rolling four-week planning model, STW-1's
+      impact/gratitude quota (whose sole enforcement, STWS-1's acceptance, is
+      written against "every org's rolling 4-week plan"), and XG-8's calendar,
+      which requires every entry to carry a title snippet and a type chip. A
+      GEN-1 bump cascades 75 citing sites. Any real answer pays that cascade or
+      works strictly inside the existing four-week shape.
+      WHAT IS SHIPPING WITHOUT IT: a per-run cap of three items for both
+      autonomous producers, with GENS-1's four-week calendar shape as the
+      convergence target. That bounds burst and accumulation but gives no per-org
+      dial, so the finite-and-finishable promise (UX-3, G-3) has no governed
+      bound until this is answered. Revisit with cohort-1 data on what stack size
+      a founder actually finishes in fifteen minutes — the number is a field
+      observation, which is why it is decidable-by user and not derivable here.
   Q-17:
     v: 1
     status: open

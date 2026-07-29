@@ -456,7 +456,14 @@ items:
       must never mean having wider reach.
       RUNS TODAY: the ONBS-6 first-batch observer (the minimum-viable-context
       predicate, evaluated on the write paths that feed it rather than on a page
-      view) and the GENS-8 rolling refill. QUEUED BEHIND IT: PUB-1 scheduled
+      view), the GENS-8 rolling refill, and TOP-1's scheduled agenda run — which
+      had no invoker anywhere until this change, so a fresh org's first batch
+      would have found an empty agenda, persisted nothing, and still SUCCEEDED.
+      The agenda run rides the same daily sweeper that fans out per org: that IS
+      TOPS-1's "scheduled run", not a new mechanism, and it keeps the agenda
+      MAINTAINED rather than frozen at day-one cause-level topics. EACH TRIGGER ensures the agenda before
+      planning (GENS-8 owns that rule); the first batch cannot wait a day for the
+      sweep, so its ensure is inline. QUEUED BEHIND IT: PUB-1 scheduled
       delivery and OPS-1 failure queues (both of which need `runAt` and
       dead-lettering), EXT-1 discovery sweeps, PRO-1..PRO-4 proactive pushes,
       APR-6 quiet accountability, STW-2 recaps — each of which named a cadence or

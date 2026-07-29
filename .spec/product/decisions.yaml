@@ -15,6 +15,90 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-46:
+    v: 1
+    date: 2026-07-26
+    by: founder (shpin.p@diffco.us)
+    binds: [DEC-44, DEC-45, GENS-8, TOP-1, TOPS-1, INC-11, INC-12]
+    title: Split the job-runner delta — ship the unattended trigger, defer the metering
+    statement: >-
+      CORRECTION FIRST, because the previous decision rested on a claim that was
+      wrong. DEC-45 was recommended as needing "no cascade". It does: STWS-1 is an
+      APPROVED P0 spec whose sole acceptance reads "every org's rolling 4-week
+      plan carries >=1 impact/gratitude" with the designation living "on the
+      planned slot" — the artifact DEC-45 deletes — and GEN-1's title and
+      statement, the GENS register's intent and interfaces, XG-4, XG-8 and G-4's
+      coverage note all still assert the four-week forward plan. Bumping GEN-1
+      cascades 75 citing sites, 3 stale pins and five coverage assertions
+      including STW-1. The founder chose DEC-45 on an understated cost.
+      THE EVIDENCE THAT PROMPTED THIS SPLIT. Five challenger rounds on one delta,
+      all FAIL. The TRIGGER half (ARC-28's port, the transactional conditional
+      claim, the scheduledFor discriminator, the single daily sweeper) was fixed
+      in r1 and has been re-verified as holding in every round since. EVERY high
+      in rounds 2-5 has been the METERING half — the ceiling, the horizon, the
+      cadence — because bounding what Steward writes is entangled with GEN-1's
+      planning model, STW-1's quota artifact and XG-8's calendar, three approved
+      contracts this delta does not own. A round-6 attempt at the same shape would
+      be the sixth.
+      DECISION: split the delta. SHIP the unattended trigger — GENS-8 reduces to
+      the first-batch observer plus the rolling refill, which is what closes
+      INC-11 (no heartbeat) and INC-12 (nothing calls the chain) and is the whole
+      of what makes Steward write unprompted. DEFER the metering to its own change
+      with its own cascade budget and its own DEC, RETAINED AS Q-18 so the
+      deferral stays visible and re-raisable (SDLC Phase C) rather than living
+      only in this statement; until then both autonomous producers carry a simple
+      per-run cap rather than a governed per-org dial. DEC-44 (3) and
+      DEC-45 are both SUPERSEDED as to the horizon question, which is reopened and
+      unanswered rather than quietly settled.
+      IN SCOPE FOR THE TRIGGER, because round 5 found it missing: TOP-1's
+      scheduled agenda run has no invoker anywhere, so a fresh org's once-only
+      first batch would find an empty agenda, persist zero drafts, and SUCCEED —
+      consuming its claim and reproducing INC-12 one link upstream, in the very
+      element written to close it. The agenda run joins ARC-28's consumers and
+      becomes a named precondition of both triggers.
+      WHAT THE DEFERRAL COSTS, stated plainly: without a governed ceiling the
+      Ready stack has no per-org bound, so the finite-and-finishable promise
+      (UX-3, G-3) rests on the per-run cap and the natural cadence until the
+      metering change lands. That is a real gap, it is recorded here rather than
+      papered over, and it is smaller than shipping nothing — today the founder
+      receives no drafts at all.
+
+  DEC-45:
+    v: 1
+    date: 2026-07-26
+    by: founder (shpin.p@diffco.us)
+    binds: [DEC-44, GEN-1, GENS-1, GENS-8, XG-8]
+    title: Drop the plan/draft split — the ceiling bounds the horizon itself (refines DEC-44 (3))
+    statement: >-
+      DEC-44 (3) directed "plan a month, surface a few": keep a rolling four-week
+      calendar of PLANNED slots while Ready holds only a few drafted cards. Round 4
+      of the job-runner challenge found it unbuildable as specified — it requires a
+      durable UN-DRAFTED plan slot, and no carrier exists. architecture/data-model.yaml
+      models no plan entity, DM-5's editorial lifecycle has no pre-draft state, and
+      the calendar exists only as content_item.scheduled_for. Both workarounds are
+      closed: persisting slots as ContentItems puts them inside the very
+      disposable-draft count that gates generation, so a four-week plan saturates
+      the ceiling and generation never runs at all; recomputing the plan on read is
+      non-deterministic (planCalendar pairs type-to-subject through an LLM Skill),
+      voids the no-duplicate-slot acceptance, and blinds GENS-1's quota seeding —
+      recentDesignations reads designations off content_item, so un-drafted slots
+      are invisible and the STW-1 impact/gratitude rhythm silently degrades.
+      DECISION: plan and draft stay COUPLED. The ceiling bounds the HORIZON itself
+      — Steward plans and drafts only the few items it surfaces, and extends as
+      they clear. Chosen over adding a plan-slot DM-* entity (a migration plus
+      cascades to GENS-1's acceptance and XG-8's "every calendar entry carries a
+      title snippet and a type chip", which an un-drafted slot cannot supply) and
+      over deferring the horizon entirely.
+      WHAT THIS COSTS, stated honestly: "Coming up" in Plan & Published (XG-8)
+      shows the near horizon rather than a full month, so the glass wall is less
+      forward-looking than DEC-44 (3) imagined. That is the price of not inventing
+      an entity to satisfy a clause, and it is reversible — the plan-slot entity
+      remains the upgrade path if cohort-1 founders want to see further ahead.
+      WHY IT IS RECORDED RATHER THAN QUIETLY REVISED: DEC-44 (3) was a founder
+      call, and the SDLC does not let an agent overturn one because it turned out
+      to be inconvenient to build. The challenge found a real infeasibility, the
+      escalation went up, and this is the recorded answer.
+
   DEC-44:
     v: 1
     date: 2026-07-26

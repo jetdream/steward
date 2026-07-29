@@ -7,7 +7,7 @@
  * It deliberately checks NAMES + kinds, not behaviour — each capability's own
  * unit/integration tests own the behaviour.
  *
- * @verifies GENS-1 v1
+ * @verifies GENS-1 v2
  * @verifies TOPS-1 v1
  * @verifies TOPS-4 v1
  */

@@ -4,7 +4,7 @@
  * agenda (TOPS-1) → plan (GENS-1) → generate (GENS-7) → VAL → persist (DM-5).
  * Skips without DATABASE_URL; a gating context (STEWARD_GATE/CI) requires the DB.
  *
- * @verifies GENS-1 v1
+ * @verifies GENS-1 v2
  */
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";

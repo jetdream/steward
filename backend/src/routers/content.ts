@@ -3,7 +3,7 @@
  * @backend/content (ARC-15). Org-confined via `orgProcedure` (ACC-3). Every port
  * carries `{ db }` so each ModelCall is cost-logged (PIPE-5).
  *
- * @implements GENS-1 v1  (planAndDraft — the rolling plan → generate → persist loop)
+ * @implements GENS-1 v2  (planAndDraft — the rolling plan → generate → persist loop)
  * @implements GENS-2 v1  (adapt — per-channel variants)
  * @implements GENS-5 v1  (variants — the fit verdicts the Ready spine shows)
  */

@@ -14,7 +14,7 @@ items:
   INC-13:
     v: 1
     status: open
-    binds: [XH-12, UX-1, ONBS-6, GENS-8]
+    binds: [XH-12, UX-3, ONBS-6, GENS-8]
     title: XH-12 defines the home's three shapes but never the transition between them
     statement: >-
       Detected 2026-07-26 (Phase F audit, F1 run A; registered as an ID during the

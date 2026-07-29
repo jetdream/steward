@@ -18,7 +18,7 @@ intent: >-
 
 items:
   DM-1:
-    v: 1
+    v: 2
     kind: data-entity
     title: Org
     body: |
@@ -50,6 +50,13 @@ items:
         CONTENT_ITEM }o--o| EXTERNAL_ITEM : "sourced from"
         CHANNEL_VARIANT ||--o{ POST_METRIC : yields
         CHAT_SESSION ||--o{ CHAT_MESSAGE : contains
+      FIRST-BATCH CLAIM (v2, GENS-8 / DEC-46): a durable claim timestamp plus an
+      ATTEMPT COUNT, the once-only guard for the unattended first batch. Durable
+      on the Org and NOT job-payload state, because a counter in the payload
+      resets with every new attempt chain and the bound would never bind. The
+      count is never reset: at the bound the claim STAYS SET and the job
+      dead-letters, so the level trigger cannot re-arm on the next Memory write.
+      Same carrier discipline as the DM-5 calibration flag added in this change.
 
   DM-2:
     v: 1

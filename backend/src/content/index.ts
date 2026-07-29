@@ -12,7 +12,7 @@
  * substrate comes into existence, evaluated day-one (ADR-0010).
  *
  * @implements GENS-7 v1  (grounded master generation through the VAL guardrail chain — generate.ts, guardrails.ts)
- * @implements GENS-1 v1  (the rolling planner — pairing + deterministic mix quotas — planner.ts)
+ * @implements GENS-1 v2  (the rolling planner — pairing + deterministic mix quotas — planner.ts)
  * @implements GENS-2 v1  (per-channel adaptation — variants.ts: the adapt-variant Skill)
  * @implements GENS-5 v1  (the channel-fit gate — variants.ts: deterministic technicalFit against PUBS-2)
  *

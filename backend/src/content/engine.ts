@@ -10,7 +10,7 @@
  * first, never a blank page" core (VIS-2, VAL-6): one call yields a month of
  * grounded, guardrailed, scheduled drafts.
  *
- * @implements GENS-1 v1  (the plan→generate→persist calendar orchestration)
+ * @implements GENS-1 v2  (the plan→generate→persist calendar orchestration)
  */
 import type { ContentItem, OrgId } from "@shared";
 import type { Database } from "../db/client.js";
