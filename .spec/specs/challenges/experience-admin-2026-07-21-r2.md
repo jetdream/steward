@@ -1,7 +1,7 @@
 ---
 kind: challenge-record
 spec: .spec/experience/admin.yaml
-round: 2
+round: 1
 date: 2026-07-21
 verdict: pass
 by: cortex:architect-challenger (Product-Designer lens; r1 fail → r2 delta pass)

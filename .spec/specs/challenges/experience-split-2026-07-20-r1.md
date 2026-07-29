@@ -1,7 +1,7 @@
 ---
 kind: challenge-record
-spec: experience/{onboarding,home,autonomy,proactive,glass-wall,account,public,ops}.yaml (DEC-28 by-domain split)
-round: 1
+spec: .spec/experience/home.yaml
+round: 3
 date: 2026-07-20
 verdict: pass
 by: cortex:architect-challenger (Product-Designer lens; structural/delta reorg review)

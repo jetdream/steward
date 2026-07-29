@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: experience/spine.yaml (EXP-32/43/44 v2) + ext-external-radar.yaml (EXT-5 v2) — the DEC-20 delta
+spec: .spec/experience/home.yaml
 round: 2
 date: 2026-07-19
 verdict: pass

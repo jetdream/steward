@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: .spec/specs/{gen-content-generation,onb-onboarding}.yaml + architecture/{overview,data-model}.yaml — the DEC-44/46 job-runner delta
+spec: .spec/specs/gen-content-generation.yaml
 round: 6
 date: 2026-07-26
 verdict: fail

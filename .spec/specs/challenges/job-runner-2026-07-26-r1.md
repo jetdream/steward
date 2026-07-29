@@ -1,7 +1,7 @@
 ---
 kind: challenge-record
-spec: .spec/specs/{gen-content-generation,onb-onboarding}.yaml + architecture/overview.yaml (ARC-28) — the DEC-44 job-runner delta
-round: 1
+spec: .spec/specs/gen-content-generation.yaml
+round: 4
 date: 2026-07-26
 verdict: fail
 by: cortex:architect-challenger (delta pass — design-conformance + over-structure + element-ownership + LRN-20 honesty + acceptance quality + cheaper-alternative/hidden-assumptions + missed-cascade)

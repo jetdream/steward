@@ -1,7 +1,7 @@
 ---
 kind: challenge-record
 spec: .spec/specs/adm-platform-admin.yaml
-round: 6
+round: 2
 date: 2026-07-21
 verdict: pass
 by: cortex:architect-challenger (architect lens; finalization re-gate, fail → fail → pass)

@@ -1,3 +1,12 @@
+---
+kind: challenge-record
+spec: .spec/architecture/overview.yaml
+round: 2
+date: 2026-07-22
+verdict: fail
+by: cortex:architect-challenger (single adversarial pass, foundational + SEC-touching delta)
+---
+
 # Challenge record — Deployment-topology delta (r1)
 
 - date: 2026-07-22

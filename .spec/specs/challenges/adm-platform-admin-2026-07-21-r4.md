@@ -1,7 +1,7 @@
 ---
 kind: challenge-record
 spec: .spec/specs/adm-platform-admin.yaml
-round: 4
+round: 1
 date: 2026-07-21
 verdict: pass
 by: cortex:architect-challenger (four lenses; r1 fail → r2 fail → r3 fail → r4 pass)

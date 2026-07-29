@@ -1,3 +1,12 @@
+---
+kind: challenge-record
+spec: .spec/architecture/overview.yaml
+round: 3
+date: 2026-07-22
+verdict: pass
+by: cortex:architect-challenger (delta re-challenge — verify r1 fixes + fresh attack on changed items)
+---
+
 # Challenge record — Deployment-topology delta (r2, delta re-challenge)
 
 - date: 2026-07-22

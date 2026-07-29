@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: experience/spine.yaml (EXP register — full replacement, DEC-18)
+spec: .spec/experience/home.yaml
 round: 1
 date: 2026-07-19
 verdict: pass

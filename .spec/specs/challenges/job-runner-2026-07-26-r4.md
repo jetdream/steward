@@ -1,7 +1,7 @@
 ---
 kind: challenge-record
-spec: .spec/specs/{gen-content-generation,onb-onboarding}.yaml + architecture/{overview,data-model}.yaml — the DEC-44 job-runner delta
-round: 4
+spec: .spec/specs/gen-content-generation.yaml
+round: 5
 date: 2026-07-26
 verdict: fail
 by: cortex:architect-challenger (delta rounds 2-4 — rebound-hunting, acceptance quality, element ownership, data-carrier existence)
