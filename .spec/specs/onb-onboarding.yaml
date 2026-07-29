@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-26
   by: "cortex:architect-challenger (job-runner delta, rounds 1-6 — records r1, r4, r6)"
   verdict: fail
-  record: .spec/specs/challenges/job-runner-2026-07-26-r6.md
+  record: .spec/specs/challenges/gen-content-generation-2026-07-26-r6.md
   summary: >-
     Six delta rounds, all FAIL, ~50 findings, every one applied. The pattern is
     the finding: the TRIGGER half was fixed in r1 and held in every round since,

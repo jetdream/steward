@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-21
   by: cortex:architect-challenger (architect lens; r1→r6, five fails then pass)
   verdict: pass
-  record: .spec/specs/challenges/adm-platform-admin-2026-07-21-r6.md
+  record: .spec/specs/challenges/adm-platform-admin-2026-07-21-r2.md
   summary: >-
     Four rounds on the full-parity impersonation spec. r1: G-2 rule not in the
     higher-precedence goal note + ledger couldn't represent staff reads/actions

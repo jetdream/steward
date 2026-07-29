@@ -6,7 +6,7 @@ challenge:
   date: 2026-07-21
   by: cortex:architect-challenger (four lenses; r1 fail → r2 delta pass)
   verdict: pass
-  record: .spec/specs/challenges/acc-accounts-identity-2026-07-21-r2.md
+  record: .spec/specs/challenges/acc-accounts-identity-2026-07-21-r1.md
   summary: >-
     r1 FAILED on two highs — the single-owner invariant was unenforced
     (updateRole could mint a second owner) and ACCS-1's signup-time membership
