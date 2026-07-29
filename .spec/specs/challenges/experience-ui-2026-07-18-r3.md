@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: experience/ui.yaml (DEC-14 reconciliation round)
+spec: .spec/experience/ui.yaml
 round: 3
 date: 2026-07-18
 verdict: pass

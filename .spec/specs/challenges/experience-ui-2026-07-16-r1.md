@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: experience/ui.yaml (experience register, founding round)
+spec: .spec/experience/ui.yaml
 round: 1
 date: 2026-07-16
 verdict: pass

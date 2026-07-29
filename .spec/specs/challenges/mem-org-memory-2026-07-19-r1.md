@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: specs/mem-org-memory.yaml (MEMS-1..6 — Org Memory behavior; the first buildable spec)
+spec: .spec/specs/mem-org-memory.yaml
 round: 1
 date: 2026-07-19
 verdict: fail

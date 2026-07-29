@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: specs/mem-org-memory.yaml (MEMS-1..6 — Org Memory behavior; DEC-22 propagation closure)
+spec: .spec/specs/mem-org-memory.yaml
 round: 3
 date: 2026-07-19
 verdict: fail

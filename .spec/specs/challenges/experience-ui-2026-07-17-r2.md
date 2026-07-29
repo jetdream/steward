@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: experience/ui.yaml (DEC-9 delta round)
+spec: .spec/experience/ui.yaml
 round: 2
 date: 2026-07-17
 verdict: pass

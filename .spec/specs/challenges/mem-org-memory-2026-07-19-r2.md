@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: specs/mem-org-memory.yaml (MEMS-1..6 — Org Memory behavior; post-DEC-21/DEC-22 cascade)
+spec: .spec/specs/mem-org-memory.yaml
 round: 2
 date: 2026-07-19
 verdict: fail

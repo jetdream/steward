@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: experience/admin.yaml (XADM) + experience/account.yaml XB-4/5/6 (the admin-capability experience round, DEC-34)
+spec: .spec/experience/admin.yaml
 round: 2
 date: 2026-07-21
 verdict: pass

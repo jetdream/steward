@@ -1,6 +1,6 @@
 ---
 kind: challenge-record
-spec: architecture set (overview, data-model, integrations, llm-pipeline, security-privacy)
+spec: .spec/architecture/overview.yaml
 round: 1
 date: 2026-07-18
 verdict: pass
