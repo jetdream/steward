@@ -53,21 +53,37 @@ items:
         GENS-1 and GENS-7 between them plan and write, but neither CALLS the other
         — nothing owned "who runs this, and when". The Phase F audit found the
         consequence in the field (INC-12): a complete, correct chain with no
-        caller, so a founder received only what they wrote themselves. GENS-8 now
-        owns the trigger (the ONBS-6 first-batch observer + the rolling refill,
-        both on ARC-28). It does NOT own a generation gate: DEC-44 (3)'s metering
+        caller, so a founder received only what they wrote themselves. The trigger
+        is owned by GENS-8 (DEC-48): ONE predicate-gated sweep on ARC-28 that
+        ensures the agenda and the seed Strategy, then tops the calendar up under
+        three bounds — occupancy-to-N, three per run, and a rate with headroom over
+        the drain. DEC-47 briefly split this into a once-only trigger plus a
+        standing refill; DEC-48 superseded that after the round-7 panel showed the
+        exactly-once apparatus was accidental complexity and that an event-driven
+        observer plans on partial context mid-ingest. It does NOT own a generation
+        gate: DEC-44 (3)'s metering
         was deferred to its own change by DEC-46 after five challenge rounds
         failed on it, so the stack's per-org bound is a KNOWN GAP resting on the
         per-run cap and the planned cadence until that change lands.
         GENS-1 v2 (same change) states the four-week shape's MAGNITUDE — N slots,
         an item occupying its date regardless of editorial state. That was implicit
         while planning and drafting were one act with no autonomous caller; once
-        GENS-8's refill targets the shape, "four weeks" without a quantity is not a
+        GENS-8's sweep targets the shape, "four weeks" without a quantity is not a
         convergence target, and matching on date identity instead of occupancy
         overshoots the planned density fourfold. The decomposition is unchanged. A capability is not covered by the elements that CAN perform
         it if no element is accountable for INVOKING it — that is the coverage
         lesson this re-affirmation records.
-      against: [GENS-1@2, GENS-7@1, GENS-8@1, G-1@1, G-2@1, G-4@1, G-5@2, MEM-1@1, STR-1@2, EXT-1@2, EXT-5@2, TOP-4@1]
+        RE-AFFIRMED 2026-07-29 (DEC-48) after the scope review Cortex mandated and
+        the four-lens panel that followed it. The decomposition is UNCHANGED — the
+        producer is one element again, as it was before DEC-47 — but the round is
+        why this re-affirmation exists: three consecutive rounds found the same
+        defect class one link further up each time (the planner had no caller, then
+        the agenda run had no caller, then the seed Strategy had no producer at
+        all). The rule adopted to close the class, and the reason this coverage
+        note can now be trusted: EVERY CONJUNCT OF A GATING PREDICATE NEEDS A NAMED
+        PRODUCER, NOT JUST A NAMED OBSERVER. Coverage still turns on code — GENS-8
+        is unimplemented, so this requirement remains NOT satisfied.
+      against: [GENS-1@2, GENS-7@1, GENS-8@2, G-1@1, G-2@1, G-4@1, G-5@2, MEM-1@1, STR-1@2, EXT-1@2, EXT-5@2, TOP-4@1]
 
   GEN-2:
     v: 1

@@ -3,28 +3,20 @@ prefix: GENS
 title: Planning & Content Generation — behavior
 status: draft
 challenge:
-  date: 2026-07-26
-  by: "cortex:architect-challenger (job-runner delta, rounds 1-6 — records r1, r4, r6)"
+  date: 2026-07-29
+  by: "cortex:challenge — three-lens panel, round 8 (the single-producer design)"
   verdict: fail
-  record: .spec/specs/challenges/gen-content-generation-2026-07-26-r6.md
+  record: .spec/specs/challenges/gen-content-generation-2026-07-29-r8.md
   summary: >-
-    Six delta rounds, all FAIL, ~50 findings, every one applied. The pattern is
-    the finding: the TRIGGER half was fixed in r1 and held in every round since,
-    while EVERY high in r2-r5 was the METERING half — because bounding what
-    Steward writes is entangled with GEN-1's planning model, STW-1's quota
-    artifact and XG-8's calendar, three approved contracts this delta does not
-    own (a GEN-1 bump cascades 75 sites). That is a scope error, not a wording
-    one, so DEC-46 SPLIT the delta: ship the unattended trigger, defer the
-    metering as an open question. r5 also found TOP-1's scheduled agenda run had
-    no invoker anywhere — a fresh org's first batch would have found an empty
-    agenda, persisted nothing and SUCCEEDED, reproducing INC-12 one link upstream
-    in the element written to close it; now a named precondition of both
-    triggers and an ARC-28 consumer. r6's three highs were all the excision
-    removing bounds without restating them (first-batch size, refill convergence
-    target, the re-arm's terminal state) — all restated. Held throughout:
-    ARC-28's four ADR-0003 contract items, the transactional conditional claim,
-    the scheduledFor discriminator, per-date idempotency, and GENS-8's
-    over-structure even at half size.
+    Three lenses, all fail, all locating the SAME region independently. Four consecutive
+    rounds of highs in the bounds / acceptance / failure-handling region — the region Q-18
+    already defers — which the stopping rule names a scope error, not a wording error. The
+    mechanism, stated by the code-executing lens: each repair moved the blindness one level
+    rather than removing it (nothing measured -> total produced -> forward occupancy ->
+    occupancy is blind to DISTRIBUTION, first post on day 21 with the clause green at
+    12/12). DEC-48's architecture HELD under all three, and one lens looked for a cheaper
+    one and reported there is none. Remedy, named independently by two lenses and taken as
+    DEC-49: ship the invoker, defer the metering region to its own chain.
 intent: >-
   Exact behavior of the content engine (register gen-content-generation.yaml) —
   the hub that turns Memory + Strategy + the editorial agenda + the Radar into a
@@ -107,9 +99,13 @@ items:
       MAGNITUDE, stated because the shape is now a convergence target for the
       GENS-8 refill and "four weeks" alone does not carry a quantity. An ITEM
       OCCUPIES ITS DATE regardless of editorial state, including a disposed one,
-      so a skipped card is never silently regenerated tomorrow. N is a code
-      constant (~12, i.e. ≈3 per week — the DEC-18 cadence, not the ~1/day
-      ceiling); the per-ORG dial over it is deferred as Q-18.
+      so a skipped card is never silently regenerated tomorrow. N IS A SINGLE NAMED
+      EXPORTED CONSTANT (~12, i.e. ≈3 per week — the DEC-18 cadence, not the ~1/day
+      ceiling) — stated as a requirement on the code and not as a description of it,
+      because today it is an unexported inline default that can be changed to any
+      value with the whole suite still green, and GENS-8's bounds are all expressed
+      in N, so a second copy at the caller would drift silently. The per-ORG dial
+      over it is deferred as Q-18.
       Each slot pairs a content TYPE (from the
       taxonomy — internal: mission / founder story / case study / own event /
       people; external: related event / news / research) with a SUBJECT from the
@@ -290,174 +286,139 @@ items:
       retrieved Memory/Strategy — no fabricated events or impact (VAL-4).
 
   GENS-8:
-    v: 1
-    title: Autonomous generation — the unattended trigger
+    v: 2
+    title: Autonomous generation — the invoker
     implements: [GEN-1, ONB-6]
+    reach: required
     statement: >-
-      GENERATION RUNS WITHOUT A SESSION (DEC-44 (1), ARC-28). The planner and the
-      draft chain are driven by JOBS, never by a page view or a button. This
-      element exists because the capability was complete and unreachable: the
+      GENERATION RUNS WITHOUT A SESSION (DEC-44 (1), ARC-28): the planner and the
+      draft chain are driven by a JOB, never by a page view or a button. This
+      element exists because the capability was complete and UNREACHABLE — the
       chain (TOPS-1 agenda → STRS-2 seed strategy → GENS-1 planner → GENS-7
       generate+VAL) had no caller, so a founder could receive nothing they had not
-      written themselves (INC-12) — inverting VAL-6 ("the system moves first; no
-      empty state asks the founder to create from scratch") and falsifying ONBS-6's
-      own acceptance. A UI button would NOT have closed it: a control the founder
-      must press to make Steward work is still a tool they operate, which is the
-      failure mode users.md says this persona abandons.
-      THE AGENDA RUN IS A PRECONDITION OF BOTH TRIGGERS, and it is named here
-      because nothing else names it. TOPS-1 opens "a scheduled run derives and
-      maintains the org's topic set" and NOTHING SCHEDULES IT — so a fresh org's
-      once-only first batch would find an empty agenda, `planCalendar` would
-      return [] (the exact line INC-12 cited), zero drafts would persist, and the
-      job would SUCCEED: claim spent, narration neither landing nor visibly
-      failing, the refill repeating the no-op forever. That is INC-12 reproduced
-      one link upstream by the element written to close it. So TOP-1's run joins
-      ARC-28's consumers, and each trigger ENSURES a non-empty agenda before
-      planning — a capability with no accountable invoker is the coverage failure
-      this same change records against GEN-1, and it applies to the capability
-      directly above this one too.
-      TWO TRIGGERS. (a) FIRST BATCH — an ONBS-6 observer re-evaluates
-      readyForFirstDrafts and, on a false→true transition, enqueues the first
-      batch ONCE. The observer runs post-commit on EVERY WRITE PATH THAT FEEDS THE
-      PREDICATE — the single MEMS-1 Memory write path (DEC-22) and the STRS-2
-      Strategy-seed write — stated as a rule rather than a list of today's callers,
-      because the predicate is a conjunction (grounded Memory AND a seed Strategy)
-      and watching only the Memory half would silently re-open INC-12 the day the
-      STR conjunct becomes live. ATOMICITY, precisely: the transition alone is a
-      read-modify-write and two observers can both read false and both enqueue, so
-      the guarantee is NOT "the transition is the trigger" — it is a CONDITIONAL
-      CLAIM (set the org's first-batch marker WHERE it is still null, act only on
-      rowcount 1) committed IN THE SAME TRANSACTION AS THE ENQUEUE. That is
-      precisely what ARC-28's transactional-enqueue seam exists to make possible.
-      THE FIRST BATCH IS SMALL — the same per-run cap the refill takes, not a
-      month. The deleted ceiling used to bound both producers; with it gone the
-      bound must be stated on each. Left unstated, the only wired call defaults to
-      twelve (`slotCount ?? 12` over a 28-day window), landing a dozen
-      calibration-framed cards on an org whose Memory is one program fact —
-      against DEC-18's "a few posts a week", against UX-3's finite stack, and
-      against the calibration framing's own logic, since a correction on card one
-      cannot improve eleven siblings already written.
-      The trigger is a LEVEL, not an edge: on every predicate-feeding write, IF
-      the predicate holds AND the claim is null, claim-and-enqueue. A pure
-      false->true edge would never fire again once the predicate is already true,
-      which would make any later re-arm inert.
-      (b) ROLLING REFILL — a per-org recurring job that PLANS AND DRAFTS AS ONE
-      ACT (DEC-45, superseded by DEC-46 on the horizon question; the plan/draft
-      split was found unbuildable — no carrier exists for a durable un-drafted
-      slot). IT TOPS THE OCCUPANCY OF THE NEXT 28 DAYS UP TO GENS-1'S N,
-      PLACING NEW ITEMS AT THE LATEST UNFILLED SLOT DATES. All three parts are
-      load-bearing and were each missing: OCCUPANCY (how many items the window
-      holds) rather than date-identity, because the planner spreads slots at
-      `startDate + round(i*28/n)` so today's grid and tomorrow's are DISJOINT —
-      matching on date identity yields ~55 items in 28 days, four times the
-      planned density; N, because "four weeks" carries no quantity; and LATEST
-      placement, because earliest placement still overshoots (~40 in 28 days).
-      Occupancy + N + latest is the only combination that converges (~22). That names an approved contract
-      rather than inventing a dial, and it is what makes the refill CONVERGE:
-      "a date that carries no item" is not a bound by itself — empty dates always
-      exist, the planner's evenly-spread dates shift every run as `startDate`
-      advances, and the refill would generate at its cap forever, unbounded in
-      total and several times the planned density. IDEMPOTENT PER DATE remains the
-      de-dup guard on top: never a second item for a date that already carries
-      one. A recurring job that re-planned from scratch would duplicate drafts on
-      every run — GENS-1's planner is date-blind by itself, so the idempotency
-      lives here, in the caller.
-      THE REFILL IS STANDING, PREDICATE-GATED, AND THE NAMED SAFETY NET. It is a
-      SINGLE daily sweeper that fans out over orgs — not a per-org cron row, which
-      would strand every org that already exists (including cohort-1 and the
-      audit's own evidence org), so INC-12 would persist for exactly the orgs it
-      was found on. The fan-out needs no backfill and does not touch ADR-0003's
-      pre-rejection of cron-sweeping, which concerns durable PER-ITEM timers
-      (PUBS-1's ±5 min, AUTS-1's 24h), not a per-org daily cadence. Until
-      readyForFirstDrafts is true it does nothing, so it never drafts below the
-      ONBS-6 threshold.
-      THE FIRST-BATCH CLAIM IS RELEASED ON TERMINAL FAILURE, BOUNDEDLY. Committing
-      the claim with the enqueue makes the trigger exactly-once, which also makes
-      it at-most-once-EVER: without a release, a first batch that exhausts its
-      retries would leave the org permanently and silently without content —
-      INC-11's own failure class, one layer down. So a terminally failed job
-      clears the claim and re-enqueues on the ARC-28 `runAt` backoff at MINUTES
-      scale, and THE RETRY RE-PERFORMS THE CONDITIONAL CLAIM AT EXECUTION,
-      no-opping on rowcount 0 — while the backoff is pending the claim is null, so
-      a predicate-feeding write can legitimately claim too, and without the
-      re-check both would run and duplicate. The re-arm is BOUNDED: after a fixed
-      number of attempts it stops and hands off to ARC-28's dead-letter surface
-      and ONBS-6's snag state, because an org failing structurally would otherwise
-      loop at minutes scale forever against the <$25/org/month COGS target.
-      AT THE BOUND THE CLAIM STAYS SET. Clearing it on the final attempt would
-      leave the LEVEL trigger armed, so the next predicate-feeding write — on the
-      single DEC-22 path, every interview answer — would re-claim and start a
-      fresh chain, reproducing the very loop the bound exists to stop. The last
-      attempt therefore dead-letters WITHOUT releasing: the standing refill stays
-      the content path and ONBS-6's snag state stays the founder-facing truth. The
-      claim and its attempt count are DURABLE FIELDS ON DM-1, not job-payload
-      state — a counter in the payload resets with every new chain. Same carrier
-      discipline this change already applied to the calibration flag on DM-5.
-      THE REFILL CARRIES A PER-RUN CAP, NOT A GOVERNED CEILING (DEC-46). A
-      per-org metering dial — how much finished work may wait — is DEFERRED to its
-      own change: bounding it turned out to be entangled with GEN-1's planning
-      model, STW-1's quota artifact and XG-8's calendar, three approved contracts
-      this element does not own, and five challenge rounds failed on exactly that
-      seam. Until it lands, autonomous production is bounded as a RATE, not just
-      per run: AT MOST N/4 ITEMS PER ORG PER ROLLING 7 DAYS, with THREE PER RUN as
-      the burst guard. A per-run cap alone is not a rate — three per run against a
-      DAILY sweeper is twelve cards by day three, the same dozen on the same
-      one-program-fact Memory that the cap exists to prevent, at four times
-      DEC-18's cadence. The rolling-7-day bound is what makes the sweeper's
-      one-day heal latency affordable: it can run daily and still not flood. Recorded honestly:
-      the finite-and-finishable promise (UX-3, G-3) rests on that cap and the
-      natural cadence in the meantime, and that is a real gap — smaller than
-      today's, where the founder receives nothing at all.
-      OWNERSHIP (reconciling DEC-44 (4), which anticipated the reverse split):
-      this element owns the TRIGGER, ONBS-6 v2 owns the FRAMING of what it
-      produces. That matches ONBS's approved interfaces contract, which already
-      names readyForFirstDrafts with "caller: GEN".
-      ACCEPTANCE, each clause independently falsifiable (LRN-30):
-      (a) a fresh org given only name + email and a readable site receives drafts
-      it never requested, and generation COMPLETES WITH NO CLIENT SESSION
-      CONNECTED for that org (close the client, drain the queue, reassert). The
-      arriving item is provably from the PLANNER path: it carries a planner slot
-      date (`scheduledFor` set), which `approval.compose` never sets. Deliberately
-      NOT "the subject resolves to a TOPS-4 topic" — the engine drops `topicId`
-      and `content_item` has no topic column, so that half would be checkable only
-      as string equality; and NOT "carries no founder-authorship marker", which is
-      vacuous, since DM-5 models no such field and APRS-5's design is that
-      authorship is not a bypass.
-      (b) ABSENT A TERMINAL FAILURE, N observers racing on the same write AND
-      every subsequent predicate-feeding write once the predicate is already true
-      together yield EXACTLY ONE batch. Scoped to the no-failure case because (e)
-      deliberately permits a second claim after a release.
-      (c) the refill run twice yields no second item for any date that already
-      carries one — asserted with a card DISPOSED between the runs, so the
-      per-date key is the only thing that can prevent the duplicate; stopped by
-      the run cap alone, the clause would pass without exercising what it claims.
-      (d) a handler given org A's payload cannot construct a query returning org
-      B's row (ARC-28's org-scoped handle), not merely "this handler happens to
-      filter correctly".
-      (e) WHILE ATTEMPTS REMAIN, a failed first-batch job still yields drafts
-      without waiting for the daily sweeper; AT THE BOUND the re-arm stops and the
-      sweeper becomes the only content path — scoped in two halves because at the
-      bound the claim stays set, so a single clause asserting both would be red
-      and green at once against a permanently failing generator. The home never
-      narrates an unbounded wait in either half.
-      (f) every item the first batch produces carries the ONBS-6 calibration flag,
-      and no refill item does.
-      (f2) THIRTY CONSECUTIVE DAILY REFILLS WITH NOTHING DISPOSED yield roughly N
-      items, not four times N — the clause that catches date-identity matching,
-      earliest placement, or a missing rate bound, none of which any single-run
-      assertion can see.
-      (g) THE FIRST BATCH DOES NOT EXCEED THE PER-RUN CAP — the clause that fails
-      today, since the only wired call plans a month.
-      (h) A FIRST-BATCH RUN THAT PERSISTS ZERO ITEMS FAILS AND RE-ARMS — it does
-      NOT succeed. Ensuring the TOPS-1 agenda run removes the commonest cause of
-      an empty plan but does not entail a non-empty one: `applyPairingGuard` drops
-      every external-type pairing and every pairing whose topic is off-agenda, so
-      planning can legitimately return [] against a healthy agenda. Asserting
-      "the agenda ensure means a batch cannot persist nothing" would be an
-      unentailed invariant — worse than silence, because an implementer reads it
-      as guaranteed. The outcome, not the cause, is what is asserted. Fails today.
-      (i) A FRESH ORG WITH AN EMPTY AGENDA still receives drafts: each trigger
-      ensures the TOPS-1 run before planning. Fails today.
+      written themselves (INC-12), inverting VAL-6 and falsifying ONBS-6's own
+      acceptance. A UI button would NOT have closed it: a control the founder must
+      press to make Steward work is still a tool they operate, which is the failure
+      mode users.md says this persona abandons.
+      THIS ELEMENT IS DELIBERATELY NARROW (v2, DEC-49). It owns the INVOKER and
+      nothing else. The metering region — the occupancy convergence rule and its
+      figures, the rolling production rate, placement strategy beyond "earliest",
+      the per-org failure/snag state machine, and the N-slot-grid interface that
+      convergence model needs — is DEFERRED to its own change and its own challenge
+      chain (Q-19), after four consecutive rounds of highs landed there. The bounds
+      below are therefore explicitly CRUDE AND INTERIM, chosen to be obviously safe
+      rather than optimal.
+      ONE RECURRING SWEEP. A single job runs every ~5 minutes and FANS OUT over
+      orgs. The fan-out has no orgId by nature, so it runs on ARC-28's ENUMERATOR
+      mode — a handle that may project ORG IDS ONLY — and hands each per-org run
+      exactly one id on the ordinary org-scoped handle. There is no separate
+      first-batch trigger and no once-only claim: an org's FIRST productive run IS
+      its first batch, and nothing distinguishes it mechanically.
+      THE PRECONDITIONS ARE ENSURED BEFORE THE GATE IS EVALUATED, NOT INSIDE IT.
+      readyForFirstDrafts is a CONJUNCTION — grounded Memory AND a seed Strategy
+      (ONBS-6) — and the seed-Strategy conjunct has no producer anywhere in the
+      built system: ingestion writes Memory only, and the one procedure that writes
+      a StrategyDoc is reached by a founder viewing XG-7, a page view DEC-44 (1)
+      rejects. So for each SETTLED org the sweep, IN THIS ORDER: (1) ensures a seed
+      Strategy (STRS-2's auto-draft) if the org has grounded Memory and no
+      StrategyDoc — never on empty Memory, which would fabricate an ungrounded
+      Strategy; (2) ensures a non-empty TOPS-1 agenda; (3) THEN evaluates
+      readyForFirstDrafts; (4) plans and drafts. Order (3)-after-(1) is the whole
+      point and is stated as an order because getting it wrong is invisible:
+      ensuring INSIDE the ready branch means an org lacking the conjunct is never
+      ready, so the ensure never fires and the org receives nothing forever — INC-12
+      exactly, in the element written to close it. THE PREDICATE'S JOB IS TO CATCH A
+      FAILED ENSURE, NOT TO GATE THE ENSURE. Maintaining the agenda thereafter is
+      TOPS-1's own (TOPS-1 v2), invoked on this same sweep; ensuring is not
+      maintaining.
+      SETTLED MEANS NO INGESTION RUN IS IN FLIGHT for the org. Ingestion commits PER
+      ARTIFACT with no transaction wrapper (ONBS-2), so acting mid-ingest plans the
+      founder's entire first impression from the first two facts while nineteen more
+      are still being scraped. Deliberately NOT "no predicate-feeding write inside
+      the last interval": every interview answer is such a write and a founder
+      answers well inside five minutes, so that form starves the interview path —
+      the path ONBS-2 names as PRIMARY when sources are thin — for exactly as long
+      as the founder stays engaged. In-flight is also one job/row state rather than
+      a per-org timestamp scan every five minutes. A poll can express this; an
+      event-driven observer structurally cannot, which is why the producer is a
+      sweep (DEC-48).
+      THE INTERIM BOUNDS. At most ONE plan-and-draft ATTEMPT per org per calendar
+      day; at most THREE items per attempt (DEC-47, re-affirmed — enough to show
+      range, few enough to read and redirect in one sitting, and a correction on
+      card one cannot improve siblings already written); and the sweep STOPS
+      attempting an org once the next 28 days already holds GENS-1's N items. That
+      triple is the crude bound: it caps LLM spend per org per day, it caps
+      accumulation, and it makes failure handling need no state machine — tomorrow's
+      attempt IS the retry. Left unstated, the only wired call defaults to twelve
+      (`slotCount ?? 12`), landing a dozen cards on an org whose Memory is one
+      program fact, against DEC-18's "a few posts a week" and UX-3's finite stack.
+      NEW ITEMS GO AT THE EARLIEST UNFILLED SLOT DATES. Not the latest: measured over
+      the real planner grid, latest placement puts a new org's first post on DAY 21
+      and leaves weeks one through three empty, which makes XO-4's and G-5's "a live
+      post inside 48 hours" structurally impossible and G-4's four-week streak
+      unable to begin — while a forward-occupancy assertion reads full throughout,
+      because occupancy cannot see distribution. Earliest placement schedules the
+      first post on day 0. Any refinement of placement is Q-19's; "earliest" is the
+      floor that keeps the approved 48-hour promise reachable.
+      IDEMPOTENT PER DATE, as the de-dup guard: never a second item for a date that
+      already carries one. GENS-1's planner is date-blind by itself, so the
+      idempotency lives here, in the caller, and it covers EVERY attempt including
+      the first — a partially-persisted attempt cannot be re-filled tomorrow.
+      NO CLIENT-CALLABLE PRODUCER SURVIVES — all three of them. `content.planAndDraft`
+      (an orgProcedure accepting a slot count up to 30, i.e. a month of content per
+      call, outside every bound above), `strategy.autoDraft` and `topics.identify`
+      are each reachable today from any authenticated member and each has ZERO
+      callers in the client. They are RETIRED from the router surface; the acts stay
+      as the sweep's internal entry points. Retiring all three matters beyond
+      metering: while `strategy.autoDraft` is callable, a test can manufacture the
+      missing gate conjunct through a GENUINE router call, so the fixture-import
+      control cannot see it and the missing producer stays hidden — the same
+      mechanism LRN-37 records with a router call substituted for the seed.
+      ACCEPTANCE, each clause independently falsifiable (LRN-30) and — per
+      `reach: required` — driven from a declared entrypoint, never from a fixture
+      that constructs the state it claims to prove:
+      (a) a fresh org given only name + email and a readable site RECEIVES DRAFTS IT
+      NEVER REQUESTED, and generation COMPLETES WITH NO CLIENT SESSION CONNECTED for
+      that org (close the client, drain the queue, reassert). The arriving item is
+      provably from the PLANNER path: it carries a planner slot date (`scheduledFor`
+      set), which `approval.compose` never sets. Deliberately NOT "the subject
+      resolves to a TOPS-4 topic" — the engine drops `topicId` and `content_item` has
+      no topic column, so that half would be checkable only as string equality. The
+      org is created through the signup entrypoint and NO fixture writes
+      memory_entry, strategy_doc or content_item for it. Fails today.
+      (b) AN ORG WHOSE ONLY CONJUNCT IS MEMORY STILL RECEIVES DRAFTS — the sweep
+      produces the missing seed Strategy. Asserted as the OUTCOME (drafts arrive),
+      not as the ordering of two calls: a clause asserting "the ensures happen before
+      planCalendar" is satisfied by an empty function body, which is how this defect
+      survived a round. Fails today.
+      (c) AN ORG WITH NO GROUNDED MEMORY RECEIVES NOTHING, and no StrategyDoc is
+      written for it — the guard that keeps (b) from fabricating an ungrounded
+      Strategy for every abandoned signup.
+      (d) THE FIRST PRODUCTIVE ATTEMPT YIELDS EXACTLY THREE ITEMS, bounded on BOTH
+      sides, and driven against a generator that returns at least one
+      guard-violating pairing — because `applyPairingGuard` legitimately drops
+      off-agenda and external-type pairings, and the keyless dev stub returns only
+      guard-passing ones, so a clause driven on the stub alone cannot see a run that
+      silently persists two.
+      (e) AN ORG MID-INGEST IS SKIPPED AND AN ORG MID-INTERVIEW IS NOT — asserted as
+      two runs: a sweep during ingestion yields no draft, and a sweep while an
+      interview answer landed thirty seconds ago yields drafts. The second half is
+      the clause that catches the starving form of quiescence. Fails today.
+      (f) A SECOND SWEEP THE SAME DAY yields no second attempt and no second item for
+      any date already carrying one — asserted with a card DISPOSED between the
+      sweeps, so the per-date key is the only thing that can prevent the duplicate.
+      (g) THE SWEEP STOPS for an org whose next 28 days already holds N items, and
+      resumes when the window drains.
+      (h) THE ENUMERATOR READS ORG IDS ONLY — asserted on the handle's surface (it
+      exposes no content accessor), not as "this one query happened to filter
+      correctly", which no test can generalize. Fails today.
+      (i) NONE of `content.planAndDraft`, `strategy.autoDraft`, `topics.identify` is
+      reachable from the client — asserted against the router surface. Fails today;
+      the two standing tests asserting the planner MUST be client-callable are
+      inverted in the change that lands this.
+      (j) A FAILED ATTEMPT DOES NOT CONSUME THE DAY'S ITEMS TWICE: after an attempt
+      that throws part-way, the following day's attempt tops the org up to three
+      total for the dates it covers rather than adding three more.
 
 open-questions:
   - >-

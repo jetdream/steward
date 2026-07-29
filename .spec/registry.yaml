@@ -17,6 +17,23 @@ extra-fields:
 # (@implements markers). Populates as capability verticals land — the skeleton
 # code has no markers yet. Turned on by the DEC-37 foundation phase.
 code-paths: [shared, backend, client, news]
+# REACHABILITY TIER (DEC-48, adopted after the round-7 panel; refined by DEC-49).
+# fixture-paths are the folders that CONSTRUCT state rather than reach it — a file
+# carrying @reaches or @validates may not import from them. That is the compensating
+# control for the INC-7/INC-12 failure: the demo seed writes memory_entry, strategy_doc
+# AND content_item, so an e2e signing into a seeded org proved a loop that did not exist.
+# On adoption it immediately de-rated eight of nineteen story evidences.
+# entrypoint-paths are the import prefixes a @reaches test enters the product through.
+# KNOWN LIMIT, measured (DEC-49): the signal is a lexical IMPORT check, and no Playwright
+# spec imports the app at all — it drives a browser over HTTP. So a browser-driving spec
+# reads as entrypointless while an in-process test that imports the app reads as reaching,
+# which is the inverse of the tier's purpose. Declared here are the surfaces an in-process
+# @reaches test legitimately enters through; the browser tier's gap is recorded in
+# gen-content-generation.yaml open-questions rather than papered over. The ARC-28 job
+# registration joins this list in the change that creates it — the lint rejects a prefix
+# matching nothing, correctly: a phantom prefix reads exactly like a clean tree.
+fixture-paths: [backend/src/demo]
+entrypoint-paths: [client/src, backend/src/routers]
 # Path-prefix -> scope tags: the edit-time hooks surface scope-matched conventions
 # (must/should) and learnings (gotchas/dead-ends) when a file under a prefix is edited.
 learning-scopes:

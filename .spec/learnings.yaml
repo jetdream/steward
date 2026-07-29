@@ -14,6 +14,89 @@ intent: >-
   Gotchas sections; this register is for lessons that transfer.
 
 items:
+  LRN-37:
+    v: 1
+    type: pattern
+    scope: [process, spec-authoring, review, backend]
+    source: Three challenge rounds found the same defect one link further upstream each time — the third was a gate conjunct with no producer at all (2026-07-29)
+    title: Every conjunct of a gating predicate needs a named PRODUCER, not just a named observer — and a fixture that writes the conjunct hides its absence
+    statement: >-
+      THE CLASS, found three times in one delta's history, each time one link
+      further up. (1) The audit: the planner and draft chain were complete and had
+      NO CALLER, so a founder received only what they wrote themselves (INC-12).
+      (2) Round 5: the fix named a caller, but the agenda run that caller depended
+      on had no invoker — so the first plan would find an empty agenda, persist
+      nothing, and the job would SUCCEED. (3) Round 7: both callers were named, and
+      the GATE's second conjunct — a seed Strategy — had no producer anywhere.
+      Ingestion wrote Memory only; the one function that writes a Strategy had zero
+      callers; the deferral was recorded in a CODE COMMENT and not in the graph. A
+      faithful implementation of the whole delta would have produced nothing,
+      forever, behind a green gate.
+      WHY NAMING THE OBSERVER FEELS LIKE ENOUGH. Each round's fix was correct and
+      each was reviewed by a challenger that passed the region. The reason the
+      defect kept surviving is that a predicate READS as satisfied when you are
+      looking at the code that reads it: `ready = hasMemory && hasStrategy` is
+      obviously right. The question that finds the bug is not "is the predicate
+      correct" but "for each conjunct, WHAT MAKES IT TRUE, and is that thing
+      invoked?" — and a conjunction hides this better than a single condition,
+      because the well-served conjunct makes the expression look alive.
+      WHAT MADE IT INVISIBLE TO EVERY GATE: the demo seed writes the conjunct. So
+      every test that needed a ready org got one, the acceptance clause "drafts are
+      present in the first session" passed, and the graph rolled up covered. A
+      fixture that writes a precondition does not merely fail to prove
+      reachability — it ACTIVELY CONCEALS the missing producer, because the one
+      observation that would expose it (nothing ever sets this field) is the exact
+      observation the fixture removes. This is why the reachability tier's
+      fixture-import check is the compensating control and why it was adopted in the
+      same change (DEC-48): on adoption it immediately named eight of nineteen
+      stories as fixture-fed.
+      THE MOVE. For any predicate that gates behaviour, enumerate its conjuncts and
+      name the producer of each in the spec — and if a conjunct has no producer,
+      that is the finding, not a TODO. Prefer an ENSURE by the consumer (the
+      producer runs it before proceeding) over a hope that some upstream path
+      writes it, because an ensure has a caller by construction. Related: LRN-36
+      (splitting an element exposes what a shared statement hid), LRN-31 (the lint
+      checks the graph is well-formed, not that it is honest), LRN-35 (an
+      empty-literal at a call site is invisible to every gate).
+  LRN-36:
+    v: 1
+    type: pattern
+    scope: [process, spec-authoring, review]
+    source: The DEC-47 scope review — splitting GENS-8 exposed a contradiction six challenge rounds had missed; the split was later superseded by DEC-48 but the lesson is what survived it (2026-07-28)
+    title: Splitting an element surfaces contradictions the combined element hid — every acceptance clause must be re-homed, and one that fits neither half is a defect
+    statement: >-
+      THE MECHANISM, which is why this transfers. A split forces a decision per
+      acceptance clause: which half does this belong to? Most sort cleanly. The
+      valuable ones are the clauses that fit NEITHER half — because they are keyed
+      to something the element does not own, and inside one big element that
+      mis-keying is invisible.
+      THE INSTANCE. GENS-8 carried "every item the first batch produces carries
+      the calibration flag, and no refill item does". Splitting it into a
+      once-only producer and a standing producer turned that into two
+      producer-keyed clauses, one per element — at which point it read as obviously
+      wrong, because ONBS-6's statement says in capitals that the flag is keyed to
+      the ORG'S CONTEXT STATE, NOT TO THE PRODUCER, and argues the case: the
+      sweeper reaches the same thin org the next morning, so producer-keying
+      follows framed cards with unframed ones presented as finished work. (The
+      original form said "three then NINE" — round 8 showed nine more cards is three
+      weeks at any shipped rate, so the illustrative number was wrong while the
+      mechanism it illustrates is right. Noted rather than quietly corrected: a
+      learning that transmits a refuted premise teaches the premise.) ONBS-6's OWN acceptance clause (f) carried the same producer-keyed
+      error, contradicting the statement it claimed to test. Six challenge rounds
+      read past both.
+      WHY IT SURVIVED SO LONG. The two readings are extensionally EQUAL at the
+      moment the first batch runs — a first-batch org IS the thinnest org — so no
+      single-run assertion can tell them apart, and the acceptance clause was
+      testable, passing-looking, and wrong. They diverge only on day two. That is
+      the same shape as GENS-8's "thirty consecutive sweeps" clause and the same
+      shape as LRN-32: a defect that needs TIME or REPETITION to become visible is
+      invisible to a spec review that reasons about one invocation.
+      THE MOVE. When splitting an element, do not distribute the acceptance
+      clauses — RE-DERIVE each one from the statement of whichever element now owns
+      the behaviour, and treat "this clause fits neither half" as a finding rather
+      than a filing problem. Related: LRN-32 (the same defect returning four
+      rounds running in a freshly-added optional field) and the three-fail scope
+      review that mandated this split in the first place.
   LRN-34:
     v: 1
     type: gotcha

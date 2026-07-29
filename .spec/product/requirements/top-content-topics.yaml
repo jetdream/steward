@@ -40,7 +40,21 @@ items:
         identification with a deterministic evidence-pointer guard + catch-rate,
         thin-Memory graceful degradation (MEMS-4), DM-13 v2 evolution retention.
         Realization pending code.
-      against: [TOPS-1@1, G-2@1, G-3@1, G-4@1, MEM-1@1, EXT-1@2]
+        RE-AFFIRMED 2026-07-29 (DEC-49): TOPS-1 v2 supplies what three challenge
+        rounds found missing — the INVOKER of the scheduled run. v1 opened "a
+        scheduled run derives and maintains the org's topic set" and nothing
+        scheduled it, so a fresh org's first plan met an empty agenda and the job
+        SUCCEEDED, and the MAINTENANCE half had no invoker at all: topics would have
+        frozen at the day-one cause-level set while this requirement's own "topics
+        evolve as the org and its context change" went unimplemented and untested.
+        v2 rides GENS-8's sweep, runs only when Memory has changed, and asserts
+        maintenance as a STATE TRANSITION (a day-one topic is superseded or retired)
+        rather than as a different COUNT — which additive-only persistence would
+        satisfy while the freeze survived. Being NAMED in an architecture element
+        created no obligation: a design-element carries no acceptance and gates no
+        roll-up. NOT satisfied: nothing schedules the run and supersession is
+        unimplemented (the topics module records it as deferred).
+      against: [TOPS-1@2, G-2@1, G-3@1, G-4@1, MEM-1@1, EXT-1@2]
 
   TOP-2:
     v: 1

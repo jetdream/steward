@@ -50,13 +50,18 @@ items:
         CONTENT_ITEM }o--o| EXTERNAL_ITEM : "sourced from"
         CHANNEL_VARIANT ||--o{ POST_METRIC : yields
         CHAT_SESSION ||--o{ CHAT_MESSAGE : contains
-      FIRST-BATCH CLAIM (v2, GENS-8 / DEC-46): a durable claim timestamp plus an
-      ATTEMPT COUNT, the once-only guard for the unattended first batch. Durable
-      on the Org and NOT job-payload state, because a counter in the payload
-      resets with every new attempt chain and the bound would never bind. The
-      count is never reset: at the bound the claim STAYS SET and the job
-      dead-letters, so the level trigger cannot re-arm on the next Memory write.
-      Same carrier discipline as the DM-5 calibration flag added in this change.
+      NO AUTONOMOUS-GENERATION BOOKKEEPING (v3, DEC-49). v2 carried a first-batch
+      CLAIM TIMESTAMP and an ATTEMPT COUNT — the once-only guard for an
+      event-driven first-batch trigger. Both are DELETED: DEC-48 replaced that
+      trigger with a single recurring sweep whose first productive run for an org
+      IS its first batch, so exactly-once needs no manufacturing (per-date
+      idempotency and the stop-at-N condition prevent duplication). Recorded rather
+      than silently dropped because an implementer building the schema from this
+      entity would otherwise ship two columns nothing reads. The per-org
+      failure/snag counter that would replace them is DEFERRED with the rest of the
+      metering region (Q-19) — GENS-8's interim rule needs no durable failure state
+      at all, because one attempt per org per calendar day makes tomorrow's attempt
+      the retry.
 
   DM-2:
     v: 1
@@ -85,7 +90,7 @@ items:
       tags, provenance (upload vs harvested); the media library.
 
   DM-5:
-    v: 2
+    v: 3
     kind: data-entity
     title: ContentItem
     body: |
@@ -132,14 +137,18 @@ items:
       operator clears it; n/a (the default) once the per-org QA dial is off, so it
       is invisible outside cohort-1 oversight.
 
-      A FIRST-BATCH CALIBRATION FLAG (ONBS-6 v2, DEC-44): a per-item boolean
-      marking a draft as part of the org's FIRST batch, so it can be framed as a
-      first attempt rather than as finished work (rendered via DSS-8). It is
-      per-ITEM, not a surface mode, and retires on that item's own disposition —
-      approved, skipped, or a redirect recorded against it — so a single tap never
-      strips the frame from its still-undisposed siblings. Distinct from GENS-8's
-      org-row first-batch CLAIM, which is a once-only enqueue guard, not a
-      founder-visible property.
+      A CALIBRATION FLAG (ONBS-7 v1, DEC-48 — renamed and re-keyed from the
+      producer-named "first-batch" form of DEC-44): a per-item boolean stamped AT
+      GENERATION from the ORG'S CALIBRATION STATE — set while the org is
+      UNCALIBRATED, meaning its Memory holds no founder-originated styleRule or
+      taboo from an explicit correction channel — so the draft can be framed as a
+      first attempt rather than as finished work (rendered via DSS-8). NOT keyed to
+      which job produced it: the producer-named form was the defect, because the
+      recurring sweep reaches the same uncorrected org the next morning and its
+      items would render as finished steady-state work. It is per-ITEM, not a
+      surface mode, and retires on that item's own disposition — approved, skipped,
+      or a redirect recorded against it — so a single tap never strips the frame
+      from its still-undisposed siblings.
 
       Cross-capability fields accumulated on ContentItem (concrete shapes in
       @shared at code): the slot's content TYPE + agenda TOPIC (GEN-1 pairing;

@@ -10,6 +10,51 @@ intent: >-
   where the decision landed.
 
 items:
+  Q-19:
+    v: 1
+    status: open
+    decidable-by: user
+    title: The metering region — convergence, rate, placement, and the failure/snag machine
+    statement: >-
+      Deferred by DEC-49 (the second scope review) and retained here because SDLC
+      Phase C keeps a deferred escalation visible rather than letting it live in
+      decision prose. FOUR CONSECUTIVE challenge rounds put their highs in this
+      region: r5 the bounds; r6 the bounds x3; r7 the bounds x3; r8 the bounds x5.
+      GENS-8 v2 ships an explicitly crude interim rule instead — one attempt per org
+      per calendar day, three items per attempt, earliest unfilled slot dates, stop
+      once the next 28 days holds N.
+      WHAT IS DEFERRED, precisely, so the next attempt does not re-litigate the
+      whole thing: (1) the OCCUPANCY-TO-N convergence rule and its stated figures;
+      (2) the rolling production RATE (a bound per rolling window rather than per
+      day); (3) PLACEMENT strategy beyond "earliest"; (4) the per-org FAILURE/SNAG
+      state machine — a consecutive-failure count, its bound, and critically its
+      EXIT; (5) the N-slot-grid INTERFACE the convergence model needs, which
+      planCalendar does not expose (it derives dates from `pairings.length`, so
+      asking for three slots yields a three-point grid, not a view of the twelve).
+      WHY IT KEPT FAILING, recorded so the next attempt starts from it. Each repair
+      MOVED THE BLINDNESS ONE LEVEL rather than removing it. A clause that measured
+      nothing about accumulation became one measuring total produced; total produced
+      is capped identically by the rate for every placement strategy, so it became
+      forward-window occupancy; occupancy is blind to DISTRIBUTION — latest-slot
+      placement reads 12 of 12 while the founder's first post sits on day 21. Any
+      real answer needs a criterion that discriminates the WHOLE shape of the
+      schedule, not one scalar, and needs the grid interface above to express it.
+      Two measured facts to start from, both simulated over the real planner grid:
+      a rate of N/4 per rolling 7 days exactly equals the window's N/28-per-day
+      drain and settles at 9/12/10.4, never holding target; ceil(N/3) reaches
+      exactly N by day 15 and holds, healing a skipped run same-day — measured
+      immediately AFTER each run (measured before, the same design reads 11/12/11.6).
+      WHY IT IS DECIDABLE-BY USER AND NOT DERIVABLE HERE: it is the same reason
+      Q-18 gives. How much finished work a founder actually finishes in fifteen
+      minutes, and what cadence reads as a rhythm rather than a trickle or a flood,
+      are FIELD OBSERVATIONS. Four rounds were spent deriving numbers a week of
+      cohort-1 data would settle. Revisit once the invoker is live and real orgs are
+      producing — which is also when the failure machine can be specified against
+      observed failure modes rather than imagined ones.
+      WHAT RESTS ON IT UNTIL THEN: the finite-and-finishable promise (UX-3, G-3) has
+      no governed per-org bound, and a structurally failing org retries once a day
+      forever with no snag state. Both are smaller gaps than today's, where the
+      founder receives nothing at all.
   Q-18:
     v: 1
     status: open
@@ -30,9 +75,11 @@ items:
       which requires every entry to carry a title snippet and a type chip. A
       GEN-1 bump cascades 75 citing sites. Any real answer pays that cascade or
       works strictly inside the existing four-week shape.
-      WHAT IS SHIPPING WITHOUT IT: a per-run cap of three items for both
-      autonomous producers, with GENS-1's four-week calendar shape as the
-      convergence target. That bounds burst and accumulation but gives no per-org
+      WHAT IS SHIPPING WITHOUT IT (revised, DEC-49 — there is ONE producer, and the
+      rolling rate that briefly stood in for this dial is deferred alongside it as
+      Q-19): one plan-and-draft attempt per org per calendar day, three items per
+      attempt, earliest unfilled slot dates, and a stop-at-N condition against
+      GENS-1's four-week shape. That bounds burst and accumulation but gives no per-org
       dial, so the finite-and-finishable promise (UX-3, G-3) has no governed
       bound until this is answered. Revisit with cohort-1 data on what stack size
       a founder actually finishes in fifteen minutes — the number is a field

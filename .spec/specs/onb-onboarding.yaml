@@ -3,28 +3,20 @@ prefix: ONBS
 title: Lazy Onboarding — behavior
 status: draft
 challenge:
-  date: 2026-07-26
-  by: "cortex:architect-challenger (job-runner delta, rounds 1-6 — records r1, r4, r6)"
+  date: 2026-07-29
+  by: "cortex:challenge — three-lens panel, round 3 (the single-producer design)"
   verdict: fail
-  record: .spec/specs/challenges/gen-content-generation-2026-07-26-r6.md
+  record: .spec/specs/challenges/onb-onboarding-2026-07-29-r3.md
   summary: >-
-    Six delta rounds, all FAIL, ~50 findings, every one applied. The pattern is
-    the finding: the TRIGGER half was fixed in r1 and held in every round since,
-    while EVERY high in r2-r5 was the METERING half — because bounding what
-    Steward writes is entangled with GEN-1's planning model, STW-1's quota
-    artifact and XG-8's calendar, three approved contracts this delta does not
-    own (a GEN-1 bump cascades 75 sites). That is a scope error, not a wording
-    one, so DEC-46 SPLIT the delta: ship the unattended trigger, defer the
-    metering as an open question. r5 also found TOP-1's scheduled agenda run had
-    no invoker anywhere — a fresh org's first batch would have found an empty
-    agenda, persisted nothing and SUCCEEDED, reproducing INC-12 one link upstream
-    in the element written to close it; now a named precondition of both
-    triggers and an ARC-28 consumer. r6's three highs were all the excision
-    removing bounds without restating them (first-batch size, refill convergence
-    target, the re-arm's terminal state) — all restated. Held throughout:
-    ARC-28's four ADR-0003 contract items, the transactional conditional claim,
-    the scheduledFor discriminator, per-date idempotency, and GENS-8's
-    over-structure even at half size.
+    Three lenses, all fail, all locating the SAME region independently. Four consecutive
+    rounds of highs in the bounds / acceptance / failure-handling region — the region Q-18
+    already defers — which the stopping rule names a scope error, not a wording error. The
+    mechanism, stated by the code-executing lens: each repair moved the blindness one level
+    rather than removing it (nothing measured -> total produced -> forward occupancy ->
+    occupancy is blind to DISTRIBUTION, first post on day 21 with the clause green at
+    12/12). DEC-48's architecture HELD under all three, and one lens looked for a cheaper
+    one and reported there is none. Remedy, named independently by two lenses and taken as
+    DEC-49: ship the invoker, defer the metering region to its own chain.
 intent: >-
   Exact behavior of onboarding (register onb-onboarding.yaml): how an org starts
   from name + email with nothing blocking (ONB-1), how public sources are
@@ -204,9 +196,10 @@ items:
       thereafter enforced by the taboo overlay (MEMS-3); skipping the review does
       not block drafts.
   ONBS-6:
-    v: 2
-    title: First proof, lazily — minimum viable context, offered as calibration
+    v: 3
+    title: First proof, lazily — the minimum-viable-context predicate
     implements: [ONB-6]
+    reach: required
     statement: >-
       First drafts generate as soon as MINIMUM VIABLE CONTEXT exists — a defined,
       checkable predicate: enough grounded Memory to write on-mission (at least
@@ -215,84 +208,73 @@ items:
       alone, or from the first ~ten minutes of interview when sources are thin.
       The target is first drafts INSIDE the first session and a live post within
       48 hours (G-5). It never blocks on completeness (ONB-1): with only
-      cause-level/thin Memory it still produces drafts, honestly grounded and
-      marked thin (MEMS-4 degradation, consistent with TOPS-1) rather than
-      fabricating specifics; drafts sharpen as Memory deepens. The predicate is
-      evaluated DETERMINISTICALLY (the gate is a checkable boolean —
-      readyForFirstDrafts); draft QUALITY is the LLM part downstream.
-      WHO EVALUATES THE PREDICATE (v2, DEC-44): an unattended OBSERVER, not a page
-      view. "Generate as soon as the predicate exists" was already this element's
-      promise, and the gap that falsified its acceptance was that nothing watched
-      the predicate — it was only ever read to choose the home's shape. The
-      observer and its once-only enqueue are specified in GENS-8 (ARC-28).
-      THE FIRST BATCH IS OFFERED AS CALIBRATION, NOT AS FINISHED WORK (v2, DEC-44
-      (4)). It arrives with no gate and nothing to click — a confirm-the-profile
-      step would be exactly the wizard XO-1 forbids — but it is FRAMED as a first
-      attempt ("here's my first go — tell me what's off") rather than presented
-      like the steady-state stack. Three reasons this is behaviour and not
-      decoration: it is honest at the moment Steward knows least about the org;
-      it invites the correction that MEM-1 turns into a permanent rule, so a
-      rejected first draft IMPROVES the next batch instead of reading as failure;
-      and it protects G-2 (approval-without-edits by week 8) from being judged
-      against drafts written on the thinnest possible context.
-      THE FLAG IS KEYED TO THE ORG'S CONTEXT STATE, NOT TO THE PRODUCER. Every
-      item generated while the org is still thin carries it — not merely the ones
-      the first-batch job happened to write. Keying it to the producer looks
-      equivalent and is not: the daily sweeper reaches the same org the next
-      morning on the same one-program-fact Memory, so three framed cards would be
-      followed by nine unframed ones presented as finished steady-state work. That
-      inverts all three reasons this framing is behaviour rather than decoration,
-      and it would falsify this element's own sentence about the refill
-      interleaving "genuine steady-state" cards — they would not be.
-      THE CALIBRATION FLAG IS PER-ITEM, NOT A SURFACE MODE. (Named distinctly on
-      purpose — the semantic-clarity rule: this is the per-item CALIBRATION FLAG on
-      a ContentItem, not GENS-8's org-row FIRST-BATCH CLAIM, which is the once-only
-      enqueue guard GENS-8 defines (and which its bounded re-arm may legitimately
-      release once — the mechanics live there, not here). Two different things, two names.) The property
-      belongs to the DRAFT, so a first-batch ContentItem carries the flag and
-      RETIRES IT ON ITS OWN DISPOSITION. The card renders the calibration frame
-      WHILE THE FLAG IS SET — keyed on the flag, never baked into persisted copy,
-      or clearing a boolean would change no pixel. DSS-8 has exactly ONE slot and
-      DSS-19 already fills it per-card from `reasonLine`, so the frame PREFIXES
-      that reason text inside the single slot rather than replacing it: no new
-      DSS-8 variant (GR-7 v3), and the card keeps the explanation the founder most
-      needs on precisely the drafts written from the thinnest context.
-      Approved and skipped both remove the item from the spine, so the branch that
-      actually matters is REDIRECT — the item stays in Ready, and it is the one
-      case where the frame is stale, because that leftover was written before the
-      correction. Redirect must therefore CLEAR the flag on the item whose id it
-      already receives; today `approval.redirect` discards that id, which is the
-      carrier this rule needs and the reason it is stated rather than assumed. A
-      surface-wide mode retired on the first tap would strip the frame from the
-      still-undisposed siblings — and after a REDIRECT those leftovers were written
-      before the correction, so they are exactly the ones that still need it —
-      while the GENS-8 rolling refill interleaves genuine steady-state cards among
-      them, indistinguishably. The flag is a DM-5 ContentItem field, enumerated
-      there alongside `qaStatus` (the OPSS-1 precedent for a cross-capability flag
-      on this entity).
-      IT RENDERS THROUGH A NAMED DS ELEMENT, NOT A FAMILY (GR-7 v3 — inventing a
-      component here would be a governed violation, and naming only a family
-      leaves the implementer free to invent while the spec reads as conforming):
-      DSS-8 ReasonLine — "one quiet line under every system-initiated item stating
-      WHY it exists, in first-person colleague voice" — which is exactly the shape
-      of "here's my first go". Not DSS-22, which is the empty/loading zero-state
-      pattern and the wrong altitude for a badge on a populated card.
-      THE DAY-ONE NARRATION PERSISTS UNTIL THE FIRST BATCH LANDS OR VISIBLY FAILS —
-      never unboundedly. Decoupling the predicate from generation (GENS-8) opens a
-      window in which the home would otherwise leave day-one shape while Ready is
-      empty and generation is in flight: an empty state against VAL-6 and DS-6. But
-      a wait with no terminal branch is its own failure — if generation dies, the
-      founder watches "first drafts in about ten minutes" forever. So the narration
-      has a bound, after which it switches to the honest snag register XO-2 already
+      cause-level Memory it still produces drafts, honestly grounded and marked
+      thin (MEMS-4 degradation, consistent with TOPS-1) rather than fabricating
+      specifics; drafts sharpen as Memory deepens. The predicate is evaluated
+      DETERMINISTICALLY (the gate is a checkable boolean — readyForFirstDrafts);
+      draft QUALITY is the LLM part downstream.
+      IT IS A CONJUNCTION, AND EVERY CONJUNCT NEEDS A PRODUCER (v3, DEC-48). The
+      two conjuncts are not symmetric in the code: Memory has a write path with
+      many callers, while the seed Strategy had NO producer at all — ONBS-2 claims
+      ingestion seeds STR-2 and the implementation writes Memory only, with the gap
+      recorded in a code comment rather than in the graph. A gate whose conjunct is
+      never made true is a gate that never opens, so "first drafts as soon as
+      context exists" would have stayed false for every real org while passing in
+      test, because the demo seed writes the row. This is the third instance of one
+      class in this delta's history — the planner had no caller (INC-12), then the
+      agenda run had no caller, then this. GENS-8 therefore ENSURES BOTH CONJUNCTS
+      before planning, and the rule is stated rather than left as a habit: EVERY
+      CONJUNCT OF A GATING PREDICATE NEEDS A NAMED PRODUCER, NOT JUST A NAMED
+      OBSERVER.
+      WHO EVALUATES IT (v3, DEC-48 superseding DEC-44's observer): a recurring
+      unattended SWEEP, not a page view and not a post-commit observer. The gap
+      that falsified this element's acceptance was that nothing watched the
+      predicate — it was only ever read to choose the home's shape. An observer
+      would have fixed that and introduced a worse defect: ingestion commits PER
+      ARTIFACT, so a post-commit observer fires on the second qualifying fact while
+      nineteen more are still being scraped, planning the founder's whole first
+      impression from two facts. So the predicate is additionally read as SETTLED,
+      which means NO INGESTION RUN IS IN FLIGHT for the org — deliberately NOT "no
+      predicate-feeding write inside the last interval", because every interview
+      answer is such a write and a founder answers well inside five minutes, so that
+      form starves the interview path for exactly as long as the founder stays
+      engaged, and the interview is the path this element names when sources are
+      thin. The sweep, its bounds and its failure handling are GENS-8's (ARC-28);
+      this element owns only the predicate and the promise.
+      THE DAY-ONE NARRATION PERSISTS UNTIL THE FIRST DRAFTS LAND OR VISIBLY FAIL —
+      never unboundedly. Decoupling the predicate from generation opens a window in
+      which the home would otherwise leave day-one shape while Ready is empty and
+      generation is in flight: an empty state against VAL-6 and DS-6. But a wait
+      with no terminal branch is its own failure — if generation dies, the founder
+      watches "first drafts in about ten minutes" forever. So the narration has a
+      bound, after which it switches to the honest snag register XO-2 already
       establishes for a failed source ("that didn't work — I'll retry; meanwhile,
-      tell me…"), never a silent spinner and never a lie about timing. Note XO-2's
-      own states cover the INGESTION wait, not generation-in-flight or
-      generation-failed; this element adds those two. The day-one->steady
-      TRANSITION itself is XH-12's to own and is registered as INC-13. This
-      element carries only the behavioural half, and it LANDS WITH XH-12's
-      shape-transition condition, not before it: shipping the narration rule alone
-      would paint the day-one wait on top of the steady terminus copy INC-13
-      describes — two truths on one screen.
+      tell me…"), never a silent spinner and never a lie about timing. It also has a
+      RETURN branch, and under GENS-8's interim rule it is reachable by construction:
+      the sweep re-attempts the org on its next calendar day, so a later successful
+      attempt replaces the snag narration with the arriving cards. A snag state with
+      no exit is the same defect as a wait with no bound — which is why this element
+      does NOT rest on a durable snag flag: that machine and its clearing condition
+      are deferred with the metering region (Q-19), and until it lands "the sweep
+      tries again tomorrow" IS the exit. Note XO-2's own states
+      cover the INGESTION wait, not generation-in-flight, generation-failed, or
+      generation-recovered; this element adds those three.
+      THE NARRATION NEEDS A DELIVERY CHANNEL, NOT JUST A CONDITION (v3). The client
+      neither polls nor subscribes, and the onboarding refresh does not invalidate
+      the Ready stack — so today the predicate flips on ingest success, the home
+      leaves day-one shape, and drafts landing a minute later are never fetched.
+      Whichever way XH-12 settles the transition, the transition must be
+      OBSERVABLE: an open session learns that drafts landed without a manual
+      reload, by a push on the realtime channel (ARC-2's WS) or a bounded poll
+      while the org's generation is in flight. THAT MECHANISM IS APRS-7's — named
+      rather than left to float, because a requirement with no owning element is
+      exactly how this half stayed unbuilt while the roll-up read green: no story
+      served ONB-6, so its story quantifier was vacuously true. The day-one->steady TRANSITION
+      CONDITION itself is XH-12's to own and is registered as INC-13; this element
+      owns the behavioural half and the requirement that a channel exist, and it
+      LANDS WITH XH-12's condition, not before it — shipping the narration rule
+      alone would paint the day-one wait on top of the steady terminus copy INC-13
+      describes, two truths on one screen.
       ACCEPTANCE, as separable clauses (no clause may be un-failable — LRN-30):
       (a) drafts are PRESENT inside the first-session window — note this is
       upstream of G-5 v2's interim measure, which counts a first APPROVED post;
@@ -301,18 +283,135 @@ items:
       (b) generation COMPLETES WHILE NO CLIENT SESSION IS CONNECTED for that org —
       close the client, drain the queue, reassert — which is the honest form of
       "unattended", unlike "no button was pressed" (a property of the test author,
-      not the system, and therefore never red); (c) the arriving item is provably
-      from the planner path — it carries a planner slot date (`scheduledFor` set),
-      which the composer never sets;
-      (d) the minimum-viable-context predicate is explicit and deterministic;
+      not the system, and therefore never red);
+      (c) the arriving item is provably from the planner path — it carries a planner
+      slot date (`scheduledFor` set), which the composer never sets;
+      (d) the predicate is explicit and deterministic, AND an org for which only ONE
+      conjunct EXISTS AT THE MOMENT IT IS READ does not pass it — asserted by reading
+      the predicate directly against such an org, never by driving ingestion and
+      observing no drafts, which is true by construction now that the producer is a
+      sweep and would pass even if the sweep ignored the predicate entirely. This
+      does not mean such an org receives nothing: GENS-8 ensures the missing conjunct
+      BEFORE the read, so the predicate's job is to catch a FAILED ensure, and
+      GENS-8 (b) is what asserts the drafts arrive;
       (e) thin Memory yields honest cause-level drafts, never fabricated impact;
-      (f) the per-item calibration flag is present on first-batch items and absent
-      on refill items, and an item's flag is gone once THAT item is approved,
-      skipped, or has a redirect recorded, while its siblings keep theirs — a
-      deterministic check; whether the framing READS as a colleague's first attempt
-      is a keyed judge case (never a substring match — LRN-20); (g) generation
-      failing terminally leaves the founder with the honest snag state, never an
-      unbounded "first drafts in about ten minutes".
+      (f) generation failing terminally leaves the founder with the honest snag
+      state, never an unbounded "first drafts in about ten minutes" — and when it
+      later succeeds the snag state is replaced, not left standing beside the cards;
+      (g) AN OPEN SESSION OBSERVES THE ARRIVAL WITHOUT A MANUAL RELOAD — the
+      mechanism is APRS-7's (this is a backend spec and cannot carry a client
+      marker) and US-20 is the founder-seat story that validates it. Fails today:
+      there is no poll and no subscription, so the assertion is red against the
+      current client, which is what makes it worth stating.
+
+  ONBS-7:
+    v: 1
+    title: The calibration frame — drafts written before the founder has corrected anything
+    implements: [ONB-6]
+    statement: >-
+      DRAFTS PRODUCED WHILE STEWARD IS UNCALIBRATED ARE OFFERED AS A FIRST
+      ATTEMPT, NOT AS FINISHED WORK (v1, DEC-48, extracted from ONBS-6 which
+      carried this as one of three concerns). They arrive with no gate and nothing
+      to click — a confirm-the-profile step would be exactly the wizard XO-1
+      forbids — but they are FRAMED ("here's my first go — tell me what's off")
+      rather than presented like the steady-state stack. Three reasons this is
+      behaviour and not decoration: it is honest at the moment Steward knows least
+      about how this founder writes; it invites the correction that MEM-1 turns
+      into a permanent rule, so a rejected first draft IMPROVES the next batch
+      instead of reading as failure; and it protects G-2 (approval-without-edits by
+      week 8) from being judged against drafts written before any correction existed.
+      UNCALIBRATED IS THE PREDICATE, AND IT IS DEFINED HERE BECAUSE NOTHING ELSE
+      DEFINED IT. An org is UNCALIBRATED while its Memory holds no styleRule or
+      taboo WHOSE SOURCE TRIGGER IS ONE OF THE EXPLICIT CORRECTION CHANNELS MEMS-1
+      v2 enumerates — an APR rejection, an inline edit, a skip-reason, a CHT
+      confirmed redirect, an ONBS-5 review correction. Keyed on the DURABLE SOURCE
+      TRIGGER, not on the entry KIND and not on a call-time flag: the kind alone is
+      wrong because ingestion legitimately writes style findings as styleRule
+      entries, and a call-time correction flag is not persisted at all, so neither
+      can be read back. EVERY OTHER PROVENANCE LEAVES THE ORG UNCALIBRATED —
+      ingestion, interview, bot, media upload, discovery triage, and dev-seed
+      included. Naming dev-seed matters: the demo fixture writes a taboo, so a
+      predicate keyed on kind would make every seeded org read as calibrated and
+      leave clause (a) with no reachable subject.
+      WHY NOT A MEMORY-VOLUME THRESHOLD, which is what "still thin" invited and
+      what the round-7 panel proved unusable. (i) The two existing carriers of
+      "thin" attributed to this capability are the exact COMPLEMENT of
+      readyForFirstDrafts — ready requires identity plus one program/story fact,
+      i.e. ≥2 grounding entries, and the code treats <2 as thin — so keying on them
+      makes the rule fire for exactly no item, and every clause testing it
+      vacuously true. (ii) MEMS-4's thinness signal fires on EMPTY Memory, a third
+      meaning; "thin" carried three, breaching the semantic-clarity rule. (iii) Any
+      volume threshold is WRONG FOR THE PRIMARY PATH: the audit's own evidence org
+      yielded twenty-one accurate Memory entries from one website scrape, so it is
+      not thin by any count — yet Steward had never been told a single thing about
+      how that founder wants to sound, which is precisely what the frame is
+      confessing. VOLUME OF FACTS IS NOT KNOWLEDGE OF VOICE. Keying on correction
+      history tracks the thing the framing is actually about. IT NEEDS TWO EXITS,
+      not one: the first correction — the same event the second reason above is
+      built on — OR, for the founder who simply approves everything, the org's first
+      N disposed items. A correction-only exit never fires for G-2's own SUCCESS
+      state (approval without edits), so the frame would still be printing "here's my
+      first go, tell me what's off" at week forty.
+      IT IS KEYED TO THE ORG'S STATE, NOT TO THE PRODUCER. Every item generated
+      while the org is uncalibrated carries the flag — not merely the ones some
+      designated "first" run wrote. Producer-keying looks equivalent and is not: the
+      sweep reaches the same uncorrected org tomorrow morning, so framed cards would
+      be followed by unframed ones presented as finished steady-state work, which
+      inverts all three reasons above. (This is why the producer's own clauses may
+      never stamp by producer identity, and why there is only one producer to
+      confuse it with.)
+      THE FLAG IS PER-ITEM, NOT A SURFACE MODE. The property belongs to the DRAFT:
+      it is set at generation from the org's calibration state and RETIRES ON THAT
+      ITEM'S OWN DISPOSITION. Approved and skipped both remove the item from the
+      spine, so the branch that matters is REDIRECT — the item stays in Ready and is
+      the one case where the frame is stale, because that leftover was written
+      before the correction. Redirect must therefore CLEAR the flag on the item
+      whose id it already receives; today `approval.redirect` discards that id,
+      which is the carrier this rule needs and the reason it is stated rather than
+      assumed. A surface-wide mode retired on the first tap would strip the frame
+      from the still-undisposed siblings — which after a redirect are exactly the
+      ones that still need it — while the sweep interleaves genuinely
+      steady-state cards among them, indistinguishably. The flag is a DM-5
+      ContentItem field, enumerated there alongside `qaStatus` (the OPSS-1
+      precedent for a cross-capability flag on this entity).
+      IT RENDERS THROUGH A NAMED DS ELEMENT, NOT A FAMILY (GR-7 v3 — inventing a
+      component here would be a governed violation, and naming only a family leaves
+      the implementer free to invent while the spec reads as conforming): DSS-8
+      ReasonLine — "one quiet line under every system-initiated item stating WHY it
+      exists, in first-person colleague voice" — which is exactly the shape of
+      "here's my first go". The frame PREFIXES the reason text inside DSS-8's single
+      slot (DSS-19 already fills it per-card from `reasonLine`) rather than
+      replacing it: no new DSS-8 variant, and the card keeps the explanation the
+      founder most needs on precisely the drafts written before any correction
+      existed. Not DSS-22, which is the empty/loading zero-state pattern and the
+      wrong altitude for a badge on a populated card. The card renders the frame
+      WHILE THE FLAG IS SET — keyed on the flag, never baked into persisted copy,
+      or clearing a boolean would change no pixel.
+      ACCEPTANCE, each clause independently falsifiable (LRN-30):
+      (a) EVERY item generated for an uncalibrated org carries the flag, whether it
+      is the org's first produced item or the tenth on the fourth day — the clause
+      that catches producer-keying, and it needs two runs on different days to fail,
+      which no single-run assertion can see;
+      (b) ONCE A CORRECTION-CHANNEL styleRule OR taboo EXISTS, no NEWLY generated
+      item carries the flag — the negative half, and the only clause that can fail
+      against an implementation that stamps unconditionally. Its absence is what let
+      "the frame is keyed to context" pass while meaning nothing. Worded as the
+      statement's predicate rather than as "a founder correction": an ONB-5 FACTUAL
+      correction supersedes a fact (MEMS-2) and is neither a styleRule nor a taboo,
+      so the broader wording would make statement and clause unsatisfiable together;
+      (b2) THE FRAME RETIRES ANYWAY once the org has disposed of its first N items,
+      whether or not a correction ever arrived — the second exit, without which
+      G-2's success case never leaves the frame;
+      (c) an ingested style finding does NOT calibrate the org: an org whose Memory
+      holds only assumed, ingestion-sourced entries is still uncalibrated. The
+      clause that keeps (b) from being satisfied by the scrape itself;
+      (d) an item's flag is gone once THAT item is approved, skipped, or has a
+      redirect recorded against it, while its undisposed siblings keep theirs — a
+      deterministic per-item check;
+      (e) clearing the flag changes the rendered card, because the frame is keyed on
+      it rather than written into stored copy;
+      (f) whether the framing READS as a colleague's first attempt is a keyed judge
+      case, never a substring match (LRN-20).
 
 open-questions:
   - >-

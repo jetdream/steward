@@ -11,7 +11,7 @@ challenge:
     r1 FAILED on two highs: (1) the G-2 measurement boundary was BACKWARDS — silent
     operator QA INFLATES G-2 (founder sees only cleaned drafts) rather than leaving
     it clean; and (2) the "hold before Ready" gate had no data home. Fixed: the QA
-    hold is now a qaStatus flag on ContentItem (DM-5 v2) that APRS-1 v3 excludes from
+    hold is now a qaStatus flag on ContentItem (DM-5 v3) that APRS-1 v3 excludes from
     the readyStack (separately re-challenged, APR approved at v3); the G-2 estimator
     reframed honestly — an operator-touched draft COUNTS as non-autonomous (kept in
     the denominator, never credited/dropped; computed on the pre-QA draft), with G-2's

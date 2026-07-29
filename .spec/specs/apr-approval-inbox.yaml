@@ -25,7 +25,7 @@ challenge:
     draw the composer's APR -> content-engine entry edge — honest today via DM-5's
     composed-entry + PIPE-2 stage reuse. r3 (delta): APRS-1 -> v3 added the cohort-1
     QA gate (a qaStatus=pending-review draft is withheld from the readyStack until
-    an operator clears it, DM-5 v2 / OPSS-1); verified no unreviewed draft can
+    an operator clears it, DM-5 v3 / OPSS-1); verified no unreviewed draft can
     auto-publish at TL1, additive/upstream of the disposition + veto logic; an
     acceptance clause for the exclusion was added in-change; passed.
 intent: >-
@@ -231,6 +231,59 @@ items:
       ACCEPTANCE: an unopened >72h digest triggers exactly one nudge; a second
       consecutive miss triggers no additional nudge; a returning founder is
       welcomed forward without guilt or a streak-penalty.
+
+  APRS-7:
+    v: 1
+    title: The stack announces itself — an unattended arrival reaches an open session
+    implements: [APR-1]
+    reach: required
+    statement: >-
+      A DRAFT THE FOUNDER DID NOT ASK FOR IS USELESS IF THEY NEVER SEE IT. Once
+      generation is unattended (GENS-8), items appear in Ready with no request that
+      preceded them — so nothing in the request/response cycle brings them to a
+      session that is already open. Today that gap is complete: the only realtime
+      subscription in the backend is a health-check stream, the Ready-stack query
+      declares no refetch interval, and the onboarding refresh deliberately
+      invalidates the knowledge views and NOT the stack. A founder sitting on the
+      day-one home reading "your first drafts follow" is told the truth and then
+      never shown the result — the audit's own observation, and the half INC-11
+      names that the producer alone cannot close.
+      WHY THIS IS ITS OWN ELEMENT (v1, DEC-49). It was previously a REQUIREMENT
+      inside ONBS-6 with no owner — and a requirement with no owning element is how
+      this stayed unbuilt while the graph read green. It belongs to APR rather than
+      to ONB because the thing that changed is THE STACK, not onboarding: the same
+      mechanism serves every later unattended arrival, not just the first.
+      THE RULE. When an unattended producer persists items for an org, any session
+      holding that org's Ready stack LEARNS WITHIN SECONDS, without a manual reload
+      and without the founder navigating. The mechanism is a push on the existing
+      realtime channel (ARC-2's WS, light payloads per the constitution) carrying an
+      INVALIDATION SIGNAL — "this org's stack changed" — never the items themselves:
+      the stack is already a query with confinement and ordering rules (APRS-1), and
+      pushing content would duplicate them on a second path. A bounded poll while
+      generation is in flight is the acceptable degradation if the socket is down;
+      an unbounded poll is not, because the steady state is "nothing is happening".
+      IT IS NOT A NOTIFICATION. APRS-4 owns notifications — reaching a founder who
+      is ABSENT, on the cadence they chose. This is the opposite case: the founder
+      is PRESENT and looking at the surface the change belongs to, so the change
+      lands silently in place. No badge, no count, no interruption (VAL-6) — the
+      cards are simply there, which is what "the work simply gets done" means from
+      the founder's seat.
+      ACCEPTANCE, each clause independently falsifiable (LRN-30) and — per
+      `reach: required` — driven from a declared entrypoint:
+      (a) with a session open on the home and NO founder interaction whatsoever, an
+      unattended producer's items become visible in Ready. The clause is red against
+      the current client, which is the point of stating it; asserted with the
+      founder's hands off the keyboard, because any assertion that involves a click,
+      a navigation or a reload proves nothing about this mechanism.
+      (b) the push carries an invalidation signal, not item content — asserted on
+      the payload, so a well-meaning implementation that ships the whole stack over
+      the socket is red;
+      (c) a session holding org A's stack is not woken by org B's arrival (ACC-3
+      confinement on the realtime path, which is a different code path from the
+      request path and therefore a different place to get it wrong);
+      (d) with the socket unavailable the arrival is still observed, by the bounded
+      degradation — and the poll STOPS when generation is not in flight, so an idle
+      product is idle.
 
 open-questions:
   - >-

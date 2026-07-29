@@ -335,3 +335,24 @@ items:
       the Ready spine; the spine's count drops by one; and the approved post
       appears in the Plan & Published view.
 
+  US-20:
+    v: 1
+    serves: [ONB-6, GEN-1, APR-1]
+    persona: >-
+      Dana, twenty minutes after signing up, still on the tab she signed up in —
+      she has given Steward her org name and her website and nothing else, and she
+      is idly reading the home while she waits to see whether this thing works.
+    title: Posts she never asked for appear while she is sitting there
+    statement: >-
+      This is the product's central promise from the founder's seat, and until now
+      no story asserted it — which is how ONB-6 and GEN-1 reached "satisfied" while
+      the built product could not write a single draft (INC-12). Dana does not press
+      anything, does not reload, and does not go looking for a second screen. Drafts
+      about her own organisation appear in Ready, framed as a first attempt rather
+      than as finished work, and she can read them and say what is wrong.
+    acceptance: >-
+      From a brand-new signup with only a name, an email and a readable website —
+      and with no fixture writing her Memory, her Strategy or her content — drafts
+      appear in her open session's Ready stack without any interaction, each carrying
+      the calibration frame, and each provably from the planner path rather than the
+      composer.

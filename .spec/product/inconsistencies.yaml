@@ -14,7 +14,7 @@ items:
   INC-13:
     v: 1
     status: open
-    binds: [XH-12, UX-3, ONBS-6, GENS-8]
+    binds: [XH-12, UX-3, ONBS-6, GENS-8]  # DEC-48: ONBS-6 v3 adds the delivery-channel half
     title: XH-12 defines the home's three shapes but never the transition between them
     statement: >-
       Detected 2026-07-26 (Phase F audit, F1 run A; registered as an ID during the
@@ -31,11 +31,18 @@ items:
       That's everything. Nothing is waiting on you." A BETTER ingest produced a
       WORSE screen. GENS-8 sharpens the gap by decoupling the predicate from
       generation: the shape would otherwise flip while generation is still in
-      flight and Ready is empty (an empty state against VAL-6/DS-6). ONBS-6 v2
+      flight and Ready is empty (an empty state against VAL-6/DS-6). ONBS-6 v3
       carries the interim rule — the day-one narration persists until the first
-      batch lands or visibly fails — but the transition itself is XH-12's to own.
+      drafts land or visibly fail, and is REPLACED when they later arrive — but the
+      transition itself is XH-12's to own. ONBS-6 v3 additionally records the half
+      this entry did not name (DEC-48, round-7 panel): a transition condition needs
+      an OBSERVATION CHANNEL. The client neither polls nor subscribes and the
+      onboarding refresh does not invalidate the Ready stack, so drafts landing a
+      minute after the predicate flips are never fetched — whatever condition
+      XH-12 settles on, it must be observable by an open session without a manual
+      reload.
       Resolution: amend XH-12 with the shape-transition condition, then repair the
-      code against it; the ONBS-6 v2 rule is the behavioural half and must stay
+      code against it; the ONBS-6 v3 rule is the behavioural half and must stay
       coherent with whatever XH-12 settles.
   INC-12:
     v: 1

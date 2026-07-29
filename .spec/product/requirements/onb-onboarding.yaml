@@ -127,7 +127,16 @@ items:
         home's shape — so "first drafts as soon as context exists" had no caller
         and ONBS-6's acceptance was false for every real org. The decomposition was
         never the gap; the missing piece was the trigger. GENS-8 (ARC-28) now owns
-        it and ONBS-6 v2 owns the calibration framing of what it produces. Coverage
+        it and the calibration framing of what it produces is owned alongside it. Coverage
         is complete only once both land — realization pending code, and the honest
         reading today is that this requirement is NOT satisfied.
-      against: [ONBS-6@2, GENS-8@1, G-5@2]
+        RE-AFFIRMED 2026-07-29 (DEC-48): GENS-8 v2 is ONE producer whose first
+        productive run for an org IS that org's first batch — three items, stated as
+        a number rather than inherited. What changed for THIS requirement is the
+        gate: readyForFirstDrafts is a CONJUNCTION, and its seed-Strategy conjunct
+        had no producer anywhere, so "first drafts as soon as context exists" would
+        have stayed false in production while passing in test (the demo seed writes
+        the row). GENS-8 now ensures both conjuncts before planning. ONBS-6 v3
+        keeps the predicate; the calibration framing moved to ONBS-7. Still NOT
+        satisfied: no code.
+      against: [ONBS-6@3, ONBS-7@1, GENS-8@2, G-5@2]

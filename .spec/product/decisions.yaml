@@ -15,6 +15,194 @@ intent: >-
   (by), when (date), and what it binds/authorizes/overrides (binds).
 
 items:
+  DEC-49:
+    v: 1
+    date: 2026-07-29
+    by: founder (shpin.p@diffco.us)
+    binds: [DEC-48, DEC-47, DEC-46, GENS-8, ONBS-6, ONBS-7, TOPS-1, DM-1, DM-5, ARC-28, GEN-1, ONB-6, Q-18, INC-11, INC-12]
+    title: Ship the invoker; defer the metering region to its own change (the second scope review)
+    statement: >-
+      THE SECOND SCOPE REVIEW, and this time the region is unambiguous. Cortex
+      mandated the first at three consecutive fails; DEC-47 split, DEC-48
+      re-collapsed, and round 8 failed with twelve highs. What decides this is not
+      the count — round 8 ran three lenses where earlier rounds ran one, so the
+      count measures review depth. What decides it is WHERE they landed.
+      THE TABULATION the stopping rule asks for:
+      r5 the bounds; r6 the bounds x3; r7 the bounds x3 + the producers x3; r8 the
+      bounds x5 + the producers x4. FOUR CONSECUTIVE ROUNDS concentrated in the
+      bounds / acceptance / failure-handling region — which is the region Q-18
+      already defers. Two of the three lenses independently recommended the same
+      remedy without being asked for one.
+      THE MECHANISM, stated by the code-executing lens and worth more than any
+      single finding: each repair MOVED THE BLINDNESS ONE LEVEL rather than removing
+      it. r6 — the clause measured nothing about accumulation, so it was fixed to
+      measure total produced. r7 — total produced is capped identically by the rate
+      for every placement strategy, so it was fixed to measure forward-window
+      occupancy. r8 — occupancy is blind to DISTRIBUTION: latest-slot placement puts
+      a new org's first post on DAY 21, three weeks of silence, with the clause
+      reading 12 of 12 throughout. Simulated, not argued. And the argument that
+      chose latest placement ("earliest overshoots") was measured BEFORE the rate
+      existed; re-measured with it, earliest yields 20 items a month and four posts
+      a week from week one, latest 17 and 0/0/0/4. A rule that was correct in one
+      bound-set became wrong in another and nobody re-checked it. That is what a
+      four-round cluster looks like from the inside.
+      DECISION: SHIP THE INVOKER. GENS-8 narrows to what INC-11 and INC-12 actually
+      require — a recurring job that, for a ready and settled org, ensures its
+      preconditions and writes drafts nobody asked for, at the EARLIEST unfilled
+      slot dates, bounded by an explicitly crude interim rule: at most one
+      plan-and-draft attempt per org per calendar day, at most three items per
+      attempt, stopping once the next 28 days already holds N. Earliest placement
+      is not an optimization here — it is what makes G-5's 48-hour live post
+      possible at all.
+      DEFERRED to its own change and its own challenge chain, retained as Q-19 so
+      the deferral stays visible and re-raisable (SDLC Phase C): the
+      occupancy-to-N CONVERGENCE rule and its figures, the rolling production RATE,
+      the PLACEMENT strategy beyond "earliest", the per-org FAILURE/SNAG state
+      machine with its bound and its exit, and the N-slot-grid INTERFACE the
+      convergence model needs and which planCalendar does not expose. Five of round
+      8's twelve highs leave with that region. The precedent is measured: when
+      DEC-46 deferred metering, five of eight findings from the preceding round
+      disappeared with it.
+      WHY THIS IS RIGHT AND NOT MERELY EXPEDIENT: the deferred region is the region
+      that cannot be specified well without a running system. Q-18 already says so
+      in its own words — "the number is a field observation, which is why it is
+      decidable-by user and not derivable here." Four rounds of adversarial review
+      have been spent deriving numbers that a week of cohort-1 data would settle,
+      while the product writes nothing at all.
+      WHAT DEC-48 ESTABLISHED AND THIS DOES NOT DISTURB: one predicate-gated sweep
+      is the right architecture. All three lenses held it, one went looking for a
+      cheaper design and reported plainly that there is none, and a double-fire was
+      attempted against it and could not be built. COGS survives at ~$5-12/org/month
+      against the <$25 target. The three-item count (DEC-47) stands.
+      ALSO AUTHORIZED, because round 8 proved each is load-bearing rather than
+      tidying: (1) the two ensures run BEFORE the readiness predicate is evaluated,
+      not inside the branch it guards — the same defect LRN-37 was deposited about,
+      committed in the change that deposited it; (2) SETTLED means "no ingestion run
+      in flight", not "no predicate-feeding write in the last interval", which
+      starved the interview path the moment a founder answered a question inside
+      five minutes — and is strictly simpler; (3) EVERY client-callable producer is
+      retired, not one — strategy.autoDraft and topics.identify survived under a
+      heading that said none did; (4) an element owns the OBSERVATION CHANNEL and a
+      story serves ONB-6, because no story served it and `satisfied` was quantifying
+      vacuously; (5) DM-1 and DM-5 are bumped and cascaded.
+  DEC-48:
+    v: 1
+    date: 2026-07-29
+    by: founder (shpin.p@diffco.us)
+    binds: [DEC-47, DEC-46, DEC-44, GENS-8, ONBS-6, TOPS-1, DM-5, ARC-28, GEN-1, ONB-6, TOP-1, INC-11, INC-12, Q-18]
+    title: ONE producer on a short cadence — supersedes DEC-47's split, keeps its three-item count
+    statement: >-
+      SUPERSEDES DEC-47 DECISION 1 (the two-element split). DEC-47 DECISION 2 (three
+      items on first contact) STANDS and is re-affirmed. Escalated under SDLC Phase C
+      rather than adopted autonomously, because DEC-47 was a same-day human decision
+      and an agent may not overturn one.
+      WHAT THE ROUND-7 PANEL FOUND. Four lenses in parallel, two executing code:
+      eight highs, and the split itself HELD — every lens declined to cut either new
+      element further, and for the first time in the chain no prior high rebounded
+      into its own region. So the split's diagnosis was right. But two findings
+      falsified the design as written, and one offered a way out that no prior
+      decision had weighed.
+      THE ALTERNATIVE NOBODY HAD CONSIDERED. DEC-44 weighed button-vs-job. DEC-45/46
+      weighed plan-vs-draft. DEC-47 weighed trigger-vs-refill. None weighed
+      CADENCE-VS-OBSERVER. Collapsing both producers into ONE predicate-gated sweeper
+      on a short cadence deletes six mechanisms that exist solely to manufacture
+      exactly-once semantics: the once-only claim, the level-vs-edge rule, the atomic
+      conditional claim committed with the enqueue, the bounded re-arm, the at-bound
+      claim retention, and two durable DM-1 columns. Duplication is already prevented
+      by three rules that survive either way — per-date idempotency, the occupancy
+      target, and the production rate. That apparatus was the most expensive thing in
+      the spec and the direct source of the highs in rounds 2, 6 and 7.
+      IT ALSO FIXES A DEFECT THE OBSERVER DESIGN COULD NOT. Ingestion commits per
+      artifact with no transaction, so a post-commit observer fires the instant the
+      second qualifying fact lands — planning the founder's entire first impression
+      from two facts while nineteen more are still being scraped. The observer's
+      SPEED was a defect, not a feature. A poll can express QUIESCENCE (skip an org
+      that is still changing) and an observer structurally cannot. That is the
+      decisive argument: correctness, not simplicity.
+      WHAT IS DELETED: the second element DEC-47 created was never committed and
+      exists in no history, so it is dropped rather than superseded. GENS-8 v2
+      becomes the single producer again.
+      WHAT IS ALSO AUTHORIZED IN THIS CHANGE, because the panel showed each is
+      load-bearing rather than tidying:
+      (1) ONBS-6 SPLITS — the calibration flag becomes ONBS-7 with a NAMED thinness
+      predicate. The flag was keyed to "still thin", no element defined it, and the
+      codebase's two ONBS-6-tagged carriers of "thin" are the exact COMPLEMENT of
+      readyForFirstDrafts (ready implies not-thin, exactly at the boundary), so the
+      rule could never fire and its clauses were vacuously true. A rule cannot own a
+      predicate until it is an element.
+      (2) TOPS-1 gains the INVOKER of its maintenance run. Three rounds have now
+      found the same class one link further up each time — the planner had no caller
+      (INC-12), then the agenda run had no caller (r5), then the seed Strategy had no
+      producer (r7-h6). The rule this change adopts, stated once so the class closes:
+      EVERY CONJUNCT OF A GATING PREDICATE NEEDS A NAMED PRODUCER, NOT JUST A NAMED
+      OBSERVER.
+      (3) The REACHABILITY TIER is adopted now, not later. The panel's sharpest
+      procedural finding: this delta exists because a green graph sat over an
+      unreachable capability, and it declined every control the pinned toolchain
+      provides for exactly that (no reach:, no @reaches, no fixture-paths, no
+      entrypoint-paths) while the demo seed fabricates the whole predicate and both
+      ends of the loop. Declining the countermeasure in the change premised on
+      needing it is not a deferral, it is the same mistake. Registry gains
+      fixture-paths and entrypoint-paths; the producer carries reach: required.
+      (4) The RATE gains headroom. At N=12 the stated N/4-per-rolling-7-days equals
+      the calendar's own N/28-per-day drain, so occupancy converged to ~10 of 12 and
+      could never recover from a missed run — measured over 365 simulated days. The
+      bound must exceed the drain. Recorded as an interim measure: the per-org
+      metering dial stays deferred (Q-18).
+      WHAT THIS DOES NOT CHANGE: three items on first contact (DEC-47); the
+      four-week calendar shape (GEN-1 v4); the deferred metering dial (Q-18); and
+      every guardrail — the producer still routes through GENS-7/PIPE-2.
+  DEC-47:
+    v: 1
+    date: 2026-07-28
+    by: founder (shpin.p@diffco.us)
+    binds: [DEC-46, GENS-8, GEN-1, ONB-6, Q-18]
+    title: Split the trigger element in two, and state the first batch's size as a number
+    statement: >-
+      TWO CALLS, both made after a scope review that Cortex v0.25 mandated
+      (three consecutive fails and no pass on gen-content-generation, plus an
+      element-size report naming GENS-8 at 11531 chars against a 2000 threshold).
+      THE SCOPE REVIEW'S FINDING. DEC-46 split this delta once already — trigger
+      shipped, metering deferred — and it worked: five of eight findings from the
+      preceding round disappeared with the deferred region. The next round then
+      failed on three new highs, and all three are the SAME SHAPE one level down:
+      a rule stated once that the two producers need different versions of. "The
+      first batch lost its size" (the surviving per-run cap named only the
+      refill); "a date that carries no item is not a bound" (the refill's
+      convergence rule); "the bounded re-arm did not bind" (the first batch's
+      terminal state). Eleven acceptance clauses cluster the same way — five test
+      only the first batch, two only the refill, the rest shared setup. And the
+      two answer to DIFFERENT requirements: the once-only batch is ONB-6's "first
+      proof, lazily", the standing refill is GEN-1's rolling calendar. That is
+      not one behaviour with edge cases.
+      DECISION 1: SPLIT. GENS-8 v2 keeps the ONCE-ONLY first batch (observer,
+      level trigger, atomic conditional claim, bounded re-arm, at-bound claim
+      retention, calibration framing). A NEW SECOND ELEMENT owns the STANDING refill (daily
+      sweeper fan-out, occupancy-to-N at latest unfilled dates, per-date
+      idempotency, the rolling-7-day rate, org-scoped handle). The two failure
+      modes are opposite — the trigger must never double-fire, the refill must
+      never flood — which is why each bound is now stated on the producer it
+      binds. The shared premise ("generation runs without a session; a button
+      would not have closed INC-12") stays on GENS-8, whose acceptance (a) is the
+      clause that tests it; the refill element's daily-sweeper nature carries it inherently.
+      DECISION 2: THE FIRST BATCH IS THREE ITEMS, STATED AS A NUMBER ON THE
+      ELEMENT. The value is not new — Q-18 already records "a per-run cap of
+      three items for both autonomous producers" — but GENS-8 INHERITED it by
+      reference ("the same per-run cap the refill takes"), and an inherited bound
+      is exactly what the round-6 high was: the ceiling that used to bound both
+      producers was excised and only one restatement survived. A number on each
+      element cannot be excised by editing the other. The count itself was
+      re-affirmed on founder-facing grounds: three shows range — a mission post,
+      a programme post, a person — while staying small enough to read and
+      redirect in one sitting, and the calibration framing's own logic caps it,
+      since a correction on card one cannot improve siblings already written.
+      Five was weighed and rejected as the overwhelm the Phase F audit kept
+      finding; two as too thin to read as delivered work.
+      WHAT THIS DOES NOT DO: the deferred metering dial stays deferred (Q-18,
+      DEC-46) — this decision states a per-run count, not the per-org ceiling.
+      GEN-1 and ONB-6 are unchanged: this is a spec-element split inside their
+      approved scope, recorded as a DEC because the count is a product call and
+      because the split re-homes an element that other approved specs cite.
   DEC-46:
     v: 1
     date: 2026-07-26

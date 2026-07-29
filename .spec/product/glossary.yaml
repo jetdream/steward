@@ -15,6 +15,24 @@ terms:
     member Users with roles (owner/admin/member; owner is the default, the
     typical cohort-1 org is owner-only) since the DEC-30 multi-seat reversal.
   Founder-Operator: The primary user persona; the person running the org (users.md).
+  Uncalibrated (org): >-
+    An org whose Memory holds NO founder-originated styleRule or taboo — no
+    correction has yet arrived through one of the explicit correction channels
+    MEMS-1 v2 enumerates (an APR rejection / inline edit / skip-reason, a CHT
+    confirmed redirect, an ONBS-5 review correction). Deterministic. It is the key
+    for the ONBS-7 calibration frame: while an org is uncalibrated, Steward has
+    never been told how this founder wants to sound, so its drafts are offered as
+    a first attempt rather than as finished work. Deliberately NOT a Memory-volume
+    measure — a website scrape can yield twenty-one accurate facts and teach
+    nothing about voice.
+  Thin (Memory): >-
+    QUALIFIED because it was overloaded three ways (DEC-48, semantic-clarity rule).
+    It means ONE thing: a RETRIEVAL-time signal that an org's grounding is sparse,
+    so callers lean on the interview rather than invent (MEMS-4, TOPS-1's
+    cause-level degradation). It is NOT the first-drafts gate — that is
+    `readyForFirstDrafts` (ONBS-6), whose floor sits exactly at the thin boundary,
+    making the two near-complements. And it is NOT the calibration key — that is
+    Uncalibrated, above. Never use "thin" unqualified for either.
   Org role (owner / admin / member): >-
     A User's role WITHIN an org, on their Membership (ACCS-2, DM-16): owner (all,
     incl. billing/deletion/ownership transfer), admin (all but org

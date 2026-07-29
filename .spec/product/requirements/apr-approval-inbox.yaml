@@ -31,7 +31,15 @@ items:
         DM-5-exact undo scope (pending recall; scheduled -> AUT-3/veto), batch
         approve excluding pinned/blocked cards, dispositions -> Memory. Realization
         pending code.
-      against: [APRS-1@3, G-1@1, G-2@1, G-3@1, G-4@1, G-5@2, GEN-5@1]
+        RE-AFFIRMED 2026-07-29 (DEC-49): APRS-7 joins the covering set — the element
+        that owns delivering an UNATTENDED arrival to an open session. It was
+        previously a requirement stated inside ONBS-6 with no owning element, which
+        is how it stayed unbuilt while the roll-up read green. Coverage of this
+        requirement was never wrong about disposition; what was missing is that a
+        stack which changes without a request needs a path to the session holding it.
+        Realization pending code — the only realtime subscription today is a
+        health-check stream.
+      against: [APRS-7@1, APRS-1@3, G-1@1, G-2@1, G-3@1, G-4@1, G-5@2, GEN-5@1]
 
   APR-2:
     v: 1

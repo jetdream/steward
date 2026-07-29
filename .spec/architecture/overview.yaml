@@ -407,7 +407,7 @@ items:
       How I write) are a fast-follow experience addition.
 
   ARC-28:
-    v: 1
+    v: 2
     kind: c4-component
     title: Job Runner
     parent: ARC-3
@@ -442,8 +442,9 @@ items:
       enlist in the CALLER'S transaction, so a state transition and the job it
       triggers commit together or not at all. A draft-generation job enqueued
       outside the transaction that recorded the Memory write can fire against a
-      row that never committed — and the same seam is what makes GENS-8's
-      first-batch claim atomic rather than racy. The pg-boss adapter takes the
+      row that never committed. (v2: the seam's grounds are ADR-0003's own —
+      approve->publish, generate->inbox, the MEM-1 write path. v1 justified it by
+      GENS-8's first-batch claim, a mechanism DEC-48 deleted.) The pg-boss adapter takes the
       caller's handle; the cloud adapter needs the outbox to preserve the
       guarantee.
       ORG-SCOPED BY CONSTRUCTION, NOT BY EXHORTATION (ACC-3). ACC-3's only
@@ -454,16 +455,32 @@ items:
       accident. "Every handler remembers to filter" is the failure shape LRN-35
       was written about; a job is NOT a privileged context, and having no session
       must never mean having wider reach.
-      RUNS TODAY: the ONBS-6 first-batch observer (the minimum-viable-context
-      predicate, evaluated on the write paths that feed it rather than on a page
-      view), the GENS-8 rolling refill, and TOP-1's scheduled agenda run — which
-      had no invoker anywhere until this change, so a fresh org's first batch
-      would have found an empty agenda, persisted nothing, and still SUCCEEDED.
+      WITH EXACTLY ONE NAMED EXCEPTION — THE ENUMERATOR (v2, DEC-48). A fan-out
+      job legitimately has no `orgId`: its whole purpose is to find the orgs. An
+      org-scoped-handle-only contract therefore cannot be honoured by the one
+      component that spans tenants, and an implementer meeting it would invent an
+      unscoped escape hatch — which is the risk this rule exists to prevent,
+      re-created by the rule's own incompleteness. So the port additionally offers
+      `enumerate(name, handler)`: a handle whose ONLY capability is projecting ORG
+      IDS, never org content, and which hands each per-org run exactly one id on the
+      ordinary org-scoped handle. Narrow, named, and greppable — the point is that
+      the exception is specified rather than improvised.
+      RUNS TODAY: the GENS-8 recurring sweep (~5 minutes) — one enumerator fanning
+      out over orgs, and per SETTLED org the STRS-2 seed-Strategy ensure and the
+      TOPS-1 agenda ensure FIRST, then the readiness evaluation, then the TOPS-1
+      maintenance run and the plan-and-draft act. The ensures precede the gate
+      because the gate's conjuncts are what they produce (DEC-49). TOP-1's scheduled run had no
+      invoker anywhere until this change, so a fresh org's first plan would have
+      found an empty agenda, persisted nothing, and still SUCCEEDED — and its
+      MAINTENANCE duty had none either, so topics would have frozen at day-one
+      forever (now stated on TOPS-1 v2, not merely named here: a design-element
+      carries no acceptance and gates no roll-up).
       The agenda run rides the same daily sweeper that fans out per org: that IS
       TOPS-1's "scheduled run", not a new mechanism, and it keeps the agenda
-      MAINTAINED rather than frozen at day-one cause-level topics. EACH TRIGGER ensures the agenda before
-      planning (GENS-8 owns that rule); the first batch cannot wait a day for the
-      sweep, so its ensure is inline. QUEUED BEHIND IT: PUB-1 scheduled
+      MAINTAINED rather than frozen at day-one cause-level topics. THE SWEEP ensures the agenda before
+      planning — GENS-8 states both ensures (the TOPS-1 agenda and the STRS-2 seed
+      Strategy), because it is the only producer (DEC-48): every conjunct of a
+      gating predicate needs a named producer, not just a named observer. QUEUED BEHIND IT: PUB-1 scheduled
       delivery and OPS-1 failure queues (both of which need `runAt` and
       dead-lettering), EXT-1 discovery sweeps, PRO-1..PRO-4 proactive pushes,
       APR-6 quiet accountability, STW-2 recaps — each of which named a cadence or

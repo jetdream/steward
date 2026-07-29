@@ -76,10 +76,26 @@ interfaces: >-
 
 items:
   TOPS-1:
-    v: 1
-    title: Topic identification
+    v: 2
+    title: Topic identification — and who runs it
     implements: [TOP-1]
     statement: >-
+      WHO INVOKES THE RUN (v2, DEC-48). "A scheduled run" named a cadence and no
+      caller, and the omission was load-bearing twice over: a fresh org's first
+      plan found an empty agenda and persisted nothing while the job SUCCEEDED,
+      and — the half that survived that repair — the run's MAINTENANCE duty had no
+      invoker at all, so an org's topics would freeze at the day-one cause-level
+      set forever while this element's own "topics EVOLVE" clause and TOP-1's
+      "topics evolve as the org and its context change" went unimplemented and
+      untested. A capability is not covered by the elements that CAN perform it if
+      no element is accountable for INVOKING it, and being NAMED in an
+      architecture element creates no obligation — a design-element carries no
+      acceptance and gates no roll-up. So: THE RUN IS INVOKED FOR EVERY READY ORG
+      ON GENS-8'S RECURRING SWEEP (ARC-28), at most once per org per calendar day.
+      That IS this element's "scheduled run" — not a new mechanism and not a second
+      cadence. GENS-8 additionally ENSURES a non-empty agenda inline before
+      planning, which is the bootstrap case; ensuring is not maintaining, and this
+      element owns the maintaining.
       A scheduled run derives and maintains the org's topic set, GROUNDED in
       Memory (cause profile, mission, programs, people, audience — via MEMS
       retrieveContext) plus calendar/season and the external landscape (EXT-1).
@@ -98,6 +114,19 @@ items:
       CAUSE-LEVEL topics, flags their confidence as thin, and leans on the
       interview (INT) to sharpen them; it does NOT fabricate org-specific
       evidence to clear a specificity bar.
+      MAINTENANCE RUNS ONLY WHEN THERE IS SOMETHING TO MAINTAIN (v2): the sweep
+      invokes the run for a ready org whose Memory has CHANGED since its last run,
+      not unconditionally every day — an unconditional daily LLM derivation would
+      spend a model call on every org every day to re-derive an unchanged set.
+      MAINTENANCE IS ASSERTED AS A STATE TRANSITION, NOT AS A COUNT (v2): a
+      day-one cause-level topic that Memory has since made specific is SUPERSEDED
+      or RETIRED — its supersededAt/status changes — not merely joined by new
+      siblings. Asserting only "a DIFFERENT topic set" would be satisfied by pure
+      GROWTH, which is exactly what the built persistence does today (it dedups by
+      canonical key and never writes supersededAt; the module records evolution as
+      deferred), so the freeze this element exists to prevent would survive the
+      clause written to catch it. Fails today: nothing schedules the run, and
+      supersession is unimplemented.
       ACCEPTANCE: every persisted topic has a resolvable evidence pointer; a
       thin-Memory org gets a non-empty cause-level topic set flagged thin (no
       fabricated specifics); two orgs with the same cause but different
